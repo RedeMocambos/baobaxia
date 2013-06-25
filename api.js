@@ -1,7 +1,7 @@
 
 /**
    @param {file} file File to upload 
-    @return jsonObject Json object with suggested metadata
+   @return jsonObject Json object with suggested metadata
 */
 function pre_publish(file){
     // offline
@@ -15,27 +15,35 @@ function pre_publish(file){
 */
 function publish(){
     // offline
+
+    // write_metadata();
+}
+
+/**
+*/
+function _write_metadata(){
+    
 }
 
 function suggest_metadata(){
     // offline
     // call suggest_title()
     // call suggest_autor()
-} 
+}
 
 /**
    @param {Array} array1 Array of tags to join 
    @param {Array} array2 Array of tags to join
    @return jointArray Array with joint tags 
 */
-function join_tags(array1, array2){
+function _join_tags(array1, array2){
     // sync
     return jointArray;
 }
 
 /**
 */
-function generateForm(){
+function generate_form(){
     // offline
     // verifica policy e gera campos do form
 }
@@ -48,7 +56,6 @@ function validate(form){
     // offline
 
     // for each field, check according to policy
-    var dataValidate;
     var validatePolicy = new XMLHttpRequest();
     var url = "policies/validation.json";
     
@@ -64,6 +71,6 @@ function validate(form){
    @param {string} fieldName Name of the field
    @param {string} fieldPolicy Policy applied for this field
 */
-function check_policy(fieldName, fieldPolicy){
+function _check_policy(fieldName, fieldPolicy){
     // offline
 }
