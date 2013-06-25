@@ -1,2 +1,3 @@
-* Copyright (C) 2012 Vincenzo Tozzi
-* under GNU General Public License (see LICENSE.txt)
+* Copyright (C) 2012 Vincenzo Tozzi, Fernão Lopes, Casa de Cultura
+* Tainã & Rede Mocambos under GNU General Public License (see
+* LICENSE.txt)
