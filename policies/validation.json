@@ -1,0 +1,33 @@
+{
+    "formats": [
+      	{   
+	    "priority": [
+	    	{   
+		    "type": "ogg"
+		},
+		{
+		    "type": "mpeg"
+		}	
+	]
+	}
+    ], 
+    "metadata": [
+	{
+	    "title": "string",
+	    "author": "string",
+	    "origin": "string",
+	    "date": "dd/mm/yyyy",
+	    "type": "string",
+	    "license": "string",
+	    "tags": [
+		{
+		    "name": "string"
+		}
+	    ]
+	}
+    ]
+}  "tags": [
+  {
+  "name": "string"
+  }
+  ]
