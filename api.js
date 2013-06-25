@@ -57,8 +57,7 @@ function validate(form){
 	    fieldPolicy = eval("data.metadata[0]." + field);
 	    check_policy(field, fieldPolicy);
 	}
-    });
-    
+    });    
 }
 
 /**
