@@ -7,7 +7,7 @@ function pre_publish(file){
     // offline
     // 1. upload the file
     // 2. analyze the file
-    suggest_metadata()
+   _suggest_metadata()
     return jsonObject;
 }
 
@@ -25,10 +25,12 @@ function _write_metadata(){
     
 }
 
-function suggest_metadata(){
+function _suggest_metadata(){
     // offline
+    // call extract_file_info()
     // call suggest_title()
     // call suggest_autor()
+    retuen jsonObject;
 }
 
 /**
