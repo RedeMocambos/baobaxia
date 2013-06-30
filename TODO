@@ -1,3 +1,5 @@
-* index
-* login
-* formulario de publicação
++--
+dom 30 giu 2013, 00.28.05, BRT
+* Rever o problema da resposta parcial no tester_node.js
+* Novas dependencias, express e require (pode instalar com npm)
+--+
