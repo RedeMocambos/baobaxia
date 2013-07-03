@@ -3,14 +3,10 @@ define([
     'underscore',
     'backbone'
 ], function($, _, Backbone) {
-    var MediaModel = Backbone.Model.extend({});
+    var MediaModel = Backbone.Model.extend({
+	// colocar url rest aqui
+	// urlRoot: /media
+    });
+    
     return MediaModel;	
 });
-/*	defaults: {
-	    title: "Arquivo de mídia X",
-	    author: "Autoria",
-	    origin: "Quilombo Gunga",
-	    date: Date.today(),
-	    licence: "Copyleft",
-	    tags: [],
-	}*/

@@ -7,7 +7,7 @@ define([
     'text!templates/media/MediaListTemplate.html'
     
 ], function($, _, Backbone, MediaModel, MediaCollection, MediaListTemplate){
-	console.log('dentro de medialistview');
+    
     var MediaListView = Backbone.View.extend({
 	el: $("#media-list"),
 	
