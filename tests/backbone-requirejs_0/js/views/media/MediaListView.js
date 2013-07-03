@@ -10,7 +10,7 @@ define([
 	console.log('dentro de medialistview');
     var MediaListView = Backbone.View.extend({
 	el: $("#media-list"),
-
+	
 	render: function(){
 	    var data = {
 		medias: this.collection.models,
@@ -18,6 +18,7 @@ define([
 	    };
 	    
 	    var compiledTemplate = _.template( MediaListTemplate, data );
+	    
 	    $("#media-list").html( compiledTemplate ); 
 	}
     });

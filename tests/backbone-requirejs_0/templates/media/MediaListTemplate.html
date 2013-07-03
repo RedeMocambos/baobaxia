@@ -1,5 +1,5 @@
 <ul>
-  <% _.each(media, function(media){ %>
-  <li><% media.get("title") %></li>
+  <% _.each(medias, function(media){ %>
+  <li><%= media.get("title") %> / <%= media.get("author") %> </li>
   <% }); %>
 </ul>

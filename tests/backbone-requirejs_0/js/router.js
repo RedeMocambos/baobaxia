@@ -10,7 +10,7 @@ define([
 	    '': 'MediaView'
 	}
     });
-    	    console.log('abc');
+    
     var initialize = function(){
 	var app_router = new AppRouter;
 	
