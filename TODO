@@ -1,5 +1,10 @@
-+--
-dom 30 giu 2013, 00.28.05, BRT
-* Rever o problema da resposta parcial no tester_node.js
-* Novas dependencias, express e require (pode instalar com npm)
---+
+== Dependencias ==
+ecstatic express multipart posix request
+
+== Publicaçao ==
+Para publicacao de uma media precisa definir os caminhos baseados no esquema proposto:
+
+comunidade/tipo/anomesdia_titulo/nomearquivo.abc
+
+Para isso uma funcao de prepublish precisa levantar essas informacoes.
+
