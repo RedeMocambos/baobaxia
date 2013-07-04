@@ -10,6 +10,8 @@ app.configure(function() {
 });
 
 
+app
+
 /**
  * HTTP POST /api/view
  * Returns: file metadatas in a JSON format
