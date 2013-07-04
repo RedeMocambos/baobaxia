@@ -5,8 +5,17 @@
 */
 function pre_publish(file){
     // offline
+    //
+    // 0. [autenticacao]
     // 1. upload the file
+    // -  1. interface de upload - express/backbone
+    // -  2. post to node.js - [/media/publish]
+    // -  3. post.js chama funcao que grava arquivo temporario
+    //
     // 2. analyze the file
+    // 3. validate (aceita ou da erro)
+    // 4. redireciona pra tipo de media
+    // 5. suggestmetadata (pre-fill form)
    _suggest_metadata()
     return jsonObject;
 }
