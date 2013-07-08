@@ -6,12 +6,12 @@ request.get({
 	'Content-Type': 'application/json; charset=utf-8'
     },
     body: JSON.stringify({
-	path : '/home/befree/annex/redemocambos/mocambolas/vince/',
-	filename: "'Altakamul Terra Terra.mp4'"
+	path : '/storage/annex/alternate/pub/',
+	filename: 'arquivo'
     })
 }, function(error, response, body){
     debugger;
-    //console.log('Erro:' + error + ' Code:' + response.statusCode);
+    console.log('Erro:' + error + ' Code:' + response.statusCode);
     if (!error && response.statusCode == 200){
 	console.log(body)
 	

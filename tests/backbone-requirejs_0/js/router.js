@@ -27,6 +27,7 @@ define([
 	    var file1 = new FileModel({'filename': fileName});
 	    
 	    fetchFile = file1.fetch();
+	    
 /*
 		success: function(data){
 		    console.log(JSON.stringify(data));
@@ -38,7 +39,7 @@ define([
 		}
             });
 */
-	    
+	    console.log(fetchFile);
 	    var fileView = new FileView();
 	    fileView.render();
 	});

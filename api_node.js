@@ -10,21 +10,18 @@ app.configure(function() {
 });
 
 
-app
-
 /**
  * HTTP POST /api/view
  * Returns: file metadatas in a JSON format
  * Error: 404 HTTP code if the task doesn't exists
  */
 
-app.get('/api/view/whereis', function (request, response) {
-
-    var path = request.body.path;
-    console.log(path);
-    var fileName = request.body.filename;
-    console.log(fileName);
-
+app.get('/api/view/whereis/:filename', function (request, response) {
+    
+    var path = '/storage/annex/alternate/pub/';
+    
+    var fileName = request.params.filename;
+    
     try {
 	console.log('Starting directory: ' + process.cwd());
 	try {

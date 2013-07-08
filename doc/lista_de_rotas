@@ -1,0 +1,38 @@
+/[repositorio]/[mucua]
+/[repositorio]/local (alias pra mucua atual)
+/[repositorio]/externo (alias para outras mucuas exceto atual)
+/[repositorio]/rede (todos)
+/[repositorio]/kalakuta
+/mocambos/local/
+
+
+/[repositorio]/[mucua]/etiqueta1/etiqueta2/etiqueta3
+/[repositorio]/[mucua]/mocambola1/etiqueta1
+/[repositorio]/[mucua]/mocambola/mocambola1
+/[repositorio]/[mucua]/mocambola/vince/etiqueta/documentário
+/[repositorio]/[mucua]/etiqueta/documentario/mocambola/vince
+/[repositorio]/[mucua]/etiqueta/:etiqueta/mocambola/:mocambola
+/[repositorio]/[mucua]/mocambola/:mocambola/etiqueta/:etiqueta
+/[repositorio]/[mucua]/etiqueta/:historia/:video
+/mocambos/[mucua]/bbx/search/q=bla&blo&bilo (busca geral em todos metadados)
+
+
+/[repositorio]/[mucua]/media/:uuid  -> getFile(uuid) {get}
+/[repositorio]/[mucua]/media/ {post,put,delete}  -> publishFile()
+/[repositorio]/[mucua]/media/cfb8e07e-49ab-489b-a4da-70ff8f715640 -> get(arquivo TAL)
+
+
+/mocambos/[mucua]/bbx/localsync {post}
+/mocambos/[mucua]/bbx/netsync {post}
+/mocambos/[mucua]/bbx/syncqueue {post}
+/mocambos/[mucua]/bbx/init {post}
+/mocambos/[mucua]/bbx/remote {post, put, delete)
+/mocambos/[local]/bbx/viewmucuas  {get}
+/mocambos/[externo]/bbx/viewmucuas  {get}
+/mocambos/[mucua]/bbx/diffmucuas/:mucua2 {get}  (entre atual e mucua 2)
+
+/mocambos/[mucua]/bbx/availability/:qtd {get}
+
+/mocambos/taina/bbx/status  {taina}  -> infos da mucua taina
+/mocambos/rede/bbx/status  {rede} -> infos das mucuas
+
