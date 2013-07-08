@@ -4,7 +4,7 @@ define([
     'models/FileModel', 
     'views/media/MediaView',
     'views/file/FileView'
-], function($, Backbone, FileModel, MediaView, FileView){
+], function($, Backbone, FileModel, FileCollection, MediaView, FileView){
     
     var AppRouter = Backbone.Router.extend({
 	routes: {
@@ -22,18 +22,23 @@ define([
 	    var mediaView = new MediaView();
 	    mediaView.render();
 	});
-
+	
 	app_router.on('route:getFile', function(fileName) {
-	    var file1 = new FileModel({filename: fileName});
-//	    console.log(file1.get('path'));
-//	    console.log(file1.get('filename'));
-	    fetchFile = file1.fetch({
-		success: function() {
+	    var file1 = new FileModel({'filename': fileName});
+	    
+	    fetchFile = file1.fetch();
+/*
+		success: function(data){
+		    console.log(JSON.stringify(data));
                     console.log('ok!');
+		},
+		error: function(data){
+		    console.log("erro: " + data);
+		    console.log(JSON.stringify(data));
 		}
             });
-	    console.log(fetchFile);
-
+*/
+	    
 	    var fileView = new FileView();
 	    fileView.render();
 	});
