@@ -1,0 +1,9 @@
+{
+    "id": "[username]@[mucua.uuid]",  // "fernao@0379acea-b75f-11e2-a3f8-cbb4c5959a7f"
+    "username": "string",  // "fernao"
+    "name": "string",  // "Fernão"
+    "email": "email@email",  // "fernao@riseup.net"
+    "pass": "hash",  // "7c386f48a3c2d07dca3e1e2ec98c0d66"
+    "member_since": "dd/mm/yyyy", // data "20/06/1929"
+    "comments": "text", // "texto"
+}

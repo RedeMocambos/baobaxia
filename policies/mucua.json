@@ -1,0 +1,9 @@
+{
+    "uuid": "uuid",  // hash  git annex uuid  "b4debebe-b4e7-11e2-877b-736e379b6ff5"
+    "description": "string", // string  git annex [description] "taina"
+    "repositories": [ // array of strings with the name of the repositories
+	{
+	    "name": "string"   // string name   "redemocambos"
+	}
+    ]
+}
