@@ -1,0 +1,6 @@
+<VirtualHost *:80>
+  ProxyRequests Off
+  ProxyVia Off
+  ProxyPass /api/ http://127.0.0.1:9080/api/
+  ProxyPassReverse /api/ http://127.0.0.1:9080/api/
+</VirtualHost>
