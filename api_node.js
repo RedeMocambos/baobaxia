@@ -86,22 +86,25 @@ app.post('/api/publish', function (request, response){
 });
 
 
-app.post('/api/upload', function(req, res) {
- 
-    var serverPath = '/images/' + req.files.userPhoto.name;
-    console.log(serverPath);
+app.post('/api/upload', function(request, response) {    
+
+    serverRoot = '/storage/annex/pub'; // /home/befree/dev/baobaxia 
+    var serverPath = '/images/' + request.files.userPhoto.name;
+    
     require('fs').rename(
-	req.files.userPhoto.path,
-	'/home/befree/dev/baobaxia' + serverPath,
+	request.files.userPhoto.path,
+	serverRoot + serverPath,
 	function(error) {
 	    if(error) {
-		res.send({
+		response.send({
 		    error: 'Ah crap! Something bad happened'
 		});
 		return;
 	    }
- 
-	    res.send({
+	    
+	    // TODO: fix
+	    // - a resposta nao esta saindo correta, sai HTML da pagina upload.html
+	    response.json({
 		path: serverPath
 	    });
 	}
