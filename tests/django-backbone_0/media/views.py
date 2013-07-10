@@ -1,62 +1,50 @@
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from media.models import Media
 from media.serializers import MediaSerializer
 
-class JSONResponse(HttpResponse):
+@api_view(['GET', 'POST'])
+def media_list(request, format=None):
     """
-    An HttpResponse that renders it's content into JSON.
-    """
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)
-
-@csrf_exempt
-def media_list(request):
-    """
-    List all media, or create a new media.
+    List all medias, or create a new media.
     """
     if request.method == 'GET':
         medias = Media.objects.all()
         serializer = MediaSerializer(medias, many=True)
-        return JSONResponse(serializer.data)
-    
+        return Response(serializer.data)
+
     elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = MediaSerializer(data=data)
+        serializer = MediaSerializer(data=request.DATA)
         if serializer.is_valid():
             serializer.save()
-            return JSONResponse(serializer.data, status=201)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return JSONResponse(serializer.errors, status=400)
-        
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
-def media_detail(request, pk):
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def media_detail(request, pk, format=None):
     """
-    Retrieve, update or delete a code media.
-    """
+    Retrieve, update or delete a media instance.
+    """              
     try:
         media = Media.objects.get(pk=pk)
     except Media.DoesNotExist:
-        return HttpResponse(status=404)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = MediaSerializer(media)
-        return JSONResponse(serializer.data)
+        return Response(serializer.data)
 
     elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = MediaSerializer(media, data=data)
+        serializer = MediaSerializer(media, data=request.DATA)
         if serializer.is_valid():
             serializer.save()
-            return JSONResponse(serializer.data)
+            return Response(serializer.data)
         else:
-            return JSONResponse(serializer.errors, status=400)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
         media.delete()
-        return HttpResponse(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
