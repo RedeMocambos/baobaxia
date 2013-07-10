@@ -4,17 +4,15 @@ from media.models import Media, FORMAT_CHOICES, TYPE_CHOICES
 
 class MediaSerializer(serializers.Serializer):
     pk = serializers.Field()  # Note: `Field` is an untyped read-only field.
-    date = serializers.DateTimeField()
-    uuid = serializers.CharField(max_length=36)
-    title = serializers.CharField(max_length=100, blank=True, default='')
-    comment = serializers.CharField()
-    author = serializers.CharField()
-    origin = serializers.CharField()
-    type = serializers.CharField()
-    format = serializers.CharField()
-#    type = serializers.CharField(choices=TYPE_CHOICES, default='arquivo')
-#    format = serializers.CharField(choices=FORMAT_CHOICES)
-    license = serializers.CharField()
+    date = serializers.DateTimeField(required=False)
+    uuid = serializers.CharField(max_length=36, required=False)
+    title = serializers.CharField(max_length=100, blank=True, default='', required=False)
+    comment = serializers.CharField(required=False)
+    author = serializers.CharField(required=False)
+    origin = serializers.CharField(required=False)
+    type = serializers.CharField(required=False)
+    format = serializers.CharField(required=False)
+    license = serializers.CharField(required=False)
 #    versions = 
 #    tags = 
 
