@@ -1,13 +1,15 @@
 var request = require('request');
 
+var fileName = 'LEIAME.txt';
+
 request.get({
-    url: 'http://localhost:9080/api/view/whereis',
+    url: 'http://bbx/api/view/whereis/'+fileName,
     headers: {
 	'Content-Type': 'application/json; charset=utf-8'
     },
     body: JSON.stringify({
-	path : '/storage/annex/alternate/pub/',
-	filename: 'arquivo'
+	path : '/home/befree/annex/pub/',
+	filename: fileName
     })
 }, function(error, response, body){
     debugger;

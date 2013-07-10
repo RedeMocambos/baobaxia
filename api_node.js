@@ -1,12 +1,11 @@
 var http = require('http');
 var url = require('url');
-// var ecstatic = require('ecstatic');
 
 var express = require('express');
 var app = express();
 app.configure(function() {
     app.use(express.bodyParser()); // used to parse JSON object given in the request body
-//    app.use(ecstatic({ root: __dirname }));
+
 });
 
 
@@ -18,7 +17,7 @@ app.configure(function() {
 
 app.get('/api/view/whereis/:filename', function (request, response) {
     
-    var path = '/storage/annex/alternate/pub/';
+    var path = '/home/befree/annex/pub/';
     
     var fileName = request.params.filename;
     
@@ -136,3 +135,40 @@ function getExtension(filename) {
     return (i < 0) ? '' : filename.substr(i);
 }
 
+/* GitAnnex wrapper function
+ * @param {String} command String with git-annex command
+ * @param {Array} options Array of git-annex options 
+ * @return return results in json format
+ */
+
+function _gitannex(path, command, options) {
+
+    var gaout = '';
+    
+    try{
+	console.log('Starting directory: ' + process.cwd());
+	try {
+	    process.chdir(path);
+	    console.log('New directory: ' + process.cwd());
+	}
+	catch (err) {
+	    console.log('chdir: ' + err);
+	}
+	
+	var exec = require('child_process').exec,
+	child;
+
+	child = exec('git-annex '+ command + ' ' + options + ' --json ',
+		     function (error, stdout, stderr) {
+			 console.log('Int1:' + stdout);
+			 console.log(stderr);
+			 if (error !== null) {
+			     console.log('exec error: ' + error);
+			 }
+			 return stdout;
+		     });
+
+    } catch (exception) {
+        return 'Error XXX';
+    }
+}   
