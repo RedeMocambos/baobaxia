@@ -21,21 +21,3 @@ class Media(models.Model):
     class Meta:
         ordering = ('date',)
 
-# Create your models here.
-
-    # "uuid": "cfb8e07e-49ab-489b-a4da-70ff8f715640",
-    # "title": "Himno Zapatista",
-    # "author": "EZLN",
-    # "origin": "Chiapas - México", 
-    # "date": "01/01/1994", 
-    # "type": "audio",
-    # "format": "ogg",
-    # "licence": "Copyleft", 
-    # "version": [
-    #     "SHA256-s4194893--30de64c2454d2e13d4c77c12c625e61dcc874c4dce1841faf3fa94271fe6ddd3/SHA256-s4194893--30de64c2454d2e13d4c77c12c625e61dcc874c4dce1841faf3fa94271fe6ddd3"
-    # ],
-    # "tags": [
-    #     "zapatista",
-    #     "hino",
-    #     "público"
-    # ]
