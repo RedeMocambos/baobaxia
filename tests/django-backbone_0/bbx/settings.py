@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'media',
     'mucua',
+    'repositorio',
 )
 
 # A sample logging configuration. The only tangible logging
