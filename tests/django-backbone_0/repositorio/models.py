@@ -10,7 +10,6 @@ class Repositorio(models.Model):
     uuid = models.ManyToManyField('mucua.Mucua', symmetrical=True)
     note = models.TextField(max_length=300)
     name = models.CharField(max_length=100, choices=REPOSITORY_CHOICES, default='redemocambos', unique=True)
-    media = models.ManyToManyField('media.Media')
     
     def __unicode__(self):
         return self.name

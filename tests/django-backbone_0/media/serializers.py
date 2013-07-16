@@ -5,7 +5,7 @@ from media.models import Media, FORMAT_CHOICES, TYPE_CHOICES
 class MediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Media
-        fields = ('date', 'uuid', 'title', 'comment', 'type', 'format', 'license', 'file')
+        fields = ('date', 'uuid', 'title', 'comment', 'type', 'format', 'license', 'mediafile')
 
     def restore_object(self, attrs, instance=None):
         """
@@ -21,12 +21,12 @@ class MediaSerializer(serializers.ModelSerializer):
             instance.uuid = attrs.get('uuid', instance.uuid)
             instance.title = attrs.get('title', instance.title)
             instance.comment = attrs.get('comment', instance.comment)
-#            instance.author = attrs.get('author', instance.author)
+            instance.author = attrs.get('author', instance.author)
             instance.origin = attrs.get('origin', instance.origin)
             instance.type = attrs.get('type', instance.type)
             instance.format = attrs.get('format', instance.format)
             instance.license = attrs.get('license', instance.license)
-            instance.file = attrs.get('file', instance.file)
+            instance.mediafile = attrs.get('mediafile', instance.mediafile)
 
             return instance
 
