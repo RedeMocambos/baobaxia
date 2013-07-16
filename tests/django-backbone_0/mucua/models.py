@@ -19,7 +19,9 @@ class Mucua(models.Model):
     def save(self, *args, **kwargs):
         self.description = [a for a in MUCUA_NAME_UUID if a[0] == self.uuid][0][1]
         super(Mucua, self).save(*args, **kwargs) # Call the "real" save() method.
-
+    
+    def __unicode__(self):
+        return self.description
 
     class Meta:
         ordering = ('description',)
