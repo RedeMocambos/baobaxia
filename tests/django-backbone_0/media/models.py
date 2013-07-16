@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 from mucua.models import Mucua
 
 TYPE_CHOICES = ( ('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'), ('arquivo','arquivo') )
@@ -14,8 +15,8 @@ class Media(models.Model):
     comment = models.TextField(max_length=300, blank=True)
 #    author = models.ForeignKey(User, default='befree')
 #    origin = models.ManyToManyField(Mucua)
-    type = models.CharField(max_length=14, choices=TYPE_CHOICES, default='arquivo')
-    format = models.CharField(max_length=14, choices=FORMAT_CHOICES, default='ogg')
+    type = models.CharField(max_length=14, choices=TYPE_CHOICES, default='arquivo', blank=True)
+    format = models.CharField(max_length=14, choices=FORMAT_CHOICES, default='ogg', blank=True)
     license = models.CharField(max_length=100, blank=True)
     file = models.FileField(upload_to='/tmp/', blank=True)
 #    versions = 
@@ -27,4 +28,6 @@ class Media(models.Model):
         ordering = ('date',)
 
 
-
+class MediaForm(ModelForm):
+    class Meta:
+        model = Media

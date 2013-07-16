@@ -1,7 +1,6 @@
 <form action="/medias/publish/" method="post" enctype="multipart/form-data">
   {% csrf_token %}
   
-  <input type="file" name="Media" value="{{ media.file }}" />
-  
+  <input type="file" name="Media" /><br/>
   <input type="submit" value="Enviar" />
 </form>

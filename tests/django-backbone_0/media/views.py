@@ -3,6 +3,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from media.models import Media
 from media.serializers import MediaSerializer
+import datetime
+import os
+import subprocess
 
 @api_view(['GET', 'POST'])
 def media_list(request, format=None):
@@ -62,7 +65,7 @@ def upload(request):
 
 from django.shortcuts import get_object_or_404, render, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
-from media.forms import MediaForm
+from media.models import MediaForm
 from media.models import Media
 import uuid
 
@@ -75,16 +78,41 @@ def publish(request):
     '''
     if request.method == 'POST':
         form = MediaForm(request.POST, request.FILES)
-        if form.is_valid():
+        #        print form.errors
+#        if form.is_valid():
             # file is saved
-            instance = Media(file_field=request.FILES['file'])
-            instance.uuid = uuid4()
-            instance.type = request.FILES['file'].content_type
-            request.FILES['file'].temporary_file_path
-
-                        
-            instance.save()
-            return HttpResponseRedirect('/media/')
+        print form   # debug
+        print ">>>>>>>>>>>>"
+        
+        instance = Media(file_field=request.FILES['file'])
+        instance.uuid = uuid4()
+        
+        accepted_types = (('image/jpeg', 'jpg'))
+        if request.FILES['file'].content_type in accepted_types:
+            instance.type = accepted_types(request.FILES['file'].content_type)
+        else:
+            # error
+            return false
+        
+        # set folder
+        baseDir = "/tmp"
+        year = datetime.date.today().strftime("%Y")
+        month = datetime.date.today().strftime("%m") 
+        day = datetime.date.today().strftime("%d")
+        
+        # cria pasta e importa pro git
+        folder = os.path.join(baseDir, year, month, day)
+        os.mkdir(folder)            
+        media.filename = os.path.join(folder,  media.uuid + '.' + media.type)
+                       
+        os.mv(request.FILES['file'].temporary_file_path, media.filename)
+                              
+        cmd = "git annex add " + media.filename
+        pipe = subprocess.Popen(cmd, shell=True, cwd=folder)
+        pipe.wait()
+        
+        instance.save()
+        return HttpResponseRedirect('/media/')
     else:
         form = MediaForm()
     return render(request, 'publish.html', {'form': form})
