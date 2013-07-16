@@ -1,11 +1,12 @@
 define([
     'jquery', 
     'backbone',
-    'models/FileModel', 
+    'models/MediaModel', 
+    'collections/media/MediaCollection',
     'views/media/MediaView',
     'views/file/FileView'
-], function($, Backbone, FileModel, MediaView, FileView){
-
+], function($, Backbone, MediaModel, MediaCollection, MediaView, FileView){
+    
     var AppRouter = Backbone.Router.extend({
 	// rotas simples
 	routes: {
@@ -20,8 +21,8 @@ define([
 	    ':repository/:mucua/bbx': 'listBbxCommands',
 	    
 	    // media
-	    ':repository/:mucua/media': 'publishMedia',
-	    ':repository/:mucua/media/:uuid': 'viewMedia',
+	    ':repository/:mucua/medias': 'publishMedia',
+	    ':repository/:mucua/medias/:uuid': 'viewMedia',
 	},
 	
 	// escopo: repositório e mucuas
@@ -58,20 +59,27 @@ define([
 	    console.log("/" + repository + "/" + mucua + "/bbx/" + command + "/" + args);
 	},
 	
+	// media
 	buscaMedia: function(repository, mucua, args) {
 	    console.log("busca " + args);
 	},
-	
-	// media
 	publishMedia: function(repository, mucua) {
 	    console.log("insere media");
-	    console.log("/" + repository + "/" + mucua + "/media");
+	    console.log("/" + repository + "/" + mucua + "/medias");
 	    //	    var mediaView = new MediaView();
 	    //	    mediaView.render();
 	},
 	viewMedia: function(repository, mucua, uuid) {
-	    console.log("busca media");
-	    console.log("/" + repository + "/" + mucua + "/media/" + uuid);
+	    console.log("busca media " + uuid);
+	    console.log("/" + repository + "/" + mucua + "/medias/" + uuid);
+	    
+	    var media = new MediaModel({id: uuid});
+	    fetchMedia = media.fetch();
+	    
+	    media.on('change', function() {
+		var mediaView = new MediaView({model: media});
+		mediaView.render();
+	    });
 	}
 	    
     });
@@ -85,9 +93,9 @@ define([
 	    // bbx [command] com multiplos argumentos
 	    // /[repo]/[mucua]/bbx/[comando]/[arg1|arg2|...]
 	    [/^(.+?)\/(.+?)\/bbx\/(.+?)\/(.*?)$/, 'callBbxCommand', this.callBbxCommand],
-	    
 	    // search generico
-	    [/^(.+?)\/(.+?)\/(.+?)$/, 'buscaMedia', this.buscaMedia],
+	    //	    [/^(.+?)\/(.+?)\/(.+?)$/, 'buscaMedia', this.buscaMedia],
+	    // TODO: consertar conflito entre essa func e a /repo/mucua/medias/uuid
 	];
 	_.each(routes, function(route) {
 	    router.route.apply(router,route);
@@ -100,22 +108,21 @@ define([
 	initialize: initialize
     };    
     
-    /*	
-    // old	
-    app_router.on('route:MediaView', function() {
-    var mediaView = new MediaView();
-    mediaView.render();
-    });
+
+    // // old	
+    // app_router.on('route:MediaView', function() {
+    // 	var mediaView = new MediaView();
+    // 	mediaView.render();
+    // });
     
-    // file/:filename
-    app_router.on('route:getFile', function(fileName) {
-    var file1 = new FileModel({'filename': fileName});
-    fetchFile = file1.fetch();
-    
-    file1.on('change', function() {
-    var fileView = new FileView({model: file1});
-    fileView.render();
-    });   
-    });
-    */	
+    // // file/:filename
+    // app_router.on('route:getFile', function(fileName) {
+    // 	var file1 = new FileModel({'filename': fileName});
+    // 	fetchFile = file1.fetch();
+	
+    // 	file1.on('change', function() {
+    // 	    var fileView = new FileView({model: file1});
+    // 	    fileView.render();
+    // 	});   
+    // });
 });
