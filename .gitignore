@@ -19,4 +19,4 @@ tramp
 Session.vim
 .netrwhist
 *~
-
+*.pyc
