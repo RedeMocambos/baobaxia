@@ -78,44 +78,41 @@ def publish(request):
     '''
     if request.method == 'POST':
         form = MediaForm(request.POST, request.FILES)
-        #        print form.errors
-#        if form.is_valid():
+        # form.errors
+        if form.is_valid():
             # file is saved
-        print form   # debug
-        print ">>>>>>>>>>>>"
+            # print form   # debug
+            # print ">>>>>>>>>>>>"
+            instance = Media(mediafile = request.FILES['Media'])
+            instance.uuid = uuid.uuid4()
+            # accepted_types = (('image/jpeg', 'jpg'))
+            # if request.FILES['file'].content_type in accepted_types:
+            #     instance.type = accepted_types(request.FILES['file'].content_type)
+            # else:
+            #     # error
+            #     return false
         
-        instance = Media(file_field=request.FILES['file'])
-        instance.uuid = uuid4()
+            # # set folder
+            baseDir = "/tmp"
+            year = datetime.date.today().strftime("%Y")
+            month = datetime.date.today().strftime("%m") 
+            day = datetime.date.today().strftime("%d")
         
-        accepted_types = (('image/jpeg', 'jpg'))
-        if request.FILES['file'].content_type in accepted_types:
-            instance.type = accepted_types(request.FILES['file'].content_type)
-        else:
-            # error
-            return false
-        
-        # set folder
-        baseDir = "/tmp"
-        year = datetime.date.today().strftime("%Y")
-        month = datetime.date.today().strftime("%m") 
-        day = datetime.date.today().strftime("%d")
-        
-        # cria pasta e importa pro git
-        folder = os.path.join(baseDir, year, month, day)
-        os.mkdir(folder)            
-        media.filename = os.path.join(folder,  media.uuid + '.' + media.type)
-                       
-        os.mv(request.FILES['file'].temporary_file_path, media.filename)
+            # # cria pasta e importa pro git
+            folder = os.path.join(baseDir, year, month, day)
+            os.mkdir(folder)            
+            media.mediafile = os.path.join(folder,  media.uuid + '.' + media.type)
+            os.mv(request.FILES['file'].temporary_file_path, media.filename)
                               
-        cmd = "git annex add " + media.filename
-        pipe = subprocess.Popen(cmd, shell=True, cwd=folder)
-        pipe.wait()
-        
-        instance.save()
-        return HttpResponseRedirect('/media/')
+            cmd = "git annex add " + media.mediafile
+            pipe = subprocess.Popen(cmd, shell=True, cwd=folder)
+            pipe.wait()
+            media.mediafile()
+            instance.save()
+            return HttpResponseRedirect('/media/')
     else:
         form = MediaForm()
-    return render(request, 'publish.html', {'form': form})
+        return render(request, 'publish.html', {'form': form})
 
 
 def handle_uploaded_file(data):

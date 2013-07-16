@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-                                                     
 from django import forms
 
-class MediaForm(forms.Form, forms.Files):
-#    title = forms.CharField(max_length=50)
-    file  = forms.FileField()
+class MediaForm(forms.Form):
+    mediafile  = forms.FileField(
+        label = 'Selecionar um media',
+        help_text = 'Somente conteudos em licença e formato livre ;)'
+        )
