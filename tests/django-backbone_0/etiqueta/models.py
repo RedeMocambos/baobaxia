@@ -14,5 +14,4 @@ class Etiqueta(models.Model):
     
     class Meta:
         ordering = ('etiqueta',)
-        unique_toghether = ("namespace", "etiqueta")
-
+        unique_together = ("namespace", "etiqueta")

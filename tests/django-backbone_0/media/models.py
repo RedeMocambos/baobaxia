@@ -27,6 +27,10 @@ def media_file_name(instance, filename):
 
 
 def _getFilePath(instance):
+    print instance.uuid
+    print instance.date
+    print instance.repositorio
+    print instance.origin
     return os.path.join(ANNEX_DIR, instance.getRepositorio(),
                         instance.getMucua(), instance.getType(), 
                         t.strftime("%y/%m/%d/"), instance.getFilename())
@@ -51,7 +55,7 @@ class Media(models.Model):
     def __unicode__(self):
         return self.title
 
-    def getFileName():
+    def getFileName(self):
         return self.uuid+'.'+self.format
     
     def getRepositorio(self):
