@@ -22,18 +22,18 @@ def media_file_name(instance, filename):
     print instance.origin
     print "Alo!"
     mediafileuuid = uuid.uuid4()
-    t = datetime.now()
-    return self._getFilePath(instance)
+    return os.join(getFilePath(instance), instance.getFilename())
 
 
-def _getFilePath(instance):
+def getFilePath(instance):
     print instance.uuid
     print instance.date
     print instance.repositorio
     print instance.origin
+    t = datetime.now()
     return os.path.join(ANNEX_DIR, instance.getRepositorio(),
                         instance.getMucua(), instance.getType(), 
-                        t.strftime("%y/%m/%d/"), instance.getFilename())
+                        t.strftime("%y/%m/%d/"))
 
     
 class Media(models.Model):
@@ -71,13 +71,13 @@ class Media(models.Model):
     def getFormat(self):
         return self.format
 
-    def save(self, *args, **kwargs):
-        # Git Annex
-        cmd = "git annex add " + _getFilePath(self)
-        pipe = subprocess.Popen(cmd, shell=True,
-                                cwd=os.path.dirname(self.mediafile))
-        pipe.wait()
-        super(Media, self).save(*args, **kwargs) 
+    # def save(self, *args, **kwargs):
+    #     # Git Annex
+    #     cmd = "git annex add " + self.getFileName()
+    #     pipe = subprocess.Popen(cmd, shell=True,
+    #                             cwd=getFilePath(self))
+    #     pipe.wait()
+    #     super(Media, self).save(*args, **kwargs) 
 
     class Meta:
         ordering = ('date',)
