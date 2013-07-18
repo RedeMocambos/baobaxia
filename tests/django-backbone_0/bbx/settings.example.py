@@ -3,6 +3,8 @@
 import os
 PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
+GITANNEX_DIR = "/home/befree/annex/tests/"
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -132,8 +134,9 @@ INSTALLED_APPS = (
     'rest_framework',
     'media',
     'mucua',
-    'repositorio',
+#    'repositorio',
     'etiqueta',
+    'gitannex',
 )
 
 # A sample logging configuration. The only tangible logging

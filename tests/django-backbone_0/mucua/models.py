@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-#from repositorio.models import Repositorio
+#from repository.models import Repository
 from django.conf import settings
 
 # MUCUA_NAME_UUID é uma tupla com nome e uuid da mucua (pode ler do settings.py)
@@ -14,7 +14,7 @@ class Mucua(models.Model):
     description = models.CharField(max_length=100, editable=False)
     note = models.TextField(max_length=300, blank=True)
     uuid = models.CharField(max_length=36, choices=MUCUA_NAME_UUID, default='dandara')
-#    repositorio = models.ForeignKey(Repositorio)
+#    repository = models.ForeignKey(Repository)
 
     def save(self, *args, **kwargs):
         self.description = [a for a in MUCUA_NAME_UUID if a[0] == self.uuid][0][1]

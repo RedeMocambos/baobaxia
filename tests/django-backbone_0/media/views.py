@@ -1,11 +1,16 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404, render, render_to_response
+from django.http import HttpResponseRedirect, HttpResponse
 from media.models import Media
+from media.forms import MediaForm
 from media.serializers import MediaSerializer
 import datetime
 import os
 import subprocess
+import uuid
+
 
 @api_view(['GET', 'POST'])
 def media_list(request, format=None):
@@ -63,11 +68,8 @@ def upload(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-from django.shortcuts import get_object_or_404, render, render_to_response
-from django.http import HttpResponseRedirect, HttpResponse
-from media.models import MediaForm
-from media.models import Media
-import uuid
+
+
 
 # ...
 def publish(request):

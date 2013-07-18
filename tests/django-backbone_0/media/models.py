@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from mucua.models import Mucua
-from repositorio.models import Repositorio
+#from gitannex.models import Repository
 import os
 import uuid
 import subprocess
@@ -18,20 +18,20 @@ def media_file_name(instance, filename):
 #    print "MediaFileName(instance, filename): "+ instance + filename
     print instance.uuid
     print instance.date
-    print instance.repositorio
+    print instance.repository
     print instance.origin
     print "Alo!"
     mediafileuuid = uuid.uuid4()
-    return os.join(getFilePath(instance), instance.getFilename())
+    return os.path.join(getFilePath(instance), instance.getFileName())
 
 
 def getFilePath(instance):
     print instance.uuid
     print instance.date
-    print instance.repositorio
+    print instance.repository
     print instance.origin
     t = datetime.now()
-    return os.path.join(ANNEX_DIR, instance.getRepositorio(),
+    return os.path.join(ANNEX_DIR, instance.getRepository(),
                         instance.getMucua(), instance.getType(), 
                         t.strftime("%y/%m/%d/"))
 
@@ -49,7 +49,7 @@ class Media(models.Model):
                               default='ogg', blank=True)
     license = models.CharField(max_length=100, blank=True)
     mediafile = models.FileField(upload_to=media_file_name, blank=True)
-    repositorio = models.ForeignKey(Repositorio, related_name='repositorio')
+    repository = models.ForeignKey('gitannex.Repository', related_name='repository')
 #    versions = 
 #    tags = 
     def __unicode__(self):
@@ -58,8 +58,8 @@ class Media(models.Model):
     def getFileName(self):
         return self.uuid+'.'+self.format
     
-    def getRepositorio(self):
-        return self.repositorio.name
+    def getRepository(self):
+        return self.repository.repositoryName
 
     def getMucua(self):
         print 
@@ -83,7 +83,7 @@ class Media(models.Model):
         ordering = ('date',)
     
 
-class MediaForm(ModelForm):
-    class Meta:
-        model = Media
+# class MediaForm(ModelForm):
+#     class Meta:
+#         model = Media
 

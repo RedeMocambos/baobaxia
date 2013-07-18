@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
 from django.db.models.base import ModelBase
 from django.contrib.auth.models import User
@@ -6,8 +8,10 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from gitannex.signals import receiver_subclasses, filesync_done
+#from gitannex.signals import receiver_subclasses, filesync_done
 from media.models import Media
+from media.models import getFilePath
+from mucua.models import Mucua
 
 import os
 import datetime
@@ -20,6 +24,8 @@ Modelos da aplicacao Django.
 Neste arquivo sao definidos os modelos de dados da aplicacao *gitannex*.
 """
 
+# REPOSITORY_CHOICE é uma tupla com repositorios dentro da pasta /annex
+REPOSITORY_CHOICES = [ ('redemocambos', 'redemocambos'), ('sarava', 'sarava'), ('m0c4mb0s', 'm0c4mb0s') ]
 logger = logging.getLogger(__name__)
 gitannex_dir = settings.GITANNEX_DIR
 
@@ -139,23 +145,26 @@ def gitAnnexGet(repoDir):
     pipe.wait()
 
 # Connecting to Media signal
-@receiver_subclasses(post_save, Media, "media_post_save")
+@receiver(post_save, sender=Media)
 def gitMMediaPostSave(instance, **kwargs):
     """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e adiciona o objeto ao repositorio."""
-    logger.debug(instance.mediatype)
-    logger.debug(type(instance))
-    logger.debug(instance.path_relative())
+#    logger.debug(instance.type)
+#    logger.debug(type(instance))
+    cmd = "git annex add " + instance.getFileName()
+    pipe = subprocess.Popen(cmd, shell=True,
+                            cwd=getFilePath(instance))
+    pipe.wait()
 
-    path = instance.path_relative().split(os.sep)
-    if gitannex_dir in path:
-        repositoryName = path[path.index(gitannex_dir) + 1]
-        gitAnnexRep = GitAnnexRepository.objects.get(repositoryName__iexact=repositoryName)
-        gitAnnexAdd(os.path.basename(instance.fileref.name), os.path.dirname(instance.fileref.path))
-        gitCommit(instance.title, instance.author.username, instance.author.email, os.path.dirname(instance.fileref.path))
+    # path = instance.path_relative().split(os.sep)
+    # if gitannex_dir in path:
+    #     repositoryName = path[path.index(gitannex_dir) + 1]
+    #     gitAnnexRep = Repository.objects.get(repositoryName__iexact=repositoryName)
+    #     gitAnnexAdd(os.path.basename(instance.fileref.name), os.path.dirname(instance.fileref.path))
+    #     gitCommit(instance.title, instance.author.username, instance.author.email, os.path.dirname(instance.fileref.path))
 
 def runScheduledJobs():
     """Executa as operacoes programadas em todos os repositorios. """
-    allRep = GitAnnexRepository.objects.all()
+    allRep = Repository.objects.all()
     for rep in allRep:
         if rep.enableSync:
             # TODO: Manage time of syncing
@@ -163,7 +172,8 @@ def runScheduledJobs():
             rep.syncRepository()
 
 
-class GitAnnexRepository(models.Model):
+
+class Repository(models.Model):
     """Classe de implementacao do modelo de repositorio *git-annex*.
     
     Atributos:
@@ -181,14 +191,18 @@ class GitAnnexRepository(models.Model):
     # Nella view va messo un if che a seconda chiama create o
     # cloneRepository a seconda della scelta.
 
-    repositoryName = models.CharField(max_length=60, choices=_getAvailableFolders(settings.MEDIA_ROOT))
+    uuid = models.ManyToManyField('mucua.Mucua', symmetrical=True)
+    note = models.TextField(max_length=300)
+    repositoryName = models.CharField(max_length=100, choices=REPOSITORY_CHOICES, default='redemocambos', unique=True)
+#    repositoryName = models.CharField(max_length=60, choices=_getAvailableFolders(settings.MEDIA_ROOT))
     repositoryURLOrPath = models.CharField(max_length=200)
     syncStartTime = models.DateField()
     enableSync = models.BooleanField()
     remoteRepositoryURLOrPath = models.CharField(max_length=200)
 #    lastSyncSHA = models.CharField(max_length=100)
-    def __init__():
-        self.createRepository()
+    # def __init__(self):
+    #     print "Verificar a init do Repository"
+    #     #self.createRepository()
         
     def createRepository(self):
         """Cria e inicializa o repositorio."""
@@ -215,7 +229,12 @@ class GitAnnexRepository(models.Model):
                                repositoryDir=self.repositoryURLOrPath)
         logger.debug(">>> AFTER filesync_done")
 
-    def save(self, *args, **kwargs):
-        super(GitAnnexRepository, self).save(*args, **kwargs)
+    def __unicode__(self):
+        return self.repositoryName
 
-    
+    def save(self, *args, **kwargs):
+        super(Repository, self).save(*args, **kwargs)
+
+    class Meta:
+        ordering = ('repositoryName',)
+
