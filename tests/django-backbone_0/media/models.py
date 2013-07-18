@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from mucua.models import Mucua
+from bbx.settings import ANNEX_DIR
 #from gitannex.models import Repository
 import os
 import uuid
@@ -12,7 +13,6 @@ from datetime import datetime
 
 TYPE_CHOICES = ( ('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'), ('arquivo','arquivo') )
 FORMAT_CHOICES = ( ('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'), ('jpg','jpg') )
-ANNEX_DIR = "/home/befree/annex/tests/"
 
 def media_file_name(instance, filename):
 #    print "MediaFileName(instance, filename): "+ instance + filename
