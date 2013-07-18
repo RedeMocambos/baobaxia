@@ -3,7 +3,7 @@
 import os
 PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
-GITANNEX_DIR = "/home/befree/annex/tests/"
+ANNEX_DIR = "/storage/annex/alternate/pub"
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
