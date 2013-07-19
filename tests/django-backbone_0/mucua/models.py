@@ -29,3 +29,4 @@ class Mucua(models.Model):
 
         
 
+

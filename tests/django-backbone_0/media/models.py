@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from mucua.models import Mucua
 from bbx.settings import ANNEX_DIR
-#from gitannex.models import Repository
 import os
 import uuid
 import subprocess
@@ -15,21 +14,12 @@ TYPE_CHOICES = ( ('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'), (
 FORMAT_CHOICES = ( ('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'), ('jpg','jpg') )
 
 def media_file_name(instance, filename):
-#    print "MediaFileName(instance, filename): "+ instance + filename
-    print instance.uuid
-    print instance.date
-    print instance.repository
-    print instance.origin
-    print "Alo!"
     mediafileuuid = uuid.uuid4()
+    print os.path.join(getFilePath(instance), instance.getFileName())
     return os.path.join(getFilePath(instance), instance.getFileName())
 
 
 def getFilePath(instance):
-    print instance.uuid
-    print instance.date
-    print instance.repository
-    print instance.origin
     t = datetime.now()
     return os.path.join(ANNEX_DIR, instance.getRepository(),
                         instance.getMucua(), instance.getType(), 
@@ -62,7 +52,6 @@ class Media(models.Model):
         return self.repository.repositoryName
 
     def getMucua(self):
-        print 
         return self.origin.description
 
     def getType(self):

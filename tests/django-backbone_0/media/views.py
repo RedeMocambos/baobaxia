@@ -1,23 +1,56 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404, render, render_to_response
+from django.shortcuts import get_object_or_404, render, render_to_response, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from media.models import Media
 from media.forms import MediaForm
 from media.serializers import MediaSerializer
+from mucua.models import MUCUA_NAME_UUID
+from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
 import datetime
 import os
 import subprocess
 import uuid
 
+from mucua.models import Mucua
+from gitannex.models import Repository
 
 @api_view(['GET', 'POST'])
-def media_list(request, format=None):
+def media_list(request, repository, mucua, format=None):
     """
     List all medias, or create a new media.
     """
     if request.method == 'GET':
+        
+        # pegando sessao por url
+        redirect_page = False
+        
+        # REPOSITORIO: verifica se existe no banco, senao pega a default
+        repository_list = Repository.objects.filter(repositoryName = repository)
+        if repository_list:
+            repository = repository_list[0]
+        else:
+            repository_list = Repository.objects.filter(repositoryName = DEFAULT_REPOSITORY)
+            repository = repository_list[0]
+            redirect_page = True
+        
+        
+        # MUCUA: verifica se existe no banco, senao pega a default
+        mucua_list = Mucua.objects.filter(description = mucua)
+        if mucua_list:
+            mucua = mucua_list[0]
+        else:
+            mucua_list = Mucua.objects.filter(description = DEFAULT_MUCUA)
+            mucua = mucua_list[0]
+            redirect_page = True
+            
+        # redirect
+        if redirect_page:
+            return HttpResponseRedirect('http://localhost:8000/' + repository.repositoryName + '/' + mucua.description + '/medias/')
+        
+        
+        # listagem de conteudo
         medias = Media.objects.all()
         serializer = MediaSerializer(medias, many=True)
         return Response(serializer.data)
@@ -109,7 +142,6 @@ def handle_uploaded_file(data):
     with open('/tmp/test.bbx', 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-
 
 
 

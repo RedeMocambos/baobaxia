@@ -4,6 +4,7 @@ import os
 PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
 ANNEX_DIR = "/storage/annex/alternate/pub"
+DEFAULT_MUCUA = "dandara"
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
