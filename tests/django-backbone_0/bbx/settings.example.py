@@ -5,6 +5,7 @@ PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
 ANNEX_DIR = "/storage/annex/alternate/pub"
 DEFAULT_MUCUA = "dandara"
+DEFAULT_REPOSITORY = "redemocambos"
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
