@@ -51,7 +51,8 @@ def media_list(request, repository, mucua, format=None):
         
         
         # listagem de conteudo
-        medias = Media.objects.all()
+        # TODO: filtrar os medias por repository
+        medias = Media.objects.filter(origin = mucua.id)
         serializer = MediaSerializer(medias, many=True)
         return Response(serializer.data)
 
