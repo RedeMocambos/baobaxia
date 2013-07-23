@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from mucua.models import Mucua
+from etiqueta.models import Etiqueta
 from bbx.settings import ANNEX_DIR
 import os
 import uuid
@@ -41,7 +42,8 @@ class Media(models.Model):
     mediafile = models.FileField(upload_to=media_file_name, blank=True)
     repository = models.ForeignKey('gitannex.Repository', related_name='repository')
 #    versions = 
-#    tags = 
+    tags = models.ManyToManyField(Etiqueta)
+    
     def __unicode__(self):
         return self.title
 

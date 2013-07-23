@@ -8,6 +8,7 @@ from media.forms import MediaForm
 from media.serializers import MediaSerializer
 from mucua.models import MUCUA_NAME_UUID
 from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
+from django.db.models import F
 import datetime
 import os
 import subprocess
@@ -17,14 +18,14 @@ from mucua.models import Mucua
 from gitannex.models import Repository
 
 @api_view(['GET', 'POST'])
-def media_list(request, repository, mucua, format=None):
+def media_list(request, repository, mucua, args=None, format=None):
     """
     List all medias, or create a new media.
     """
-    if request.method == 'GET':
-        
+    if request.method == 'GET':        
         # pegando sessao por url
         redirect_page = False
+        redirect_url = "http://localhost:8000/"  # TODO: tirar
         
         # REPOSITORIO: verifica se existe no banco, senao pega a default
         repository_list = Repository.objects.filter(repositoryName = repository)
@@ -34,8 +35,7 @@ def media_list(request, repository, mucua, format=None):
             repository_list = Repository.objects.filter(repositoryName = DEFAULT_REPOSITORY)
             repository = repository_list[0]
             redirect_page = True
-        
-        
+                
         # MUCUA: verifica se existe no banco, senao pega a default
         mucua_list = Mucua.objects.filter(description = mucua)
         if mucua_list:
@@ -47,15 +47,21 @@ def media_list(request, repository, mucua, format=None):
             
         # redirect
         if redirect_page:
-            return HttpResponseRedirect('http://localhost:8000/' + repository.repositoryName + '/' + mucua.description + '/medias/')
+            return HttpResponseRedirect(redirect_url + repository.repositoryName + '/' + mucua.description + '/medias/')
         
         
         # listagem de conteudo
         # TODO: filtrar os medias por repository
         medias = Media.objects.filter(origin = mucua.id)
+        
+        # pega args da url se tiver
+        if args:
+            for tag in args.split('/'):
+                medias = medias.filter(tags__etiqueta__iexact = tag)
+        
         serializer = MediaSerializer(medias, many=True)
         return Response(serializer.data)
-
+    
     elif request.method == 'POST':
         serializer = MediaSerializer(data=request.DATA)
         if serializer.is_valid():
