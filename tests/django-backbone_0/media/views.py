@@ -8,7 +8,6 @@ from media.forms import MediaForm
 from media.serializers import MediaSerializer
 from mucua.models import MUCUA_NAME_UUID
 from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
-from django.db.models import F
 import datetime
 import os
 import subprocess
