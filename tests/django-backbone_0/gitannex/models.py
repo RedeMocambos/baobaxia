@@ -27,7 +27,7 @@ Neste arquivo sao definidos os modelos de dados da aplicacao *gitannex*.
 # REPOSITORY_CHOICE é uma tupla com repositorios dentro da pasta /annex
 REPOSITORY_CHOICES = [ ('redemocambos', 'redemocambos'), ('sarava', 'sarava'), ('m0c4mb0s', 'm0c4mb0s') ]
 logger = logging.getLogger(__name__)
-gitannex_dir = settings.GITANNEX_DIR
+gitannex_dir = settings.ANNEX_DIR
 
 def _createRepository(repositoryName, remoteRepositoryURLOrPath):
     """Cria e inicializa um repositorio *git-annex*."""
