@@ -136,9 +136,9 @@ INSTALLED_APPS = (
     'rest_framework',
     'media',
     'mucua',
-#    'repositorio',
     'etiqueta',
-    'gitannex',
+    'gitannex',    
+    'south',
 )
 
 # A sample logging configuration. The only tangible logging
