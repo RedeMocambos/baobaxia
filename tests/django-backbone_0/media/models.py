@@ -42,7 +42,7 @@ class Media(models.Model):
     mediafile = models.FileField(upload_to=media_file_name, blank=True)
     repository = models.ForeignKey('gitannex.Repository', related_name='repository')
 #    versions = 
-    tags = models.ManyToManyField(Etiqueta)
+    tags = models.ManyToManyField(Etiqueta, related_name='tags')
     
     def __unicode__(self):
         return self.title
