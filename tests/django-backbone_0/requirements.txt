@@ -1,0 +1,5 @@
+Django==1.5.1
+South==0.8.1
+argparse==1.2.1
+djangorestframework==2.3.6
+wsgiref==0.1.2
