@@ -12,7 +12,7 @@ class Etiqueta(models.Model):
         return self.namespace + self.etiqueta
 
     def getId(self):
-        return self.namespace+' '+self.etiqueta
+        return self.namespace+':'+self.etiqueta
     
     class Meta:
         ordering = ('etiqueta',)

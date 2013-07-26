@@ -2,17 +2,25 @@ from django.forms import widgets
 from rest_framework import serializers
 from media.models import Media, FORMAT_CHOICES, TYPE_CHOICES
 from etiqueta.models import Etiqueta
+from mucua.models import Mucua
+from etiqueta.serializers import EtiquetaSerializer
+from mucua.serializers import MucuaSerializer
+from gitannex.serializers import RepositorySerializer
 
 class MediaSerializer(serializers.ModelSerializer):
     # com essas linhas, media puxa apenas referencia (nao objeto completo)
     # nao sei se mantemos assim ou se puxamos o relacionamento completo 
-    tags = serializers.RelatedField(many = True)
-    origin = serializers.RelatedField(many = False)
-    repository = serializers.RelatedField(many = False)
-
+#    tags = serializers.RelatedField(many = True)
+#    origin = serializers.RelatedField(many = False)
+#    repository = serializers.RelatedField(many = False)
+#    author = serializers.RelatedField(many = False)
+    tags = EtiquetaSerializer(required=False)
+#    origin = MucuaSerializer()
+#    repository = RepositorySerializer()
+    
     class Meta:
         model = Media
-        fields = ('date', 'uuid', 'title', 'comment', 'type', 'format', 'license', 'mediafile', 'tags', 'origin', 'repository')
+        fields = ('date', 'uuid', 'title', 'comment', 'author', 'type', 'format', 'license', 'mediafile', 'origin', 'repository')
 #        depth = 1   # se comentar linhas de cima, ativar essa
 
     def restore_object(self, attrs, instance=None):

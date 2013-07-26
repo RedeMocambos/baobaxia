@@ -29,7 +29,7 @@ def getFilePath(instance):
     
 class Media(models.Model):
     date = models.DateTimeField(auto_now_add=True)
-    uuid = models.CharField(max_length=36, blank=True, default=uuid.uuid4())
+    uuid = models.CharField(max_length=36, default=uuid.uuid4())  # BUG: uuid esta travando num mesmo nome a cada sessao do python; precisa reiniciar a aplicacao para que o campo pegue um novo valor
     title = models.CharField(max_length=100, blank=True, default='')
     comment = models.TextField(max_length=300, blank=True)
     author = models.ForeignKey(User)

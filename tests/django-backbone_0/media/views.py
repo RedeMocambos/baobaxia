@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from media.models import Media
+from etiqueta.models import Etiqueta
 from media.forms import MediaForm
 from media.serializers import MediaSerializer
 from mucua.models import MUCUA_NAME_UUID
@@ -21,7 +22,12 @@ def media_list(request, repository, mucua, args=None, format=None):
     """
     List all medias, or create a new media.
     """
+    
     if request.method == 'GET':        
+        """
+        list medias
+        """
+        
         # pegando sessao por url
         redirect_page = False
         redirect_url = "http://localhost:8000/"  # TODO: tirar
@@ -62,9 +68,17 @@ def media_list(request, repository, mucua, args=None, format=None):
         return Response(serializer.data)
     
     elif request.method == 'POST':
+        """
+        create a new media    
+        """
         serializer = MediaSerializer(data=request.DATA)
         if serializer.is_valid():
             serializer.save()
+            for etiquetaId in request.DATA['tags']:
+                etiqueta = Etiqueta.objects.get(pk = etiquetaId)
+                serializer.tags.add(etiqueta)
+                
+            
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

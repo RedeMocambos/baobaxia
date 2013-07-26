@@ -192,7 +192,7 @@ class Repository(models.Model):
     # cloneRepository a seconda della scelta.
 
     uuid = models.ManyToManyField('mucua.Mucua', symmetrical=True)
-    note = models.TextField(max_length=300)
+    note = models.TextField(max_length=300, blank=True)
     repositoryName = models.CharField(max_length=100, choices=REPOSITORY_CHOICES, default='redemocambos', unique=True)
 #    repositoryName = models.CharField(max_length=60, choices=_getAvailableFolders(settings.MEDIA_ROOT))
     repositoryURLOrPath = models.CharField(max_length=200)
