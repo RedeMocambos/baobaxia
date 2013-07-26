@@ -73,12 +73,11 @@ def media_list(request, repository, mucua, args=None, format=None):
         """
         serializer = MediaSerializer(data=request.DATA)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save()            
             for etiquetaId in request.DATA['tags']:
                 etiqueta = Etiqueta.objects.get(pk = etiquetaId)
-                serializer.tags.add(etiqueta)
+                serializer.object.tags.add(etiqueta)
                 
-            
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
