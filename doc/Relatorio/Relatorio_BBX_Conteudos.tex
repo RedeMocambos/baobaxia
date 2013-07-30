@@ -1,0 +1,176 @@
+\label{Metadados}
+\lhead{Metadados \emph{Metadados}}
+
+\chapter{Metadados}
+
+\section{Descrição geral da pesquisa de Metadados e políticas de metadados}
+
+A pesquisa sobre metadados para o sistema Baobáxia compreendeu as
+definições diretamente relacionadas aos metadados das mídias e também
+a participação na modelagem geral dos objetos do sistema, assim como a
+definição de formatos para troca de dados. Por metadados entendemos
+toda a informação a respeito de si, seja para a mídia, seja para as
+Mucuas como para o sistema. Deste modo, num entendimento amplo de
+metadados, consideramos que qualquer dado descritivo a respeito do
+sistema como um todo deve ser entendido como um metadado, e logo deve
+ser armazenado em arquivos de definição.
+
+Essa diretiva partiu de uma orientação em conjunto com o
+desenvolvimento do núcleo do software Baobáxia
+(https://github.com/RedeMocambos/baobaxia). Deste modo, tudo que
+envolve a descrição de elementos do sistema pode ser considerado um
+metadado. Os metadados, embora tenham como objetivo a estabilidade da
+informação, devem contemplar a possibilidade de alterações nas suas
+definições, bem como a expansão futura.
+
+De início, definem-se dois tipos principais de metadado:
+\begin{itemize}
+\item metadado do sistema / políticas (arquivos de configuração,
+  regras de funcionamento)
+\item metadado do acervo/das mídias
+\end{itemize}
+
+Não coube à pesquisa em metadados a definição das políticas, mas a
+orientação de como estas deveriam ser armazenadas e estruturadas. As
+políticas de sistema dizem respeito a definições gerais sobre a
+configuração do software e de critérios estabelecidos politicamente,
+isto é, atendendo às demandas da comunidade usuária e gestora do
+sistema Baobáxia. Entretanto, há uma escolha que entende a importância
+da distinção entre o sistema e suas configurações, estas que devem ser
+implementadas de acordo com as necessidades locais da Mucua ou do
+repositório (baobáxia / Rede Mocambos).
+
+A partir da definição de políticas, ocorre a tomada de decisões pelo
+sistema, respeitando aos critérios estabelecidos. Essa definição
+possui normas técnicas próprias, mas é abrangente o bastante para
+permitir que novas políticas sejam incorporadas ao sistema conforme
+surjam novas necessidades.
+
+\section{Mídias e Mucuas}
+
+Os metadados relacionados a mídias e mucuas constituem o núcleo do
+sistema. Em tratando-se de um sistema de acervo distribuído, os nós
+(Mucuas) e arquivos contidos nesses nós (Mídias) são os principais
+elementos do sistema do ponto de vista dos conteúdos.
+
+As mídias sempre estão associadas a mucuas originadoras (as quais originaram a publicação), e dividem-se por tipos:
+\begin{itemize}
+\item vídeos
+\item imagens (fotografias, desenhos etc)
+\item áudios (músicas, entrevistas, programas de rádio etc)
+\item arquivos (documentos, textos e demais arquivos)
+\end{itemize}
+
+Cada tipo de mídia possui especificidades do ponto de vista de seus
+metadados, ao que buscou-se definir o que há de comum entre todas. Os
+metadados foram definidos preliminarmente como o mínimo essencial
+possível, sendo que qualificadores adicionais devem ser estendidos ou
+como tags ou como metadados específicos do tipo de arquivo. Assim,
+chegou-se aos seguintes campos, cuja definição encontra-se nos
+arquivos de políticas (ver adiante):
+\begin{itemize}
+\item data (AAAA-MM-DD)
+\item uuid (identificação única do arquivo)
+\item title (título, texto não único)
+\item comment (comentário, texto aberto)
+\item author (mocambola, associado a quem publicou o arquivo)
+\item type (tipos das mídias [vídeo|imagens|áudios|arquivos])
+\item format (formato do arquivo, definido em arquivo de políticas)
+\item origin (mucua, o servidor a partir do qual arquivo foi
+  publicado)
+\item repository (referência ao repositório git annex a que está vinculado o arquivo)
+\item tags (etiquetas, múltiplas; somente descritoras ou também
+  funcionais)
+\end{itemize}
+
+Além da mídia, as mucuas (nós do acervo, servidores locais) possuem
+também metadados específicos, bem como associados. Os metadados
+específicos dizem respeito a informações ligadas diretamente ao
+servidor; as associadas, ao conteúdo hospedado no servidor. Dessa
+forma, temos:
+\begin{itemize}
+\item note (texto geral sobre a mucua)
+\item description (nome da mucua)
+\item uuid (identificador único da mucua)
+\end{itemize}
+
+
+Quanto ao metadado associado, diz respeito a todas as etiquetas de
+conteúdos que estejam hospedados na mucua. Está previsto como um
+metadado descritivo sobre a mucua um relatório agrupando todas as
+etiquetas dos arquivos hospedados, o que permite aos mocambolas
+(usuári@s) ter uma ideia geral sobre as características do acervo de
+determinada Mucua.
+
+\section{Armazenamento do metadado: arquivos, padrões adotados e intercâmbio}
+
+Conforma já assinalado, metadados e políticas são armazenados em
+arquivos descritores. Para tal foi feita uma pesquisa a respeito dos
+formatos a serem adotados para armazenamento destes dados. Teriam que
+atender os seguintes requisitos:
+\begin{description}
+\item[A] armazenamento em suporte aberto, não proprietário
+\item[B] ótima capacidade de intercâmbio entre linguagens
+\item[C] amplo desenvolvimento de bibliotecas de código em distintas linguagens de programação
+\item[D] capacidade para armazenamento de objetos complexos
+\item[E] bom desempenho
+\item[F] tamanho diminuto
+\item[G] adequação a plataformas RESTful e serviços de dados (web services)
+\end{description}
+
+Inicialmente, levantou-se três possibilidades, todas elas atendendo os itens A e B:
+\begin{description}
+\item[XML] eXpansible Markup Language
+\item[YAML] Yet Another Markup Languge
+\item[JSON] JavaScript Object Notation
+\end{description}
+
+O primeiro formato, XML, tem a seu favor o fato de ser largamente
+adotado para intercâmbio de dados e para descrição de informações já
+há muitos anos (C). Conta no entanto com algumas desvantagens
+sobretudo do ponto de vista do desempenho (E), além de gerar uma não
+desprezível quantidade de informações extra especialmente ao lidar com
+o armazenamento de objetos complexos, o que tem impactos severos ao se
+pensar numa rede de acervos com conectividade baixa ou nula (ponto
+F). Além disso, conta com possíveis problemas no armazenamento de
+objetos complexos ao redundar numa estrutura de dados pesada (D).
+
+O segundo formato, YAML, apresenta-se como um possível sucessor do
+XML, tendo se inspirado neste. Tem como resultado arquivos sintéticos
+e de tamanho diminuto (E e F). Possui ótima capacidade de
+armazenamento de objetos complexos (D). Apesar de contar com mais
+funcionalidades que o JSON - como a possibilidade de estabelecer
+relacionamentos funcionais lógicos internos, conta ainda com menor
+desenvolvimento e compatibilidade (C e G), ainda que seu futuro seja
+promissor.
+
+O terceiro formato, JSON, é considerado uma forma de reduzir o
+overhead computacional do XML (E), sendo uma excelente alternativa
+para armazenamento de objetos complexos (D), sendo sintético e de
+tamanho diminuto (F). Conta com grande desenvolvimento em uma série de
+softwares (C) pode-se dizer que atualmente é o novo padrão para
+intercâmbio de dados, sendo base para numerosas tecnologias baseadas
+em plataformas RESTful (G)
+
+Desse modo, foi escolhido o formato JSON como padrão para intercâmbio
+de dados, definição de políticas e metadados.
+
+\section{Politicas}
+
+\subsection{Media}
+
+Definição dos metadados de mídia:
+\begin{description}
+  \item[formats] definem-se os tipos de formatos aceitos
+  \item[priority] tipos prioritários aceitos pelo sistema
+  \item[metadata] definição dos campos com tipo de dados aceito. Pode
+    receber uma expressão regular (ex.: \verb| /^\w_-$/ |)
+\end{description}
+
+\lstinputlisting[basicstyle={\scriptsize\ttfamily}]{../../policies/media.json}
+
+\subsection{Mucua}
+
+\lstinputlisting[basicstyle={\scriptsize\ttfamily}]{../../policies/mucua.json}
+
+

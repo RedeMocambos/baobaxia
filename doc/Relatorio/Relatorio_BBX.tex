@@ -1,0 +1,320 @@
+%% ----------------------------------------------------------------
+%% Thesis.tex -- MAIN FILE (the one that you compile with LaTeX)
+%% ---------------------------------------------------------------- 
+
+% Set up the document
+\documentclass[a4paper, 11pt, oneside]{Relatorio}  % Use the "Relatorio" style, based on the ECS Thesis style by Steve Gunn
+\graphicspath{{Figure/}}  % Location of the graphics files (set up for graphics to be in PDF format)
+
+
+
+% Include any extra LaTeX packages required
+\usepackage[utf8]{inputenc}
+\usepackage[brazilian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{ae,aecompl}
+\usepackage[square, numbers, comma, sort&compress]{natbib}  % Use the "Natbib" style for the references in the Bibliography
+\usepackage{verbatim}  % Needed for the "comment" environment to make LaTeX comments
+%\usepackage{vector}  % Allows "\bvec{}" and "\buvec{}" for "blackboard" style bold vectors in maths
+%\usepackage{listings}
+\usepackage{listingsutf8}
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{dkblue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=2
+  morekeywords={models, lambda, forms, =}
+  inputencoding=utf8,
+  extendedchars=\true
+}
+
+\lstnewenvironment{code}[1][]%
+  {\minipage{\linewidth} 
+   \lstset{basicstyle=\ttfamily\footnotesize,frame=tb,#1}}
+  {\endminipage}
+
+
+%%%% Color definitions
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{dkblue}{rgb}{0,0,0.5}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.6,0,0.82}
+\definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
+\hypersetup{urlcolor=coolblack, colorlinks=true}  % Colours hyperlinks in blue, but this can be distracting if there are many links.
+%\hypersetup{urlcolor=black, colorlinks=false}  
+
+%% To show a border around all figures
+%\usepackage{float}
+%\floatstyle{boxed} 
+%\restylefloat{figure}
+
+%% ----------------------------------------------------------------
+\begin{document}
+\frontmatter	  % Begin Roman style (i, ii, iii, iv...) page numbering
+
+% Set up the Title Page
+\title  {Baobáxia}
+
+\authors  {\texorpdfstring
+            {\href{mailto:vince@mocambos.net}{Vincenzo Tozzi}} - 
+            {\href{mailto:fernao@riseup.net}{Fernão Lopes}}
+            }
+\addresses  {\taina\\\npdd\\\redemocambos}  % Do not change this here, instead these must be set in the "Thesis.cls" file, please look through it instead
+\date       {\today}
+\subject    {Relatório de execução do projeto}
+\keywords   {Federated Network, Tecnological Autonomy, Free Software, Rede Mocambos, Casa de Cultura Taina, Quilombo}
+
+\maketitle
+%% ----------------------------------------------------------------
+
+\setstretch{1.3}  % It is better to have smaller font and larger line spacing than the other way round
+
+% Define the page headers using the FancyHdr package and set up for one-sided printing
+\fancyhead{}  % Clears all page headers and footers
+\rhead{\thepage}  % Sets the right side header to show the page number
+\lhead{}  % Clears the left side page header
+
+\pagestyle{fancy}  % Finally, use the "fancy" page style to implement the FancyHdr headers
+
+% %% ----------------------------------------------------------------
+% % Declaration Page required for the Thesis, your institution may give you a different text to place here
+% \Declaration{
+
+% \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+% Io, Vincenzo Tozzi, dichiaro che la presente tesi, "Reti federate eventualmente connesse" e il lavoro presentato in essa sono di mia paternità. Dichiaro che:
+
+% \begin{itemize} 
+% \item[\tiny{$\blacksquare$}] Questo lavoro è stato totalmente o per la maggior parte svolto come laureando per la Laurea in Informatica di questa Università.
+ 
+% \item[\tiny{$\blacksquare$}] Ho esplicitamente dichiarato nel testo se qualche parte di questa tesi è stata precedentemente pubblicata in altri lavori da questa o altre Università o istituzioni.
+ 
+% \item[\tiny{$\blacksquare$}] Ho attribuito la paternità ai lavori pubblicati da altri e da me consultati.
+ 
+% \item[\tiny{$\blacksquare$}] Ho sempre citato la fonte di opere altrui. Ad eccezione di tali citazioni, questa tesi è di mia paternità.
+ 
+% \item[\tiny{$\blacksquare$}] Ho ringranziato tutte le principali fonti di supporto.
+ 
+% \item[\tiny{$\blacksquare$}] Ho esplicitamente dichiarato del testo, in parti sviluppate assieme ad altri, qual'è il loro e il mio contributo.
+% \\
+% \end{itemize}
+ 
+ 
+% Firmato:\\
+% \rule[1em]{25em}{0.5pt}  % This prints a line for the signature
+ 
+% Data:\\
+% \rule[1em]{25em}{0.5pt}  % This prints a line to write the date
+% }
+% \clearpage  % Declaration ended, now start a new page
+
+%% ----------------------------------------------------------------
+% The "Funny Quote Page"
+\pagestyle{empty}  % No headers or footers for the following pages
+
+\null\vfill
+% Now comes the "Funny Quote", written in italics
+\textit{``Vamos fazer um mundo mais do nosso jeito...''}
+
+\begin{flushright}
+Zumbi dos Palmares
+\end{flushright}
+
+\vfill\vfill\vfill\vfill\vfill\vfill\null
+\clearpage  % Funny Quote page ended, start a new page
+%% ----------------------------------------------------------------
+
+% The Abstract Page
+\addtotoc{Resumo}  % Add the "Abstract" page entry to the Contents
+\abstract{
+
+\addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+O projeto Baobáxia trata da concepção, desenvolvimento e implementação
+de uma arquitetura distribuída, voltada para a integração de redes
+locais mesmo em localidades nas quais a conexão à internet seja
+instável, lenta ou intermitente. Parte-se da experiência acumulada
+pela Rede Mocambos, que trabalha com a integração de duzentas
+comunidades em todas as regiões do país através da apropriação de
+tecnologias, para identificar pontos críticos em que a precariedade do
+acesso à internet se torna um impeditivo para a efetiva comunicação
+entre essas comunidades. O projeto parte do pressuposto de que não
+basta usar tecnologias de informação já existentes - precisamos moldar
+o próprio desenvolvimento dessas tecnologias para que atendam às
+demandas da sociedade. E adota como princípio básico e metodologia de
+trabalho os fundamentos do software livre - tanto na gestão das
+equipes de trabalho quanto nas soluções tecnológicas que utilizará.
+
+}
+
+\clearpage  % Abstract ended, start a new page
+%% ----------------------------------------------------------------
+
+\setstretch{1.3}  % Reset the line-spacing to 1.3 for body text (if it has changed)
+
+% The Acknowledgements page, for thanking everyone
+\acknowledgements{
+\addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+Um agradecimento especial para as nossas familias\ldots
+
+}
+\clearpage  % End of the Acknowledgements
+%% ----------------------------------------------------------------
+
+\pagestyle{fancy}  %The page style headers have been "empty" all this time, now use the "fancy" headers as defined before to bring them back
+
+
+%% ----------------------------------------------------------------
+\lhead{\emph{Contents}}  % Set the left side page header to "Contents"
+\tableofcontents  % Write out the Table of Contents
+
+%% ----------------------------------------------------------------
+\lhead{\emph{List of Figures}}  % Set the left side page header to "List if Figures"
+\listoffigures  % Write out the List of Figures
+
+%% ----------------------------------------------------------------
+%\lhead{\emph{List of Tables}}  % Set the left side page header to "List of Tables"
+%\listoftables  % Write out the List of Tables
+
+%% ----------------------------------------------------------------
+\setstretch{1.5}  % Set the line spacing to 1.5, this makes the following tables easier to read
+\clearpage  % Start a new page
+\lhead{\emph{Acrónimos}}  % Set the left side page header to "Abbreviations"
+\listofsymbols{ll}  % Include a list of Abbreviations (a table of two columns)
+{
+% \textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
+  \textbf{GESAC} & \textbf{G}overno \textbf{E}letrônico
+  \textbf{S}erviço
+  de \textbf{A}tendimento ao \textbf{C}idadão\\
+  \textbf{RM} & \textbf{R}ete \textbf{M}ocambos\\
+  \textbf{SP} & \textbf{S}ervice \textbf{P}rovider\\
+  \textbf{IdP} & \textbf{Id}entity \textbf{P}rovider\\
+  \textbf{API} & \textbf{A}pplication \textbf{P}rogramming \textbf{I}nterface\\
+  \textbf{RFC} & \textbf{R}equest \textbf{F}or \textbf{C}omments\\
+  \textbf{TOS} & \textbf{T}erms \textbf{O}f \textbf{S}ervice\\
+  \textbf{P2P} & \textbf{P}eer To \textbf{P}eer\\
+  \textbf{LDAP} & \textbf{L}ightweight \textbf{D}irectory \textbf{A}ccess \textbf{P}rotocol\\
+  \textbf{DIT} & \textbf{D}irectory \textbf{I}nformation \textbf{T}ree\\
+  \textbf{XMPP} & e\textbf{X}tensible \textbf{M}essaging and \textbf{P}resence \textbf{P}rotocol\\
+  \textbf{SSO} & \textbf{S}ingle \textbf{S}ign \textbf{O}n\\
+  \textbf{VSAT} & \textbf{V}ery \textbf{S}mall \textbf{A}perture \textbf{T}erminal\\
+  \textbf{DRY} & \textbf{D}on't \textbf{R}epeat \textbf{Y}ourself\\
+  \textbf{MVC} & \textbf{M}odel \textbf{V}iew \textbf{C}ontroller\\
+  \textbf{ORM} & \textbf{O}bject \textbf{R}elational \textbf{M}apper\\
+  \textbf{NPDD} & \textbf{N}úcleo de \textbf{P}esquisa e
+  \textbf{D}esenvolvimento \textbf{D}igital\\
+  \textbf{NFC} & \textbf{N}úcleo de \textbf{F}ormação
+  \textbf{C}ontinuada\\
+}
+
+%% ----------------------------------------------------------------
+%\clearpage  % Start a new page
+%\lhead{\emph{Physical Constants}}  % Set the left side page header to "Physical Constants"
+%\listofconstants{lrcl}  % Include a list of Physical Constants (a four column table)
+%{
+%% Constant Name & Symbol & = & Constant Value (with units) \\
+%Speed of Light & $c$ & $=$ & $2.997\ 924\ 58\times10^{8}\ \mbox{ms}^{-\mbox{s}}$ (exact)\\
+%
+%}
+
+%% ----------------------------------------------------------------
+%\clearpage  %Start a new page
+%\lhead{\emph{Simboli}}  % Set the left side page header to "Symbols"
+%\listofnomenclature{lll}  % Include a list of Symbols (a three column table)
+%{
+%% symbol & name & unit \\
+%$a$ & distance & m \\
+%$P$ & power & W (Js$^{-1}$) \\
+%& & \\ % Gap to separate the Roman symbols from the Greek
+%$\omega$ & angular frequency & rads$^{-1}$ \\
+%}
+%% ----------------------------------------------------------------
+% End of the pre-able, contents and lists of things
+% Begin the Dedication page
+
+\setstretch{1.3}  % Return the line spacing back to 1.3
+
+\pagestyle{empty}  % Page style needs to be empty for this page
+\dedicatory{Para nossa Mãe\ldots}
+
+\addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+
+
+%% ----------------------------------------------------------------
+\mainmatter	  % Begin normal, numeric (1,2,3...) page numbering
+\pagestyle{fancy}  % Return the page headers back to the "fancy" style
+
+% Include the chapters of the thesis, as separate files
+% Just uncomment the lines as you write the chapters
+
+%\input{./Capitoli/Capitolo1} % Introduzione
+
+%\input{./Capitoli/Capitolo2} % Reti Federate  
+
+\clearpage  % To start a new page
+
+%% ----------------------------------------------------------------
+% The "Funny Quote Page"
+\pagestyle{empty}  % No headers or footers for the following pages
+
+\null\vfill
+% Now comes the "Funny Quote", written in italics
+\textit{``A força da rede esta nos nós''}
+
+\begin{flushright}
+TC
+\end{flushright}
+
+\vfill\vfill\vfill\vfill\vfill\vfill\null
+\clearpage  % Funny Quote page ended, start a new page
+%% ----------------------------------------------------------------
+
+\pagestyle{fancy}  % Finally, use the "fancy" page style to implement
+                   % the FancyHdr headers
+
+\input{./Relatorio_BBX_Conteudos.tex} % Architettura
+
+%\input{./Capitoli/Capitolo4} % Prototipo
+
+%\input{./Capitoli/Capitolo5} % Conclusioni
+
+%\input{./Chapters/Chapter6} % Results and Discussion
+
+%\input{./Chapters/Chapter7} % Conclusion
+
+%% ----------------------------------------------------------------
+% Now begin the Appendices, including them as separate files
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
+
+\input{./Relatorio_BBX_Codigo.tex}	% Appendice codice sorgente
+
+%\input{./Appendices/AppendixB} % Appendix Title
+
+%\input{./Appendices/AppendixC} % Appendix Title
+
+\addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+\backmatter
+\nocite{*}
+%% ----------------------------------------------------------------
+\label{Bibliography}
+\lhead{\emph{Bibliografia}}  % Change the left side page header to "Bibliography"
+\bibliographystyle{unsrtnat}  % Use the "unsrtnat" BibTeX style for formatting the Bibliography
+\bibliography{Bibliography}  % The references (bibliography) information are stored in the file named "Bibliography.bib"
+
+\end{document}  % The End
+%% ----------------------------------------------------------------
