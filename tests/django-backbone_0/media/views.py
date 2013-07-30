@@ -75,8 +75,8 @@ def media_list(request, repository, mucua, args=None, format=None):
         """
         
         # Linha curl mista para testar upload E mandar data
-        # $ curl -F "nome=fulano" -F "filename=@img_0001.jpg;type=image/jpeg" -X POST http://localhost:8000/redemocambos/dandara/medias/
-        
+        # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "filename=@img_0001.jpg;type=image/jpeg" -X POST http://localhost:8000/redemocambos/dandara/medias/ > /tmp/x.html        
+
         # create a temporary media for handling the file
         mucua = Mucua.objects.get(description = mucua)
         if not mucua:
