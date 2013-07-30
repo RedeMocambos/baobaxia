@@ -3,7 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
 from django.http import HttpResponseRedirect, HttpResponse
-from media.models import Media
+from django.contrib.auth.models import User
+from media.models import Media, media_file_name, getFilePath
 from etiqueta.models import Etiqueta
 from media.forms import MediaForm
 from media.serializers import MediaSerializer
@@ -13,6 +14,7 @@ import datetime
 import os
 import subprocess
 import uuid
+from os import path
 
 from mucua.models import Mucua
 from gitannex.models import Repository
@@ -71,16 +73,46 @@ def media_list(request, repository, mucua, args=None, format=None):
         """
         create a new media    
         """
-        serializer = MediaSerializer(data=request.DATA)
-        if serializer.is_valid():
-            serializer.save()            
-            for etiquetaId in request.DATA['tags']:
-                etiqueta = Etiqueta.objects.get(pk = etiquetaId)
+        
+        # Linha curl mista para testar upload E mandar data
+        # $ curl -F "nome=fulano" -F "filename=@img_0001.jpg;type=image/jpeg" -X POST http://localhost:8000/redemocambos/dandara/medias/
+        
+        # create a temporary media for handling the file
+        mucua = Mucua.objects.get(description = mucua)
+        if not mucua:
+            return False
+
+        repository = Repository.objects.get(repositoryName = repository)
+        
+        if not repository:
+            return False
+        
+        # TODO: get author (url?)
+        author = User.objects.get(pk = 1)
+        if not author:
+            return False
+        
+        instance = Media(repository = repository, origin = mucua, uuid = uuid.uuid4(), author = author, title = request.DATA['title'], comment = request.DATA['comment'])
+         
+        # upload - sets mediafile, type
+        instance = handle_uploaded_file(request, instance)
+        
+        if instance:
+            # media instance object
+            serializer = MediaSerializer(instance)
+#            if serializer.is_valid():
+            if serializer.save():
+                # TODO: pegar etiquetas num array / passar por curl
+                # for etiquetaId in request.DATA['tags']:
+                etiqueta = request.DATA['tags']
+                etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
                 serializer.object.tags.add(etiqueta)
-                
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response("error while creating media", status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -120,9 +152,6 @@ def upload(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-
 # ...
 def publish(request):
     '''
@@ -157,13 +186,47 @@ def publish(request):
     return render(request, 'publish.html', {'form': form})
 
 
-def handle_uploaded_file(data):
-    with open('/tmp/test.bbx', 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
+def handle_uploaded_file(request, instance):
+    # TODO: 
+    # - improve error handling
+    
+    # filter by content type
+    # content_type   = str(request.META.get('CONTENT_TYPE', ""))
+    # content_length = int(request.META.get('CONTENT_LENGTH', 0))
+    
+    # formats
+    # TODO: move to settings / policies
+    # accepted_types = (('image/jpeg', 'jpg'))
+    # if content_type in accepted_types:
+    #     instance.format = accepted_types[content_type]
+    #     print instance.format
+    #     # TODO: automate / move to settings / policies
+    
+    # else:
+    #     # TODO: raise error
+    #     print "Erro: arquivo nao aceito"
+    #     return False
+    
+    instance.format = "jpg"
+    instance.type = "imagem"    
 
+    # create folder
+    cwd = getFilePath(instance)
+    file_name = media_file_name(instance)    
+    if not os.path.exists(cwd):
+        os.makedirs(cwd)
+        
+    # write file
+    destination = open(os.path.join(cwd, file_name), 'wb+')    
+    for chunk in request.read(1024):
+        destination.write(chunk)
 
-
-
-
-
+    destination.close()
+    
+    cmd = "git annex add " + file_name
+    pipe = subprocess.Popen(cmd, shell=True,
+                            cwd=getFilePath(instance))
+    pipe.wait()    
+    
+    instance.mediafile = os.path.join(cwd, file_name)
+    return instance
