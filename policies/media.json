@@ -18,7 +18,10 @@
 	    "origin": "string",
 	    "date": "dd/mm/yyyy",
 	    "type": "string",
+	    "format": "string",
 	    "license": "string",
+	    "origin": "string",
+	    "repository": "string",
 	    "tags": [
 		{
 		    "name": "string"
