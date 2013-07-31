@@ -15,6 +15,7 @@ import os
 import subprocess
 import uuid
 from os import path
+import mimetypes
 
 from mucua.models import Mucua
 from gitannex.models import Repository
@@ -75,8 +76,8 @@ def media_list(request, repository, mucua, args=None, format=None):
         """
         
         # Linha curl mista para testar upload E mandar data
-        # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "filename=@img_0001.jpg;type=image/jpeg" -X POST http://localhost:8000/redemocambos/dandara/medias/ > /tmp/x.html        
-
+        # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "type=imagem" -F "filename=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/medias/ > /tmp/x.html        
+        
         # create a temporary media for handling the file
         mucua = Mucua.objects.get(description = mucua)
         if not mucua:
@@ -92,7 +93,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         if not author:
             return False
         
-        instance = Media(repository = repository, origin = mucua, uuid = uuid.uuid4(), author = author, title = request.DATA['title'], comment = request.DATA['comment'])
+        instance = Media(repository = repository, origin = mucua, uuid = uuid.uuid4(), author = author, title = request.DATA['title'], comment = request.DATA['comment'], type = request.DATA['type'])
          
         # upload - sets mediafile, type
         instance = handle_uploaded_file(request, instance)
@@ -162,32 +163,29 @@ def handle_uploaded_file(request, instance):
     # content_length = int(request.META.get('CONTENT_LENGTH', 0))
     
     # formats
-    # TODO: move to settings / policies
-    # accepted_types = (('image/jpeg', 'jpg'))
-    # if content_type in accepted_types:
-    #     instance.format = accepted_types[content_type]
-    #     print instance.format
-    #     # TODO: automate / move to settings / policies
+    accepted_types = {'image/jpeg': 'jpg'}
+    content_type = request.FILES['filename'].content_type
     
-    # else:
-    #     # TODO: raise error
-    #     print "Erro: arquivo nao aceito"
-    #     return False
+    if content_type in accepted_types:
+         instance.format = accepted_types[content_type]
+    else:
+         # TODO: raise error
+         print "Erro: arquivo nao aceito"
+         return False
     
-    instance.format = "jpg"
-    instance.type = "imagem"    
-
     # create folder
     cwd = getFilePath(instance)
     file_name = media_file_name(instance, '')    
     if not os.path.exists(cwd):
         os.makedirs(cwd)
-
+    
     # write file
-    destination = open(os.path.join(cwd, file_name), 'wb+')    
-    for chunk in request.read(1024):
+    destination = os.path.join(cwd, file_name)
+    # tmp_file = "/tmp/" + str(instance.uuid)
+    destination = open(destination, 'wb+')    
+    for chunk in request.FILES['filename'].chunks():
         destination.write(chunk)
-
+    
     destination.close()
     
     cmd = "git annex add " + file_name
