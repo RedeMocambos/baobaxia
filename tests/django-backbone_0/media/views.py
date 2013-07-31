@@ -56,10 +56,10 @@ def media_list(request, repository, mucua, args=None, format=None):
         if redirect_page:
             return HttpResponseRedirect(redirect_url + repository.repositoryName + '/' + mucua.description + '/medias/')
         
-        
         # listagem de conteudo
-        # TODO: filtrar os medias por repository
-        medias = Media.objects.filter(origin = mucua.id)
+        medias = Media.objects.all()
+        medias = medias.filter(repository = repository.id)
+        medias = medias.filter(origin = mucua.id)
         
         # pega args da url se tiver
         if args:
@@ -179,10 +179,10 @@ def handle_uploaded_file(request, instance):
 
     # create folder
     cwd = getFilePath(instance)
-    file_name = media_file_name(instance)    
+    file_name = media_file_name(instance, '')    
     if not os.path.exists(cwd):
         os.makedirs(cwd)
-        
+
     # write file
     destination = open(os.path.join(cwd, file_name), 'wb+')    
     for chunk in request.read(1024):

@@ -14,7 +14,7 @@ from datetime import datetime
 TYPE_CHOICES = ( ('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'), ('arquivo','arquivo') )
 FORMAT_CHOICES = ( ('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'), ('jpg','jpg') )
 
-def media_file_name(instance):
+def media_file_name(instance, filename):
     mediafileuuid = uuid.uuid4()
     return os.path.join(getFilePath(instance), instance.getFileName())
 
