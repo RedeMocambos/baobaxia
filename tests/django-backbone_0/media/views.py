@@ -76,7 +76,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         """
         
         # Linha curl mista para testar upload E mandar data
-        # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "type=imagem" -F "filename=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/medias/ > /tmp/x.html        
+        # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "license=" -F "date=" -F "type=imagem" -F "filename=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/medias/ > /tmp/x.html        
         
         # create a temporary media for handling the file
         mucua = Mucua.objects.get(description = mucua)
@@ -93,15 +93,24 @@ def media_list(request, repository, mucua, args=None, format=None):
         if not author:
             return False
         
-        instance = Media(repository = repository, origin = mucua, uuid = uuid.uuid4(), author = author, title = request.DATA['title'], comment = request.DATA['comment'], type = request.DATA['type'])
-         
-        # upload - sets mediafile, type
-        instance = handle_uploaded_file(request, instance)
+        instance = Media(repository = repository, 
+                         origin = mucua,
+                         uuid = uuid.uuid4(), 
+                         author = author, 
+                         title = request.DATA['title'], 
+                         comment = request.DATA['comment'],
+                         type = request.DATA['type'],
+                         license = request.DATA['license'],
+                         date = request.DATA['date'])
+        
+        # upload - sets mediafile
+        instance = handle_uploaded_file(request.FILES['filename'], instance)
         
         if instance:
             # media instance object
+            # TODO: check serializer validity
             serializer = MediaSerializer(instance)
-#            if serializer.is_valid():
+            # if serializer.is_valid(): 
             if serializer.save():
                 # get tags by list or separated by ','
                 tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
@@ -154,17 +163,11 @@ def upload(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def handle_uploaded_file(request, instance):
-    # TODO: 
-    # - improve error handling
-    
-    # filter by content type
-    # content_type   = str(request.META.get('CONTENT_TYPE', ""))
-    # content_length = int(request.META.get('CONTENT_LENGTH', 0))
+def handle_uploaded_file(f, instance):
     
     # formats
     accepted_types = {'image/jpeg': 'jpg'}
-    content_type = request.FILES['filename'].content_type
+    content_type = f.content_type
     
     if content_type in accepted_types:
          instance.format = accepted_types[content_type]
@@ -173,17 +176,15 @@ def handle_uploaded_file(request, instance):
          print "Erro: arquivo nao aceito"
          return False
     
-    # create folder
+    # create folder, if not exists
     cwd = getFilePath(instance)
     file_name = media_file_name(instance, '')    
     if not os.path.exists(cwd):
         os.makedirs(cwd)
     
     # write file
-    destination = os.path.join(cwd, file_name)
-    # tmp_file = "/tmp/" + str(instance.uuid)
-    destination = open(destination, 'wb+')    
-    for chunk in request.FILES['filename'].chunks():
+    destination = open(os.path.join(cwd, file_name), 'wb+')    
+    for chunk in f.chunks():
         destination.write(chunk)
     
     destination.close()
