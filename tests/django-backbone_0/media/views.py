@@ -102,11 +102,12 @@ def media_list(request, repository, mucua, args=None, format=None):
             serializer = MediaSerializer(instance)
 #            if serializer.is_valid():
             if serializer.save():
-                # TODO: pegar etiquetas num array / passar por curl
-                # for etiquetaId in request.DATA['tags']:
-                etiqueta = request.DATA['tags']
-                etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
-                serializer.object.tags.add(etiqueta)
+                # get tags by list or separated by ','
+                tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
+                for etiqueta in tags:
+                    etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
+                    serializer.object.tags.add(etiqueta)
+                
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -150,40 +151,6 @@ def upload(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# ...
-def publish(request):
-    '''
-    A publish cuida de criar o form do zero, receber os resultados de um form e criar o media a partir do arquivo.
-    Form (sobe arquivo) -> Retorna um form semipreenchido com ja o uuid do media  
-
-    '''
-    if request.method == 'POST':
-        form = MediaForm(request.POST, request.FILES)
-        # form.errors
-        if True:
-            # file is saved
-            print form   # debug
-            print ">>> Form is Valid!"
-            instance = Media(mediafile = request.FILES['Media'])
-            # accepted_types = (('image/jpeg', 'jpg'))
-            # if request.FILES['file'].content_type in accepted_types:
-            #     instance.type = accepted_types(request.FILES['file'].content_type)
-            # else:
-            #     # error
-            #     return false
-        
-            # # set folder
-        
-            # # cria pasta e importa pro git
-            instance.save()
-            print ">>> Object saved"
-            return HttpResponseRedirect('/media/'+instance.uuid)
-    else:
-        form = MediaForm()
-        
-    return render(request, 'publish.html', {'form': form})
 
 
 def handle_uploaded_file(request, instance):
