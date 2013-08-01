@@ -12,6 +12,7 @@ from django.dispatch import receiver
 from media.models import Media
 from media.models import getFilePath
 from mucua.models import Mucua
+from gitannex.signals import filesync_done
 
 import os
 import datetime
@@ -144,23 +145,22 @@ def gitAnnexGet(repoDir):
     pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
     pipe.wait()
 
+def gitAnnexSync(repoDir):
+    """Sincroniza o repositorio com os outros clones remotos."""
+    # TODO: Next release with possibility to choice what to get 
+    logger.info('git annex sync')
+    cmd = 'git annex sync'
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+    pipe.wait()
+
 # Connecting to Media signal
 @receiver(post_save, sender=Media)
 def gitMMediaPostSave(instance, **kwargs):
     """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e adiciona o objeto ao repositorio."""
-#    logger.debug(instance.type)
-#    logger.debug(type(instance))
-    cmd = "git annex add " + instance.getFileName()
-    pipe = subprocess.Popen(cmd, shell=True,
-                            cwd=getFilePath(instance))
-    pipe.wait()
-
-    # path = instance.path_relative().split(os.sep)
-    # if gitannex_dir in path:
-    #     repositoryName = path[path.index(gitannex_dir) + 1]
-    #     gitAnnexRep = Repository.objects.get(repositoryName__iexact=repositoryName)
-    #     gitAnnexAdd(os.path.basename(instance.fileref.name), os.path.dirname(instance.fileref.path))
-    #     gitCommit(instance.title, instance.author.username, instance.author.email, os.path.dirname(instance.fileref.path))
+    logger.debug(instance.type)
+    logger.debug(type(instance))
+    gitAnnexAdd(instance.getFileName(), getFilePath(instance))
+    gitCommit(instance.getFileName(), instance.author.username, instance.author.email, getFilePath(instance))
 
 def runScheduledJobs():
     """Executa as operacoes programadas em todos os repositorios. """
@@ -170,7 +170,6 @@ def runScheduledJobs():
             # TODO: Manage time of syncing
             # if rep.syncStartTime >= datetime.datetime.now():
             rep.syncRepository()
-
 
 
 class Repository(models.Model):
@@ -183,14 +182,6 @@ class Repository(models.Model):
         enableSync = flag booleano para abilitar ou disabilitar a sincronizacao
         remoteRepositoryURLOrPath = apontador ao repositorio de origem 
     """
-  
-    # Forse dovrei mettere qualcosa nella view. Esattamente.. Quando
-    # creo un repository questo puo' essere locale o remoto.  Quindi
-    # devo poter scegliere tra una cartella locale (eventualmente
-    # crearla), o inserite un URL per effetuare il clone (via ssh).
-    # Nella view va messo un if che a seconda chiama create o
-    # cloneRepository a seconda della scelta.
-
     uuid = models.ManyToManyField('mucua.Mucua', symmetrical=True)
     note = models.TextField(max_length=300, blank=True)
     repositoryName = models.CharField(max_length=100, choices=REPOSITORY_CHOICES, default='redemocambos', unique=True)
@@ -199,14 +190,9 @@ class Repository(models.Model):
     syncStartTime = models.DateField()
     enableSync = models.BooleanField()
     remoteRepositoryURLOrPath = models.CharField(max_length=200)
-#    lastSyncSHA = models.CharField(max_length=100)
-    # def __init__(self):
-    #     print "Verificar a init do Repository"
-    #     #self.createRepository()
         
     def createRepository(self):
         """Cria e inicializa o repositorio."""
-        # Dovrebbe scegliere tra remoto e locale? 
         _createRepository(self.repositoryName, self.remoteRepositoryURLOrPath)
     
     def cloneRepository(self):
@@ -215,19 +201,10 @@ class Repository(models.Model):
 
     def syncRepository(self):
         """Sincroniza o repositorio com sua origem."""
-        gitPull(self.repositoryURLOrPath)
-        gitAnnexMerge(self.repositoryURLOrPath)
-        gitPush(self.repositoryURLOrPath)
-        gitAnnexCopyTo(self.repositoryURLOrPath)
-        # TODO: Next release with possibility to choice what to get 
-        gitAnnexGet(self.repositoryURLOrPath)
-        # TODO: Next release with selective sync since a given revision (using git SHA)
-        # self.lastSyncSHA = gitGetSHA(self.repositoryURLOrPath)
-        # Signal to all that files are (should be) synced 
-        logger.debug(">>> BEFORE filesync_done")
+        gitAnnexSync(self.repositoryURLOrPath)
+
         filesync_done.send(sender=self, repositoryName=self.repositoryName, \
                                repositoryDir=self.repositoryURLOrPath)
-        logger.debug(">>> AFTER filesync_done")
 
     def __unicode__(self):
         return self.repositoryName

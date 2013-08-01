@@ -14,9 +14,13 @@ from datetime import datetime
 TYPE_CHOICES = ( ('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'), ('arquivo','arquivo') )
 FORMAT_CHOICES = ( ('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'), ('jpg','jpg') )
 
-def media_file_name(instance):
-    mediafileuuid = uuid.uuid4()
+def media_file_name(instance, filename):
+    # mediafileuuid = uuid.uuid4()
     return os.path.join(getFilePath(instance), instance.getFileName())
+
+ 
+def generateUUID():
+    return str(uuid4())
 
 
 def getFilePath(instance):
@@ -28,7 +32,9 @@ def getFilePath(instance):
     
 class Media(models.Model):
     date = models.DateTimeField(auto_now_add=True)
-    uuid = models.CharField(max_length=36, default=uuid.uuid4())  # BUG: uuid esta travando num mesmo nome a cada sessao do python; precisa reiniciar a aplicacao para que o campo pegue um novo valor
+    uuid = UUIDField()
+    #models.CharField(max_length=36, default=self.newuuid)
+    # BUG: uuid esta travando num mesmo nome a cada sessao do python; precisa reiniciar a aplicacao para que o campo pegue um novo valor
     title = models.CharField(max_length=100, blank=True, default='')
     comment = models.TextField(max_length=300, blank=True)
     author = models.ForeignKey(User)
@@ -40,7 +46,7 @@ class Media(models.Model):
     license = models.CharField(max_length=100, blank=True)
     mediafile = models.FileField(upload_to=media_file_name, blank=True)
     repository = models.ForeignKey('gitannex.Repository', related_name='repository')
-#    versions = 
+    #    versions = 
     tags = models.ManyToManyField(Etiqueta, related_name='tags')
     
     def __unicode__(self):
@@ -61,19 +67,8 @@ class Media(models.Model):
     def getFormat(self):
         return self.format
 
-    # def save(self, *args, **kwargs):
-    #     # Git Annex
-    #     cmd = "git annex add " + self.getFileName()
-    #     pipe = subprocess.Popen(cmd, shell=True,
-    #                             cwd=getFilePath(self))
-    #     pipe.wait()
-    #     super(Media, self).save(*args, **kwargs) 
-
     class Meta:
         ordering = ('date',)
     
 
-# class MediaForm(ModelForm):
-#     class Meta:
-#         model = Media
 
