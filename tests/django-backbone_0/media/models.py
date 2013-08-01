@@ -15,7 +15,7 @@ TYPE_CHOICES = ( ('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'), (
 FORMAT_CHOICES = ( ('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'), ('jpg','jpg') )
 
 def media_file_name(instance, filename):
-    # mediafileuuid = uuid.uuid4()
+    mediafileuuid = uuid.uuid4()
     return os.path.join(getFilePath(instance), instance.getFileName())
 
  

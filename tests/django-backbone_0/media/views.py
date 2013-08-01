@@ -15,6 +15,7 @@ import os
 import subprocess
 import uuid
 from os import path
+import mimetypes
 
 from mucua.models import Mucua
 from gitannex.models import Repository
@@ -56,10 +57,10 @@ def media_list(request, repository, mucua, args=None, format=None):
         if redirect_page:
             return HttpResponseRedirect(redirect_url + repository.repositoryName + '/' + mucua.description + '/medias/')
         
-        
         # listagem de conteudo
-        # TODO: filtrar os medias por repository
-        medias = Media.objects.filter(origin = mucua.id)
+        medias = Media.objects.all()
+        medias = medias.filter(repository = repository.id)
+        medias = medias.filter(origin = mucua.id)
         
         # pega args da url se tiver
         if args:
@@ -75,8 +76,8 @@ def media_list(request, repository, mucua, args=None, format=None):
         """
         
         # Linha curl mista para testar upload E mandar data
-        # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "filename=@img_0001.jpg;type=image/jpeg" -X POST http://localhost:8000/redemocambos/dandara/medias/ > /tmp/x.html        
-
+        # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "license=" -F "date=" -F "type=imagem" -F "filename=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/medias/ > /tmp/x.html        
+        
         # create a temporary media for handling the file
         mucua = Mucua.objects.get(description = mucua)
         if not mucua:
@@ -92,21 +93,31 @@ def media_list(request, repository, mucua, args=None, format=None):
         if not author:
             return False
         
-        instance = Media(repository = repository, origin = mucua, uuid = uuid.uuid4(), author = author, title = request.DATA['title'], comment = request.DATA['comment'])
-         
-        # upload - sets mediafile, type
-        instance = handle_uploaded_file(request, instance)
+        instance = Media(repository = repository, 
+                         origin = mucua,
+                         uuid = uuid.uuid4(), 
+                         author = author, 
+                         title = request.DATA['title'], 
+                         comment = request.DATA['comment'],
+                         type = request.DATA['type'],
+                         license = request.DATA['license'],
+                         date = request.DATA['date'])
+        
+        # upload - sets mediafile
+        instance = handle_uploaded_file(request.FILES['filename'], instance)
         
         if instance:
             # media instance object
+            # TODO: check serializer validity
             serializer = MediaSerializer(instance)
-#            if serializer.is_valid():
+            # if serializer.is_valid(): 
             if serializer.save():
-                # TODO: pegar etiquetas num array / passar por curl
-                # for etiquetaId in request.DATA['tags']:
-                etiqueta = request.DATA['tags']
-                etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
-                serializer.object.tags.add(etiqueta)
+                # get tags by list or separated by ','
+                tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
+                for etiqueta in tags:
+                    etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
+                    serializer.object.tags.add(etiqueta)
+                
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -152,75 +163,30 @@ def upload(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# ...
-def publish(request):
-    '''
-    A publish cuida de criar o form do zero, receber os resultados de um form e criar o media a partir do arquivo.
-    Form (sobe arquivo) -> Retorna um form semipreenchido com ja o uuid do media  
-
-    '''
-    if request.method == 'POST':
-        form = MediaForm(request.POST, request.FILES)
-        # form.errors
-        if True:
-            # file is saved
-            print form   # debug
-            print ">>> Form is Valid!"
-            instance = Media(mediafile = request.FILES['Media'])
-            # accepted_types = (('image/jpeg', 'jpg'))
-            # if request.FILES['file'].content_type in accepted_types:
-            #     instance.type = accepted_types(request.FILES['file'].content_type)
-            # else:
-            #     # error
-            #     return false
-        
-            # # set folder
-        
-            # # cria pasta e importa pro git
-            instance.save()
-            print ">>> Object saved"
-            return HttpResponseRedirect('/media/'+instance.uuid)
-    else:
-        form = MediaForm()
-        
-    return render(request, 'publish.html', {'form': form})
-
-
-def handle_uploaded_file(request, instance):
-    # TODO: 
-    # - improve error handling
-    
-    # filter by content type
-    # content_type   = str(request.META.get('CONTENT_TYPE', ""))
-    # content_length = int(request.META.get('CONTENT_LENGTH', 0))
+def handle_uploaded_file(f, instance):
     
     # formats
-    # TODO: move to settings / policies
-    # accepted_types = (('image/jpeg', 'jpg'))
-    # if content_type in accepted_types:
-    #     instance.format = accepted_types[content_type]
-    #     print instance.format
-    #     # TODO: automate / move to settings / policies
+    accepted_types = {'image/jpeg': 'jpg'}
+    content_type = f.content_type
     
-    # else:
-    #     # TODO: raise error
-    #     print "Erro: arquivo nao aceito"
-    #     return False
+    if content_type in accepted_types:
+         instance.format = accepted_types[content_type]
+    else:
+         # TODO: raise error
+         print "Erro: arquivo nao aceito"
+         return False
     
-    instance.format = "jpg"
-    instance.type = "imagem"    
-
-    # create folder
+    # create folder, if not exists
     cwd = getFilePath(instance)
-    file_name = media_file_name(instance)    
+    file_name = media_file_name(instance, '')    
     if not os.path.exists(cwd):
         os.makedirs(cwd)
-        
+    
     # write file
     destination = open(os.path.join(cwd, file_name), 'wb+')    
-    for chunk in request.read(1024):
+    for chunk in f.chunks():
         destination.write(chunk)
-
+    
     destination.close()
     
     cmd = "git annex add " + file_name
