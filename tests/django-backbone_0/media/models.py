@@ -14,13 +14,15 @@ from datetime import datetime
 TYPE_CHOICES = ( ('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'), ('arquivo','arquivo') )
 FORMAT_CHOICES = ( ('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'), ('jpg','jpg') )
 
+
+
 def media_file_name(instance, filename):
     mediafileuuid = uuid.uuid4()
     return os.path.join(getFilePath(instance), instance.getFileName())
 
- 
+
 def generateUUID():
-    return str(uuid4())
+    return str(uuid.uuid4())
 
 
 def getFilePath(instance):
@@ -32,8 +34,7 @@ def getFilePath(instance):
     
 class Media(models.Model):
     date = models.DateTimeField(auto_now_add=True)
-    uuid = UUIDField()
-    #models.CharField(max_length=36, default=self.newuuid)
+    uuid = models.CharField(max_length=36, default=generateUUID())
     # BUG: uuid esta travando num mesmo nome a cada sessao do python; precisa reiniciar a aplicacao para que o campo pegue um novo valor
     title = models.CharField(max_length=100, blank=True, default='')
     comment = models.TextField(max_length=300, blank=True)

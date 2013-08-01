@@ -31,8 +31,9 @@
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
   breaklines=true,
-  breakatwhitespace=true
-  tabsize=2
+  breakatwhitespace=true,
+  tabsize=4,
+  lineskip={-1.5pt},
   morekeywords={models, lambda, forms, =}
   inputencoding=utf8,
   extendedchars=\true
@@ -164,12 +165,12 @@ equipes de trabalho quanto nas soluções tecnológicas que utilizará.
 \setstretch{1.3}  % Reset the line-spacing to 1.3 for body text (if it has changed)
 
 % The Acknowledgements page, for thanking everyone
-\acknowledgements{
-\addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+%% \acknowledgements{
+%% \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
 
-Um agradecimento especial para as nossas familias\ldots
+%% Um agradecimento especial para as nossas familias\ldots
 
-}
+%% }
 \clearpage  % End of the Acknowledgements
 %% ----------------------------------------------------------------
 
@@ -195,29 +196,31 @@ Um agradecimento especial para as nossas familias\ldots
 \listofsymbols{ll}  % Include a list of Abbreviations (a table of two columns)
 {
 % \textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
-  \textbf{GESAC} & \textbf{G}overno \textbf{E}letrônico
-  \textbf{S}erviço
-  de \textbf{A}tendimento ao \textbf{C}idadão\\
-  \textbf{RM} & \textbf{R}ete \textbf{M}ocambos\\
-  \textbf{SP} & \textbf{S}ervice \textbf{P}rovider\\
-  \textbf{IdP} & \textbf{Id}entity \textbf{P}rovider\\
-  \textbf{API} & \textbf{A}pplication \textbf{P}rogramming \textbf{I}nterface\\
-  \textbf{RFC} & \textbf{R}equest \textbf{F}or \textbf{C}omments\\
-  \textbf{TOS} & \textbf{T}erms \textbf{O}f \textbf{S}ervice\\
-  \textbf{P2P} & \textbf{P}eer To \textbf{P}eer\\
-  \textbf{LDAP} & \textbf{L}ightweight \textbf{D}irectory \textbf{A}ccess \textbf{P}rotocol\\
-  \textbf{DIT} & \textbf{D}irectory \textbf{I}nformation \textbf{T}ree\\
-  \textbf{XMPP} & e\textbf{X}tensible \textbf{M}essaging and \textbf{P}resence \textbf{P}rotocol\\
-  \textbf{SSO} & \textbf{S}ingle \textbf{S}ign \textbf{O}n\\
-  \textbf{VSAT} & \textbf{V}ery \textbf{S}mall \textbf{A}perture \textbf{T}erminal\\
-  \textbf{DRY} & \textbf{D}on't \textbf{R}epeat \textbf{Y}ourself\\
-  \textbf{MVC} & \textbf{M}odel \textbf{V}iew \textbf{C}ontroller\\
-  \textbf{ORM} & \textbf{O}bject \textbf{R}elational \textbf{M}apper\\
-  \textbf{NPDD} & \textbf{N}úcleo de \textbf{P}esquisa e
-  \textbf{D}esenvolvimento \textbf{D}igital\\
-  \textbf{NFC} & \textbf{N}úcleo de \textbf{F}ormação
-  \textbf{C}ontinuada\\
-}
+  \textbf{RM} & \textbf{R}ede \textbf{M}ocambos\\ \textbf{SP} &
+  \textbf{S}ervice \textbf{P}rovider\\ \textbf{IdP} &
+  \textbf{Id}entity \textbf{P}rovider\\ \textbf{API} &
+  \textbf{A}pplication \textbf{P}rogramming
+  \textbf{I}nterface\\ \textbf{RFC} & \textbf{R}equest \textbf{F}or
+  \textbf{C}omments\\ \textbf{JSON} & \textbf{J}ava\textbf{S}cript
+  \textbf{O}bject \textbf{N}otation\\ \textbf{P2P} & \textbf{P}eer To
+  \textbf{P}eer\\ \textbf{LDAP} & \textbf{L}ightweight
+  \textbf{D}irectory \textbf{A}ccess \textbf{P}rotocol\\ \textbf{YAML}
+  & \textbf{Y}et \textbf{A}nother \textbf{M}arkup
+  \textbf{L}anguage\\ \textbf{XMPP} & e\textbf{X}tensible
+  \textbf{M}essaging and \textbf{P}resence
+  \textbf{P}rotocol\\ \textbf{SSO} & \textbf{S}ingle \textbf{S}ign
+  \textbf{O}n\\ \textbf{VSAT} & \textbf{V}ery \textbf{S}mall
+  \textbf{A}perture \textbf{T}erminal\\ \textbf{DRY} & \textbf{D}on't
+  \textbf{R}epeat \textbf{Y}ourself\\ \textbf{MVC} & \textbf{M}odel
+  \textbf{V}iew \textbf{C}ontroller\\ \textbf{ORM} & \textbf{O}bject
+  \textbf{R}elational \textbf{M}apper\\ \textbf{NPDD} &
+  \textbf{N}úcleo de \textbf{P}esquisa e \textbf{D}esenvolvimento
+  \textbf{D}igital\\ \textbf{NFC} & \textbf{N}úcleo de
+  \textbf{F}ormação \textbf{C}ontinuada\\ \textbf{NCP} &
+  \textbf{N}úcleo de \textbf{C}omunicação e
+  \textbf{P}edagogia\\ \textbf{GESAC} & \textbf{G}overno
+  \textbf{E}letrônico \textbf{S}erviço de \textbf{A}tendimento ao
+  \textbf{C}idadão\\ }
 
 %% ----------------------------------------------------------------
 %\clearpage  % Start a new page
@@ -244,12 +247,12 @@ Um agradecimento especial para as nossas familias\ldots
 % End of the pre-able, contents and lists of things
 % Begin the Dedication page
 
-\setstretch{1.3}  % Return the line spacing back to 1.3
+%% \setstretch{1.3}  % Return the line spacing back to 1.3
 
-\pagestyle{empty}  % Page style needs to be empty for this page
-\dedicatory{Para nossa Mãe\ldots}
+%% \pagestyle{empty}  % Page style needs to be empty for this page
+%% \dedicatory{Para nossa Mãe\ldots}
 
-\addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+%% \addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
 
 
 %% ----------------------------------------------------------------
@@ -258,6 +261,8 @@ Um agradecimento especial para as nossas familias\ldots
 
 % Include the chapters of the thesis, as separate files
 % Just uncomment the lines as you write the chapters
+
+\input{./Relatorio_BBX_Conteudos.tex} % Architettura
 
 %\input{./Capitoli/Capitolo1} % Introduzione
 
@@ -283,8 +288,6 @@ TC
 
 \pagestyle{fancy}  % Finally, use the "fancy" page style to implement
                    % the FancyHdr headers
-
-\input{./Relatorio_BBX_Conteudos.tex} % Architettura
 
 %\input{./Capitoli/Capitolo4} % Prototipo
 
