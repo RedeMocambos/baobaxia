@@ -143,12 +143,6 @@ def media_detail(request, repository, mucua, pk, format=None):
             return Response("error while creating media", status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        file_name = media_file_name(media, '')
-        cmd = "git annex drop --force " + file_name
-        print cmd
-        pipe = subprocess.Popen(cmd, shell=True,
-                                cwd=getFilePath(media))
-        pipe.wait()    
         
         media.delete()
 
