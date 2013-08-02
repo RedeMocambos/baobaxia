@@ -138,7 +138,12 @@ def media_detail(request, repository, mucua, pk = None, format=None):
             # get tags by list or separated by ','
             tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
             for etiqueta in tags:
-                etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
+                try:
+                    etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
+                except Etiqueta.DoesNotExist:
+                    etiqueta = Etiqueta(etiqueta = etiqueta)
+                    etiqueta.save()
+
                 instance.tags.add(etiqueta)
                 
             # TODO: return serialized data
