@@ -37,26 +37,21 @@ def media_list(request, repository, mucua, args=None, format=None):
         redirect_page = False
         
         # REPOSITORIO: verifica se existe no banco, senao pega a default
-        repository_list = Repository.objects.filter(repositoryName = repository)
-        if repository_list:
-            repository = repository_list[0]
-        else:
-            repository_list = Repository.objects.filter(repositoryName = DEFAULT_REPOSITORY)
-            repository = repository_list[0]
+        try:
+            mucua = Mucua.objects.get(description = mucua)        
+        except Mucua.DoesNotExist:
+            mucua = Mucua.objects.get(description = DEFAULT_MUCUA)
             redirect_page = True
-            
-        # MUCUA: verifica se existe no banco, senao pega a default
-        mucua_list = Mucua.objects.filter(description = mucua)
-        if mucua_list:
-            mucua = mucua_list[0]
-        else:
-            mucua_list = Mucua.objects.filter(description = DEFAULT_MUCUA)
-            mucua = mucua_list[0]
-            redirect_page = True
-            
+
+        try:
+            repository = Repository.objects.get(repositoryName = repository)
+        except Repository.DoesNotExist:
+            repository = Repository.objects.get(repositoryName = DEFAULT_REPOSITORY)
+            redirect_page = True        
+        
         # redirect
         if redirect_page:
-            return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/medias/')
+            return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/bbx/search/')
         
         # listagem de conteudo
         medias = Media.objects.all()
@@ -78,6 +73,28 @@ def media_detail(request, repository, mucua, pk = None, format=None):
     Retrieve, create, update or delete a media instance.
     """         
     
+    # pegando sessao por url
+    redirect_page = False
+    
+    try:
+        mucua = Mucua.objects.get(description = mucua)        
+    except Mucua.DoesNotExist:
+        mucua = Mucua.objects.get(description = DEFAULT_MUCUA)
+        redirect_page = True
+    
+    try:
+        repository = Repository.objects.get(repositoryName = repository)
+    except Repository.DoesNotExist:
+        repository = Repository.objects.get(repositoryName = DEFAULT_REPOSITORY)
+        redirect_page = True
+
+    # redirect
+    if redirect_page:
+        return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/media/')
+    
+    # TODO: get author (url?)
+    author = User.objects.get(pk = 1)
+    
     if pk:
         try:
             media = Media.objects.get(uuid=pk)
@@ -86,13 +103,38 @@ def media_detail(request, repository, mucua, pk = None, format=None):
 
     if request.method == 'GET':
         if pk == '':
-            return HttpResponseRedirect(redirect_base_url + repository + '/' + mucua + '/bbx/search')
+            return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/bbx/search')
        
         serializer = MediaSerializer(media)
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = MediaSerializer(media, data=request.DATA)
+        if pk == '':
+            return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/bbx/search')
+        media.title = request.DATA['title']
+        media.comment = request.DATA['comment']
+        media.type = request.DATA['type']
+        media.license = request.DATA['license']
+#        media.date = request.DATA['date']
+        
+        media.save()
+        if media.id:        
+            tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
+            for etiqueta in tags:
+                try:
+                    etiqueta = Etiqueta.objects.get(etiqueta__exact = etiqueta)
+                except Etiqueta.DoesNotExist:
+                    etiqueta = Etiqueta.objects.create(etiqueta = etiqueta)
+                    etiqueta.save()
+                media.tags.add(etiqueta)
+                
+            print media.tags    
+            
+            # TODO: return serialized data
+            return Response("updated media - OK", status=status.HTTP_201_CREATED)
+        else:
+            return Response("error while creating media", status=status.HTTP_400_BAD_REQUEST)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -106,24 +148,8 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         
         # Linha curl mista para testar upload E mandar data
         # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "license=" -F "date=2013/06/07" -F "type=imagem" -F "mediafile=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/media/ > /tmp/x.html          
-        # create a temporary media for handling the file
-        mucua = Mucua.objects.get(description = mucua)
-        if not mucua:
-            return False
-        
-        repository = Repository.objects.get(repositoryName = repository)
-        
-        if not repository:
-            return False
-        
-        # TODO: get author (url?)
-        author = User.objects.get(pk = 1)
-        if not author:
-            return False
-        
         instance = Media(repository = repository, 
                          origin = mucua,
-                         uuid = uuid.uuid4(), 
                          author = author, 
                          title = request.DATA['title'], 
                          comment = request.DATA['comment'],
@@ -143,13 +169,13 @@ def media_detail(request, repository, mucua, pk = None, format=None):
                 try:
                     etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
                 except Etiqueta.DoesNotExist:
-                    etiqueta = Etiqueta(etiqueta = etiqueta)
+                    etiqueta = Etiqueta.create(etiqueta = etiqueta)
                     etiqueta.save()
 
                 instance.tags.add(etiqueta)
                 
             # TODO: return serialized data
-            return Response("ok", status=status.HTTP_201_CREATED)
+            return Response("created media - OK", status=status.HTTP_201_CREATED)
         else:
             return Response("error while creating media", status=status.HTTP_400_BAD_REQUEST)
 
