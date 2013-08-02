@@ -20,6 +20,8 @@ import mimetypes
 from mucua.models import Mucua
 from gitannex.models import Repository
 
+redirect_base_url = "http://localhost:8000/"  # TODO: tirar / mover
+
 @api_view(['GET'])
 def media_list(request, repository, mucua, args=None, format=None):
     """
@@ -33,7 +35,6 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         # pegando sessao por url
         redirect_page = False
-        redirect_url = "http://localhost:8000/"  # TODO: tirar
         
         # REPOSITORIO: verifica se existe no banco, senao pega a default
         repository_list = Repository.objects.filter(repositoryName = repository)
@@ -43,7 +44,7 @@ def media_list(request, repository, mucua, args=None, format=None):
             repository_list = Repository.objects.filter(repositoryName = DEFAULT_REPOSITORY)
             repository = repository_list[0]
             redirect_page = True
-                
+            
         # MUCUA: verifica se existe no banco, senao pega a default
         mucua_list = Mucua.objects.filter(description = mucua)
         if mucua_list:
@@ -55,7 +56,7 @@ def media_list(request, repository, mucua, args=None, format=None):
             
         # redirect
         if redirect_page:
-            return HttpResponseRedirect(redirect_url + repository.repositoryName + '/' + mucua.description + '/medias/')
+            return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/medias/')
         
         # listagem de conteudo
         medias = Media.objects.all()
@@ -84,8 +85,9 @@ def media_detail(request, repository, mucua, pk = None, format=None):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        if pk == None:
-            return False
+        if pk == '':
+            return HttpResponseRedirect(redirect_base_url + repository + '/' + mucua + '/bbx/search')
+       
         serializer = MediaSerializer(media)
         return Response(serializer.data)
 
@@ -156,38 +158,3 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         media.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-def handle_uploaded_file(f, instance):
-    
-    # formats
-    accepted_types = {'image/jpeg': 'jpg'}
-    content_type = f.content_type
-    
-    if content_type in accepted_types:
-         instance.format = accepted_types[content_type]
-    else:
-         # TODO: raise error
-         print "Erro: arquivo nao aceito"
-         return False
-    
-    # create folder, if not exists
-    cwd = getFilePath(instance)
-    file_name = media_file_name(instance, '')    
-    if not os.path.exists(cwd):
-        os.makedirs(cwd)
-    
-    # write file
-    destination = open(os.path.join(cwd, file_name), 'wb+')    
-    for chunk in f.chunks():
-        destination.write(chunk)
-    
-    destination.close()
-    
-    cmd = "git annex add " + file_name
-    pipe = subprocess.Popen(cmd, shell=True,
-                            cwd=getFilePath(instance))
-    pipe.wait()    
-    
-    instance.mediafile = os.path.join(cwd, file_name)
-    return instance
