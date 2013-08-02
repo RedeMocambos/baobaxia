@@ -17,7 +17,7 @@ FORMAT_CHOICES = ( ('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'), ('jpg','jpg
 
 
 def media_file_name(instance, filename):
-    mediafileuuid = uuid.uuid4()
+    mediafileuuid = generateUUID()
     return os.path.join(getFilePath(instance), instance.getFileName())
 
 
@@ -35,7 +35,6 @@ def getFilePath(instance):
 class Media(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     uuid = models.CharField(max_length=36, default=generateUUID())
-    # BUG: uuid esta travando num mesmo nome a cada sessao do python; precisa reiniciar a aplicacao para que o campo pegue um novo valor
     title = models.CharField(max_length=100, blank=True, default='')
     comment = models.TextField(max_length=300, blank=True)
     author = models.ForeignKey(User)

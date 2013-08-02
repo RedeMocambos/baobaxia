@@ -15,8 +15,8 @@ class MediaSerializer(serializers.ModelSerializer):
 #    repository = serializers.RelatedField(many = False)
 #    author = serializers.RelatedField(many = False)
     tags = EtiquetaSerializer(required=False)
-#    origin = MucuaSerializer()
-#    repository = RepositorySerializer()
+    origin = MucuaSerializer()
+    repository = RepositorySerializer()
     
     class Meta:
         model = Media
