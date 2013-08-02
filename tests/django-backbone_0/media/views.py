@@ -119,16 +119,16 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         
         media.save()
         if media.id:        
-            tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
+            tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')            
+            media.tags.clear()
             for etiqueta in tags:
                 try:
-                    etiqueta = Etiqueta.objects.get(etiqueta__exact = etiqueta)
+                    etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
                 except Etiqueta.DoesNotExist:
                     etiqueta = Etiqueta.objects.create(etiqueta = etiqueta)
                     etiqueta.save()
-                media.tags.add(etiqueta)
                 
-            print media.tags    
+                media.tags.add(etiqueta)
             
             # TODO: return serialized data
             return Response("updated media - OK", status=status.HTTP_201_CREATED)
@@ -159,7 +159,6 @@ def media_detail(request, repository, mucua, pk = None, format=None):
                          mediafile = request.FILES['mediafile']
                          )
         
-#        instance = handle_uploaded_file(request.FILES['filename'], instance)
         instance.save()
         if instance.id:
         
@@ -169,7 +168,7 @@ def media_detail(request, repository, mucua, pk = None, format=None):
                 try:
                     etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
                 except Etiqueta.DoesNotExist:
-                    etiqueta = Etiqueta.create(etiqueta = etiqueta)
+                    etiqueta = Etiqueta.objects.create(etiqueta = etiqueta)
                     etiqueta.save()
 
                 instance.tags.add(etiqueta)
