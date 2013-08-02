@@ -20,10 +20,10 @@ import mimetypes
 from mucua.models import Mucua
 from gitannex.models import Repository
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def media_list(request, repository, mucua, args=None, format=None):
     """
-    List all medias, or create a new media.
+    List all medias, or search by terms
     """
     
     if request.method == 'GET':        
@@ -70,19 +70,42 @@ def media_list(request, repository, mucua, args=None, format=None):
         serializer = MediaSerializer(medias, many=True)
         return Response(serializer.data)
     
+
+@api_view(['GET', 'PUT', 'DELETE', 'POST'])
+def media_detail(request, repository, mucua, pk, format=None):
+    """
+    Retrieve, create, update or delete a media instance.
+    """         
+    
+    try:
+        media = Media.objects.get(uuid=pk)
+    except Media.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = MediaSerializer(media)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = MediaSerializer(media, data=request.DATA)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     elif request.method == 'POST':
         """
         create a new media    
         """
         
         # Linha curl mista para testar upload E mandar data
-        # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "license=" -F "date=" -F "type=imagem" -F "filename=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/medias/ > /tmp/x.html        
-        
+        # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "license=" -F "date=2013/06/07" -F "type=imagem" -F "filename=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/medias/ > /tmp/x.html        
         # create a temporary media for handling the file
         mucua = Mucua.objects.get(description = mucua)
         if not mucua:
             return False
-
+        
         repository = Repository.objects.get(repositoryName = repository)
         
         if not repository:
@@ -101,66 +124,29 @@ def media_list(request, repository, mucua, args=None, format=None):
                          comment = request.DATA['comment'],
                          type = request.DATA['type'],
                          license = request.DATA['license'],
-                         date = request.DATA['date'])
+                         date = request.DATA['date'],
+                         mediafile = request.FILES['mediafile']
+                         )
         
-        # upload - sets mediafile
-        instance = handle_uploaded_file(request.FILES['filename'], instance)
+#        instance = handle_uploaded_file(request.FILES['filename'], instance)
+        if instance.save():
         
-        if instance:
-            # media instance object
-            # TODO: check serializer validity
-            serializer = MediaSerializer(instance)
-            # if serializer.is_valid(): 
-            if serializer.save():
-                # get tags by list or separated by ','
-                tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
-                for etiqueta in tags:
-                    etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
-                    serializer.object.tags.add(etiqueta)
+            # get tags by list or separated by ','
+            tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
+            for etiqueta in tags:
+                etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
+                serializer.object.tags.add(etiqueta)
                 
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
+            # TODO: return serialized data
+            return Response(etiqueta.data, status=status.HTTP_201_CREATED)
         else:
             return Response("error while creating media", status=status.HTTP_400_BAD_REQUEST)
 
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def media_detail(request, pk, format=None):
-    """
-    Retrieve, update or delete a media instance.
-    """              
-    try:
-        media = Media.objects.get(pk=pk)
-    except Media.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = MediaSerializer(media)
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = MediaSerializer(media, data=request.DATA)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     elif request.method == 'DELETE':
+        
         media.delete()
+
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-@api_view(['POST'])
-def upload(request):
-    serializer = MediaSerializer(data=request.DATA)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 def handle_uploaded_file(f, instance):
