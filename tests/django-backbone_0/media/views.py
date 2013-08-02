@@ -132,16 +132,17 @@ def media_detail(request, repository, mucua, pk = None, format=None):
                          )
         
 #        instance = handle_uploaded_file(request.FILES['filename'], instance)
-        if instance.save():
+        instance.save()
+        if instance.id:
         
             # get tags by list or separated by ','
             tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
             for etiqueta in tags:
                 etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
-                serializer.object.tags.add(etiqueta)
+                instance.tags.add(etiqueta)
                 
             # TODO: return serialized data
-            return Response(etiqueta.data, status=status.HTTP_201_CREATED)
+            return Response("ok", status=status.HTTP_201_CREATED)
         else:
             return Response("error while creating media", status=status.HTTP_400_BAD_REQUEST)
 
