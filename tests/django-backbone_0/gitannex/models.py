@@ -11,6 +11,8 @@ from django.dispatch import receiver
 #from gitannex.signals import receiver_subclasses, filesync_done
 from media.models import Media
 from media.models import getFilePath
+#from media.serializers import MediaSerializer
+
 from mucua.models import Mucua
 from gitannex.signals import filesync_done
 
@@ -79,6 +81,13 @@ def _getAvailableFolders(path):
     folderList = [( name , name ) for name in os.listdir(os.path.join(path, gitannex_dir)) \
                       if os.path.isdir(os.path.join(path, gitannex_dir, name))]
     return folderList
+
+def gitAdd(fileName, repoDir):
+    """Adiciona um arquivo no repositorio."""
+    logger.info('git add ' + fileTitle)
+    cmd = 'git add '+ fileName
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+    pipe.wait()
 
 def gitCommit(fileTitle, authorName, authorEmail, repoDir):
     """Executa o *commit* no repositorio impostando os dados do author."""
@@ -160,6 +169,9 @@ def gitMMediaPostSave(instance, **kwargs):
     logger.debug(instance.type)
     logger.debug(type(instance))
     gitAnnexAdd(instance.getFileName(), getFilePath(instance))
+
+#    gitAdd(instance.getFileName(), getFilePath(instance))
+    
     gitCommit(instance.getFileName(), instance.author.username, instance.author.email, getFilePath(instance))
 
 def runScheduledJobs():

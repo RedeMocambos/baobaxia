@@ -6,8 +6,11 @@ from django.forms import ModelForm
 from mucua.models import Mucua
 from etiqueta.models import Etiqueta
 from bbx.settings import ANNEX_DIR
+#from media.serializers import MediaSerializer
+
 import os
 import uuid
+import logging
 import subprocess
 from datetime import datetime
 
@@ -18,6 +21,7 @@ FORMAT_CHOICES = ( ('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'), ('jpg','jpg
 
 def media_file_name(instance, filename):
     mediafileuuid = uuid.uuid4()
+    logging.debug(os.path.join(getFilePath(instance) + instance.getFileName()))
     return os.path.join(getFilePath(instance), instance.getFileName())
 
 

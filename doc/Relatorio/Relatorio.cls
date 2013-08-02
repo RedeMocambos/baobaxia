@@ -268,10 +268,12 @@
   \begin{center}
     \setlength{\parskip}{0pt}
     {\normalsize \REDEMOCAMBOS \par}
+    {\normalsize \npdd \par}
+    {\normalsize \taina \par}
     \bigskip
     {\huge{\textit{Resumo}} \par}
     \bigskip
-    {\normalsize \npdd \par}
+
 %    {\normalsize \deptname \par}
     %% \bigskip
     %% {\normalsize Corso di Laurea in Informatica\par}
