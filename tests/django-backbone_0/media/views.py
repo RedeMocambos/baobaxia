@@ -20,6 +20,8 @@ import mimetypes
 from mucua.models import Mucua
 from gitannex.models import Repository
 
+redirect_base_url = "http://localhost:8000/"  # TODO: tirar / mover
+
 @api_view(['GET'])
 def media_list(request, repository, mucua, args=None, format=None):
     """
@@ -33,29 +35,23 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         # pegando sessao por url
         redirect_page = False
-        redirect_url = "http://localhost:8000/"  # TODO: tirar
         
         # REPOSITORIO: verifica se existe no banco, senao pega a default
-        repository_list = Repository.objects.filter(repositoryName = repository)
-        if repository_list:
-            repository = repository_list[0]
-        else:
-            repository_list = Repository.objects.filter(repositoryName = DEFAULT_REPOSITORY)
-            repository = repository_list[0]
+        try:
+            mucua = Mucua.objects.get(description = mucua)        
+        except Mucua.DoesNotExist:
+            mucua = Mucua.objects.get(description = DEFAULT_MUCUA)
             redirect_page = True
-                
-        # MUCUA: verifica se existe no banco, senao pega a default
-        mucua_list = Mucua.objects.filter(description = mucua)
-        if mucua_list:
-            mucua = mucua_list[0]
-        else:
-            mucua_list = Mucua.objects.filter(description = DEFAULT_MUCUA)
-            mucua = mucua_list[0]
-            redirect_page = True
-            
+
+        try:
+            repository = Repository.objects.get(repositoryName = repository)
+        except Repository.DoesNotExist:
+            repository = Repository.objects.get(repositoryName = DEFAULT_REPOSITORY)
+            redirect_page = True        
+        
         # redirect
         if redirect_page:
-            return HttpResponseRedirect(redirect_url + repository.repositoryName + '/' + mucua.description + '/medias/')
+            return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/bbx/search/')
         
         # listagem de conteudo
         medias = Media.objects.all()
@@ -77,6 +73,28 @@ def media_detail(request, repository, mucua, pk = None, format=None):
     Retrieve, create, update or delete a media instance.
     """         
     
+    # pegando sessao por url
+    redirect_page = False
+    
+    try:
+        mucua = Mucua.objects.get(description = mucua)        
+    except Mucua.DoesNotExist:
+        mucua = Mucua.objects.get(description = DEFAULT_MUCUA)
+        redirect_page = True
+    
+    try:
+        repository = Repository.objects.get(repositoryName = repository)
+    except Repository.DoesNotExist:
+        repository = Repository.objects.get(repositoryName = DEFAULT_REPOSITORY)
+        redirect_page = True
+
+    # redirect
+    if redirect_page:
+        return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/media/')
+    
+    # TODO: get author (url?)
+    author = User.objects.get(pk = 1)
+    
     if pk:
         try:
             media = Media.objects.get(uuid=pk)
@@ -84,13 +102,39 @@ def media_detail(request, repository, mucua, pk = None, format=None):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        if pk == None:
-            return False
+        if pk == '':
+            return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/bbx/search')
+       
         serializer = MediaSerializer(media)
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = MediaSerializer(media, data=request.DATA)
+        if pk == '':
+            return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/bbx/search')
+        media.title = request.DATA['title']
+        media.comment = request.DATA['comment']
+        media.type = request.DATA['type']
+        media.license = request.DATA['license']
+#        media.date = request.DATA['date']
+        
+        media.save()
+        if media.id:        
+            tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')            
+            media.tags.clear()
+            for etiqueta in tags:
+                try:
+                    etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
+                except Etiqueta.DoesNotExist:
+                    etiqueta = Etiqueta.objects.create(etiqueta = etiqueta)
+                    etiqueta.save()
+                
+                media.tags.add(etiqueta)
+            
+            # TODO: return serialized data
+            return Response("updated media - OK", status=status.HTTP_201_CREATED)
+        else:
+            return Response("error while creating media", status=status.HTTP_400_BAD_REQUEST)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -104,24 +148,8 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         
         # Linha curl mista para testar upload E mandar data
         # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "license=" -F "date=2013/06/07" -F "type=imagem" -F "mediafile=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/media/ > /tmp/x.html          
-        # create a temporary media for handling the file
-        mucua = Mucua.objects.get(description = mucua)
-        if not mucua:
-            return False
-        
-        repository = Repository.objects.get(repositoryName = repository)
-        
-        if not repository:
-            return False
-        
-        # TODO: get author (url?)
-        author = User.objects.get(pk = 1)
-        if not author:
-            return False
-        
         instance = Media(repository = repository, 
                          origin = mucua,
-                         uuid = uuid.uuid4(), 
                          author = author, 
                          title = request.DATA['title'], 
                          comment = request.DATA['comment'],
@@ -131,7 +159,6 @@ def media_detail(request, repository, mucua, pk = None, format=None):
                          mediafile = request.FILES['mediafile']
                          )
         
-#        instance = handle_uploaded_file(request.FILES['filename'], instance)
         instance.save()
         if instance.id:
         
@@ -141,13 +168,13 @@ def media_detail(request, repository, mucua, pk = None, format=None):
                 try:
                     etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
                 except Etiqueta.DoesNotExist:
-                    etiqueta = Etiqueta(etiqueta = etiqueta)
+                    etiqueta = Etiqueta.objects.create(etiqueta = etiqueta)
                     etiqueta.save()
 
                 instance.tags.add(etiqueta)
                 
             # TODO: return serialized data
-            return Response("ok", status=status.HTTP_201_CREATED)
+            return Response("created media - OK", status=status.HTTP_201_CREATED)
         else:
             return Response("error while creating media", status=status.HTTP_400_BAD_REQUEST)
 
@@ -156,38 +183,3 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         media.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-def handle_uploaded_file(f, instance):
-    
-    # formats
-    accepted_types = {'image/jpeg': 'jpg'}
-    content_type = f.content_type
-    
-    if content_type in accepted_types:
-         instance.format = accepted_types[content_type]
-    else:
-         # TODO: raise error
-         print "Erro: arquivo nao aceito"
-         return False
-    
-    # create folder, if not exists
-    cwd = getFilePath(instance)
-    file_name = media_file_name(instance, '')    
-    if not os.path.exists(cwd):
-        os.makedirs(cwd)
-    
-    # write file
-    destination = open(os.path.join(cwd, file_name), 'wb+')    
-    for chunk in f.chunks():
-        destination.write(chunk)
-    
-    destination.close()
-    
-    cmd = "git annex add " + file_name
-    pipe = subprocess.Popen(cmd, shell=True,
-                            cwd=getFilePath(instance))
-    pipe.wait()    
-    
-    instance.mediafile = os.path.join(cwd, file_name)
-    return instance
