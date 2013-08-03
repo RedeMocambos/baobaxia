@@ -208,8 +208,10 @@
       {\huge na Rota dos Baobás \par}
       \vfill
       %% {\LARGE por \par}
-      %% \smallskip
-      %% {\LARGE \authornames \par}
+      \smallskip
+      {\LARGE Versão 0.1 \par}
+      {\small Consultoria da Gunga \par}
+      {\small Nota fiscal XX do 08/2013 \par}
       %% \vfill
       \vfill
       {\large Patrocínio\par}
