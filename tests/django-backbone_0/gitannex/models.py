@@ -110,7 +110,7 @@ def gitPull(repoDir):
     pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
     pipe.wait()
 
-def gitStatus(fileName, repoDir):
+def gitStatus(repoDir):
     """Verifica o estado atual do repositorio"""
     # Dovrebbe restituire oltre allo status un flag per avviare o no il sync
     cmd = 'git status'
@@ -164,7 +164,7 @@ def gitAnnexSync(repoDir):
 
 # Connecting to Media signal
 @receiver(post_save, sender=Media)
-def gitMMediaPostSave(instance, **kwargs):
+def gitMediaPostSave(instance, **kwargs):
     """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e adiciona o objeto ao repositorio."""
     logger.debug(instance.type)
     logger.debug(type(instance))
