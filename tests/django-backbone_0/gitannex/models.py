@@ -16,6 +16,9 @@ from media.models import getFilePath
 from mucua.models import Mucua
 from gitannex.signals import filesync_done
 
+from media.serializers import MediaSerializer
+
+
 import os
 import datetime
 import subprocess
@@ -31,6 +34,25 @@ Neste arquivo sao definidos os modelos de dados da aplicacao *gitannex*.
 REPOSITORY_CHOICES = [ ('redemocambos', 'redemocambos'), ('sarava', 'sarava'), ('m0c4mb0s', 'm0c4mb0s') ]
 logger = logging.getLogger(__name__)
 gitannex_dir = settings.ANNEX_DIR
+
+
+# Connecting to Media signal
+@receiver(post_save, sender=Media)
+def gitMediaPostSave(instance, **kwargs):
+    """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e adiciona o objeto ao repositorio."""
+    logger.debug(instance.type)
+    logger.debug(type(instance))
+    gitAnnexAdd(instance.getFileName(), getFilePath(instance))
+    serializer = MediaSerializer(instance)
+    print serializer.getJSON()
+#    gitAdd(instance.getFileName(), getFilePath(instance))
+    mediapath = getFilePath(instance)+'/'
+    mediadata = instance.uuid + '.json'
+    fout = open(mediapath + mediadata, 'w')
+    fout.write(str(serializer.getJSON()))
+    fout.close()
+    gitAdd(mediadata, mediapath)
+    gitCommit(instance.getFileName(), instance.author.username, instance.author.email, getFilePath(instance))
 
 def _createRepository(repositoryName, remoteRepositoryURLOrPath):
     """Cria e inicializa um repositorio *git-annex*."""
@@ -84,7 +106,7 @@ def _getAvailableFolders(path):
 
 def gitAdd(fileName, repoDir):
     """Adiciona um arquivo no repositorio."""
-    logger.info('git add ' + fileTitle)
+    logger.info('git add ' + fileName)
     cmd = 'git add '+ fileName
     pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
     pipe.wait()
@@ -161,18 +183,6 @@ def gitAnnexSync(repoDir):
     cmd = 'git annex sync'
     pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
     pipe.wait()
-
-# Connecting to Media signal
-@receiver(post_save, sender=Media)
-def gitMediaPostSave(instance, **kwargs):
-    """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e adiciona o objeto ao repositorio."""
-    logger.debug(instance.type)
-    logger.debug(type(instance))
-    gitAnnexAdd(instance.getFileName(), getFilePath(instance))
-
-#    gitAdd(instance.getFileName(), getFilePath(instance))
-    
-    gitCommit(instance.getFileName(), instance.author.username, instance.author.email, getFilePath(instance))
 
 def runScheduledJobs():
     """Executa as operacoes programadas em todos os repositorios. """

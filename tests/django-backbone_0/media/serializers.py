@@ -5,7 +5,10 @@ from etiqueta.models import Etiqueta
 from mucua.models import Mucua
 from etiqueta.serializers import EtiquetaSerializer
 from mucua.serializers import MucuaSerializer
-from gitannex.serializers import RepositorySerializer
+from rest_framework.renderers import JSONRenderer
+
+from django.db.models import get_model
+#from gitannex.serializers import RepositorySerializer
 
 class MediaSerializer(serializers.ModelSerializer):
     # com essas linhas, media puxa apenas referencia (nao objeto completo)
@@ -16,7 +19,9 @@ class MediaSerializer(serializers.ModelSerializer):
 #    author = serializers.RelatedField(many = False)
     tags = EtiquetaSerializer(required=False)
     origin = MucuaSerializer()
-    repository = RepositorySerializer()
+    
+    repository = get_model('gitannex.serializers', 'RepositorySerializer')
+
     
     class Meta:
         model = Media
@@ -50,3 +55,6 @@ class MediaSerializer(serializers.ModelSerializer):
 
         # Create new instance
         return Media(**attrs)
+    
+    def getJSON(self):
+        return JSONRenderer().render(self.data)
