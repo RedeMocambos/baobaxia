@@ -9,19 +9,27 @@ class Etiqueta(models.Model):
     # triage = 
 
     def __unicode__(self):
-        return self.namespace + ':' + self.etiqueta
+        return self.namespace + ":" + self.etiqueta if self.namespace != '' else self.etiqueta 
 
     def getId(self):
-        return self.namespace + ':' + self.etiqueta
+        return self.namespace + ":" + self.etiqueta if self.namespace != '' else self.etiqueta 
 
-    # receive a tag with namespace and save it correctly
-    # - ainda bugado
-    # def save(self, *args, **kwargs):
-    #     if self.etiqueta.find(':') > 0:
-    #         args = self.etiqueta.split(':')
-    #         self.namespace = args[0]
-    #         self.etiqueta = args[1]
-    #     super(Etiqueta, self).save(*args, **kwargs)
+    def setNamespace(self):
+        e = str(self.etiqueta)
+        if e.find(':') > 0:
+            args = self.etiqueta.split(':')
+            self.namespace = args[0]
+
+    def setEtiqueta(self):
+        e = str(self.etiqueta)
+        if e.find(':') > 0:
+            args = self.etiqueta.split(':')
+            self.etiqueta = args[1]
+
+    def save(self, *args, **kwargs):
+        self.setNamespace()
+        self.setEtiqueta()
+        super(Etiqueta, self).save(*args, **kwargs)
     
     class Meta:
         ordering = ('etiqueta',)
