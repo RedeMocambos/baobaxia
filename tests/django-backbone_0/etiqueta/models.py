@@ -15,14 +15,12 @@ class Etiqueta(models.Model):
         return self.namespace + ":" + self.etiqueta if self.namespace != '' else self.etiqueta 
 
     def setNamespace(self):
-        e = str(self.etiqueta)
-        if e.find(':') > 0:
+        if self.etiqueta.find(':') > 0:
             args = self.etiqueta.split(':')
             self.namespace = args[0]
 
     def setEtiqueta(self):
-        e = str(self.etiqueta)
-        if e.find(':') > 0:
+        if self.etiqueta.find(':') > 0:
             args = self.etiqueta.split(':')
             self.etiqueta = args[1]
 
