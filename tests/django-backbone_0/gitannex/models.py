@@ -184,6 +184,13 @@ def gitAnnexSync(repoDir):
     pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
     pipe.wait()
 
+def gitAnnexStatus(repoDir):
+    """View all mucuas in a given repository"""
+    logger.info('git annex status')
+    cmd = 'git annex status'
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+    pipe.wait()
+
 def runScheduledJobs():
     """Executa as operacoes programadas em todos os repositorios. """
     allRep = Repository.objects.all()

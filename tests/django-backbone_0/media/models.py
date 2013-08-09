@@ -29,10 +29,16 @@ def generateUUID():
 
 
 def getFilePath(instance):
+    if instance.date == '':
+        t = datetime.now
+        date = t.strftime("%y/%m/%d/")
+    else:
+        date = instance.date.strftime("%y/%m/%d/")
+
     t = datetime.now()
     return os.path.join(ANNEX_DIR, instance.getRepository(),
                         instance.getMucua(), instance.getType(), 
-                        t.strftime("%y/%m/%d/"))
+                        date)
 
     
 class Media(models.Model):

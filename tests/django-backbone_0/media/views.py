@@ -121,11 +121,14 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         if media.id:        
             tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')            
             media.tags.clear()
-            for etiqueta in tags:
+            for tag in tags:
                 try:
-                    etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
+                    if tag.find(':') > 0:
+                        args = tag.split(':')
+                        tag = args[1]
+                    etiqueta = Etiqueta.objects.get(etiqueta = tag)
                 except Etiqueta.DoesNotExist:
-                    etiqueta = Etiqueta.objects.create(etiqueta = etiqueta)
+                    etiqueta = Etiqueta.objects.create(etiqueta = tag)
                     etiqueta.save()
                 
                 media.tags.add(etiqueta)
@@ -166,6 +169,9 @@ def media_detail(request, repository, mucua, pk = None, format=None):
             tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
             for etiqueta in tags:
                 try:
+                    if tag.find(':') > 0:
+                        args = tag.split(':')
+                        tag = args[1]
                     etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
                 except Etiqueta.DoesNotExist:
                     etiqueta = Etiqueta.objects.create(etiqueta = etiqueta)
