@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from media.models import Media, media_file_name, getFilePath
+from media.models import Media, mediaFileName, getFilePath
 from etiqueta.models import Etiqueta
 from media.forms import MediaForm
 from media.serializers import MediaSerializer
