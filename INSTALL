@@ -1,0 +1,9 @@
+sudo apt-get install git-annex python-pip
+sudo pip install virtualenv
+virtualenv bbxenv
+source ~/bbxenv/bin/activate
+pip install -r ~/baobaxia/tests/django-backbone_0/requirements.txt
+
+
+
+ 

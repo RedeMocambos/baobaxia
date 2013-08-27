@@ -10,7 +10,7 @@ class Etiqueta(models.Model):
     note = models.TextField(max_length=300, blank=True)
     etiqueta = models.CharField(max_length=26)
     policies = models.CharField(max_length=100, choices=self._getPolicies(), default='sync', unique=True)
-
+    
     def _getPolicies(self):
         try: 
             json_data = open(self._getPoliciesFilename())
