@@ -31,7 +31,7 @@ class Etiqueta(models.Model):
             
         
     def _getPoliciesFilename(self):
-        return POLICIES_DIR +'/'+ etiqueta.getId() + '.json'
+        return POLICIES_DIR +'/'+ self.getId() + '.json'
 
     def __unicode__(self):
         return self.namespace + ":" + self.etiqueta if self.namespace != '' else self.etiqueta 

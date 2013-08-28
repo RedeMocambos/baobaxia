@@ -3,6 +3,19 @@ sudo pip install virtualenv
 virtualenv bbxenv
 source ~/bbxenv/bin/activate
 pip install -r ~/baobaxia/tests/django-backbone_0/requirements.txt
+cd ~/baobaxia/tests/django-backbone_0/bbx/
+cp settings.example.py settings.py
+
+   MODIFICAR o arquivo settings.py COM OS PATH E DB
+
+cd ~/baobaxia/tests/django-backbone_0/
+python manage.py syncdb
+python manage.py migrate --all 
+   
+   PARA RODAR O sistema 
+
+python manage.py runserver 0.0.0.0:9000
+        
 
 
 
