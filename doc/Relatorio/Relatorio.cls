@@ -210,8 +210,8 @@
       %% {\LARGE por \par}
       \smallskip
       {\LARGE Versão 0.1 \par}
-      {\small Consultoria da Gunga \par}
-      {\small Nota fiscal XX do 08/2013 \par}
+      {\small Consultoria da Associação Cultural Dynamite \par}
+      {\small Nota fiscal 999 de 08/2013 \par}
       %% \vfill
       \vfill
       {\large Patrocínio\par}
