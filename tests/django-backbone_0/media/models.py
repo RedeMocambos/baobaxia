@@ -78,14 +78,14 @@ class Media(models.Model):
     def getFormat(self):
         return self.format
 
-    # perform validation
-    def clean(self):
-        from django.core.exceptions import ValidationError
-        try:
-            self.full_clean()
-        except ValidationError as e:
-            # do stuff
-            print e
+    # # perform validation
+    # def clean(self):
+    #     from django.core.exceptions import ValidationError
+    #     try:
+    #         self.full_clean()
+    #     except ValidationError as e:
+    #         # do stuff
+    #         print e
 
     def getTags(self):
         return self.tags
@@ -94,19 +94,19 @@ class Media(models.Model):
         ordering = ('date',)
 
 
-@receiver(post_save, sender=Media)
-def startPostSavePolicies(instance, **kwargs):
-    """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e inicializa as policies de post-save"""
-    tags = instance.getTags()
+# @receiver(post_save, sender=Media)
+# def startPostSavePolicies(instance, **kwargs):
+#     """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e inicializa as policies de post-save"""
+#     tags = instance.getTags()
 
-    # tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
-    for tag in tags:
-        try:
-            for policy in tag.policies:
-                if "postSave" in policy:
-                    import sync.policy
-                    result = getattr(sync, policy(instance))
-        except Media.TagPolicyDoesNotExist:
-            return []
+#     # tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
+#     for tag in tags:
+#         try:
+#             for policy in tag.policies:
+#                 if "postSave" in policy:
+#                     import sync.policy
+#                     result = getattr(sync, policy(instance))
+#         except Media.TagPolicyDoesNotExist:
+#             return []
 
             

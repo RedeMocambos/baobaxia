@@ -11,7 +11,7 @@ class Migration(SchemaMigration):
         # Adding model 'Repository'
         db.create_table(u'gitannex_repository', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('note', self.gf('django.db.models.fields.TextField')(max_length=300)),
+            ('note', self.gf('django.db.models.fields.TextField')(max_length=300, blank=True)),
             ('repositoryName', self.gf('django.db.models.fields.CharField')(default='redemocambos', unique=True, max_length=100)),
             ('repositoryURLOrPath', self.gf('django.db.models.fields.CharField')(max_length=200)),
             ('syncStartTime', self.gf('django.db.models.fields.DateField')()),
@@ -43,7 +43,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('repositoryName',)", 'object_name': 'Repository'},
             'enableSync': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'note': ('django.db.models.fields.TextField', [], {'max_length': '300'}),
+            'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
             'remoteRepositoryURLOrPath': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'repositoryName': ('django.db.models.fields.CharField', [], {'default': "'redemocambos'", 'unique': 'True', 'max_length': '100'}),
             'repositoryURLOrPath': ('django.db.models.fields.CharField', [], {'max_length': '200'}),

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from bbx.settings import POLICIES_DIR
+#from bbx.settings import POLICIES_DIR
 import json
 
 
