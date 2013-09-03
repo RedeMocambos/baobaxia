@@ -7,6 +7,7 @@ from mucua.models import Mucua
 from etiqueta.models import Etiqueta
 from bbx.settings import ANNEX_DIR
 #from media.serializers import MediaSerializer
+from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 
@@ -95,6 +96,7 @@ def startPostSavePolicies(instance, **kwargs):
             for policy in tag.policies:
                 if "postSave" in policy:
                     import sync.policy
-                    result = getattr(sync, policy(instance))
-        except Media.TagPolicyDoesNotExist
+                    return getattr(sync, policy(instance))
+        except Media.TagPolicyDoesNotExist:
+            return None
             
