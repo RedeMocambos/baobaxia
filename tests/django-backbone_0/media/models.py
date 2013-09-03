@@ -9,7 +9,7 @@ from bbx.settings import ANNEX_DIR
 #from media.serializers import MediaSerializer
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-
+from django.dispatch import receiver
 
 import os
 import uuid
@@ -78,6 +78,15 @@ class Media(models.Model):
     def getFormat(self):
         return self.format
 
+    # perform validation
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        try:
+            self.full_clean()
+        except ValidationError as e:
+            # do stuff
+            print e
+
     def getTags(self):
         return self.tags
 
@@ -96,7 +105,8 @@ def startPostSavePolicies(instance, **kwargs):
             for policy in tag.policies:
                 if "postSave" in policy:
                     import sync.policy
-                    return getattr(sync, policy(instance))
+                    result = getattr(sync, policy(instance))
         except Media.TagPolicyDoesNotExist:
-            return None
+            return []
+
             

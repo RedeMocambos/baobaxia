@@ -9,6 +9,7 @@ class Etiqueta(models.Model):
     namespace = models.CharField(max_length=10, blank=True, default='')
     note = models.TextField(max_length=300, blank=True)
     etiqueta = models.CharField(max_length=26)
+<<<<<<< HEAD
     # policies = models.CharField(max_length=100, choices=_getPolicies(), default='sync', unique=True)
     
     # def _getPolicies(self):
@@ -29,6 +30,9 @@ class Etiqueta(models.Model):
     #         json_data.close()
     #     except Etiqueta.PoliciesPersistentDataUnavailable:
     #         return None
+    
+    # def __init__(self):
+    #     self.policies = self._getPolicies()
         
     # def _getPoliciesFilename(self):
     #     return POLICIES_DIR +'/'+ self.getId() + '.json'
