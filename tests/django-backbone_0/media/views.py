@@ -151,34 +151,35 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         
         # Linha curl mista para testar upload E mandar data
         # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "license=" -F "date=2013/06/07" -F "type=imagem" -F "mediafile=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/media/ > /tmp/x.html          
-        instance = Media(repository = repository, 
-                         origin = mucua,
-                         author = author, 
-                         title = request.DATA['title'], 
-                         comment = request.DATA['comment'],
-                         type = request.DATA['type'],
-                         license = request.DATA['license'],
-                         date = request.DATA['date'],
-                         mediafile = request.FILES['mediafile']
-                         )
+        media = Media(repository = repository, 
+                      origin = mucua,
+                      author = author, 
+                      title = request.DATA['title'], 
+                      comment = request.DATA['comment'],
+                      type = request.DATA['type'],
+                      license = request.DATA['license'],
+                      date = request.DATA['date'],
+                      mediafile = request.FILES['mediafile']
+                      )
         
-        instance.save()
-        if instance.id:
-        
-            # get tags by list or separated by ','
-            tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
-            for etiqueta in tags:
+        media.save()
+        if media.id:
+            # get etiquetas by list or separated by ','
+            etiquetas = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
+            for etiqueta_nome in etiquetas:
                 try:
-                    if tag.find(':') > 0:
+                    if etiqueta_nome.find(':') > 0:
                         args = tag.split(':')
-                        tag = args[1]
-                    etiqueta = Etiqueta.objects.get(etiqueta = etiqueta)
+                        etiqueta_nome = args[1]
+                        etiqueta_namespace = args[0]
+                    etiqueta = Etiqueta.objects.get(etiqueta=etiqueta_nome)
                 except Etiqueta.DoesNotExist:
-                    etiqueta = Etiqueta.objects.create(etiqueta = etiqueta)
+                    etiqueta = Etiqueta.objects.create(etiqueta=etiqueta_nome)
                     etiqueta.save()
 
-                instance.tags.add(etiqueta)
-                
+                media.tags.add(etiqueta)
+            media.save() # salva de novo para chamar o post_save
+            
             # TODO: return serialized data
             return Response("created media - OK", status=status.HTTP_201_CREATED)
         else:

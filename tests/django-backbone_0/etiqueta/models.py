@@ -1,41 +1,39 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-#from bbx.settings import POLICIES_DIR
+from bbx.settings import POLICIES_DIR
 import json
+import exceptions
 
+class PoliciesPersistentDataUnavailable(exceptions.Exception):
+    def __init__(self,args=None):
+        self.args = args
 
 class Etiqueta(models.Model):
     namespace = models.CharField(max_length=10, blank=True, default='')
     note = models.TextField(max_length=300, blank=True)
     etiqueta = models.CharField(max_length=26)
-
-    # policies = models.CharField(max_length=100, choices=_getPolicies(), default='sync', unique=True)
+    policies = models.CharField(max_length=100, choices=[], blank=True)
     
-    # def _getPolicies(self):
-    #     try: 
-    #         json_data = open(self._getPoliciesFilename())
-    #         data = json.load(json_data)
-    #         json_data.close(self._getPoliciesFilename())
-    #         return data[policies]
-    #     except Etiqueta.PoliciesPersistentDataUnavailable:
-    #         return []
+    def _getPolicies(self):
+        try: 
+            data = json.load(open(self._getPoliciesFilename(), 'r'))
+            json_data.close(self._getPoliciesFilename())
+            return data[policies]
+        except PoliciesPersistentDataUnavailable:
+            return None
 
-    # def _setPolicies(self):
-    #     try: 
-    #         json_data = open(self._getPoliciesFilename())
-    #         data = json.load(json_data)
-    #         data[policies] = etiqueta.policies
-    #         json.dump(data, json_data)
-    #         json_data.close()
-    #     except Etiqueta.PoliciesPersistentDataUnavailable:
-    #         return None
-    
-    # def __init__(self):
-    #     self.policies = self._getPolicies()
+    def _setPolicies(self):
+        try:
+            data = json.load(open(self._getPoliciesFilename(), 'w'))
+            data[policies] = self.policies
+            json.dump(data, json_data)
+            json_data.close()
+        except IOError:
+            return None
         
-    # def _getPoliciesFilename(self):
-    #     return POLICIES_DIR +'/'+ self.getId() + '.json'
+    def _getPoliciesFilename(self):
+        return POLICIES_DIR +'/'+ self.getId() + '.json'
 
     def __unicode__(self):
         return self.namespace + ":" + self.etiqueta if self.namespace != '' else self.etiqueta 
@@ -56,7 +54,8 @@ class Etiqueta(models.Model):
     def save(self, *args, **kwargs):
         self.setNamespace()
         self.setEtiqueta()
-#        self._setPolicies()
+        if self.policies:
+            self._setPolicies()
         super(Etiqueta, self).save(*args, **kwargs)
     
     class Meta:

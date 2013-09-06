@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from mucua.models import Mucua
 from etiqueta.models import Etiqueta
-from bbx.settings import ANNEX_DIR
+from bbx.settings import ANNEX_DIR, TRIAGE_DIR
 #from media.serializers import MediaSerializer
 from django.dispatch import receiver
 from django.db.models.signals import post_save
@@ -94,19 +94,17 @@ class Media(models.Model):
         ordering = ('date',)
 
 
-# @receiver(post_save, sender=Media)
-# def startPostSavePolicies(instance, **kwargs):
-#     """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e inicializa as policies de post-save"""
-#     tags = instance.getTags()
-
-#     # tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
-#     for tag in tags:
-#         try:
-#             for policy in tag.policies:
-#                 if "postSave" in policy:
-#                     import sync.policy
-#                     result = getattr(sync, policy(instance))
-#         except Media.TagPolicyDoesNotExist:
-#             return []
-
-            
+@receiver(post_save, sender=Media)
+def startPostSavePolicies(instance, **kwargs):
+    """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e inicializa as policies de post-save"""
+    tags = instance.getTags()
+    # tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
+    if tags.all():
+        for tag in tags.all():
+            try:
+                for policy in tag.policies:
+                    if "postSave" in policy:
+                        import sync.policy
+                        result = getattr(sync, policy(instance))
+            except Media.TagPolicyDoesNotExist:
+                return []

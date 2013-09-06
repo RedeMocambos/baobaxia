@@ -7,6 +7,9 @@ ANNEX_DIR = "/storage/annex/alternate/pub"
 DEFAULT_MUCUA = "dandara"
 DEFAULT_REPOSITORY = "redemocambos"
 
+POLICIES_DIR = PROJECT_ROOT + "/../etiqueta/policies"
+TRIAGE_DIR = PROJECT_ROOT + "/../triage"
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
