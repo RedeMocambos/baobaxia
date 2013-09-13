@@ -211,7 +211,7 @@
       \smallskip
       {\LARGE Versão 0.1 \par}
       {\small Consultoria da Associação Cultural Dynamite \par}
-      {\small Nota fiscal 999 de 08/2013 \par}
+      {\small Nota fiscal 1000 de 09/2013 \par}
       %% \vfill
       \vfill
       {\large Patrocínio\par}
