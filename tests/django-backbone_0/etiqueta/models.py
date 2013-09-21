@@ -25,6 +25,11 @@ import json
 import os
 import exceptions
 
+# This is to specify to south how to work with MultiSelectField:
+# http://south.readthedocs.org/en/latest/customfields.html
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules([], ["bbx.utils.MultiSelectField"])
+
 
 class PoliciesPersistentDataUnavailable(exceptions.Exception):
     def __init__(self,args=None):
