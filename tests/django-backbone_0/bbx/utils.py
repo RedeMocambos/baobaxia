@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-                                                                                                                                       
+# Multi Select Field, originally taken from:
+# http://djangosnippets.org/snippets/1200/  
+
 from django.db import models
 from django import forms
 from django.utils.text import capfirst
@@ -6,7 +10,7 @@ class MultiSelectFormField(forms.MultipleChoiceField):
     widget = forms.CheckboxSelectMultiple
     
     def __init__(self, *args, **kwargs):
-        self.max_choices = kwargs.pop('max_choices', 0)
+        self.max_choices = kwargs.pop('max_choices', 5)
         super(MultiSelectFormField, self).__init__(*args, **kwargs)
 
     def clean(self, value):
@@ -38,6 +42,12 @@ class MultiSelectField(models.Field):
             defaults['initial'] = self.get_default()
         defaults.update(kwargs)
         return MultiSelectFormField(**defaults)
+
+    def validate(self, value, model_instance):
+        # Needed couse it's a custom field .. see more:
+        # https://groups.google.com/forum/#!topic/django-users/J0NXIUo7TdY
+        # Should do something?
+        return 
 
     def get_db_prep_value(self, value, connection, prepared=False):
         if isinstance(value, basestring):

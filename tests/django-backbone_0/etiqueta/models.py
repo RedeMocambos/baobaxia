@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
 """
- Etiquetas in Bbx define some behaviours of the system, beside qualifing
+ Etiquetas in Bbx define some behaviours of the system, beside qualifying
  contents. Each etiqueta can be associated to a set of policies
  (POLICIES_DIR). 
 
- Actaually policies will be linked to Django Signals by name, for
- example a policy called postSave_copyToTaina is imported and called
+ Actually policies will be linked to Django Signals selected by name. For
+ example, a policy called "postSave_copyToTaina" is imported and executed
  on post save signals.
 
- FIX: Testando o MultiSelectField http://djangosnippets.org/snippets/1200/ 
+ FIX: Testando o MultiSelectField 
       algum problema na hora de salvar. 
 
  TODO: O arquivo policies na real contem a função mesmo.. não precisa de
@@ -19,7 +19,7 @@
 """
 
 from django.db import models
-from bbx.settings import POLICIES_DIR
+from bbx.settings import POLICIES_DIR, TRIAGE_DIR
 from bbx.utils import MultiSelectField
 import json
 import os
@@ -35,39 +35,36 @@ class PoliciesPersistentDataUnavailable(exceptions.Exception):
     def __init__(self,args=None):
         self.args = args
 
-
-def getPolicies(etiqueta):
-    """
-    Policies are read from a JSON file in POLICIES_DIR
+# def getPolicies(etiqueta):
+#     """
+#     Policies are read from a JSON file in POLICIES_DIR
     
-    """
-    try: 
-        data = json.load(open(etiqueta.getPoliciesFilename(), 'r'))
-        json_data.close(etiqueta.getPoliciesFilename())
-        return data[policies]
-    except PoliciesPersistentDataUnavailable:
-        return None
+#     """
+#     try: 
+#         data = json.load(open(etiqueta.getPoliciesFilename(), 'r'))
+#         json_data.close(etiqueta.getPoliciesFilename())
+#         return data[policies]
+#     except PoliciesPersistentDataUnavailable:
+#         return None
 
 
-def setPolicies(etiqueta):
-    """
-    Policies are saved to a JSON file in POLICIES_DIR
+# def setPolicies(etiqueta):
+#     """
+#     Policies are saved to a JSON file in POLICIES_DIR
     
-    """
-    try:
-        data = json.load(open(etiqueta._getPoliciesFilename(), 'w'))
-        data[policies] = etiqueta.policies
-        print data
-        json.dump(data, json_data)
-        json_data.close()
-    except IOError:
-        return None
+#     """
+#     try:
+#         data = json.load(open(etiqueta._getPoliciesFilename(), 'w'))
+#         data[policies] = etiqueta.policies
+#         print data
+#         json.dump(data, json_data)
+#         json_data.close()
+#     except IOError:
+#         return None
 
 def getAvailablePolicies():
     """Get a list of available policies from POLICIES_DIR."""
-    #FIXX
-    policiesList = [( name[:-3], name[:-3]) for name in os.listdir(POLICIES_DIR)]
-    print policiesList
+    policiesList = [( name[:-3], name[:-3]) for name in os.listdir(TRIAGE_DIR)]
     return policiesList
    
 class Etiqueta(models.Model):
@@ -119,8 +116,8 @@ class Etiqueta(models.Model):
 
         self.setNamespace()
         self.setEtiqueta()
-        if self.policies:
-            self._setPolicies()
+        # if self.policies:
+        #     setPolicies(self)
         super(Etiqueta, self).save(*args, **kwargs)
     
     class Meta:
