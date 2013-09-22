@@ -3,16 +3,13 @@
 """
  Etiquetas in Bbx define some behaviours of the system, beside qualifying
  contents. Each etiqueta can be associated to a set of policies
- (POLICIES_DIR). 
+ (TRIAGE_DIR). 
 
  Actually policies will be linked to Django Signals selected by name. For
  example, a policy called "postSave_copyToTaina" is imported and executed
  on post save signals.
 
- FIX: Testando o MultiSelectField 
-      algum problema na hora de salvar. 
-
- TODO: O arquivo policies na real contem a função mesmo.. não precisa de
+ TODO: O arquivo  na real contem a função mesmo.. não precisa de
        json. As etiquetas periodicamenta vão ser definidas e carregada
        com as fixtures.
 
@@ -35,36 +32,11 @@ class PoliciesPersistentDataUnavailable(exceptions.Exception):
     def __init__(self,args=None):
         self.args = args
 
-# def getPolicies(etiqueta):
-#     """
-#     Policies are read from a JSON file in POLICIES_DIR
-    
-#     """
-#     try: 
-#         data = json.load(open(etiqueta.getPoliciesFilename(), 'r'))
-#         json_data.close(etiqueta.getPoliciesFilename())
-#         return data[policies]
-#     except PoliciesPersistentDataUnavailable:
-#         return None
-
-
-# def setPolicies(etiqueta):
-#     """
-#     Policies are saved to a JSON file in POLICIES_DIR
-    
-#     """
-#     try:
-#         data = json.load(open(etiqueta._getPoliciesFilename(), 'w'))
-#         data[policies] = etiqueta.policies
-#         print data
-#         json.dump(data, json_data)
-#         json_data.close()
-#     except IOError:
-#         return None
-
 def getAvailablePolicies():
-    """Get a list of available policies from POLICIES_DIR."""
-    policiesList = [( name[:-3], name[:-3]) for name in os.listdir(TRIAGE_DIR)]
+    """Get a list of available policies from TRIAGE_DIR."""
+    policiesList = [( os.path.splitext(name)[0], os.path.splitext(name)[0]) \
+                        for name in os.listdir(TRIAGE_DIR) if name.endswith(".py") \
+                        if not (name.startswith("__")) ]
     return policiesList
    
 class Etiqueta(models.Model):
@@ -78,7 +50,9 @@ class Etiqueta(models.Model):
 
     def getId(self):
         """
-        Returns etiqueta's id built as namespace + etiqueta, ex.: bbx:publico ("etiqueta" attribute shoul'd be "name" FIX: rename!)
+        Returns etiqueta's id built as namespace + etiqueta, ex.:
+        bbx:publico ("etiqueta" attribute shoul'd be "name" FIX:
+        rename!)
         
         """
         return self.namespace + ":" + self.etiqueta if self.namespace != '' else self.etiqueta 
@@ -116,8 +90,6 @@ class Etiqueta(models.Model):
 
         self.setNamespace()
         self.setEtiqueta()
-        # if self.policies:
-        #     setPolicies(self)
         super(Etiqueta, self).save(*args, **kwargs)
     
     class Meta:
