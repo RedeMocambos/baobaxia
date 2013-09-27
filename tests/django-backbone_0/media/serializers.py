@@ -8,7 +8,7 @@ from mucua.serializers import MucuaSerializer
 from rest_framework.renderers import JSONRenderer
 
 from django.db.models import get_model
-#from gitannex.serializers import RepositorySerializer
+#from repository.serializers import RepositorySerializer
 
 class MediaSerializer(serializers.ModelSerializer):
     # com essas linhas, media puxa apenas referencia (nao objeto completo)
@@ -20,7 +20,7 @@ class MediaSerializer(serializers.ModelSerializer):
     tags = TagSerializer(required=False)
     origin = MucuaSerializer()
     
-    repository = get_model('gitannex.serializers', 'RepositorySerializer')
+    repository = get_model('repository.serializers', 'RepositorySerializer')
 
     
     class Meta:

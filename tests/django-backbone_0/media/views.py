@@ -18,7 +18,7 @@ from os import path
 import mimetypes
 
 from mucua.models import Mucua
-from gitannex.models import Repository
+from repository.models import Repository
 
 redirect_base_url = "http://localhost:8000/"  # TODO: tirar / mover
 

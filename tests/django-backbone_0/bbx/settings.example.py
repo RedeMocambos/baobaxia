@@ -3,11 +3,11 @@
 import os
 PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
-ANNEX_DIR = "/storage/annex/alternate/pub"
+REPOSITORY_DIR = "/storage/annex/alternate/pub"
 DEFAULT_MUCUA = "dandara"
 DEFAULT_REPOSITORY = "redemocambos"
 
-TRIAGE_DIR = PROJECT_ROOT + "/../triage"
+POLICIES_DIR = PROJECT_ROOT + "/../policy"
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

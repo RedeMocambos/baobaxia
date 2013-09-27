@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from mucua.models import Mucua
 from tag.models import Tag
-from bbx.settings import ANNEX_DIR, TRIAGE_DIR
+from bbx.settings import REPOSITORY_DIR, POLICIES_DIR
 #from media.serializers import MediaSerializer
 from django.dispatch import receiver
 from django.db.models.signals import post_save
@@ -57,7 +57,7 @@ class Media(models.Model):
                               default='ogg', blank=True)
     license = models.CharField(max_length=100, blank=True)
     mediafile = models.FileField(upload_to=mediaFileName, blank=True)
-    repository = models.ForeignKey('gitannex.Repository', related_name='repository')
+    repository = models.ForeignKey('repository.Repository', related_name='repository')
     #    versions = 
     tags = models.ManyToManyField(Tag, related_name='tags')
     
@@ -113,7 +113,7 @@ def startPostSavePolicies(instance, **kwargs):
                 for policy in tag.policies:
                     print policy
                     if "postSave" in policy:
-                        policyModule = "triage." + policy
+                        policyModule = "policy." + policy
                         module = import_module(policyModule)
                         result = getattr(module, policy)(instance)
             except TagPolicyDoesNotExist:
