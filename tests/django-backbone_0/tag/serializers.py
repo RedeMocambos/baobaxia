@@ -1,11 +1,11 @@
 from django.forms import widgets
 from rest_framework import serializers
-from etiqueta.models import Etiqueta
+from tag.models import Tag
 
-class EtiquetaSerializer(serializers.ModelSerializer):
+class TagSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Etiqueta
-        fields = ('id', 'namespace', 'note', 'etiqueta')
+        model = Tag
+        fields = ('id', 'namespace', 'note', 'name')
 
     def restore_object(self, attrs, instance=None):
         
@@ -14,9 +14,9 @@ class EtiquetaSerializer(serializers.ModelSerializer):
             instance.id = attrs.get('id', instance.id)
             instance.namespace = attrs.get('namespace', instance.namespace)
             instance.note = attrs.get('namespace', instance.note)
-            instance.etiqueta = attrs.get('etiqueta', instance.etiqueta)
+            instance.name = attrs.get('name', instance.name)
             
             return instance
 
         # Create new instance
-        return Etiqueta(**attrs)
+        return Tag(**attrs)

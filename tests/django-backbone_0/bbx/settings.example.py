@@ -7,7 +7,6 @@ ANNEX_DIR = "/storage/annex/alternate/pub"
 DEFAULT_MUCUA = "dandara"
 DEFAULT_REPOSITORY = "redemocambos"
 
-POLICIES_DIR = PROJECT_ROOT + "/../etiqueta/policies"
 TRIAGE_DIR = PROJECT_ROOT + "/../triage"
 
 DEBUG = True
@@ -139,8 +138,8 @@ INSTALLED_APPS = (
     'rest_framework',
     'media',
     'mucua',
-    'etiqueta',
-    'gitannex',    
+    'tag',
+    'repository',    
     'south',
 )
 

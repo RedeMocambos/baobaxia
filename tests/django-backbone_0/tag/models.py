@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
- Etiquetas in Bbx define some behaviours of the system, beside qualifying
- contents. Each etiqueta can be associated to a set of policies
+ Tags (etiqueta) in Bbx define some behaviours of the system, beside qualifying
+ contents. Each tag can be associated to a set of policies
  (TRIAGE_DIR). 
 
  Actually policies will be linked to Django Signals selected by name. For
@@ -10,7 +10,7 @@
  on post save signals.
 
  TODO: O arquivo  na real contem a função mesmo.. não precisa de
-       json. As etiquetas periodicamenta vão ser definidas e carregada
+       json. As tags periodicamenta vão ser definidas e carregada
        com as fixtures.
 
 """
@@ -39,59 +39,59 @@ def getAvailablePolicies():
                         if not (name.startswith("__")) ]
     return policiesList
    
-class Etiqueta(models.Model):
+class Tag(models.Model):
     namespace = models.CharField(max_length=10, blank=True, default='')
     note = models.TextField(max_length=300, blank=True)
-    etiqueta = models.CharField(max_length=26)
+    name = models.CharField(max_length=26)
     policies = MultiSelectField(max_length=100, choices=getAvailablePolicies(), blank=True)
 
     def __unicode__(self):
-        return self.namespace + ":" + self.etiqueta if self.namespace != '' else self.etiqueta 
+        return self.namespace + ":" + self.name if self.namespace != '' else self.name
 
     def getId(self):
         """
-        Returns etiqueta's id built as namespace + etiqueta, ex.:
-        bbx:publico ("etiqueta" attribute shoul'd be "name" FIX:
+        Returns tag's id built as namespace + name, ex.:
+        bbx:publico ("name" attribute shoul'd be "name" FIX:
         rename!)
         
         """
-        return self.namespace + ":" + self.etiqueta if self.namespace != '' else self.etiqueta 
+        return self.namespace + ":" + self.name if self.namespace != '' else self.name 
 
     def _getPoliciesFilename(self):
         """
-        Policies file is built with POLICIES_DIR and etiqueta's id
+        Policies file is built with POLICIES_DIR and tag's id
         
         """
         return POLICIES_DIR +'/'+ self.getId() + '.json'
 
     def setNamespace(self):
         """
-        Sets etiqueta's namespace like in bbx:publico gets "bbx" :)
+        Sets tag's namespace like in bbx:publico gets "bbx" :)
         
         """
-        if self.etiqueta.find(':') > 0:
-            args = self.etiqueta.split(':')
+        if self.name.find(':') > 0:
+            args = self.name.split(':')
             self.namespace = args[0]
 
-    def setEtiqueta(self):
+    def setName(self):
         """
-        Sets etiqueta's name. FIX
+        Sets tag's name. FIX
         
         """
-        if self.etiqueta.find(':') > 0:
-            args = self.etiqueta.split(':')
-            self.etiqueta = args[1]
+        if self.name.find(':') > 0:
+            args = self.name.split(':')
+            self.name = args[1]
 
     def save(self, *args, **kwargs):
         """
-        Save also etiqueta's policies to a JSON file.
+        Save also tag's policies to a JSON file.
         
         """
 
         self.setNamespace()
-        self.setEtiqueta()
-        super(Etiqueta, self).save(*args, **kwargs)
+        self.setName()
+        super(Tag, self).save(*args, **kwargs)
     
     class Meta:
-        ordering = ('etiqueta',)
-        unique_together = ("namespace", "etiqueta")
+        ordering = ('name',)
+        unique_together = ("namespace", "name")

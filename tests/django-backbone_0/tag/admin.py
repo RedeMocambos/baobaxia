@@ -1,5 +1,5 @@
 from django.contrib import admin
-from etiqueta.models import Etiqueta
+from tag.models import Tag
 
-admin.site.register(Etiqueta)
+admin.site.register(Tag)
 

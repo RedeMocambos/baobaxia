@@ -1,9 +1,9 @@
 from django.forms import widgets
 from rest_framework import serializers
 from media.models import Media, FORMAT_CHOICES, TYPE_CHOICES
-from etiqueta.models import Etiqueta
+from tag.models import Tag
 from mucua.models import Mucua
-from etiqueta.serializers import EtiquetaSerializer
+from tag.serializers import TagSerializer
 from mucua.serializers import MucuaSerializer
 from rest_framework.renderers import JSONRenderer
 
@@ -17,7 +17,7 @@ class MediaSerializer(serializers.ModelSerializer):
 #    origin = serializers.RelatedField(many = False)
 #    repository = serializers.RelatedField(many = False)
 #    author = serializers.RelatedField(many = False)
-    tags = EtiquetaSerializer(required=False)
+    tags = TagSerializer(required=False)
     origin = MucuaSerializer()
     
     repository = get_model('gitannex.serializers', 'RepositorySerializer')

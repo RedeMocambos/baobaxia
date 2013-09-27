@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render, render_to_response, redi
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from media.models import Media, mediaFileName, getFilePath
-from etiqueta.models import Etiqueta
+from tag.models import Tag
 from media.forms import MediaForm
 from media.serializers import MediaSerializer
 from mucua.models import MUCUA_NAME_UUID
@@ -61,7 +61,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         # pega args da url se tiver
         if args:
             for tag in args.split('/'):
-                medias = medias.filter(tags__etiqueta__iexact = tag)
+                medias = medias.filter(tags__tag__iexact = tag)
         
         serializer = MediaSerializer(medias, many=True)
         return Response(serializer.data)
@@ -126,12 +126,12 @@ def media_detail(request, repository, mucua, pk = None, format=None):
                     if tag.find(':') > 0:
                         args = tag.split(':')
                         tag = args[1]
-                    etiqueta = Etiqueta.objects.get(etiqueta = tag)
-                except Etiqueta.DoesNotExist:
-                    etiqueta = Etiqueta.objects.create(etiqueta = tag)
-                    etiqueta.save()
+                    tag = Tag.objects.get(tag = tag)
+                except Tag.DoesNotExist:
+                    tag = Tag.objects.create(tag = tag)
+                    tag.save()
                 
-                media.tags.add(etiqueta)
+                media.tags.add(tag)
             
             # TODO: return serialized data
             return Response("updated media - OK", status=status.HTTP_201_CREATED)
@@ -164,20 +164,20 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         
         media.save()
         if media.id:
-            # get etiquetas by list or separated by ','
-            etiquetas = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
-            for etiqueta_nome in etiquetas:
+            # get tags by list or separated by ','
+            tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
+            for tag_name in tags:
                 try:
-                    if etiqueta_nome.find(':') > 0:
+                    if tag_name.find(':') > 0:
                         args = tag.split(':')
-                        etiqueta_nome = args[1]
-                        etiqueta_namespace = args[0]
-                    etiqueta = Etiqueta.objects.get(etiqueta=etiqueta_nome)
-                except Etiqueta.DoesNotExist:
-                    etiqueta = Etiqueta.objects.create(etiqueta=etiqueta_nome)
-                    etiqueta.save()
+                        tag_name = args[1]
+                        tag_namespace = args[0]
+                    tag = Tag.objects.get(name=tag_name)
+                except Tag.DoesNotExist:
+                    tag = Tag.objects.create(tag=tag_name)
+                    tag.save()
 
-                media.tags.add(etiqueta)
+                media.tags.add(tag)
             media.save() # salva de novo para chamar o post_save
             
             # TODO: return serialized data
