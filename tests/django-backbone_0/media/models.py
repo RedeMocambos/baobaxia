@@ -38,7 +38,7 @@ def getFilePath(instance):
         date = instance.date.strftime("%y/%m/%d/")
 
     t = datetime.now()
-    return os.path.join(ANNEX_DIR, instance.getRepository(),
+    return os.path.join(REPOSITORY_DIR, instance.getRepository(),
                         instance.getMucua(), instance.getType(), 
                         date)
 
