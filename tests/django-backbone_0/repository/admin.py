@@ -1,4 +1,4 @@
-from gitannex.models import Repository
+from repository.models import Repository
 from django.contrib import admin
 
 """

@@ -1,6 +1,6 @@
 from django.forms import widgets
 from rest_framework import serializers
-from gitannex.models import Repository
+from repository.models import Repository
 
 class RepositorySerializer(serializers.ModelSerializer):
     class Meta:

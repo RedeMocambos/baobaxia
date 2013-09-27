@@ -1,6 +1,6 @@
 from django.core.management.base import NoArgsCommand, CommandError
 
-from gitannex.models import GitAnnexRepository, runScheduledJobs
+from repository.models import Repository, runScheduledJobs
 
 """
 Definicoes do comando para executar as operacoes planejadas.

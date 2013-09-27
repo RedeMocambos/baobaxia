@@ -14,7 +14,7 @@ from media.models import getFilePath
 #from media.serializers import MediaSerializer
 
 from mucua.models import Mucua
-from gitannex.signals import filesync_done
+from repository.signals import filesync_done
 
 from media.serializers import MediaSerializer
 
@@ -33,7 +33,7 @@ Neste arquivo sao definidos os modelos de dados da aplicacao *gitannex*.
 # REPOSITORY_CHOICE é uma tupla com repositorios dentro da pasta /annex
 REPOSITORY_CHOICES = [ ('redemocambos', 'redemocambos'), ('sarava', 'sarava'), ('m0c4mb0s', 'm0c4mb0s') ]
 logger = logging.getLogger(__name__)
-gitannex_dir = settings.ANNEX_DIR
+repository_dir = settings.REPOSITORY_DIR
 
 
 # Connecting to Media signal
@@ -58,40 +58,40 @@ def _createRepository(repositoryName, remoteRepositoryURLOrPath):
     """Cria e inicializa um repositorio *git-annex*."""
     logger.info('git config --global user.name "admin"')
     cmd = 'git config --global user.name "admin"' 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, gitannex_dir, repositoryName))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir, repositoryName))
     pipe.wait()
     logger.info('git config --global user.email "admin@mocambos.net"')
     cmd = 'git config --global user.email "admin@mocambos.net"' 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, gitannex_dir, repositoryName))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir, repositoryName))
     pipe.wait()
     logger.info('git init')
     cmd = 'git init' 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, gitannex_dir, repositoryName))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir, repositoryName))
     pipe.wait()
     logger.info('git annex init ' + settings.PORTAL_NAME)
     cmd = 'git annex init ' + settings.PORTAL_NAME 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, gitannex_dir, repositoryName))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir, repositoryName))
     pipe.wait()
     # TODO: Manage repositories dinamically 
     logger.info('git remote add baoba ' + remoteRepositoryURLOrPath)
     cmd = 'git remote add baoba ' + remoteRepositoryURLOrPath 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, gitannex_dir, repositoryName))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir, repositoryName))
     pipe.wait()
 
 
 def _cloneRepository(repositoryURLOrPath, repositoryName):
     """Clona e inicializa um repositorio *git-annex*."""
     cmd = 'git config --global user.name "admin"' 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, gitannex_dir))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir))
     pipe.wait()
     cmd = 'git config --global user.email "admin@mocambos.net"' 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, gitannex_dir))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir))
     pipe.wait()
     cmd = 'git clone ' + repositoryURLOrPath + repositoryName  
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, gitannex_dir))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir))
     pipe.wait()
     cmd = 'git annex init ' + settings.PORTAL_NAME 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, gitannex_dir, repositoryName))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir, repositoryName))
     pipe.wait()
 
 def _selectRepositoryByPath():
@@ -100,8 +100,8 @@ def _selectRepositoryByPath():
 
 def _getAvailableFolders(path):
     """Procura as pastas que podem ser inicializada como repositorio, retorna a lista das pastas."""
-    folderList = [( name , name ) for name in os.listdir(os.path.join(path, gitannex_dir)) \
-                      if os.path.isdir(os.path.join(path, gitannex_dir, name))]
+    folderList = [( name , name ) for name in os.listdir(os.path.join(path, repository_dir)) \
+                      if os.path.isdir(os.path.join(path, repository_dir, name))]
     return folderList
 
 def gitAdd(fileName, repoDir):
