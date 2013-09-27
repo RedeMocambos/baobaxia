@@ -174,7 +174,7 @@ def media_detail(request, repository, mucua, pk = None, format=None):
                         tag_namespace = args[0]
                     tag = Tag.objects.get(name=tag_name)
                 except Tag.DoesNotExist:
-                    tag = Tag.objects.create(tag=tag_name)
+                    tag = Tag.objects.create(name=tag_name)
                     tag.save()
 
                 media.tags.add(tag)
