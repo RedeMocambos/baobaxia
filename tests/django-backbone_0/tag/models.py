@@ -3,7 +3,7 @@
 """
  Tags (etiqueta) in Bbx define some behaviours of the system, beside qualifying
  contents. Each tag can be associated to a set of policies
- (TRIAGE_DIR). 
+ (POLICIES_DIR). 
 
  Actually policies will be linked to Django Signals selected by name. For
  example, a policy called "postSave_copyToTaina" is imported and executed
@@ -16,7 +16,7 @@
 """
 
 from django.db import models
-from bbx.settings import POLICIES_DIR, TRIAGE_DIR
+from bbx.settings import POLICIES_DIR
 from bbx.utils import MultiSelectField
 import json
 import os
@@ -33,9 +33,9 @@ class PoliciesPersistentDataUnavailable(exceptions.Exception):
         self.args = args
 
 def getAvailablePolicies():
-    """Get a list of available policies from TRIAGE_DIR."""
+    """Get a list of available policies from POLICIES_DIR."""
     policiesList = [( os.path.splitext(name)[0], os.path.splitext(name)[0]) \
-                        for name in os.listdir(TRIAGE_DIR) if name.endswith(".py") \
+                        for name in os.listdir(POLICIES_DIR) if name.endswith(".py") \
                         if not (name.startswith("__")) ]
     return policiesList
    
