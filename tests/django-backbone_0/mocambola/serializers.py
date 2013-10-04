@@ -1,19 +1,19 @@
 from rest_framework import serializers
 from rest_framework.renderers import JSONRenderer
 from django.db.models import get_model
-from mocambola.models import MocambolaUser
+from django.contrib.auth.models import User
 
 
-class MocambolaUserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = MocambolaUser
+        model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password', \
                       'is_staff', 'is_active', 'is_superuser', 'last_login', 'date_joined')
 
     def restore_object(self, attrs, instance=None):
         """
-        Create or update a new MocambolaUser instance, given a dictionary
+        Create or update a new User instance, given a dictionary
         of deserialized field values.
 
         Note that if we don't define this method, then deserializing
@@ -35,7 +35,7 @@ class MocambolaUserSerializer(serializers.ModelSerializer):
             return instance
 
         # Create new instance
-        return MocambolaUser(**attrs)
+        return User(**attrs)
     
     def getJSON(self):
         return JSONRenderer().render(self.data)

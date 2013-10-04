@@ -1,53 +1,47 @@
+# -*- coding: utf-8 -*-                              
+
 from django.contrib.auth.models import User
 from django.db import models
-from mucua.models import Mucua
+from django.db.models import get_model
+from repository.models import Repository, gitAdd, gitCommit
+from bbx.settings import REPOSITORY_DIR, MOCAMBOLA_DIR
+from mocambola.serializers import UserSerializer
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
+import os
 
 def getFilePath(instance):
-    if instance.date == '':
-        t = datetime.now
-        date = t.strftime("%y/%m/%d/")
-    else:
-        date = instance.date.strftime("%y/%m/%d/")
+    return os.path.join(REPOSITORY_DIR, instance.repository.getName(),
+                        instance.mucua.getDescription(), MOCAMBOLA_DIR)
 
-    t = datetime.now()
-    return os.path.join(REPOSITORY_DIR, instance.getRepository(),
-                        instance.getMucua(), instance.getType(),
-                        date)
-
-class MocambolaMucua(models.Model):
-
-    mucua = models.ForeignKey(Mucua)
+class Mocambola(models.Model):
+    mucua = models.ForeignKey('mucua.Mucua')
     user = models.ForeignKey(User)
+    repository = models.ForeignKey(Repository)
     
     def save(self, *args, **kwargs):
         # Serializar aqui o na post_save
-        return super(MocambolaMucua, self).save(*args, **kwargs)
+        return super(Mocambola, self).save(*args, **kwargs)
 
 
 
-@receiver(post_save, sender=MocambolaMucua)
-def MocambolaMucuaPostSave(instance, **kwargs):
-    """Intercepta o sinal de *post_save* do MocambolaMucua, serialize a adiciona o objeto ao repositorio."""
-    logger.debug(instance.type)
-    logger.debug(type(instance))
-    gitAdd(instance.mucua.repository.getFileName(), getFilePath(instance))
+@receiver(post_save, sender=Mocambola)
+def MocambolaPostSave(instance, **kwargs):
+    """Intercepta o sinal de *post_save* do Mocambola, serialize a adiciona o objeto ao repositorio."""
 
-    # Retomar o custom user o autentication backend.. precisa religar
-    # mocambola com mucua para pegar o path do arquivo.
-
-    serializer = MocambolaMucuaSerializer(instance)
-    print serializer.getJSON()
-#    gitAdd(instance.getFileName(), getFilePath(instance))                                                                                                   
-
-    # REFAZER .. 
-    mediapath = getFilePath(instance)+'/'
-    mediadata = instance.uuid + '.json'
-    fout = open(mediapath + mediadata, 'w')
+    serializer = UserSerializer(instance.user)
+    mocambolapath = getFilePath(instance)+'/'
+    mocamboladata = instance.user.get_username() + '.json'
+    fout = open(mocambolapath + mocamboladata, 'w')
     fout.write(str(serializer.getJSON()))
     fout.close()
-    gitAdd(mediadata, mediapath)
-    gitCommit(instance.getFileName(), instance.author.username, instance.author.email, getFilePath(instance))
+    gitAdd(mocamboladata, mocambolapath)
+    gitCommit(mocamboladata, instance.user.get_username(), instance.user.email, \
+                  instance.repository.getPath())
+
+# TODO HIGH: Precisa serializar o user tambem na criaçao e update
+# diretamente pelo usuario
 
 
 

@@ -13,10 +13,12 @@ from media.models import Media
 from media.models import getFilePath
 #from media.serializers import MediaSerializer
 
-from mucua.models import Mucua
+from django.db.models import get_model
+
 from repository.signals import filesync_done
 
 from media.serializers import MediaSerializer
+
 
 
 import os
@@ -212,7 +214,8 @@ class Repository(models.Model):
         enableSync = flag booleano para abilitar ou disabilitar a sincronizacao
         remoteRepositoryURLOrPath = apontador ao repositorio de origem 
     """
-    uuid = models.ManyToManyField('mucua.Mucua', symmetrical=True)
+    mucua = models.ManyToManyField('mucua.Mucua', related_name='repos')
+#    mucua = models.ManyToManyField('mucua.Mucua', symmetrical=True, related_name='repository')
     note = models.TextField(max_length=300, blank=True)
     repositoryName = models.CharField(max_length=100, choices=REPOSITORY_CHOICES, default='redemocambos', unique=True)
 #    repositoryName = models.CharField(max_length=60, choices=_getAvailableFolders(settings.MEDIA_ROOT))
@@ -220,7 +223,11 @@ class Repository(models.Model):
     syncStartTime = models.DateField()
     enableSync = models.BooleanField()
     remoteRepositoryURLOrPath = models.CharField(max_length=200)
-        
+    
+    def getName(self):
+        """Retorna o nome do repositorio."""
+        return str(self.repositoryName)
+    
     def createRepository(self):
         """Cria e inicializa o repositorio."""
         _createRepository(self.repositoryName, self.remoteRepositoryURLOrPath)
@@ -229,6 +236,10 @@ class Repository(models.Model):
         """Clona e inicializa o repositorio."""
         _cloneRepository(self.repositoryURLOrPath, self.repositoryName)
 
+    def getPath(self):
+        # TODO LOW: Juntar numa biblioteca
+        return os.path.join(repository_dir, self.getName()) 
+        
     def syncRepository(self):
         """Sincroniza o repositorio com sua origem."""
         gitAnnexSync(self.repositoryURLOrPath)

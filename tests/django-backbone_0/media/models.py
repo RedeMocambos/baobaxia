@@ -3,10 +3,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
-from mucua.models import Mucua
 from tag.models import Tag
 from bbx.settings import REPOSITORY_DIR, POLICIES_DIR
-#from media.serializers import MediaSerializer
+
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -50,14 +49,14 @@ class Media(models.Model):
     title = models.CharField(max_length=100, blank=True, default='')
     comment = models.TextField(max_length=300, blank=True)
     author = models.ForeignKey(User)
-    origin = models.ForeignKey(Mucua, related_name='origin')
+    origin = models.ForeignKey('mucua.Mucua', related_name='media')
     type = models.CharField(max_length=14, choices=TYPE_CHOICES, 
                             default='arquivo', blank=True)
     format = models.CharField(max_length=14, choices=FORMAT_CHOICES, 
                               default='ogg', blank=True)
     license = models.CharField(max_length=100, blank=True)
     mediafile = models.FileField(upload_to=mediaFileName, blank=True)
-    repository = models.ForeignKey('repository.Repository', related_name='repository')
+    repository = models.ForeignKey('repository.Repository', related_name='media')
     #    versions = 
     tags = models.ManyToManyField(Tag, related_name='tags')
     
