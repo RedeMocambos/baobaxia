@@ -14,14 +14,25 @@ class Migration(SchemaMigration):
             ('description', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('note', self.gf('django.db.models.fields.TextField')(max_length=300, blank=True)),
             ('uuid', self.gf('django.db.models.fields.CharField')(default='dandara', max_length=36)),
-            ('repository', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='mucuas', null=True, to=orm['repository.Repository'])),
         ))
         db.send_create_signal(u'mucua', ['Mucua'])
+
+        # Adding M2M table for field repository on 'Mucua'
+        m2m_table_name = db.shorten_name(u'mucua_mucua_repository')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('mucua', models.ForeignKey(orm[u'mucua.mucua'], null=False)),
+            ('repository', models.ForeignKey(orm[u'repository.repository'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['mucua_id', 'repository_id'])
 
 
     def backwards(self, orm):
         # Deleting model 'Mucua'
         db.delete_table(u'mucua_mucua')
+
+        # Removing M2M table for field repository on 'Mucua'
+        db.delete_table(db.shorten_name(u'mucua_mucua_repository'))
 
 
     models = {
@@ -74,7 +85,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'mocambolas': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'mucuas'", 'symmetrical': 'False', 'through': u"orm['mocambola.Mocambola']", 'to': u"orm['auth.User']"}),
             'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
-            'repository': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'mucuas'", 'null': 'True', 'to': u"orm['repository.Repository']"}),
+            'repository': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'mucuas'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['repository.Repository']"}),
             'uuid': ('django.db.models.fields.CharField', [], {'default': "'dandara'", 'max_length': '36'})
         },
         u'repository.repository': {
