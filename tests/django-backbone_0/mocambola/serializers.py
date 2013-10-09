@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         Note that if we don't define this method, then deserializing
         data will simply return a dictionary of items.
         """
-        if instance:
+        if instance is not None:
             # Update existing instance
             instance.username = attrs.get('username', instance.username)
             instance.first_name = attrs.get('first_name', instance.first_name)
@@ -31,11 +31,10 @@ class UserSerializer(serializers.ModelSerializer):
             instance.is_superuser = attrs.get('is_superuser', instance.is_superuser)
             instance.last_login = attrs.get('last_login', instance.last_login)
             instance.date_joined = attrs.get('date_joined', instance.date_joined)
-
             return instance
-
         # Create new instance
         return User(**attrs)
     
     def getJSON(self):
         return JSONRenderer().render(self.data)
+ 
