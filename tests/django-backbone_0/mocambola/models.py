@@ -8,7 +8,7 @@ from bbx.settings import REPOSITORY_DIR, MOCAMBOLA_DIR
 from mocambola.serializers import UserSerializer
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-
+from urlparse import urlparse
 import os
 
 def getFilePath(instance):
@@ -44,4 +44,27 @@ def MocambolaPostSave(instance, **kwargs):
 # diretamente pelo usuario
 
 
+@receiver(post_save, sender=User)
+def UserPostSave(instance, **kwargs):
+    """Intercepta o sinal de *post_save* do User, adiciona mocambola pegando o nome do user."""
 
+    #TODO HIGH: conseguir importar Mucua
+    
+    # Mucua = get_model('mucua.models', 'Mucua')
+    
+    # #TODO LOW: substituir por regexp
+    # current_mocambola, mucua_repository = instance.username.split("@")
+    # rep = urlparse('http://' + mucua_repository)
+    # current_mucua, current_repository, current_tld = rep.hostname.split('.')
+    
+    # print "current_mocambola:", current_mocambola
+    # print "current_repository:", current_repository
+    # print "username:", instance.username
+    
+    # mucua = Mucua.objects.get(description = current_mucua)
+    # repository = Repository.objects.get(repositoryName = repository)
+    
+    # mocambola = Mocambola(mucua=mucua, 
+    #                       user=user,
+    #                       repository=repository)
+    # mocambola.save()

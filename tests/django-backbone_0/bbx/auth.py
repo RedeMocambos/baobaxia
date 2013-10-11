@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.conf import settings
 from django.contrib.auth.models import User, check_password
 from mocambola.serializers import UserSerializer
@@ -33,32 +34,42 @@ class FileBackend(object):
             print "jmocambola: ", jmocambola
             print "current_mocambola: ", current_mocambola
             
-            if jmocambola == current_mocambola + '.json':
+            if jmocambola == username + '.json':
                 # Deserialize the customized User object
                 mocambola_json_file = open(os.path.join(mocambola_path, jmocambola))
                 data = JSONParser().parse(mocambola_json_file)
-                print "data: ", data
                 u = User() 
-                serializer = UserSerializer(u, data=data, partial=True)
-#        if serializer.is_valid():
-        current_user = serializer.object
-        login_valid = (current_user.username == current_mocambola)
-        pwd_valid = check_password(password, current_user.password)
-        print "current_user: ", current_user
-        print "login_valid: ", login_valid
-        print "pwd_valid: ", pwd_valid
+                serializer = UserSerializer(u, data=data)
+                print "serializer.errors: ", serializer.errors
+                print "serializer.is_valid: ", serializer.is_valid()
 
-        if login_valid and pwd_valid:
-            try:
-                user = User.objects.get(username=username)
-            except User.DoesNotExist:
-                # Create a new user. Note that we can set password
-                # to anything, because it won't be checked; the password
-                # from settings.py will.
-                user = User(username=username, password=current_user.password, \
-                                is_staff=current_user.is_staff, is_superuser=current_user.is_superuser)
-                user.save()
-            return user
+                current_user = serializer.object
+        
+                print username , "==", current_user.username
+                
+                login_valid = (username == current_user.username)
+                pwd_valid = check_password(password, current_user.password)
+                
+                print "current_user: ", current_user
+                print "login_valid: ", login_valid
+                print "pwd_valid: ", pwd_valid
+                
+                if login_valid and pwd_valid:
+                    try:
+                        user = User.objects.get(username=username)                
+                    except User.DoesNotExist:
+                        print "User.DoesNotExist"
+                        # Create a new user. Note that we can set password
+                        # to anything, because it won't be checked; the password
+                        # from settings.py will.
+                        user = User(username=username, password=current_user.password, \
+                                        is_staff=current_user.is_staff, is_superuser=current_user.is_superuser)
+                        user.save()
+                    print "User:", user
+                    return user
+                return True
+            # fim do if
+        # fim do for
         return None
 
     def get_user(self, user_id):

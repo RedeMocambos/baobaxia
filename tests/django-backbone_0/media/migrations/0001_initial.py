@@ -12,7 +12,7 @@ class Migration(SchemaMigration):
         db.create_table(u'media_media', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('uuid', self.gf('django.db.models.fields.CharField')(default='b3a8c9dd-4df7-464c-a33c-d2b67a69976b', max_length=36)),
+            ('uuid', self.gf('django.db.models.fields.CharField')(default='8f0629ee-749b-484a-a796-e363334a579a', max_length=36)),
             ('title', self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True)),
             ('comment', self.gf('django.db.models.fields.TextField')(max_length=300, blank=True)),
             ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
@@ -94,7 +94,7 @@ class Migration(SchemaMigration):
             'tags': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'tags'", 'symmetrical': 'False', 'to': u"orm['tag.Tag']"}),
             'title': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '100', 'blank': 'True'}),
             'type': ('django.db.models.fields.CharField', [], {'default': "'arquivo'", 'max_length': '14', 'blank': 'True'}),
-            'uuid': ('django.db.models.fields.CharField', [], {'default': "'b3a8c9dd-4df7-464c-a33c-d2b67a69976b'", 'max_length': '36'})
+            'uuid': ('django.db.models.fields.CharField', [], {'default': "'8f0629ee-749b-484a-a796-e363334a579a'", 'max_length': '36'})
         },
         u'mocambola.mocambola': {
             'Meta': {'object_name': 'Mocambola'},
