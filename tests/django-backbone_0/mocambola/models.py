@@ -48,23 +48,28 @@ def MocambolaPostSave(instance, **kwargs):
 def UserPostSave(instance, **kwargs):
     """Intercepta o sinal de *post_save* do User, adiciona mocambola pegando o nome do user."""
 
-    #TODO HIGH: conseguir importar Mucua
+    # TODO HIGH: conseguir importar Mucua
     
-    # Mucua = get_model('mucua.models', 'Mucua')
+    mucua_model = get_model('mucua', 'Mucua')
     
-    # #TODO LOW: substituir por regexp
-    # current_mocambola, mucua_repository = instance.username.split("@")
-    # rep = urlparse('http://' + mucua_repository)
-    # current_mucua, current_repository, current_tld = rep.hostname.split('.')
+    # TODO LOW: substituir por regexp
+    current_mocambola, mucua_repository = instance.username.split("@")
+    rep = urlparse('http://' + mucua_repository)
+    current_mucua, current_repository, current_tld = rep.hostname.split('.')
     
-    # print "current_mocambola:", current_mocambola
-    # print "current_repository:", current_repository
-    # print "username:", instance.username
+    print "current_mocambola:", current_mocambola
+    print "current_repository:", current_repository
+    print "username:", instance.username
     
-    # mucua = Mucua.objects.get(description = current_mucua)
-    # repository = Repository.objects.get(repositoryName = repository)
+    mucua = mucua_model.objects.get(description = current_mucua)
+    repository = Repository.objects.get(repositoryName = current_repository)
     
-    # mocambola = Mocambola(mucua=mucua, 
-    #                       user=user,
-    #                       repository=repository)
-    # mocambola.save()
+#    try mocambola = Mocambola.objects.get(mucua=mucua,
+#                                          user=instance, 
+#                                          repository=repository):
+#
+    mocambola, created = Mocambola.objects.get_or_create(mucua=mucua, 
+                          user=instance,
+                          repository=repository)
+    print "Created: ", created
+    print "mocambola: ", mocambola
