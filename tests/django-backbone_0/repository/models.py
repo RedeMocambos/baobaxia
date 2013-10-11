@@ -4,7 +4,6 @@ from django.db import models
 from django.db.models.base import ModelBase
 from django.contrib.auth.models import User
 from django.conf import settings
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -14,12 +13,7 @@ from media.models import getFilePath
 #from media.serializers import MediaSerializer
 
 from django.db.models import get_model
-
 from repository.signals import filesync_done
-
-from media.serializers import MediaSerializer
-
-
 
 import os
 import datetime
@@ -42,6 +36,7 @@ repository_dir = settings.REPOSITORY_DIR
 @receiver(post_save, sender=Media)
 def gitMediaPostSave(instance, **kwargs):
     """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e adiciona o objeto ao repositorio."""
+    from media.serializers import MediaSerializer
     logger.debug(instance.type)
     logger.debug(type(instance))
     gitAnnexAdd(instance.getFileName(), getFilePath(instance))
@@ -102,8 +97,8 @@ def _selectRepositoryByPath():
 
 def _getAvailableFolders(path):
     """Procura as pastas que podem ser inicializada como repositorio, retorna a lista das pastas."""
-    folderList = [( name , name ) for name in os.listdir(os.path.join(path, repository_dir)) \
-                      if os.path.isdir(os.path.join(path, repository_dir, name))]
+    folderList = [( name , name ) for name in os.listdir(path) \
+                      if os.path.isdir(os.path.join(path, name))]
     return folderList
 
 def gitAdd(fileName, repoDir):
@@ -214,12 +209,11 @@ class Repository(models.Model):
         enableSync = flag booleano para abilitar ou disabilitar a sincronizacao
         remoteRepositoryURLOrPath = apontador ao repositorio de origem 
     """
-    mucua = models.ManyToManyField('mucua.Mucua', related_name='repos')
+    mucua = models.ManyToManyField('mucua.Mucua', related_name='repos', blank=True, null=True)
 #    mucua = models.ManyToManyField('mucua.Mucua', symmetrical=True, related_name='repository')
     note = models.TextField(max_length=300, blank=True)
-    repositoryName = models.CharField(max_length=100, choices=REPOSITORY_CHOICES, default='redemocambos', unique=True)
-#    repositoryName = models.CharField(max_length=60, choices=_getAvailableFolders(settings.MEDIA_ROOT))
-    repositoryURLOrPath = models.CharField(max_length=200)
+#    repositoryName = models.CharField(max_length=100, choices=REPOSITORY_CHOICES, default='redemocambos', unique=True)
+    repositoryName = models.CharField(max_length=60, choices=_getAvailableFolders(repository_dir))
     syncStartTime = models.DateField()
     enableSync = models.BooleanField()
     remoteRepositoryURLOrPath = models.CharField(max_length=200)
@@ -228,6 +222,10 @@ class Repository(models.Model):
         """Retorna o nome do repositorio."""
         return str(self.repositoryName)
     
+    def getPath(self):
+        """Retorna o caminho no disco (path) do repositorio."""
+        return os.path.join(repository_dir, self.getName()) 
+
     def createRepository(self):
         """Cria e inicializa o repositorio."""
         _createRepository(self.repositoryName, self.remoteRepositoryURLOrPath)

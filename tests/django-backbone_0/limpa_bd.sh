@@ -10,7 +10,7 @@ echo "----------------------"
 echo "criando banco novo..."
 echo "----------------------"
 source ~/bbxenv/bin/activate
-python manage.py syncdb
+python manage.py syncdb --noinput
 
 echo "----------------------"
 echo "recriando migracoes..."

@@ -92,11 +92,10 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('repositoryName',)", 'object_name': 'Repository'},
             'enableSync': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'mucua': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'repos'", 'symmetrical': 'False', 'to': u"orm['mucua.Mucua']"}),
+            'mucua': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'repos'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['mucua.Mucua']"}),
             'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
             'remoteRepositoryURLOrPath': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
-            'repositoryName': ('django.db.models.fields.CharField', [], {'default': "'redemocambos'", 'unique': 'True', 'max_length': '100'}),
-            'repositoryURLOrPath': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'repositoryName': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
             'syncStartTime': ('django.db.models.fields.DateField', [], {})
         }
     }
