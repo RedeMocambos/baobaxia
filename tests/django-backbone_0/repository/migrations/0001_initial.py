@@ -87,7 +87,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'mocambolas': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'mucuas'", 'symmetrical': 'False', 'through': u"orm['mocambola.Mocambola']", 'to': u"orm['auth.User']"}),
             'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
-            'repository': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'mucuas'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['repository.Repository']"}),
+            'repository': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'mucuas'", 'symmetrical': 'False', 'to': u"orm['repository.Repository']"}),
             'uuid': ('django.db.models.fields.CharField', [], {'default': "'dandara'", 'max_length': '36'})
         },
         u'repository.repository': {

@@ -16,17 +16,14 @@ MUCUA_NAME_UUID = [ ('a30a926a-3a8c-11e2-a817-cb26bd9bc8d3','dandara'), ('049262
 
 def getAvailableMucuas():
     """Get a list of available policies from POLICIES_DIR."""
-    import json
-    from repository.models import Repository    
-    
-    repository = Repository.objects.get(repositoryName = DEFAULT_REPOSITORY)
-    jsonRepositoryStatus = json.loads(gitAnnexStatus(repository.repositoryURLOrPath))
-    
-    # return [ ('a30a926a-3a8c-11e2-a817-cb26bd9bc8d3','dandara'), ('0492621a-4195-11e2-b8c7-43de40a4e11c','acotirene') ]
-    
-    # TODO HIGH: Colocar trusted..
-    return [( mucua.description, mucua.uuid ) for mucua in  jsonRepositoryStatus.__dict__['semitrusted repositories']] 
+#    import json
+#    from repository.models import Repository       
+#    repository = Repository.objects.get(repositoryName = DEFAULT_REPOSITORY)
+#    jsonRepositoryStatus = json.loads(gitAnnexStatus(repository.repositoryURLOrPath))
+#    TODO HIGH: Colocar trusted..
+#    return [( mucua.description, mucua.uuid ) for mucua in  jsonRepositoryStatus.__dict__['semitrusted repositories']]     
 
+    return [ ('a30a926a-3a8c-11e2-a817-cb26bd9bc8d3','dandara'), ('0492621a-4195-11e2-b8c7-43de40a4e11c','acotirene') ]
 
 class Mucua(models.Model):
     description = models.CharField(max_length=100, editable=False)
