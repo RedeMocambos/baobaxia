@@ -8,39 +8,19 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Media'
-        db.create_table(u'media_media', (
+        # Adding model 'Mocambola'
+        db.create_table(u'mocambola_mocambola', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('uuid', self.gf('django.db.models.fields.CharField')(default='d6804887-3b98-4b40-813e-9d8fd7596e1a', max_length=36)),
-            ('title', self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True)),
-            ('comment', self.gf('django.db.models.fields.TextField')(max_length=300, blank=True)),
-            ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('origin', self.gf('django.db.models.fields.related.ForeignKey')(related_name='media', to=orm['mucua.Mucua'])),
-            ('type', self.gf('django.db.models.fields.CharField')(default='arquivo', max_length=14, blank=True)),
-            ('format', self.gf('django.db.models.fields.CharField')(default='ogg', max_length=14, blank=True)),
-            ('license', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
-            ('mediafile', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
-            ('repository', self.gf('django.db.models.fields.related.ForeignKey')(related_name='media', to=orm['repository.Repository'])),
+            ('mucua', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['mucua.Mucua'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('repository', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['repository.Repository'])),
         ))
-        db.send_create_signal(u'media', ['Media'])
-
-        # Adding M2M table for field tags on 'Media'
-        m2m_table_name = db.shorten_name(u'media_media_tags')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('media', models.ForeignKey(orm[u'media.media'], null=False)),
-            ('tag', models.ForeignKey(orm[u'tag.tag'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['media_id', 'tag_id'])
+        db.send_create_signal(u'mocambola', ['Mocambola'])
 
 
     def backwards(self, orm):
-        # Deleting model 'Media'
-        db.delete_table(u'media_media')
-
-        # Removing M2M table for field tags on 'Media'
-        db.delete_table(db.shorten_name(u'media_media_tags'))
+        # Deleting model 'Mocambola'
+        db.delete_table(u'mocambola_mocambola')
 
 
     models = {
@@ -80,22 +60,6 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'media.media': {
-            'Meta': {'ordering': "('date',)", 'object_name': 'Media'},
-            'author': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
-            'comment': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
-            'date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'format': ('django.db.models.fields.CharField', [], {'default': "'ogg'", 'max_length': '14', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'license': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'mediafile': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
-            'origin': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'media'", 'to': u"orm['mucua.Mucua']"}),
-            'repository': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'media'", 'to': u"orm['repository.Repository']"}),
-            'tags': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'tags'", 'symmetrical': 'False', 'to': u"orm['tag.Tag']"}),
-            'title': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '100', 'blank': 'True'}),
-            'type': ('django.db.models.fields.CharField', [], {'default': "'arquivo'", 'max_length': '14', 'blank': 'True'}),
-            'uuid': ('django.db.models.fields.CharField', [], {'default': "'d6804887-3b98-4b40-813e-9d8fd7596e1a'", 'max_length': '36'})
-        },
         u'mocambola.mocambola': {
             'Meta': {'object_name': 'Mocambola'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -121,15 +85,7 @@ class Migration(SchemaMigration):
             'remoteRepositoryURLOrPath': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'repositoryName': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
             'syncStartTime': ('django.db.models.fields.DateField', [], {})
-        },
-        u'tag.tag': {
-            'Meta': {'ordering': "('name',)", 'unique_together': "(('namespace', 'name'),)", 'object_name': 'Tag'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '26'}),
-            'namespace': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '10', 'blank': 'True'}),
-            'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
-            'policies': ('bbx.utils.MultiSelectField', [], {'max_length': '100', 'blank': 'True'})
         }
     }
 
-    complete_apps = ['media']
+    complete_apps = ['mocambola']

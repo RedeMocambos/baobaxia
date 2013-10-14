@@ -63,13 +63,9 @@ def UserPostSave(instance, **kwargs):
     
     mucua = mucua_model.objects.get(description = current_mucua)
     repository = Repository.objects.get(repositoryName = current_repository)
-    
-#    try mocambola = Mocambola.objects.get(mucua=mucua,
-#                                          user=instance, 
-#                                          repository=repository):
-#
     mocambola, created = Mocambola.objects.get_or_create(mucua=mucua, 
                           user=instance,
                           repository=repository)
+    
     print "Created: ", created
     print "mocambola: ", mocambola

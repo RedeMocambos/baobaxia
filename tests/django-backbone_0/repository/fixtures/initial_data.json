@@ -1,0 +1,1 @@
+[{"pk": 1, "model": "repository.repository", "fields": {"syncStartTime": "2013-10-14", "remoteRepositoryURLOrPath": "repomocambos", "note": "redemocambos", "enableSync": true, "mucua": [], "repositoryName": "redemocambos"}}]
