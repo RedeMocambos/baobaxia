@@ -15,6 +15,9 @@ from media.models import getFilePath
 from django.db.models import get_model
 from repository.signals import filesync_done
 
+from bbx.settings import DEFAULT_REPOSITORY
+
+
 import os
 import datetime
 import subprocess
@@ -50,6 +53,13 @@ def gitMediaPostSave(instance, **kwargs):
     fout.close()
     gitAdd(mediadata, mediapath)
     gitCommit(instance.getFileName(), instance.author.username, instance.author.email, getFilePath(instance))
+
+
+def getDefaultRepository():
+    #    from repository.models import Repository as repository_model
+    #    repository = get_model('repository', 'Repository')
+    return Repository.objects.get(repositoryName = DEFAULT_REPOSITORY)
+
 
 def _createRepository(repositoryName, remoteRepositoryURLOrPath):
     """Cria e inicializa um repositorio *git-annex*."""
@@ -185,9 +195,11 @@ def gitAnnexStatus(repoDir):
     """View all mucuas in a given repository"""
     logger.info('git annex status')
     cmd = 'git annex status --json'
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
-    output,error = pipe.communicate()
-    return output
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir, stdout=subprocess.PIPE)
+ #   output, error = pipe.communicate()
+    out = pipe.stdout.read()
+    print "Output: ", out
+    return out
 
 def runScheduledJobs():
     """Executa as operacoes programadas em todos os repositorios. """
@@ -217,7 +229,7 @@ class Repository(models.Model):
     syncStartTime = models.DateField()
     enableSync = models.BooleanField()
     remoteRepositoryURLOrPath = models.CharField(max_length=200)
-    
+
     def getName(self):
         """Retorna o nome do repositorio."""
         return str(self.repositoryName)

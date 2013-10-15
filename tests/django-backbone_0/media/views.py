@@ -8,7 +8,6 @@ from media.models import Media, mediaFileName, getFilePath
 from tag.models import Tag
 from media.forms import MediaForm
 from media.serializers import MediaSerializer
-from mucua.models import MUCUA_NAME_UUID
 from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
 import datetime
 import os

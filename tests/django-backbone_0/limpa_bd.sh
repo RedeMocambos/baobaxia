@@ -6,19 +6,26 @@ echo "----------------------"
 rm bbx/database.sqlite
 find . -name '000*.py' -exec rm '{}' \; && echo "OK!"
 
+source ~/bbxenv/bin/activate
+
+
 echo "----------------------"
 echo "criando banco novo..."
 echo "----------------------"
-source ~/bbxenv/bin/activate
+
 python manage.py syncdb --noinput
+
 
 echo "----------------------"
 echo "recriando migracoes..."
 echo "----------------------"
 
-python manage.py schemamigration --initial mocambola
-python manage.py schemamigration --initial mucua
-python manage.py schemamigration --initial tag
-python manage.py schemamigration --initial media
-python manage.py schemamigration --initial repository
+python manage.py schemamigration --initial --traceback mocambola
+python manage.py schemamigration --initial --traceback mucua
+python manage.py schemamigration --initial --traceback tag
+python manage.py schemamigration --initial --traceback media
+python manage.py schemamigration --initial --traceback repository
+
+
+
 python manage.py migrate --all
