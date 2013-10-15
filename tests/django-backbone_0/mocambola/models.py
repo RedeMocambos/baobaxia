@@ -19,6 +19,9 @@ class Mocambola(models.Model):
     mucua = models.ForeignKey('mucua.Mucua')
     user = models.ForeignKey(User)
     repository = models.ForeignKey(Repository)
+
+    def __unicode__(self):
+        return self.user.username
     
     def save(self, *args, **kwargs):
         # Serializar aqui o na post_save
@@ -30,9 +33,11 @@ class Mocambola(models.Model):
 def MocambolaPostSave(instance, **kwargs):
     """Intercepta o sinal de *post_save* do Mocambola, serialize a adiciona o objeto ao repositorio."""
 
+    from bbx.utils import check_if_path_exists_or_create
     serializer = UserSerializer(instance.user)
     mocambolapath = getFilePath(instance)+'/'
     mocamboladata = instance.user.get_username() + '.json'
+    check_if_path_exists_or_create(mocambolapath)
     fout = open(mocambolapath + mocamboladata, 'w')
     fout.write(str(serializer.getJSON()))
     fout.close()

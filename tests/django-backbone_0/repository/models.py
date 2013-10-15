@@ -196,10 +196,7 @@ def gitAnnexStatus(repoDir):
     logger.info('git annex status')
     cmd = 'git annex status --json'
     pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir, stdout=subprocess.PIPE)
- #   output, error = pipe.communicate()
-    out = pipe.stdout.read()
-    print "Output: ", out
-    return out
+    return pipe.stdout.read()
 
 def runScheduledJobs():
     """Executa as operacoes programadas em todos os repositorios. """

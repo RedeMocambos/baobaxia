@@ -20,13 +20,14 @@ def getAvailableMucuas(uuid=None, repository=None):
     if not repository:
         try:
 #            repository_model = get_model('repository', 'Repository')
-            from repository.models import getDefaultRepository, gitAnnexStatus
+            from repository.models import getDefaultRepository
             repository = getDefaultRepository()
-            import json
-            jsonRepositoryStatus = json.loads(gitAnnexStatus(repository.getPath()))
         except DatabaseError:
             return []
-        
+    
+    import json
+    from repository.models import gitAnnexStatus
+    jsonRepositoryStatus = json.loads(gitAnnexStatus(repository.getPath()))
     
     if uuid:
         for mucua in jsonRepositoryStatus['semitrusted repositories']:
