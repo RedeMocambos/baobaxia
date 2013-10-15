@@ -9,6 +9,7 @@ from rest_framework.parsers import JSONParser
 
 from urlparse import urlparse
 import os
+import re
 
 try:
     import json                 # Python 2.6
@@ -23,10 +24,12 @@ class FileBackend(object):
     # TODO LOW: Limpar a arrumar melhor o codigo
     
     def authenticate(self, username=None, password=None):
-        current_mocambola, mucua_repository = username.split("@")
-        
-        rep = urlparse('http://' + mucua_repository)
-        current_mucua, current_repository, current_tld = rep.hostname.split('.')
+        match = re.findall("(.*)@(.*)\.(.*)\.(.*)$", username)
+        if match:
+            current_mocambola, current_mucua, current_repository, term = match[0]            
+        else:
+            print "invalid address"
+            return None
         
         # Get file from MOCAMBOLA_DIR
         mocambola_path = os.path.join(REPOSITORY_DIR, current_repository, current_mucua, MOCAMBOLA_DIR)
@@ -67,6 +70,9 @@ class FileBackend(object):
                         user.save()
                     print "User:", user
                     return user
+                else:
+                    print "invalid username and/or password"
+                    return None
                 return True
             # fim do if
         # fim do for
