@@ -60,7 +60,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         # pega args da url se tiver
         if args:
             for tag in args.split('/'):
-                medias = medias.filter(tags__tag__iexact = tag)
+                medias = medias.filter(tags__name__iexact = tag)
         
         serializer = MediaSerializer(medias, many=True)
         return Response(serializer.data)
