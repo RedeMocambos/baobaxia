@@ -4,8 +4,9 @@ define([
     'models/MediaModel', 
     'collections/media/MediaCollection',
     'views/media/MediaView',
+    'views/media/MediaListView',
     'views/file/FileView'
-], function($, Backbone, MediaModel, MediaCollection, MediaView, FileView){
+], function($, Backbone, MediaModel, MediaCollection, MediaView, MediaListView, FileView){
     
     var AppRouter = Backbone.Router.extend({
 	// rotas simples
@@ -23,6 +24,12 @@ define([
 	    // media
 	    ':repository/:mucua/medias': 'publishMedia',
 	    ':repository/:mucua/medias/:uuid': 'viewMedia',
+	    
+	    // login / logout
+	    ':repository/:mucua/login': 'login',
+	    ':login': 'login',
+	    ':repository/:mucua/logout': 'logout',
+	    ':logout': 'logout',
 	},
 	
 	// escopo: repositório e mucuas
@@ -51,17 +58,53 @@ define([
 	callBbxCommand: function(repository, mucua, command, args) {
 	    console.log("executa comando " + command);
 	    
-	    var argsArray = args.split('/');   
-	    for (i in argsArray) {
-		console.log(argsArray[i]);
+	    // TODO: fazer algum tipo de lista das funcoes para pegar + dinamico
+	    switch (command) {
+	    case "search":
+		this.buscaMedia(repository, mucua, args);
+		break;
 	    }
 	    
+	    var argsArray = args.split('/');
+	    for (i in argsArray) {
+		//console.log(argsArray[i]);
+	    }	    
 	    console.log("/" + repository + "/" + mucua + "/bbx/" + command + "/" + args);
 	},
 	
+	// login / logout
+	login: function(repository='', mucua='') {
+	    console.log("login");
+	    if (repository != "" && mucua != "") {
+		console.log("/" + repository + "/" + mucua + "/login");;
+	    } else if (repository == "" && mucua === "") {
+		console.log("/login");
+	    }
+	},
+
 	// media
 	buscaMedia: function(repository, mucua, args) {
-	    console.log("busca " + args);
+	    mensagemBusca = "busca '" + args + "' no repositorio '" + repository + "' e na mucua '" + mucua + "'";
+	    console.log(mensagemBusca);
+	    
+	    url = '/api/' + repository + '/' +  mucua + '/bbx/search/' + args;
+	    
+	    var mediaCollection = new MediaCollection({repository: repository, mucua: mucua, args: args});
+	    mediaCollection.url = url;
+	    fetchedMedia = mediaCollection.fetch();
+	    
+	    console.log("fetchedMedia: " + fetchedMedia);
+	    
+	    // event detection:
+	    // mediaCollection.on('all', function(eventName) {
+	    // 	console.log("eventName: " + eventName);
+	    // });
+	    
+	    mediaCollection.on('sync', function() {
+		console.log("on sync");
+		var mediaListView = new MediaListView();
+		mediaListView.render(fetchedMedia);
+	    });
 	},
 	publishMedia: function(repository, mucua) {
 	    console.log("insere media");
