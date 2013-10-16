@@ -6,14 +6,10 @@ define([
 ], function($, _, Backbone, MediaModel){
     var MediaCollection = Backbone.Collection.extend({
 	model: MediaModel,
-	defaults: {
-	    repository: '',
-	    mucua: '',
-	    args: ''
-	},
-	parse: function(data){
-	    return data.objects;
-	}
+	
+	// parse: function(data){
+	//     return data;
+	// }
     });
     
     return MediaCollection;

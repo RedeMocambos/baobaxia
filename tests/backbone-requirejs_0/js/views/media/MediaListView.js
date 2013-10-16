@@ -11,18 +11,20 @@ define([
     var MediaListView = Backbone.View.extend({
 	el: $("#content"),
 	
-	render: function(data){
+	render: function(collection){
 	    console.log('renderiza data');
 	    var data = {
-		medias : data,
+		medias: collection.models,
 	     	_: _ 
 	    };
 	    
-	    console.log(data.medias);
+	    //console.log(collection);
+	    
 	    //htmlOutput = data.medias.toJSON();
 	    //console.log(htmlOutput);
-	    // adiciona template	    
-	    var compiledTemplate = _.template(MediaListTemplate, data.medias);
+	    // adiciona template
+	    var compiledTemplate = _.template(MediaListTemplate, data);
+//	    console.log(compiledTemplate);
 	    this.$el.html(compiledTemplate);
 	    $("#media-list").html(compiledTemplate);
 	}

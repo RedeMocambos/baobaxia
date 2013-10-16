@@ -84,27 +84,24 @@ define([
 
 	// media
 	buscaMedia: function(repository, mucua, args) {
-	    mensagemBusca = "busca '" + args + "' no repositorio '" + repository + "' e na mucua '" + mucua + "'";
+	    mensagemBusca = "Buscando '" + args + "' no repositorio '" + repository + "' e na mucua '" + mucua + "'";
 	    console.log(mensagemBusca);
 	    
 	    url = '/api/' + repository + '/' +  mucua + '/bbx/search/' + args;
-	    
-	    var mediaCollection = new MediaCollection({repository: repository, mucua: mucua, args: args});
+	    var mediaCollection = new MediaCollection();
 	    mediaCollection.url = url;
-	    fetchedMedia = mediaCollection.fetch();
-	    
-	    console.log("fetchedMedia: " + fetchedMedia);
-	    
-	    // event detection:
-	    // mediaCollection.on('all', function(eventName) {
-	    // 	console.log("eventName: " + eventName);
-	    // });
-	    
-	    mediaCollection.on('sync', function() {
-		console.log("on sync");
-		var mediaListView = new MediaListView();
-		mediaListView.render(fetchedMedia);
+	    mediaCollection.fetch({
+		success: function() {
+		    console.log("models: ", mediaCollection.models);
+		    console.log("success");
+		    var mediaListView = new MediaListView();
+		    mediaListView.render(mediaCollection);		    
+		}
 	    });
+	    
+//	    mediaCollection.on('add', function() {
+	    // outra forma de chamar a MediaListView() e .render()
+//	    });
 	},
 	publishMedia: function(repository, mucua) {
 	    console.log("insere media");
@@ -150,22 +147,8 @@ define([
     return {
 	initialize: initialize
     };    
-    
-
-    // // old	
-    // app_router.on('route:MediaView', function() {
-    // 	var mediaView = new MediaView();
-    // 	mediaView.render();
-    // });
-    
-    // // file/:filename
-    // app_router.on('route:getFile', function(fileName) {
-    // 	var file1 = new FileModel({'filename': fileName});
-    // 	fetchFile = file1.fetch();
-	
-    // 	file1.on('change', function() {
-    // 	    var fileView = new FileView({model: file1});
-    // 	    fileView.render();
-    // 	});   
-    // });
 });
+	    // event detection:
+	    // mediaCollection.on('all', function(eventName) {
+	    // 	console.log("eventName: " + eventName);
+	    // });	    
