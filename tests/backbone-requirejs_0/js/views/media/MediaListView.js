@@ -9,17 +9,24 @@ define([
 ], function($, _, Backbone, MediaModel, MediaCollection, MediaListTemplate){
     
     var MediaListView = Backbone.View.extend({
-	el: $("#media-list"),
+	el: $("#content"),
 	
-	render: function(){
+	render: function(collection){
+	    console.log('renderiza data');
 	    var data = {
-		medias: this.collection.models,
-		_: _ 
+		medias: collection.models,
+	     	_: _ 
 	    };
 	    
-	    var compiledTemplate = _.template( MediaListTemplate, data );
+	    //console.log(collection);
 	    
-	    $("#media-list").html( compiledTemplate ); 
+	    //htmlOutput = data.medias.toJSON();
+	    //console.log(htmlOutput);
+	    // adiciona template
+	    var compiledTemplate = _.template(MediaListTemplate, data);
+//	    console.log(compiledTemplate);
+	    this.$el.html(compiledTemplate);
+	    $("#media-list").html(compiledTemplate);
 	}
     });
     return MediaListView;

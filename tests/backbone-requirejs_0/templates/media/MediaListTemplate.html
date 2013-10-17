@@ -1,4 +1,5 @@
-<ul>
+<strong>Resultado:</strong>
+<!--<ul>-->
   <% _.each(medias, function(media){ %>
   <li><%= media.get("title") %> / <%= media.get("author") %> / <%= media.get("date") %><br/>
     <% _.each(media.get("tags"), function(tagName) { %>
@@ -6,4 +7,4 @@
     <% }); %> 
   </li>
   <% }); %>
-</ul>
+<!--</ul>-->

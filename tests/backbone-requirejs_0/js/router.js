@@ -4,8 +4,9 @@ define([
     'models/MediaModel', 
     'collections/media/MediaCollection',
     'views/media/MediaView',
+    'views/media/MediaListView',
     'views/file/FileView'
-], function($, Backbone, MediaModel, MediaCollection, MediaView, FileView){
+], function($, Backbone, MediaModel, MediaCollection, MediaView, MediaListView, FileView){
     
     var AppRouter = Backbone.Router.extend({
 	// rotas simples
@@ -23,6 +24,12 @@ define([
 	    // media
 	    ':repository/:mucua/medias': 'publishMedia',
 	    ':repository/:mucua/medias/:uuid': 'viewMedia',
+	    
+	    // login / logout
+	    ':repository/:mucua/login': 'login',
+	    ':login': 'login',
+	    ':repository/:mucua/logout': 'logout',
+	    ':logout': 'logout',
 	},
 	
 	// escopo: repositório e mucuas
@@ -51,17 +58,50 @@ define([
 	callBbxCommand: function(repository, mucua, command, args) {
 	    console.log("executa comando " + command);
 	    
-	    var argsArray = args.split('/');   
-	    for (i in argsArray) {
-		console.log(argsArray[i]);
+	    // TODO: fazer algum tipo de lista das funcoes para pegar + dinamico
+	    switch (command) {
+	    case "search":
+		this.buscaMedia(repository, mucua, args);
+		break;
 	    }
 	    
+	    var argsArray = args.split('/');
+	    for (i in argsArray) {
+		//console.log(argsArray[i]);
+	    }	    
 	    console.log("/" + repository + "/" + mucua + "/bbx/" + command + "/" + args);
 	},
 	
+	// login / logout
+	login: function(repository='', mucua='') {
+	    console.log("login");
+	    if (repository != "" && mucua != "") {
+		console.log("/" + repository + "/" + mucua + "/login");;
+	    } else if (repository == "" && mucua === "") {
+		console.log("/login");
+	    }
+	},
+
 	// media
 	buscaMedia: function(repository, mucua, args) {
-	    console.log("busca " + args);
+	    mensagemBusca = "Buscando '" + args + "' no repositorio '" + repository + "' e na mucua '" + mucua + "'";
+	    console.log(mensagemBusca);
+	    
+	    url = '/api/' + repository + '/' +  mucua + '/bbx/search/' + args;
+	    var mediaCollection = new MediaCollection();
+	    mediaCollection.url = url;
+	    mediaCollection.fetch({
+		success: function() {
+		    console.log("models: ", mediaCollection.models);
+		    console.log("success");
+		    var mediaListView = new MediaListView();
+		    mediaListView.render(mediaCollection);		    
+		}
+	    });
+	    
+//	    mediaCollection.on('add', function() {
+	    // outra forma de chamar a MediaListView() e .render()
+//	    });
 	},
 	publishMedia: function(repository, mucua) {
 	    console.log("insere media");
@@ -107,22 +147,8 @@ define([
     return {
 	initialize: initialize
     };    
-    
-
-    // // old	
-    // app_router.on('route:MediaView', function() {
-    // 	var mediaView = new MediaView();
-    // 	mediaView.render();
-    // });
-    
-    // // file/:filename
-    // app_router.on('route:getFile', function(fileName) {
-    // 	var file1 = new FileModel({'filename': fileName});
-    // 	fetchFile = file1.fetch();
-	
-    // 	file1.on('change', function() {
-    // 	    var fileView = new FileView({model: file1});
-    // 	    fileView.render();
-    // 	});   
-    // });
 });
+	    // event detection:
+	    // mediaCollection.on('all', function(eventName) {
+	    // 	console.log("eventName: " + eventName);
+	    // });	    
