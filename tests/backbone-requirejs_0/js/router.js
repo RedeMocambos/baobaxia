@@ -88,20 +88,14 @@ define([
 	    console.log(mensagemBusca);
 	    
 	    url = '/api/' + repository + '/' +  mucua + '/bbx/search/' + args;
-	    var mediaCollection = new MediaCollection();
-	    mediaCollection.url = url;
+	    var mediaCollection = new MediaCollection([], {url: url});
+	    
 	    mediaCollection.fetch({
 		success: function() {
-		    console.log("models: ", mediaCollection.models);
-		    console.log("success");
 		    var mediaListView = new MediaListView();
 		    mediaListView.render(mediaCollection);		    
 		}
 	    });
-	    
-//	    mediaCollection.on('add', function() {
-	    // outra forma de chamar a MediaListView() e .render()
-//	    });
 	},
 	publishMedia: function(repository, mucua) {
 	    console.log("insere media");
