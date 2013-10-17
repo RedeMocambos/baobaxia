@@ -46,7 +46,7 @@ class Media(models.Model):
 # FIX: uuid nao muda.. so quando se reinicia a applicaçao :(
     date = models.DateTimeField(auto_now_add=True)
     uuid = models.CharField(max_length=36, default=generateUUID())
-    title = models.CharField(max_length=100, blank=True, default='')
+    title = models.CharField(max_length=100, default='')
     comment = models.TextField(max_length=300, blank=True)
     author = models.ForeignKey(User)
     origin = models.ForeignKey('mucua.Mucua', related_name='media')
