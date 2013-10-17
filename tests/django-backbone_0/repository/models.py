@@ -218,7 +218,7 @@ class Repository(models.Model):
         enableSync = flag booleano para abilitar ou disabilitar a sincronizacao
         remoteRepositoryURLOrPath = apontador ao repositorio de origem 
     """
-    mucua = models.ManyToManyField('mucua.Mucua', related_name='repos', blank=True, null=True)
+#    mucua = models.ManyToManyField('mucua.Mucua', related_name='repos', blank=True, null=True)
 #    mucua = models.ManyToManyField('mucua.Mucua', symmetrical=True, related_name='repository')
     note = models.TextField(max_length=300, blank=True)
 #    repositoryName = models.CharField(max_length=100, choices=REPOSITORY_CHOICES, default='redemocambos', unique=True)

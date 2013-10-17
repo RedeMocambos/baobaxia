@@ -209,9 +209,9 @@
       \vfill
       %% {\LARGE por \par}
       \smallskip
-      {\LARGE Versão 0.1 \par}
-      {\small Consultoria da Associação Cultural Dynamite \par}
-      {\small Nota fiscal 1000 de 09/2013 \par}
+      {\LARGE Versão 0.2 \par}
+      {\small Consultoria da Gunga \par}
+      {\small Nota fiscal XXXX de 10/2013 \par}
       %% \vfill
       \vfill
       {\large Patrocínio\par}

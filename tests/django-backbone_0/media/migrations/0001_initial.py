@@ -12,7 +12,7 @@ class Migration(SchemaMigration):
         db.create_table(u'media_media', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('uuid', self.gf('django.db.models.fields.CharField')(default='0c279030-a671-45c1-b3d1-6ef77e4c5f89', max_length=36)),
+            ('uuid', self.gf('django.db.models.fields.CharField')(default='bad774b9-8e8b-49d8-a270-dd0774e2d668', max_length=36)),
             ('title', self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True)),
             ('comment', self.gf('django.db.models.fields.TextField')(max_length=300, blank=True)),
             ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
@@ -94,7 +94,7 @@ class Migration(SchemaMigration):
             'tags': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'tags'", 'symmetrical': 'False', 'to': u"orm['tag.Tag']"}),
             'title': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '100', 'blank': 'True'}),
             'type': ('django.db.models.fields.CharField', [], {'default': "'arquivo'", 'max_length': '14', 'blank': 'True'}),
-            'uuid': ('django.db.models.fields.CharField', [], {'default': "'0c279030-a671-45c1-b3d1-6ef77e4c5f89'", 'max_length': '36'})
+            'uuid': ('django.db.models.fields.CharField', [], {'default': "'bad774b9-8e8b-49d8-a270-dd0774e2d668'", 'max_length': '36'})
         },
         u'mocambola.mocambola': {
             'Meta': {'object_name': 'Mocambola'},
@@ -116,7 +116,6 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('repositoryName',)", 'object_name': 'Repository'},
             'enableSync': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'mucua': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'repos'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['mucua.Mucua']"}),
             'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
             'remoteRepositoryURLOrPath': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'repositoryName': ('django.db.models.fields.CharField', [], {'max_length': '60'}),

@@ -9,13 +9,12 @@ natureza descentralizada e a capacidade de comunicar de forma
 transparente usando vários protocolos. Em particular é interessante a
 possibilidade de executar sincronizações com sistemas de armazenamento
 massivo, característica essencial na fase de criação de um novo nó,
-onde a primeira sincronização via rede poderia levar dias (ver
-requisito \ref{sec:Sinc}). As transferências contudo, no caso do
-\emph{git-annex}, são executadas através do protocolo
-\emph{rsync}\footnote{\emph{rsync} é um Software Livre para a
-  transfêrencia rápida e incremental de arquivos disponível no
-  \url{http://rsync.samba.org/}.}, que gerencia eventuais
-interrupções, evitando retransmissões onerosas.
+onde a primeira sincronização via rede poderia levar dias. As
+transferências contudo, no caso do \emph{git-annex}, são executadas
+através do protocolo \emph{rsync}\footnote{\emph{rsync} é um Software
+  Livre para a transfêrencia rápida e incremental de arquivos
+  disponível no \url{http://rsync.samba.org/}.}, que gerencia
+eventuais interrupções, evitando retransmissões onerosas.
 
 
 \subsection{Git}\label{sec:GIT}
@@ -116,11 +115,71 @@ vários clones dos repositórios.
     disponível no: \url{aws.amazon.com/}.})
 \end{itemize}
 
+\section{Gestão de repositórios multiplos}
+A arquitetura baseadas em repositórios se adapta ao contexto de
+``redes federadas'' onde para cada ``Rede'' corresponde um
+repositório. A solução proposta no Baobáxia inclui já a possibilidade
+de cadastrar e gerenciar varias redes. A associação rede/repositório
+permite a escalabilidade da arquitetura e uma gestão diferenciada dos
+conteúdos. Cada mucua pode se associar a diferentes redes, por
+exemplo, Rede Mocambos, Estaçoes Digitais, etc.
 
-% \lstinputlisting[basicstyle={\scriptsize\ttfamily}]{../../policies/media.json}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/Auto_UML_Diagram.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Diagrama UML do BBX]{Diagrama UML do BBX}
+  \label{fig:SchemaServer_ReteMocambos}
+\end{figure}
 
-% \subsection{Mucua}
+\subsection{API e rotas}
+A API REST proposta prevê a gestão de repositórios multiplos em
+diferentes mucuas, usando o padrão de endereços:
+$$ /repositorio/mucua/ $$ 
 
-% \lstinputlisting[basicstyle={\scriptsize\ttfamily}]{../../policies/mucua.json}
+Por exemplo, para acessar um ``media'' (uuid
+aa9f9019-e4f2-4040-bc46-c2e15b66bebc) publicado na ``Rede Mocambos'', na
+mucua ``Dandara'' o endereço é:
+$$ /mocambos/dandara/media/aa9f9019-e4f2-4040-bc46-c2e15b66bebc $$
+
+ou no caso da ``Estaçao Digital'' na ``Samambaia'' seria:
+$$ /fbb/samambaia/media/aa9f9019-e4f2-4040-bc46-c2e15b66bebc $$
+
+O detalhamento da API e das rotas será definido em capitulo especifico. % REF.
+
+\subsection{Autenticação}
+O Baobáxia pode gerenciar dados de varias redes/organizações e
+portanto precisa diferenciar os usuários por Rede e Mucua\footnote{A
+  mucua de alguma forma identifica uma comunidade}. No caso as
+credenciais dos usuários são mantidas em arquivos versionados pelo git
+nos repositórios correspondentes.
+
+Para manter compatibilidade com outras aplicações do django mantivemos
+o User padrão do django usando somente o campo username para codificar
+as informarções necessárias.
+
+Um mocambola\footnote{Usuário} é definido por nome, mucua e
+repositorio no padrão:
+$$ nome@mucua.repositorio.tld $$ .
+
+O django é muito flexivel e suporta diferentes sistemas de
+autenticação, com a possibilidade de definir seu proprio backend
+personalizado.
+
+O backend de autenticação personalizado, ``FileBackend'' se encontra
+em \emph{bbx/auth.py}.
+
+No BBX, os usuários são serializados em formato \emph{json} e
+armazenados seguindo o seguinte padrão de localização:
+$$ /repositorio/mucua/mocambolas/usuario.json $$
+
+Por exemplo, no caso do mocambola ``zumbi'' da Casa de Cultura
+Tainã cuja mucua se chama ``dandara'':
+$$ zumbi@dandara.mocambos.net $$
+$$ /mocambos/dandara/mocambolas/zumbi@dandara.mocambos.net $$
+
+Notar que o repositório não inclui a extensão de dominio de primeiro
+nível, no caso do exemplo ``.net'', que permanece no username do
+mocambola.
 
 
