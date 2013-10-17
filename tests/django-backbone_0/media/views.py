@@ -8,6 +8,7 @@ from media.models import Media, mediaFileName, getFilePath
 from tag.models import Tag
 from media.forms import MediaForm
 from media.serializers import MediaSerializer
+from media.models import getTypeChoices, getFormatChoices
 from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
 import datetime
 import os
@@ -52,16 +53,25 @@ def media_list(request, repository, mucua, args=None, format=None):
         if redirect_page:
             return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/bbx/search/')
         
-        # listagem de conteudo
-        medias = Media.objects.all()
-        medias = medias.filter(repository = repository.id)
-        medias = medias.filter(origin = mucua.id)
+        # TODO LOW: futuramente, otimizar query de busca - elaborar query
+        
+        # listagem de conteudo filtrando por repositorio e mucua
+        medias = Media.objects.filter(repository = repository.id).filter(origin = mucua.id)        
+        # sanitizacao -> remove '/' do final
+        args = args.rstrip('/')
         
         # pega args da url se tiver
         if args:
             for tag in args.split('/'):
-                medias = medias.filter(tags__name__iexact = tag)
+                # verifica se a palavra eh tipo, formato ou tag e filtra
+                if tag in [key for (key, type_choice) in getTypeChoices() if tag == type_choice]:
+                    medias = medias.filter(type__iexact = tag)
+                elif tag in [key for (key, format_choice) in getFormatChoices() if tag == format_choice]:
+                    medias = medias.filter(format__iexact = tag)
+                else:
+                    medias = medias.filter(tags__name__iexact = tag)
         
+        # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
         return Response(serializer.data)
     

@@ -41,6 +41,11 @@ def getFilePath(instance):
                         instance.getMucua(), instance.getType(), 
                         date)
 
+def getTypeChoices():
+    return TYPE_CHOICES
+
+def getFormatChoices():
+    return FORMAT_CHOICES
 
 class Media(models.Model):
 # FIX: uuid nao muda.. so quando se reinicia a applicaçao :(
