@@ -14,7 +14,7 @@ class Migration(SchemaMigration):
             ('uuid', self.gf('django.db.models.fields.CharField')(default='', max_length=36)),
             ('name', self.gf('django.db.models.fields.CharField')(default='', max_length=100)),
             ('mediafile', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
-            ('date', self.gf('django.db.models.fields.DateTimeField')(blank=True)),
+            ('date', self.gf('django.db.models.fields.DateTimeField')()),
             ('note', self.gf('django.db.models.fields.TextField')(max_length=300, blank=True)),
             ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('origin', self.gf('django.db.models.fields.related.ForeignKey')(related_name='media', to=orm['mucua.Mucua'])),
@@ -83,7 +83,7 @@ class Migration(SchemaMigration):
         u'media.media': {
             'Meta': {'ordering': "('date',)", 'object_name': 'Media'},
             'author': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
-            'date': ('django.db.models.fields.DateTimeField', [], {'blank': 'True'}),
+            'date': ('django.db.models.fields.DateTimeField', [], {}),
             'format': ('django.db.models.fields.CharField', [], {'default': "'ogg'", 'max_length': '14', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'license': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),

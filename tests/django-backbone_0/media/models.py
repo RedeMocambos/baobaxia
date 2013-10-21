@@ -48,6 +48,11 @@ def getFilePath(instance):
                         instance.getMucua(), instance.getType(), 
                         date)
 
+def getTypeChoices():
+    return TYPE_CHOICES
+
+def getFormatChoices():
+    return FORMAT_CHOICES
 
 class Media(models.Model):
     uuid = models.CharField(_('uuid'),
@@ -58,8 +63,7 @@ class Media(models.Model):
                             max_length=100, default='')
     mediafile = models.FileField(upload_to=mediaFileName, blank=True)
     date = models.DateTimeField(_('date'),
-                                help_text = _('Media criation date'),
-                                blank=True)
+                                help_text = _('Media criation date'))
     note = models.TextField(_('note'),
                             help_text=_('Note.. use as you wish!'),
                             max_length=300, blank=True)
