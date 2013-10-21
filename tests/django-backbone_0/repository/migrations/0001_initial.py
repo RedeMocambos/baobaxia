@@ -11,11 +11,9 @@ class Migration(SchemaMigration):
         # Adding model 'Repository'
         db.create_table(u'repository_repository', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=60)),
             ('note', self.gf('django.db.models.fields.TextField')(max_length=300, blank=True)),
-            ('repositoryName', self.gf('django.db.models.fields.CharField')(max_length=60)),
-            ('syncStartTime', self.gf('django.db.models.fields.DateField')()),
             ('enableSync', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('remoteRepositoryURLOrPath', self.gf('django.db.models.fields.CharField')(max_length=200)),
         ))
         db.send_create_signal(u'repository', ['Repository'])
 
@@ -27,13 +25,11 @@ class Migration(SchemaMigration):
 
     models = {
         u'repository.repository': {
-            'Meta': {'ordering': "('repositoryName',)", 'object_name': 'Repository'},
+            'Meta': {'ordering': "('name',)", 'object_name': 'Repository'},
             'enableSync': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
-            'remoteRepositoryURLOrPath': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
-            'repositoryName': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
-            'syncStartTime': ('django.db.models.fields.DateField', [], {})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
+            'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'})
         }
     }
 

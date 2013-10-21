@@ -10,6 +10,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from django.utils.translation import ugettext_lazy as _
+
 import os
 import uuid
 import logging
@@ -17,6 +19,11 @@ import subprocess
 from datetime import datetime
 import exceptions
 from importlib import import_module
+
+try:
+    from django.utils.encoding import force_unicode # NOQA
+except ImportError:
+    from django.utils.encoding import force_text as force_unicode # NOQA
 
 TYPE_CHOICES = ( ('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'), ('arquivo','arquivo') )
 FORMAT_CHOICES = ( ('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'), ('jpg','jpg') )
@@ -43,31 +50,50 @@ def getFilePath(instance):
 
 
 class Media(models.Model):
-# FIX: uuid nao muda.. so quando se reinicia a applicaçao :(
-    date = models.DateTimeField(auto_now_add=True)
-    uuid = models.CharField(max_length=36, default=generateUUID())
-    title = models.CharField(max_length=100, blank=True, default='')
-    comment = models.TextField(max_length=300, blank=True)
+    uuid = models.CharField(_('uuid'),
+                            help_text = _('Media universal unique identifier'),
+                            max_length=36, default="")
+    name = models.CharField(_('name'),
+                            help_text = _('Media name'),
+                            max_length=100, default='')
+    mediafile = models.FileField(upload_to=mediaFileName, blank=True)
+    date = models.DateTimeField(_('date'),
+                                help_text = _('Media criation date'),
+                                blank=True)
+    note = models.TextField(_('note'),
+                            help_text=_('Note.. use as you wish!'),
+                            max_length=300, blank=True)
     author = models.ForeignKey(User)
     origin = models.ForeignKey('mucua.Mucua', related_name='media')
-    type = models.CharField(max_length=14, choices=TYPE_CHOICES, 
+    type = models.CharField(_('type'),
+                            help_text = _('Type of the media, like image, document, video, ...'),
+                            max_length=14, choices=TYPE_CHOICES, 
                             default='arquivo', blank=True)
-    format = models.CharField(max_length=14, choices=FORMAT_CHOICES, 
+    format = models.CharField(_('format'),
+                              help_text = ('Format of the media, like ogg, jpg, pdf, ...'),
+                              max_length=14, choices=FORMAT_CHOICES, 
                               default='ogg', blank=True)
-    license = models.CharField(max_length=100, blank=True)
-    mediafile = models.FileField(upload_to=mediaFileName, blank=True)
+    license = models.CharField(_('license'),
+                               help_text = _('License of the media, like, cc, gpl, bsd, ...'),
+                               max_length=100, blank=True)
     repository = models.ForeignKey('repository.Repository', related_name='media')
-    #    versions = 
     tags = models.ManyToManyField(Tag, related_name='tags')
     
+    def __init__(self, *args, **kwargs):
+        super(Media, self).__init__(*args, **kwargs)
+        self._meta.get_field('uuid').default = force_unicode(uuid.uuid4())
+
     def __unicode__(self):
-        return self.title
+        return self.name
+    
+    def getName(self):
+        return self.name
 
     def getFileName(self):
         return str(self.uuid)  + '.' + self.format
     
     def getRepository(self):
-        return self.repository.repositoryName
+        return self.repository.getName()
 
     def getMucua(self):
         return self.origin.description

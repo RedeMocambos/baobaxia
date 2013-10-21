@@ -6,7 +6,7 @@ PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 REPOSITORY_DIR = "/storage/annex/alternate/pub"
 MOCAMBOLA_DIR = "mocambola" # Nome da pasta onde sao armazenados os usuarios em .json
 DEFAULT_MUCUA = "dandara"
-DEFAULT_REPOSITORY = "redemocambos"
+DEFAULT_REPOSITORY = "mocambos"
 
 POLICIES_DIR = PROJECT_ROOT + "/../policy"
 

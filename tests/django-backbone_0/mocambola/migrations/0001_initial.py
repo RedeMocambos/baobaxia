@@ -77,13 +77,11 @@ class Migration(SchemaMigration):
             'uuid': ('django.db.models.fields.CharField', [], {'default': "'dandara'", 'max_length': '36'})
         },
         u'repository.repository': {
-            'Meta': {'ordering': "('repositoryName',)", 'object_name': 'Repository'},
+            'Meta': {'ordering': "('name',)", 'object_name': 'Repository'},
             'enableSync': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
-            'remoteRepositoryURLOrPath': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
-            'repositoryName': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
-            'syncStartTime': ('django.db.models.fields.DateField', [], {})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
+            'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'})
         }
     }
 

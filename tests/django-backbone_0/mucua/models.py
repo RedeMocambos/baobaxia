@@ -10,6 +10,8 @@ from django.db.models import get_model
 from django.db.utils import DatabaseError
 import exceptions
 
+from django.contrib import admin
+
 # MUCUA_NAME_UUID é uma tupla com nome e uuid da mucua (pode ler do settings.py)
 # MUCUA_NAME_UUID = settings.MUCUA_NAME_UUID
 # MUCUA_NAME_UUID = [ ('a30a926a-3a8c-11e2-a817-cb26bd9bc8d3','dandara'), ('0492621a-4195-11e2-b8c7-43de40a4e11c','acotirene') ]
@@ -42,11 +44,14 @@ class RepositoryDoesNotExist(exceptions.Exception):
     def __init__(self,args=None):
         self.args = args
 
+class MucuaAdmin(admin.ModelAdmin):
+    readonly_fields=('uuid',)
+
 
 class Mucua(models.Model):
     description = models.CharField(max_length=100, editable=False)
     note = models.TextField(max_length=300, blank=True)
-    uuid = models.CharField(max_length=36, choices=getAvailableMucuas(), default='dandara')
+    uuid = models.CharField("Mucua", max_length=36, choices=getAvailableMucuas(), default='dandara')
     repository = models.ManyToManyField('repository.Repository', related_name='mucuas')
     mocambolas = models.ManyToManyField(User, through='mocambola.Mocambola', related_name='mucuas')
 

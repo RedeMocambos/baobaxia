@@ -214,7 +214,7 @@
       {\small Nota fiscal XXXX de 10/2013 \par}
       %% \vfill
       \vfill
-      {\large Patrocínio\par}
+      {\large Parceria\par}
       {\large \fbb \par}
       \bigskip
       \bigskip

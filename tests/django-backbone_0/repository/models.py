@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 
 from django.db import models
@@ -7,14 +8,13 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-#from gitannex.signals import receiver_subclasses, filesync_done
 from media.models import Media
 from media.models import getFilePath
-#from media.serializers import MediaSerializer
 
 from django.db.models import get_model
 from repository.signals import filesync_done
 
+from django.utils.translation import ugettext_lazy as _
 from bbx.settings import DEFAULT_REPOSITORY
 
 
@@ -22,6 +22,7 @@ import os
 import datetime
 import subprocess
 import logging
+
 
 """
 Modelos da aplicacao Django. 
@@ -44,8 +45,6 @@ def gitMediaPostSave(instance, **kwargs):
     logger.debug(type(instance))
     gitAnnexAdd(instance.getFileName(), getFilePath(instance))
     serializer = MediaSerializer(instance)
-    print serializer.getJSON()
-#    gitAdd(instance.getFileName(), getFilePath(instance))
     mediapath = getFilePath(instance)+'/'
     mediadata = instance.uuid + '.json'
     fout = open(mediapath + mediadata, 'w')
@@ -54,56 +53,8 @@ def gitMediaPostSave(instance, **kwargs):
     gitAdd(mediadata, mediapath)
     gitCommit(instance.getFileName(), instance.author.username, instance.author.email, getFilePath(instance))
 
-
 def getDefaultRepository():
-    #    from repository.models import Repository as repository_model
-    #    repository = get_model('repository', 'Repository')
-    return Repository.objects.get(repositoryName = DEFAULT_REPOSITORY)
-
-
-def _createRepository(repositoryName, remoteRepositoryURLOrPath):
-    """Cria e inicializa um repositorio *git-annex*."""
-    logger.info('git config --global user.name "admin"')
-    cmd = 'git config --global user.name "admin"' 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir, repositoryName))
-    pipe.wait()
-    logger.info('git config --global user.email "admin@mocambos.net"')
-    cmd = 'git config --global user.email "admin@mocambos.net"' 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir, repositoryName))
-    pipe.wait()
-    logger.info('git init')
-    cmd = 'git init' 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir, repositoryName))
-    pipe.wait()
-    logger.info('git annex init ' + settings.PORTAL_NAME)
-    cmd = 'git annex init ' + settings.PORTAL_NAME 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir, repositoryName))
-    pipe.wait()
-    # TODO: Manage repositories dinamically 
-    logger.info('git remote add baoba ' + remoteRepositoryURLOrPath)
-    cmd = 'git remote add baoba ' + remoteRepositoryURLOrPath 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir, repositoryName))
-    pipe.wait()
-
-
-def _cloneRepository(repositoryURLOrPath, repositoryName):
-    """Clona e inicializa um repositorio *git-annex*."""
-    cmd = 'git config --global user.name "admin"' 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir))
-    pipe.wait()
-    cmd = 'git config --global user.email "admin@mocambos.net"' 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir))
-    pipe.wait()
-    cmd = 'git clone ' + repositoryURLOrPath + repositoryName  
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir))
-    pipe.wait()
-    cmd = 'git annex init ' + settings.PORTAL_NAME 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.path.join(settings.MEDIA_ROOT, repository_dir, repositoryName))
-    pipe.wait()
-
-def _selectRepositoryByPath():
-    # Controlla il path del file ed estrai il nome del Repository
-    return
+    return Repository.objects.get(name = DEFAULT_REPOSITORY)
 
 def _getAvailableFolders(path):
     """Procura as pastas que podem ser inicializada como repositorio, retorna a lista das pastas."""
@@ -138,11 +89,6 @@ def gitPull(repoDir):
     cmd = 'git pull '
     pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
     pipe.wait()
-
-def gitStatus(repoDir):
-    """Verifica o estado atual do repositorio"""
-    # Dovrebbe restituire oltre allo status un flag per avviare o no il sync
-    cmd = 'git status'
 
 def gitGetSHA(repoDir):
     """Resgata o codigo identificativo (SHA) da ultima revisao do repositorio, retorna o codigo."""
@@ -212,24 +158,35 @@ class Repository(models.Model):
     """Classe de implementacao do modelo de repositorio *git-annex*.
     
     Atributos:
-        repositoryName: nome do repositorio (campo preenchido por *_getAvailableFolders()*)
-        repositoryURLOrPath: apontador ao repositorio no disco ou em rede
-        syncStartTime = orario de inicio da sincronizacao
+        name: nome do repositorio (campo preenchido por *_getAvailableFolders()*)
+        note: Note.. use as you wish!
         enableSync = flag booleano para abilitar ou disabilitar a sincronizacao
-        remoteRepositoryURLOrPath = apontador ao repositorio de origem 
     """
-#    mucua = models.ManyToManyField('mucua.Mucua', related_name='repos', blank=True, null=True)
-#    mucua = models.ManyToManyField('mucua.Mucua', symmetrical=True, related_name='repository')
-    note = models.TextField(max_length=300, blank=True)
-#    repositoryName = models.CharField(max_length=100, choices=REPOSITORY_CHOICES, default='redemocambos', unique=True)
-    repositoryName = models.CharField(max_length=60, choices=_getAvailableFolders(repository_dir))
-    syncStartTime = models.DateField()
-    enableSync = models.BooleanField()
-    remoteRepositoryURLOrPath = models.CharField(max_length=200)
+
+    name = models.CharField(_('name'), 
+                            help_text=_('Repository name taken from available repositories'),
+                            max_length=60,
+                            choices=_getAvailableFolders(repository_dir))
+    note = models.TextField(_('notes'),
+                            help_text=_('Note.. use as you wish!'),
+                            max_length=300, blank=True)
+
+    enableSync = models.BooleanField(_('synchronize'),
+                                     help_text=_('Tick here to enable'
+                                                 'syncronization of this repository'),)
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name = _('repository')
+        verbose_name_plural = _('repositories')
+
+    def __unicode__(self):
+        return self.name
+
 
     def getName(self):
         """Retorna o nome do repositorio."""
-        return str(self.repositoryName)
+        return str(self.name)
     
     def getPath(self):
         """Retorna o caminho no disco (path) do repositorio."""
@@ -237,29 +194,20 @@ class Repository(models.Model):
 
     def createRepository(self):
         """Cria e inicializa o repositorio."""
-        _createRepository(self.repositoryName, self.remoteRepositoryURLOrPath)
+        _createRepository(self.name, self.getPath())
     
     def cloneRepository(self):
         """Clona e inicializa o repositorio."""
-        _cloneRepository(self.repositoryURLOrPath, self.repositoryName)
+        _cloneRepository(self.getPath, self.name)
 
-    def getPath(self):
-        # TODO LOW: Juntar numa biblioteca
-        return os.path.join(repository_dir, self.getName()) 
-        
     def syncRepository(self):
         """Sincroniza o repositorio com sua origem."""
         gitAnnexSync(self.repositoryURLOrPath)
 
-        filesync_done.send(sender=self, repositoryName=self.repositoryName, \
-                               repositoryDir=self.repositoryURLOrPath)
-
-    def __unicode__(self):
-        return self.repositoryName
+        filesync_done.send(sender=self, name=self.getName(), \
+                               repositoryDir=self.getPath())
 
     def save(self, *args, **kwargs):
         super(Repository, self).save(*args, **kwargs)
 
-    class Meta:
-        ordering = ('repositoryName',)
 

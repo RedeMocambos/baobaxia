@@ -27,7 +27,7 @@ class MediaSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Media
-        fields = ('date', 'uuid', 'title', 'comment', 'author', 'type', 'format', 'license', 'mediafile', 'origin', 'repository')
+        fields = ('date', 'uuid', 'name', 'note', 'author', 'type', 'format', 'license', 'mediafile', 'origin', 'repository')
 #        depth = 1   # se comentar linhas de cima, ativar essa
 
     def restore_object(self, attrs, instance=None):
@@ -42,8 +42,8 @@ class MediaSerializer(serializers.ModelSerializer):
             # Update existing instance
             instance.date = attrs.get('date', instance.date)
             instance.uuid = attrs.get('uuid', instance.uuid)
-            instance.title = attrs.get('title', instance.title)
-            instance.comment = attrs.get('comment', instance.comment)
+            instance.name = attrs.get('name', instance.name)
+            instance.note = attrs.get('note', instance.note)
             instance.author = attrs.get('author', instance.author)
             instance.origin = attrs.get('origin', instance.origin)
             instance.type = attrs.get('type', instance.type)
