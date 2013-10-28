@@ -2,8 +2,8 @@ define([
     'jquery', 
     'underscore',
     'backbone', 
-    'models/MediaModel',
-    'collections/media/MediaCollection',
+    'modules/media/model',
+    'modules/media/collection',
     'text!templates/media/MediaResults.html'
     
 ], function($, _, Backbone, MediaModel, MediaCollection, MediaResults){

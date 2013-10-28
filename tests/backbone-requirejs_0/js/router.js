@@ -1,12 +1,11 @@
 define([
     'jquery', 
     'backbone',
-    'models/MediaModel', 
-    'collections/media/MediaCollection',
-    'views/media/MediaView',
-    'views/media/MediaListView',
-    'views/file/FileView'
-], function($, Backbone, MediaModel, MediaCollection, MediaView, MediaListView, FileView){
+    'modules/media/model', 
+    'modules/media/collection',
+    'modules/media/MediaView',
+    'modules/media/MediaListView'
+], function($, Backbone, Model, MediaCollection, MediaView, MediaListView){
     
     var AppRouter = Backbone.Router.extend({
 	// rotas simples

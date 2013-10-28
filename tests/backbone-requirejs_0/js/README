@@ -1,3 +1,28 @@
 Estrutura de arquivos usando modelo presente em:
 
 http://backbonetutorials.com/organizing-backbone-using-modules/
+
+e
+
+http://weblog.bocoup.com/organizing-your-backbone-js-application-with-modules/
+
+------------------------------------------------------------------------------
+
+index.html	-> carregamento inicial
+
+templates:
+
+js/app.js       -> inicializa a aplicacao e carrega o router 
+js/main.js	-> define caminhos das libs para o require.js
+js/router.js	-> rotas principais
+
+pastas:
+js/lib/         -> bibliotecas externas
+js/modules/     -> aonde sao colocados os componentes
+
+ex. de modulo:
+js/modules/media
+js/modules/media/model.js	    -> modelo
+js/modules/media/collection.js	    -> colecao de modelos
+js/modules/media/MediaView.js	    -> determinada view
+js/modules/media/MediaViewABC.js    -> outra view
