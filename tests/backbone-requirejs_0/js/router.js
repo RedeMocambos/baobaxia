@@ -1,11 +1,11 @@
 define([
     'jquery', 
     'backbone',
-    'models/MediaModel', 
-    'collections/media/MediaCollection',
-    'views/media/MediaView',
-    'views/file/FileView'
-], function($, Backbone, MediaModel, MediaCollection, MediaView, FileView){
+    'modules/media/model', 
+    'modules/media/collection',
+    'modules/media/MediaView',
+    'modules/media/MediaListView'
+], function($, Backbone, Model, MediaCollection, MediaView, MediaListView){
     
     var AppRouter = Backbone.Router.extend({
 	// rotas simples
@@ -23,6 +23,12 @@ define([
 	    // media
 	    ':repository/:mucua/medias': 'publishMedia',
 	    ':repository/:mucua/medias/:uuid': 'viewMedia',
+	    
+	    // login / logout
+	    ':repository/:mucua/login': 'login',
+	    ':login': 'login',
+	    ':repository/:mucua/logout': 'logout',
+	    ':logout': 'logout',
 	},
 	
 	// escopo: repositório e mucuas
@@ -51,17 +57,44 @@ define([
 	callBbxCommand: function(repository, mucua, command, args) {
 	    console.log("executa comando " + command);
 	    
-	    var argsArray = args.split('/');   
-	    for (i in argsArray) {
-		console.log(argsArray[i]);
+	    // TODO: fazer algum tipo de lista das funcoes para pegar + dinamico
+	    switch (command) {
+	    case "search":
+		this.buscaMedia(repository, mucua, args);
+		break;
 	    }
 	    
+	    var argsArray = args.split('/');
+	    for (i in argsArray) {
+		//console.log(argsArray[i]);
+	    }	    
 	    console.log("/" + repository + "/" + mucua + "/bbx/" + command + "/" + args);
 	},
 	
+	// login / logout
+	login: function(repository='', mucua='') {
+	    console.log("login");
+	    if (repository != "" && mucua != "") {
+		console.log("/" + repository + "/" + mucua + "/login");;
+	    } else if (repository == "" && mucua === "") {
+		console.log("/login");
+	    }
+	},
+
 	// media
 	buscaMedia: function(repository, mucua, args) {
-	    console.log("busca " + args);
+	    mensagemBusca = "Buscando '" + args + "' no repositorio '" + repository + "' e na mucua '" + mucua + "'";
+	    console.log(mensagemBusca);
+	    
+	    url = '/api/' + repository + '/' +  mucua + '/bbx/search/' + args;
+	    var mediaCollection = new MediaCollection([], {url: url});
+	    
+	    mediaCollection.fetch({
+		success: function() {
+		    var mediaListView = new MediaListView();
+		    mediaListView.render(mediaCollection);		    
+		}
+	    });
 	},
 	publishMedia: function(repository, mucua) {
 	    console.log("insere media");
@@ -107,22 +140,8 @@ define([
     return {
 	initialize: initialize
     };    
-    
-
-    // // old	
-    // app_router.on('route:MediaView', function() {
-    // 	var mediaView = new MediaView();
-    // 	mediaView.render();
-    // });
-    
-    // // file/:filename
-    // app_router.on('route:getFile', function(fileName) {
-    // 	var file1 = new FileModel({'filename': fileName});
-    // 	fetchFile = file1.fetch();
-	
-    // 	file1.on('change', function() {
-    // 	    var fileView = new FileView({model: file1});
-    // 	    fileView.render();
-    // 	});   
-    // });
 });
+	    // event detection:
+	    // mediaCollection.on('all', function(eventName) {
+	    // 	console.log("eventName: " + eventName);
+	    // });	    

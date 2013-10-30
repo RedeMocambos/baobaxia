@@ -4,8 +4,9 @@ import os
 PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
 REPOSITORY_DIR = "/storage/annex/alternate/pub"
+MOCAMBOLA_DIR = "mocambola" # Nome da pasta onde sao armazenados os usuarios em .json
 DEFAULT_MUCUA = "dandara"
-DEFAULT_REPOSITORY = "redemocambos"
+DEFAULT_REPOSITORY = "mocambos"
 
 POLICIES_DIR = PROJECT_ROOT + "/../policy"
 
@@ -102,6 +103,11 @@ TEMPLATE_LOADERS = (
 #    'django.template.loaders.eggs.Loader',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'bbx.auth.FileBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    )
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -139,7 +145,8 @@ INSTALLED_APPS = (
     'media',
     'mucua',
     'tag',
-    'repository',    
+    'repository',
+    'mocambola',
     'south',
 )
 

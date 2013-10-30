@@ -15,6 +15,7 @@ require.config({
 	jquery: 'lib/jquery-min',
 	underscore: 'lib/underscore-amd',
 	backbone: 'lib/backbone-amd',
+	backbone_form: 'lib/backbone-forms',
 	templates: '../templates',
     },
     waitSeconds: 200

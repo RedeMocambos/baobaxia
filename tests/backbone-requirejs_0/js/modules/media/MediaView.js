@@ -2,7 +2,7 @@ define([
     'jquery', 
     'underscore',
     'backbone', 
-    'models/MediaModel',
+    'modules/media/model',
     'text!templates/media/MediaView.html'
 ], function($, _, Backbone, MediaModel, mediaView){
     

@@ -1,10 +1,21 @@
 # -*- coding: utf-8 -*-                                                                                                                                       
-# Multi Select Field, originally taken from:
-# http://djangosnippets.org/snippets/1200/  
-
 from django.db import models
 from django import forms
 from django.utils.text import capfirst
+
+import os
+import errno
+
+def check_if_path_exists_or_create(path):
+    try:
+        os.makedirs(path)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
+
+
+# Multi Select Field, originally taken from:
+# http://djangosnippets.org/snippets/1200/  
 
 class MultiSelectFormField(forms.MultipleChoiceField):
     widget = forms.CheckboxSelectMultiple

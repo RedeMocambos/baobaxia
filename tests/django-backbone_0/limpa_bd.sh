@@ -1,0 +1,31 @@
+#!/bin/bash
+
+echo "----------------------"
+echo "removendo arquivos de migracao e banco ..."
+echo "----------------------"
+rm bbx/database.sqlite
+find . -name '000*.py' -exec rm '{}' \; && echo "OK!"
+
+source ~/bbxenv/bin/activate
+
+
+echo "----------------------"
+echo "criando banco novo..."
+echo "----------------------"
+
+python manage.py syncdb --noinput
+
+
+echo "----------------------"
+echo "recriando migracoes..."
+echo "----------------------"
+
+python manage.py schemamigration --initial --traceback mocambola
+python manage.py schemamigration --initial --traceback mucua
+python manage.py schemamigration --initial --traceback tag
+python manage.py schemamigration --initial --traceback media
+python manage.py schemamigration --initial --traceback repository
+
+
+
+python manage.py migrate --all

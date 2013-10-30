@@ -8,7 +8,7 @@ from media.models import Media, mediaFileName, getFilePath
 from tag.models import Tag
 from media.forms import MediaForm
 from media.serializers import MediaSerializer
-from mucua.models import MUCUA_NAME_UUID
+from media.models import getTypeChoices, getFormatChoices
 from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
 import datetime
 import os
@@ -44,25 +44,34 @@ def media_list(request, repository, mucua, args=None, format=None):
             redirect_page = True
 
         try:
-            repository = Repository.objects.get(repositoryName = repository)
+            repository = Repository.objects.get(name = repository)
         except Repository.DoesNotExist:
-            repository = Repository.objects.get(repositoryName = DEFAULT_REPOSITORY)
+            repository = Repository.objects.get(name = DEFAULT_REPOSITORY)
             redirect_page = True        
         
         # redirect
         if redirect_page:
-            return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/bbx/search/')
+            return HttpResponseRedirect(redirect_base_url + repository.name + '/' + mucua.description + '/bbx/search/')
         
-        # listagem de conteudo
-        medias = Media.objects.all()
-        medias = medias.filter(repository = repository.id)
-        medias = medias.filter(origin = mucua.id)
+        # TODO LOW: futuramente, otimizar query de busca - elaborar query
+        
+        # listagem de conteudo filtrando por repositorio e mucua
+        medias = Media.objects.filter(repository = repository.id).filter(origin = mucua.id)        
+        # sanitizacao -> remove '/' do final
+        args = args.rstrip('/')
         
         # pega args da url se tiver
         if args:
             for tag in args.split('/'):
-                medias = medias.filter(tags__tag__iexact = tag)
+                # verifica se a palavra eh tipo, formato ou tag e filtra
+                if tag in [key for (key, type_choice) in getTypeChoices() if tag == type_choice]:
+                    medias = medias.filter(type__iexact = tag)
+                elif tag in [key for (key, format_choice) in getFormatChoices() if tag == format_choice]:
+                    medias = medias.filter(format__iexact = tag)
+                else:
+                    medias = medias.filter(tags__name__iexact = tag)
         
+        # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
         return Response(serializer.data)
     
@@ -83,14 +92,14 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         redirect_page = True
     
     try:
-        repository = Repository.objects.get(repositoryName = repository)
+        repository = Repository.objects.get(name = repository)
     except Repository.DoesNotExist:
-        repository = Repository.objects.get(repositoryName = DEFAULT_REPOSITORY)
+        repository = Repository.objects.get(name = DEFAULT_REPOSITORY)
         redirect_page = True
 
     # redirect
     if redirect_page:
-        return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/media/')
+        return HttpResponseRedirect(redirect_base_url + repository.name + '/' + mucua.description + '/media/')
     
     # TODO: get author (url?)
     author = User.objects.get(pk = 1)
@@ -103,16 +112,16 @@ def media_detail(request, repository, mucua, pk = None, format=None):
 
     if request.method == 'GET':
         if pk == '':
-            return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/bbx/search')
+            return HttpResponseRedirect(redirect_base_url + repository.name + '/' + mucua.description + '/bbx/search')
        
         serializer = MediaSerializer(media)
         return Response(serializer.data)
 
     elif request.method == 'PUT':
         if pk == '':
-            return HttpResponseRedirect(redirect_base_url + repository.repositoryName + '/' + mucua.description + '/bbx/search')
-        media.title = request.DATA['title']
-        media.comment = request.DATA['comment']
+            return HttpResponseRedirect(redirect_base_url + repository.name + '/' + mucua.description + '/bbx/search')
+        media.name = request.DATA['name']
+        media.note = request.DATA['note']
         media.type = request.DATA['type']
         media.license = request.DATA['license']
 #        media.date = request.DATA['date']
@@ -150,12 +159,12 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         """
         
         # Linha curl mista para testar upload E mandar data
-        # $ curl -F "title=teste123" -F "tags=entrevista" -F "comment=" -F "license=" -F "date=2013/06/07" -F "type=imagem" -F "mediafile=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/media/ > /tmp/x.html          
+        # $ curl -F "name=teste123" -F "tags=entrevista" -F "note=" -F "license=" -F "date=2013/06/07" -F "type=imagem" -F "mediafile=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/media/ > /tmp/x.html          
         media = Media(repository = repository, 
                       origin = mucua,
                       author = author, 
-                      title = request.DATA['title'], 
-                      comment = request.DATA['comment'],
+                      name = request.DATA['name'], 
+                      note = request.DATA['note'],
                       type = request.DATA['type'],
                       license = request.DATA['license'],
                       date = request.DATA['date'],

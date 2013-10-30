@@ -8,31 +8,19 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Mucua'
-        db.create_table(u'mucua_mucua', (
+        # Adding model 'Mocambola'
+        db.create_table(u'mocambola_mocambola', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('description', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('note', self.gf('django.db.models.fields.TextField')(max_length=300, blank=True)),
-            ('uuid', self.gf('django.db.models.fields.CharField')(default='dandara', max_length=36)),
+            ('mucua', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['mucua.Mucua'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('repository', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['repository.Repository'])),
         ))
-        db.send_create_signal(u'mucua', ['Mucua'])
-
-        # Adding M2M table for field repository on 'Mucua'
-        m2m_table_name = db.shorten_name(u'mucua_mucua_repository')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('mucua', models.ForeignKey(orm[u'mucua.mucua'], null=False)),
-            ('repository', models.ForeignKey(orm[u'repository.repository'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['mucua_id', 'repository_id'])
+        db.send_create_signal(u'mocambola', ['Mocambola'])
 
 
     def backwards(self, orm):
-        # Deleting model 'Mucua'
-        db.delete_table(u'mucua_mucua')
-
-        # Removing M2M table for field repository on 'Mucua'
-        db.delete_table(db.shorten_name(u'mucua_mucua_repository'))
+        # Deleting model 'Mocambola'
+        db.delete_table(u'mocambola_mocambola')
 
 
     models = {
@@ -97,4 +85,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['mucua']
+    complete_apps = ['mocambola']
