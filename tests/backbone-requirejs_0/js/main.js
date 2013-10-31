@@ -17,12 +17,13 @@ require.config({
 	backbone: 'lib/backbone-amd',
 	backbone_form: 'lib/backbone-forms',
 	templates: '../templates',
+	backbone_subroute: 'lib/backbone.subroute.min',
     },
     waitSeconds: 200
 });
 
 require([
-    'jquery', 'underscore', 'backbone', 'app'
+    'jquery', 'underscore', 'backbone', 'app', 'backbone_subroute'
 ], function($, _, Backbone, App){
     App.initialize();
 });
