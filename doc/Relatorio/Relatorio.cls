@@ -211,7 +211,7 @@
       \smallskip
       {\LARGE Versão 0.2 \par}
       {\small Consultoria da Gunga \par}
-      {\small Nota fiscal XXXX de 10/2013 \par}
+      {\small Nota fiscal 0142 de 11/2013 \par}
       %% \vfill
       \vfill
       {\large Parceria\par}
