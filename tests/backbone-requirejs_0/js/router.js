@@ -5,13 +5,16 @@ define([
     'modules/media/router', 
     'modules/mucua/router', 
     'modules/bbx/router', 
-], function($, Backbone, BackboneSubroute, MediaRouter, MucuaRouter, BbxRouter){
+    'modules/auth/LoginView', 
+], function($, Backbone, BackboneSubroute, MediaRouter, MucuaRouter, BbxRouter, LoginView){
     var App = {};
     
     App.Router = Backbone.Router.extend({
 	Routers: {},
 	
 	routes: {
+	    '' : 'index',
+	    
 	    // login / logout
 	    ':repository/:mucua/login': 'login',
 	    ':login': 'login',
@@ -24,7 +27,12 @@ define([
 	    ':repository/:mucua/mucua/*subroute': 'invokeMucuaModule',
 	},
 
-	// login / logout
+	index: function() {
+	    console.log("index");
+	    
+	},	
+	
+	// login
 	login: function(repository='', mucua='') {
 	    console.log("login");
 	    if (repository != "" && mucua != "") {
@@ -32,12 +40,14 @@ define([
 	    } else if (repository == "" && mucua === "") {
 		console.log("/login");
 	    }
+	    
+	    var loginView = new LoginView();
+	    loginView.render();
 	},
-
 	logout: function(repository='', mucua='') {	
 	    console.log("/logout");
 	},
-
+	
 	// media
 	invokeMediaModule: function(subroute) {
 	    if (!this.Routers.MediaRouter) {
@@ -59,31 +69,11 @@ define([
 	    }
 	},
 	
-//	    var argsArray = args.split('/');
-//	    for (i in argsArray) {
-		//console.log(argsArray[i]);
-//	    }	    
-	    //console.log("/" + repository + "/" + mucua + "/bbx/" + command + "/" + args);
-	    
     });
     
     var initialize = function(){
 	
 	new App.Router();
-/*	
-	// rotas RegExp
-	routes = [
-	    // bbx [command] com multiplos argumentos
-	    // /[repo]/[mucua]/bbx/[comando]/[arg1|arg2|...]
-	    [/^(.+?)\/(.+?)\/bbx\/(.+?)\/(.*?)$/, 'callBbxCommand', this.callBbxCommand],
-	    // search generico
-	    //	    [/^(.+?)\/(.+?)\/(.+?)$/, 'buscaMedia', this.buscaMedia],
-	    // TODO: consertar conflito entre essa func e a /repo/mucua/medias/uuid
-	];
-	_.each(routes, function(route) {
-	    router.route.apply(router,route);
-        });
-*/
 	Backbone.history.start();
     };
 
@@ -91,7 +81,8 @@ define([
 	initialize: initialize
     };    
 });
-	    // event detection:
-	    // mediaCollection.on('all', function(eventName) {
-	    // 	console.log("eventName: " + eventName);
-	    // });	    
+
+// event detection:
+// mediaCollection.on('all', function(eventName) {
+// 	console.log("eventName: " + eventName);
+// });	    

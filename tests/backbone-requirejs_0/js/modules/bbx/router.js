@@ -16,24 +16,24 @@ define([
 	    console.log("module BBX loaded");
 	},
 
-	listBbxCommands: function() {
-	    console.log("lista comandos bbx");
-	},
-	
-	getRepository: function() {
+	_getRepository: function() {
 	    var argsArray = this.prefix.split('/');
 	    return argsArray[0];
 	},
 
-	getMucua: function() {
+	_getMucua: function() {
 	    var argsArray = this.prefix.split('/');
 	    return argsArray[1];
 	},
 
-	busca: function(args) {
-	    console.log("busca args:");
-	    repository = this.getRepository();
-	    mucua = this.getMucua();
+	// funcoes de mapeamento
+	listBbxCommands: function() {
+	    console.log("lista comandos bbx");
+	},
+	
+	busca: function(args) {   
+	    repository = this._getRepository();
+	    mucua = this._getMucua();
 	    
 	    mensagemBusca = "Buscando '" + args + "' no repositorio '" + repository + "' e na mucua '" + mucua + "'";
 	    console.log(mensagemBusca);
