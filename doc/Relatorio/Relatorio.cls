@@ -190,14 +190,24 @@
     \let \footnote \thanks
     \setcounter{footnote}{0}
     \null\vfill
+
+      \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=15cm]{./Fig/Logo_BBX_Na_Rota.pdf}
+      \end{figure}
+
+      \newpage
+      \thispagestyle{empty}
+      
     \vskip 10\p@
       \begin{center}
       {\LARGE\textbf{\REDEMOCAMBOS}\par}
+      {\large \NPDD \par}     
       \begin{figure}[htbp]
         \centering
-%        \includegraphics[width=3.5cm]{./Figure/LogoUNIFI.pdf}
+        \includegraphics[width=6cm]{./Fig/Logo_RM_NPDD.pdf}
       \end{figure}
-      {\large \NPDD \par}     
+
 %      {\large Taguatinga \par}     
 
       \setlength{\parskip}{0pt}
@@ -207,17 +217,27 @@
       {\huge \bf \@title \par}
       {\huge na Rota dos Baobás \par}
       \vfill
+
+      \bigskip
       %% {\LARGE por \par}
-      \smallskip
-      {\LARGE Versão 0.2 \par}
+      \bigskip
+      {\LARGE Relatório de execução - Versão 0.2 \par}
       {\small Consultoria da Gunga \par}
       {\small Nota fiscal 0142 de 11/2013 \par}
+      \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=3cm]{./Fig/Logo_Gunga.pdf}
+      \end{figure}
       %% \vfill
-      \vfill
+
       {\large Parceria\par}
       {\large \fbb \par}
+      \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=3cm]{./Fig/Logo_FBB.pdf}
+      \end{figure}
       \bigskip
-      \bigskip
+
 %      {\large presso \par}
 
 %      {\large \deptname \par}
@@ -239,9 +259,14 @@
 
 
       \begin{center}
-      \bigskip
+
 %      {\Large \@date \par}
       {\Large \TAINA \par}
+      \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=3cm]{./Fig/Logo_Taina.pdf}
+      \end{figure}
+
       \bigskip
     \end{center}
 
