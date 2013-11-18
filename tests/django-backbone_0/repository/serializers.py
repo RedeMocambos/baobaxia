@@ -5,7 +5,7 @@ from repository.models import Repository
 class RepositorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Repository
-        fields = ('uuid', 'note', 'repositoryName', 'repositoryURLOrPath', 'syncStartTime', 'enableSync', 'remoteRepositoryURLOrPath')
+        fields = ('name', 'note', 'enableSync')
 
     def restore_object(self, attrs, instance=None):
         
@@ -16,4 +16,4 @@ class RepositorySerializer(serializers.ModelSerializer):
             return instance
 
         # Create new instance
-        return Repository(**attrs)
+        return Repository(**attrs)        

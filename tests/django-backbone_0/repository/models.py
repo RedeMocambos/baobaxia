@@ -31,7 +31,7 @@ Neste arquivo sao definidos os modelos de dados da aplicacao *gitannex*.
 """
 
 # REPOSITORY_CHOICE é uma tupla com repositorios dentro da pasta /annex
-REPOSITORY_CHOICES = [ ('redemocambos', 'redemocambos'), ('sarava', 'sarava'), ('m0c4mb0s', 'm0c4mb0s') ]
+REPOSITORY_CHOICES = [ ('mocambos', 'mocambos'), ('sarava', 'sarava') ]
 logger = logging.getLogger(__name__)
 repository_dir = settings.REPOSITORY_DIR
 
@@ -55,6 +55,9 @@ def gitMediaPostSave(instance, **kwargs):
 
 def getDefaultRepository():
     return Repository.objects.get(name = DEFAULT_REPOSITORY)
+
+def getAvaliableRepositories():
+    return REPOSITORY_CHOICES
 
 def _getAvailableFolders(path):
     """Procura as pastas que podem ser inicializada como repositorio, retorna a lista das pastas."""
