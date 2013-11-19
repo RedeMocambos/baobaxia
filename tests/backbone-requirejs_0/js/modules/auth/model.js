@@ -9,10 +9,10 @@ define([
 	template: _.template(LoginTemplate, $('#form_login_template').html()),
 	schema: {
 	    login: 'Text',
-	    repository: {type: 'Select', 
-			 options: ['redemocambos', 'sarava']},
+	    repository: {type: 'Select', 	
+			 options: []},
 	    mucua: {type: 'Select', 
-		    options: ['dandara', 'acotirene']},
+		    options: []},
             password:   'Password',
 	}
     });
