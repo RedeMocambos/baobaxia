@@ -56,7 +56,7 @@ def gitMediaPostSave(instance, **kwargs):
 def getDefaultRepository():
     return Repository.objects.get(name = DEFAULT_REPOSITORY)
 
-def getAvaliableRepositories():
+def getAvailableRepositories():
     return REPOSITORY_CHOICES
 
 def _getAvailableFolders(path):
