@@ -16,9 +16,10 @@ from django.contrib import admin
 # MUCUA_NAME_UUID = settings.MUCUA_NAME_UUID
 # MUCUA_NAME_UUID = [ ('a30a926a-3a8c-11e2-a817-cb26bd9bc8d3','dandara'), ('0492621a-4195-11e2-b8c7-43de40a4e11c','acotirene') ]
 
-def getAvailableMucuas(uuid=None, repository=None):
-    """Get a list of available policies from POLICIES_DIR."""
+def getDefaultMucua():
+    return Mucua.objects.get(note = DEFAULT_MUCUA)
 
+def getAvailableMucuas(uuid=None, repository=None):
     if not repository:
         try:
 #            repository_model = get_model('repository', 'Repository')
