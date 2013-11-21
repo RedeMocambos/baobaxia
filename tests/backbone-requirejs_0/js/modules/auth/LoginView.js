@@ -6,10 +6,12 @@ define([
     'modules/auth/model',
     'modules/repository/model',
     'modules/repository/collection',
+    'modules/mucua/model',
+    'modules/mucua/collection',
     'text!templates/common/header.html',
     'text!templates/common/footer.html',
     'text!templates/auth/LoginTemplate.html'
-], function($, _, Backbone, BackboneForm, LoginModel, RepositoryModel, RepositoryCollection, Header, Footer, LoginTemplate){
+], function($, _, Backbone, BackboneForm, LoginModel, RepositoryModel, RepositoryCollection, MucuaModel, MucuaCollection, Header, Footer, LoginTemplate){
     var LoginView = Backbone.View.extend({
 	// define elemento associado
 	//el: $('#form_login_template'),
@@ -21,21 +23,34 @@ define([
 	    }).render();
 	    this.$el.append(form.el);
 	    
-	    var defaultCollection = new RepositoryModel([], {url: '/api/repository'});
+	    var defaultRepository = new RepositoryModel([], {url: '/api/repository/'});
 	    var repositories = new RepositoryCollection([], {url: '/api/repository/list'});
+	    var defaultMucua = new MucuaModel([], {url: '/api/mucua'});    
 	    
-	    defaultCollection.fetch({
+	    defaultRepository.fetch({
 		success: function() {
-		    var compiledHeader = _.template(Header, defaultCollection.attributes[0]);
+		    repository = defaultRepository.attributes[0];
+		    // com info do repositorio, pode carregar as mucuas
+		    var mucuas = new MucuaCollection([], {url: '/api/' + repository.name + '/mucuas'});
+		    mucuas.fetch({
+			success: function() {
+			    for (var i = 0; i < mucuas.models.length; i++) {
+				mucua = mucuas.models[i].attributes;
+				$('#c2_mucua').append(new Option(mucua.note, mucua.note));
+			    }
+			}
+		    });
+
+		    // compila cabecalho
+		    var compiledHeader = _.template(Header, repository);
 		    $('#header').append(compiledHeader);
 		}
 	    });
 	    
 	    repositories.fetch({
 		success: function() {
-		    list = repositories.models.length;
 		    repoObj = {};
-		    for (var i = 0; i < list; i++) {
+		    for (var i = 0; i < repositories.models.length; i++) {
 			repo = repositories.models[i].attributes;
 			$('#c2_repository').append(new Option(repo.name, repo.name));
 		    }
