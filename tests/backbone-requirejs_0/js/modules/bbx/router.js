@@ -3,13 +3,15 @@ define([
     'backbone',
     'backbone_subroute',
     'modules/media/collection',
-    'modules/media/MediaListView',
-], function($, Backbone, Backbone_Subroute, MediaCollection, MediaListView){
+    'modules/media/BuscaView',
+    'text!templates/common/header.html',
+    'text!templates/common/footer.html',
+], function($, Backbone, Backbone_Subroute, MediaCollection, BuscaView, Header, Footer){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    // bbx
 	    'list': 'listBbxCommands',
-	    'search/:args': 'busca',
+	    'search/*subroute': 'busca',
 	},
 	
 	initialize: function() {
@@ -17,38 +19,29 @@ define([
 	},
 
 	_getRepository: function() {
-	    var argsArray = this.prefix.split('/');
-	    return argsArray[0];
+	    return this.prefix.split('/')[0];
 	},
 
 	_getMucua: function() {
-	    var argsArray = this.prefix.split('/');
-	    return argsArray[1];
+	    return this.prefix.split('/')[1];
 	},
 
+	_getSubroute: function() {
+	    return this.prefix.match(/\w+\/\w+\/$/i)[0];
+	},
+	
 	// funcoes de mapeamento
 	listBbxCommands: function() {
 	    console.log("lista comandos bbx");
 	},
 	
-	busca: function(args) {   
+	busca: function(subroute) {
 	    repository = this._getRepository();
 	    mucua = this._getMucua();
 	    
-	    mensagemBusca = "Buscando '" + args + "' no repositorio '" + repository + "' e na mucua '" + mucua + "'";
-	    console.log(mensagemBusca);
-	    
-	    url = '/api/' + repository + '/' +  mucua + '/bbx/search/' + args;
-	    var mediaCollection = new MediaCollection([], {url: url});
-	    
-	    mediaCollection.fetch({
-		success: function() {
-		    var mediaListView = new MediaListView();
-		    mediaListView.render(mediaCollection);		    
-		}
-	    });
-	}
-	
+	    var buscaView = new BuscaView();
+	    buscaView.render(subroute);
+	},	
     });
     
     return Router;

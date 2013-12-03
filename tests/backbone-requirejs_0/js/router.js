@@ -17,12 +17,12 @@ define([
 	    
 	    // login / logout
 	    ':repository/:mucua/login': 'login',
-	    ':login': 'login',
+	    'login': 'login',
 	    ':repository/:mucua/logout': 'logout',
-	    ':logout': 'logout',
+	    'logout': 'logout',
 
 	    // module specific
-	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',
+	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
 	    ':repository/:mucua/media/*subroute': 'invokeMediaModule',   
 	    ':repository/:mucua/mucua/*subroute': 'invokeMucuaModule',
 	},
@@ -63,9 +63,9 @@ define([
 	},
 	
 	// bbx
-	invokeBbxModule: function(repository, mucua, subroute) {	    
+	invokeBbxModule: function(repository, mucua, subroute) {
 	    if (!this.Routers.BbxRouter) {
-		this.Routers.BbxRouter = new BbxRouter(repository + "/" + mucua + "/" + "bbx/");
+		this.Routers.BbxRouter = new BbxRouter(repository + "/" + mucua + "/" + "bbx/", subroute);
 	    }
 	},
 	
