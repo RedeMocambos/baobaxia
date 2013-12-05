@@ -1,12 +1,13 @@
-<div id="media-results">
-<strong>Resultado:</strong>
-<ul>
+<div id="media-results-content">
+<h3 class="results-title">Resultado:</h3>
+<div>
   <% _.each(medias, function(media){ %>
-  <li><%= media.get("name") %> / <%= media.get("author") %> / <%= media.get("date") %><br/>
+  <div class="media_box"><%= media.get("name") %> / <%= media.get("author") %> / <%= media.get("date") %><br/>
+<%= media.get("license") %> / <%= media.get("type") %> <%= media.get("format") %>
     <% _.each(media.get("tags"), function(tagName) { %>
     <a href="#"><%= tagName %></a>&nbsp;
     <% }); %> 
-  </li>
+  </div>
   <% }); %>
-</ul>
+</div>
 </div>

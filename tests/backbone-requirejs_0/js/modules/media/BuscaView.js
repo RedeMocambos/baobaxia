@@ -31,6 +31,7 @@ define([
 		success: function() {
 		    var data = {
 			medias: mediaCollection.models,
+			config: {'imagePath': ''}, // TODO: centralizar as configuracoes em um arquivo mais central
 	     		_: _ 
 		    };
 		    

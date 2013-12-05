@@ -2,7 +2,19 @@
  arquivo de css geral
 */
 
+html { font-family: sans-serif;}
+#container {width: 890px; height: 87px; margin: auto; background-color: #d5c590; height: 100%}
+#header {background: #fff url('../images/cabecalho.png') no-repeat left top; }
+#content {}
+#footer {clear: both; background: #ddd}
 
-h3 #nome_mucua {
-    color: #e33;
-}
+#cabecalho {height: 150px;}
+#cabecalho img { margin-top: 25px; margin-left: 100px; float: left}
+#title-mucua { color: #f4c00a; float: left; margin-top: 70px; margin-left: 20px}
+
+.posicoes {display: none}
+h3 #nome_mucua { color: #e33; }
+
+h3.results-title { color: #fff; padding-left: 20px}
+
+.media_box { float: left; width: 200px; height: 200px; background: #f4efdd; margin: 10px;}
