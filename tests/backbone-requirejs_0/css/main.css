@@ -2,12 +2,19 @@
  arquivo de css geral
 */
 
-html { font-family: sans-serif;}
+/*
+ * base
+ */
+html { font-family: sans-serif}
+body {margin: 0; padding: 0}
 #container {width: 890px; height: 87px; margin: auto; background-color: #d5c590; height: 100%}
 #header {background: #fff url('../images/cabecalho.png') no-repeat left top; }
-#content {}
+#content {min-height: 400px}
 #footer {clear: both; background: #ddd}
 
+/*
+ * header
+ */
 #cabecalho {height: 150px;}
 #cabecalho img { margin-top: 25px; margin-left: 100px; float: left}
 #title-mucua { color: #f4c00a; float: left; margin-top: 70px; margin-left: 20px}
@@ -15,6 +22,15 @@ html { font-family: sans-serif;}
 .posicoes {display: none}
 h3 #nome_mucua { color: #e33; }
 
-h3.results-title { color: #fff; padding-left: 20px}
-
-.media_box { float: left; width: 200px; height: 200px; background: #f4efdd; margin: 10px;}
+/*
+ * media & busca
+ */
+h3.results-title { color: #fff; padding-left: 20p}
+.media_box { float: left; width: 192px; height: 170px; background: #f4efdd; margin: 5px; font-size: 12px; border-radius: 5px; padding: 10px; text-align: center}
+.format_type { color: #aaa; text-transform: uppercase }
+.result-thumb { width: 192px; height: 130px; background: #ccc }
+.media_box .date {font-size: 10px }
+.result-thumb div.play {background-image: url('../images/play.png'); background-repeat: no-repeat; width: 79px; height: 79px; float: left; margin: 26px; margin-left: 58px}
+.media_box .title { font-size: 14px }
+.media_box .format_type {padding: 6px; font-size: 12px}
+.media_box .license-cc {background-image: url('../images/cc.png'); width: 20px; height: 20px; float: right; margin: 2px }

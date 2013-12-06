@@ -2,11 +2,15 @@
 <h3 class="results-title">Resultado:</h3>
 <div>
   <% _.each(medias, function(media){ %>
-  <div class="media_box"><%= media.get("name") %> / <%= media.get("author") %> / <%= media.get("date") %><br/>
-<%= media.get("license") %> / <%= media.get("type") %> <%= media.get("format") %>
-    <% _.each(media.get("tags"), function(tagName) { %>
+  <div class="media_box">
+    <div class="result-thumb type-<%= media.get("type") %>"><div class="play"></div><img src="images/" /></div>
+    <span class="title"><%= media.get("name") %></span><br/>
+    <span class="date"><%= media.get("date") %></span>
+    <span class="format_type"><%= media.get("format") %></span>
+    <div class="license-<%= media.get("license") %>"></div>
+<!--    <% _.each(media.get("tags"), function(tagName) { %>
     <a href="#"><%= tagName %></a>&nbsp;
-    <% }); %> 
+    <% }); %> -->
   </div>
   <% }); %>
 </div>
