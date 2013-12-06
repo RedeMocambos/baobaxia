@@ -1,17 +1,17 @@
 /**
-* @license RequireJS text 2.0.7 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
-* Available via the MIT or new BSD license.
-* see: http://github.com/requirejs/text for details
-*/
+ * @license RequireJS text 2.0.10 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
+ * Available via the MIT or new BSD license.
+ * see: http://github.com/requirejs/text for details
+ */
 /*jslint regexp: true */
 /*global require, XMLHttpRequest, ActiveXObject,
-define, window, process, Packages,
-java, location, Components, FileUtils */
+  define, window, process, Packages,
+  java, location, Components, FileUtils */
 
 define(['module'], function (module) {
     'use strict';
 
-    var text, fs, Cc, Ci,
+    var text, fs, Cc, Ci, xpcIsWindows,
         progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'],
         xmlRegExp = /^\s*<\?xml(\s)+version=[\'\"](\d)*.(\d)*[\'\"](\s)*\?>/im,
         bodyRegExp = /<body[^>]*>\s*([\s\S]+)\s*<\/body>/im,
@@ -23,7 +23,7 @@ define(['module'], function (module) {
         masterConfig = (module.config && module.config()) || {};
 
     text = {
-        version: '2.0.7',
+        version: '2.0.10',
 
         strip: function (content) {
             //Strips <?xml ...?> declarations so that external SVG and XML
@@ -65,7 +65,7 @@ define(['module'], function (module) {
                     } catch (e) {}
 
                     if (xhr) {
-                        progIds = [progId]; // so faster next time
+                        progIds = [progId];  // so faster next time
                         break;
                     }
                 }
@@ -75,13 +75,13 @@ define(['module'], function (module) {
         },
 
         /**
-* Parses a resource name into its component parts. Resource names
-* look like: module/name.ext!strip, where the !strip part is
-* optional.
-* @param {String} name the resource name
-* @returns {Object} with properties "moduleName", "ext" and "strip"
-* where strip is a boolean.
-*/
+         * Parses a resource name into its component parts. Resource names
+         * look like: module/name.ext!strip, where the !strip part is
+         * optional.
+         * @param {String} name the resource name
+         * @returns {Object} with properties "moduleName", "ext" and "strip"
+         * where strip is a boolean.
+         */
         parseName: function (name) {
             var modName, ext, temp,
                 strip = false,
@@ -119,13 +119,13 @@ define(['module'], function (module) {
         xdRegExp: /^((\w+)\:)?\/\/([^\/\\]+)/,
 
         /**
-* Is an URL on another domain. Only works for browser use, returns
-* false in non-browser environments. Only used to know if an
-* optimized .js version of a text resource should be loaded
-* instead.
-* @param {String} url
-* @returns Boolean
-*/
+         * Is an URL on another domain. Only works for browser use, returns
+         * false in non-browser environments. Only used to know if an
+         * optimized .js version of a text resource should be loaded
+         * instead.
+         * @param {String} url
+         * @returns Boolean
+         */
         useXhr: function (url, protocol, hostname, port) {
             var uProtocol, uHostName, uPort,
                 match = text.xdRegExp.exec(url);
@@ -175,6 +175,12 @@ define(['module'], function (module) {
                 url = req.toUrl(nonStripName),
                 useXhr = (masterConfig.useXhr) ||
                          text.useXhr;
+
+            // Do not load if it is an empty: url
+            if (url.indexOf('empty:') === 0) {
+                onLoad();
+                return;
+            }
 
             //Load the text. Use XHR if possible and in a browser.
             if (!hasLocation || useXhr(url, defaultProtocol, defaultHostName, defaultPort)) {
@@ -237,7 +243,8 @@ define(['module'], function (module) {
     if (masterConfig.env === 'node' || (!masterConfig.env &&
             typeof process !== "undefined" &&
             process.versions &&
-            !!process.versions.node)) {
+            !!process.versions.node &&
+            !process.versions['node-webkit'])) {
         //Using special require.nodeRequire, something added by r.js.
         fs = require.nodeRequire('fs');
 
@@ -343,11 +350,17 @@ define(['module'], function (module) {
         Cc = Components.classes,
         Ci = Components.interfaces;
         Components.utils['import']('resource://gre/modules/FileUtils.jsm');
+        xpcIsWindows = ('@mozilla.org/windows-registry-key;1' in Cc);
 
         text.get = function (url, callback) {
-            var inStream, convertStream,
-                readData = {},
-                fileObj = new FileUtils.File(url);
+            var inStream, convertStream, fileObj,
+                readData = {};
+
+            if (xpcIsWindows) {
+                url = url.replace(/\//g, '\\');
+            }
+
+            fileObj = new FileUtils.File(url);
 
             //XPCOM, you so crazy
             try {
