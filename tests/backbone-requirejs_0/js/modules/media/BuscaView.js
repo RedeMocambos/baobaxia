@@ -24,8 +24,10 @@ define([
 	    var mediaCollection = new MediaCollection([], {url: url});
 	    
 	    // compila cabecalho
-	    var compiledHeader = _.template(Header, repository);
-	    $('#header').append(compiledHeader);
+	    if ($('#header').html() == '') {
+		var compiledHeader = _.template(Header, repository);
+		$('#header').append(compiledHeader);
+	    }
 	    
 	    mediaCollection.fetch({
 		success: function() {
@@ -42,7 +44,9 @@ define([
 	    });
 	    
 	    // compila footer
-	    $('#footer').append(Footer);
+	    if ($('#footer').html() == '') {
+		$('#footer').append(Footer);
+	    }
 	}
     });
     
