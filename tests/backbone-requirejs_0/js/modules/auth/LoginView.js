@@ -24,9 +24,7 @@ define([
 	    this.$el.append(form.el);
 	    
 	    var defaultRepository = new RepositoryModel([], {url: '/api/repository/'});
-	    var repositories = new RepositoryCollection([], {url: '/api/repository/list'});
-	    var defaultMucua = new MucuaModel([], {url: '/api/mucua'});    
-	    
+	    var repositories = new RepositoryCollection([], {url: '/api/repository/list'});	    
 	    defaultRepository.fetch({
 		success: function() {
 		    repository = defaultRepository.attributes[0];

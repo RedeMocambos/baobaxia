@@ -34,3 +34,6 @@ h3.results-title { color: #fff; padding-left: 20p}
 .media_box .title { font-size: 14px }
 .media_box .format_type {padding: 6px; font-size: 12px}
 .media_box .license-cc {background-image: url('../images/cc.png'); width: 20px; height: 20px; float: right; margin: 2px }
+
+#busca {width: 250px }
+#busca .button {float: right;  background-image: url('../images/search.png'); width: 27px; height: 27px; cursor: pointer }
