@@ -31,7 +31,7 @@ define([
 		$('#content').append(_.template(Menu, repository, mucua));
 
 		// TODO: busca está junto com menu nessa versao, talvez separar futuramente como um módulo configurável
-		$('#menu').append(_.template(Busca, {'repository': repository}, {'name': mucua}));
+		$('#busca-menu').append(_.template(Busca, {'repository': repository}, {'name': mucua}));
 		
 		//TODO: talvez seja legal buscar uma forma backbone de implementar os eventos
 		do_search = function() {
@@ -42,6 +42,9 @@ define([
 		$('#busca .button').click(function() { do_search() });
 		$('#expressao_busca').keyup(function(e) { if (e.keyCode == 13) do_search(); });   // enter
 	    }
+	    
+	    // breadcrumb
+	    //$(".breadcrumb").html("");
 	    
 	    mediaCollection.fetch({
 		success: function() {

@@ -1,9 +1,10 @@
 <div id="media-results-content">
-<h3 class="results-title">Resultado:</h3>
+<h3 class="results-title"></h3>
+<h4 class="breadcrumb"></h4>
 <div>
   <% _.each(medias, function(media){ %>
-  <div class="media_box">
-    <div class="result-thumb type-<%= media.get("type") %>"><div class="play"></div><img src="images/" /></div>
+  <div class="media_box <%= media.get("type") %>">
+    <div class="result-thumb"><div class="assist"></div><img src="images/" /></div>
     <span class="title"><%= media.get("name") %></span><br/>
     <span class="date"><%= media.get("date") %></span>
     <span class="format_type"><%= media.get("format") %></span>

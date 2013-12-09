@@ -28,12 +28,22 @@ h3 #nome_mucua { color: #e33; }
 h3.results-title { color: #fff; padding-left: 20p}
 .media_box { float: left; width: 192px; height: 170px; background: #f4efdd; margin: 5px; font-size: 12px; border-radius: 5px; padding: 10px; text-align: center}
 .format_type { color: #aaa; text-transform: uppercase }
-.result-thumb { width: 192px; height: 130px; background: #ccc }
+.video .result-thumb { width: 192px; height: 130px; background: #c99 }
+.audio .result-thumb { width: 192px; height: 130px; background: #99c }
+.imagem .result-thumb { width: 192px; height: 130px; background: #cc9 }
+.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 .media_box .date {font-size: 10px }
-.result-thumb div.play {background-image: url('../images/play.png'); background-repeat: no-repeat; width: 79px; height: 79px; float: left; margin: 26px; margin-left: 58px}
+.video .result-thumb .assist {background-image: url('../images/play.png'); background-repeat: no-repeat; width: 79px; height: 79px; float: left; margin: 26px; margin-left: 58px}
+.audio .result-thumb .assist {}
 .media_box .title { font-size: 14px }
 .media_box .format_type {padding: 6px; font-size: 12px}
 .media_box .license-cc {background-image: url('../images/cc.png'); width: 20px; height: 20px; float: right; margin: 2px }
 
-#busca {width: 250px }
-#busca .button {float: right;  background-image: url('../images/search.png'); width: 27px; height: 27px; cursor: pointer }
+#busca-menu #expressao_busca { border: 2px solid #a59560; border-radius: 8px; }
+#busca-menu .button {float: right;  background-image: url('../images/search.png'); width: 27px; height: 27px; cursor: pointer }
+
+#menu {margin-left: 175px; margin-top: -35px;}
+.menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
+
+.menu-itens #busca-menu {}
+.menu-itens li a {color: #fff; text-decoration: none; }
