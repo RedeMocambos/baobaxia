@@ -1,0 +1,18 @@
+<div id="media-view">
+  <p class="title"><%= media.get("name") %></p>
+  <p class="tags">
+    <% _.each(media.get("tags"), function(tagName) { %>
+    <a href="#"><%= tagName %></a>&nbsp;
+    <% }); %>
+  </p>
+  <p class="autor">Autoria: <%= media.get("author") %></p>
+  <p class="date">Data: <%= media.get("date") %></p>
+  <p class="origin">Origem: <%= media.get("origin") %></p>
+  <p class="format">Formato: <%= media.get("format") %></p>
+  <p class="license">Licença: <%= media.get("license") %></p>
+  <p class="quem-tem">Quem tem esse arquivo?: ></p>
+  <br/>
+  <p class=""><%= media.get("description") %></p>
+  <p class="uuid">UUID<%= media.get("uuid") %></p>
+</div>
+

@@ -49,9 +49,9 @@ define([
 	},
 	
 	// media
-	invokeMediaModule: function(subroute) {
+	invokeMediaModule: function(repository, mucua, subroute) {
 	    if (!this.Routers.MediaRouter) {
-		this.Routers.MediaRouter = new MediaRouter(repository + "/" + mucua + "/" + "media/");
+		this.Routers.MediaRouter = new MediaRouter(repository + "/" + mucua + "/" + "media/", subroute);
 	    }
 	},
 

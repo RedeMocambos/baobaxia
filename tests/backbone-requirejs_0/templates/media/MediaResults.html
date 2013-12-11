@@ -5,7 +5,10 @@
   <% _.each(medias, function(media){ %>
   <div class="media_box <%= media.get("type") %>">
     <div class="result-thumb"><div class="assist"></div><img src="images/" /></div>
-    <span class="title"><%= media.get("name") %></span><br/>
+    <a href="#<%= media.get("repository") %>/<%= media.get("origin") %>/media/<%= media.get("uuid") %>">
+      <span class="title"><%= media.get("name") %></span>
+    </a>
+    <br/>
     <span class="date"><%= media.get("date") %></span>
     <span class="format_type"><%= media.get("format") %></span>
     <div class="license-<%= media.get("license") %>"></div>

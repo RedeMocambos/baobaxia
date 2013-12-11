@@ -10,31 +10,37 @@ define([
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    // media
-	    'medias': 'publishMedia',
-	    'medias/:uuid': 'viewMedia',
+	    '': 'publish',
+	    ':uuid': 'view',
 	},
 	
-	// (OLD)
-	publishMedia: function(repository, mucua) {
+	initialize: function() {
+	    console.log("module Media loaded");
+	},
+
+	_getRepository: function() {
+	    return this.prefix.split('/')[0];
+	},
+
+	_getMucua: function() {
+	    return this.prefix.split('/')[1];
+	},
+
+	publish: function(repository, mucua) {
 	    console.log("insere media");
 	    console.log("/" + repository + "/" + mucua + "/medias");
 	    //	    var mediaView = new MediaView();
 	    //	    mediaView.render();
 	},
 	
-	// (OLD)
-	viewMedia: function(repository, mucua, uuid) {
-	    console.log("busca media " + uuid);
-	    console.log("/" + repository + "/" + mucua + "/medias/" + uuid);
+	view: function(uuid) {
+	    console.log("visualiza media");
+	    repository = this._getRepository();
+	    mucua = this._getMucua();
 	    
-	    var media = new MediaModel({id: uuid});
-	    fetchMedia = media.fetch();
-	    
-	    media.on('change', function() {
-		var mediaView = new MediaView({model: media});
-		mediaView.render();
-	    });
-	}    
+	    var mediaView = new MediaView();
+	    mediaView.render(uuid);
+	},    
     });
     
     return Router;
