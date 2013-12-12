@@ -47,3 +47,11 @@ h3.results-title { color: #fff; padding-left: 20p}
 
 .menu-itens #busca-menu {}
 .menu-itens li a {color: #fff; text-decoration: none; }
+
+#media-view .bloco-1 {width: 630px; float: left; padding: 4px; margin-left: 20px}
+#media-view .bloco-2 {width: 280px; float: left; padding: 4px}
+
+#media-view .bloco-1 .title {font-weight: bold; font-size: 20px}
+#media-view .bloco-1 .tags a {font-weight: bold; font-size: 18px; color: #900; text-decoration: none}
+#media-view .bloco-2 .title {font-weight: bold}
+#media-view .bloco-1 .uuid {font-size: 10px}

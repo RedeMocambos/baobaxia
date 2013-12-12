@@ -13,7 +13,7 @@ define([
     'text!templates/media/MediaResults.html'
 ], function($, _, Backbone, MediaModel, MediaCollection, MucuaModel, RepositoryModel, Header, Menu, Busca, Footer, MediaResults){
     var BuscaView = Backbone.View.extend({
-		
+	
 	render: function(subroute){
 	    mensagemBusca = "Buscando '" + subroute + "' no repositorio '" + repository + "' e na mucua '" + mucua + "'";
 	    console.log(mensagemBusca);
@@ -27,9 +27,9 @@ define([
 	    }
 	    
 	    // compila menu e busca
-	    if ($('#content').html() == '') {
-		$('#content').append(_.template(Menu, repository, mucua));
-
+	    if (typeof $('#busca-menu').html() === 'undefined') {
+		$('#content-full').prepend(_.template(Menu, repository, mucua));
+		
 		// TODO: busca está junto com menu nessa versao, talvez separar futuramente como um módulo configurável
 		$('#busca-menu').append(_.template(Busca, {'repository': repository}, {'name': mucua}));
 		
@@ -55,11 +55,7 @@ define([
 		    };
 		    
 		    var compiledTemplate = _.template(MediaResults, data);
-		    if (!$('#media-results-content').html()) {
-			$('#content').append(compiledTemplate);
-		    } else {
-			$('#media-results-content').html(compiledTemplate);
-		    }
+		    $('#content').html(compiledTemplate);
 		}
 	    });
 	    

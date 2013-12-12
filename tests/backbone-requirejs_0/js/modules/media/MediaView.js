@@ -7,9 +7,8 @@ define([
     'text!templates/common/menu.html',
     'text!templates/common/busca.html',
     'text!templates/common/footer.html',
-    'text!templates/media/MediaView.html',
     'text!templates/media/MediaVisualizacao.html'
-], function($, _, Backbone, MediaModel, Header, Menu, Busca, Footer, MediaViewTpl, MediaVisualizacao){
+], function($, _, Backbone, MediaModel, Header, Menu, Busca, Footer, MediaVisualizacao){
     
     var MediaView = Backbone.View.extend({
 	
@@ -24,8 +23,8 @@ define([
 	    }
 	    
 	    // compila menu e busca
-	    if ($('#content').html() == '') {
-		$('#content').append(_.template(Menu, repository, mucua));
+	    if (typeof $('#busca-menu').html() === 'undefined') {
+		$('#content-full').prepend(_.template(Menu, repository, mucua));
 
 		// TODO: busca está junto com menu nessa versao, talvez separar futuramente como um módulo configurável
 		$('#busca-menu').append(_.template(Busca, {'repository': repository}, {'name': mucua}));
@@ -48,13 +47,11 @@ define([
 		    var data = {	
 			media: media,
 		    }
-		    //console.log(data);
 		    
 		    var compiledTemplate = _.template(MediaVisualizacao, data);
 		    if (typeof $('#media-view').html() === 'undefined') {
-			$('#content').append(MediaViewTpl);
+			$('#content').html(compiledTemplate);
 		    }
-		    $('#media-view').html(compiledTemplate);
 		}
 	    });
 	    
