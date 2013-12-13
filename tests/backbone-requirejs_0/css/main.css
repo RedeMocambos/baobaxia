@@ -8,7 +8,9 @@
 html { font-family: sans-serif}
 body {margin: 0; padding: 0}
 #container {width: 100%; height: 87px; margin: auto; background-color: #d5c590; height: 100%}
-#header {background: #fff url('../images/cabecalho.png') no-repeat left top; }
+#header {background: #fff url('../images/cabecalho-meio.png') repeat-x left top; }
+#cabecalho .esq {background-image: url('../images/cabecalho-esq.png'); width: 164px; height: 87px; float: left; }
+#cabecalho .dir {background-image: url('../images/cabecalho-dir.png'); width: 725px; height: 87px; float: right; } /*TODO: fix quando redimensiona para tela pequena (celular) */
 #content {min-height: 400px}
 #footer {clear: both; background: #ddd}
 

@@ -35,7 +35,10 @@ define([
 		
 		//TODO: talvez seja legal buscar uma forma backbone de implementar os eventos
 		do_search = function() {
-		    url = $('#form_busca').attr('action') + $('#expressao_busca').val();;
+		    url = $('#form_busca').attr('action') + $('#expressao_busca').val();
+		    url = url.replace(" ", "%20");
+		    url = url.replace("+", "/");
+		    
 		    document.location.href = url;
 		}
 		
