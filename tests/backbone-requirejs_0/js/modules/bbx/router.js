@@ -11,6 +11,7 @@ define([
 	routes: {
 	    // bbx
 	    'list': 'listBbxCommands',
+	    'search/': 'busca',
 	    'search/*subroute': 'busca',
 	},
 	
@@ -35,7 +36,7 @@ define([
 	    console.log("lista comandos bbx");
 	},
 	
-	busca: function(subroute) {
+	busca: function(subroute = '') {
 	    repository = this._getRepository();
 	    mucua = this._getMucua();
 	    

@@ -18,6 +18,7 @@ define([
 	    mensagemBusca = "Buscando '" + subroute + "' no repositorio '" + repository + "' e na mucua '" + mucua + "'";
 	    console.log(mensagemBusca);
 	    
+	    subroute = (subroute == null) ? '' : subroute;
 	    url = '/api/' + repository + '/' +  mucua + '/bbx/search/' + subroute;
 	    var mediaCollection = new MediaCollection([], {url: url});
 	    
