@@ -62,14 +62,14 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         # pega args da url se tiver
         if args:
-            for tag in args.split('/'):
+            for arg in args.split('/'):
                 # verifica se a palavra eh tipo, formato ou tag e filtra
-                if tag in [key for (key, type_choice) in getTypeChoices() if tag == type_choice]:
-                    medias = medias.filter(type__iexact = tag)
-                elif tag in [key for (key, format_choice) in getFormatChoices() if tag == format_choice]:
-                    medias = medias.filter(format__iexact = tag)
+                if arg in [key for (key, type_choice) in getTypeChoices() if arg == type_choice]:
+                    medias = medias.filter(type__iexact = arg)
+                elif arg in [key for (key, format_choice) in getFormatChoices() if arg == format_choice]:
+                    medias = medias.filter(format__iexact = arg)
                 else:
-                    medias = medias.filter(tags__name__iexact = tag)
+                    medias = medias.filter(tags__name__contains = arg)
         
         # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
