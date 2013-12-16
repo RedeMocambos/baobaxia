@@ -2,6 +2,8 @@
 from django.conf import settings
 from django.contrib.auth.models import User, check_password
 from mocambola.serializers import UserSerializer
+from mucua.models import Mucua
+from repository.models import Repository
 from bbx.settings import MOCAMBOLA_DIR, REPOSITORY_DIR
 
 from StringIO import StringIO
@@ -26,13 +28,23 @@ class FileBackend(object):
     def authenticate(self, username=None, password=None):
         match = re.findall("(.*)@(.*)\.(.*)\.(.*)$", username)
         if match:
-            current_mocambola, current_mucua, current_repository, term = match[0]            
+            current_mocambola, current_mucua, current_repository, term = match[0]
+            # verifica se mucua e repositorio sao validos
+            try:
+                current_mucua = Mucua.objects.get(note = current_mucua)
+            except Mucua.DoesNotExist:
+                return None
+            try:
+                current_repository = Repository.objects.get(name = current_repository)
+            except Repository.DoesNotExist:
+                return None
         else:
             print "invalid address"
             return None
         
         # Get file from MOCAMBOLA_DIR
-        mocambola_path = os.path.join(REPOSITORY_DIR, current_repository, current_mucua, MOCAMBOLA_DIR)
+        mocambola_path = os.path.join(str(REPOSITORY_DIR), str(current_repository), str(current_mucua), MOCAMBOLA_DIR)
+        
         for jmocambola in os.listdir(mocambola_path):
             print "jmocambola: ", jmocambola
             print "current_mocambola: ", current_mocambola

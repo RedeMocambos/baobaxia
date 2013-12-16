@@ -56,7 +56,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         # TODO LOW: futuramente, otimizar query de busca - elaborar query
         
         # listagem de conteudo filtrando por repositorio e mucua
-        medias = Media.objects.filter(repository = repository.id).filter(origin = mucua.id)        
+        medias = Media.objects.filter(repository = repository.id).filter(origin = mucua.id)
         # sanitizacao -> remove '/' do final
         args = args.rstrip('/')
         
