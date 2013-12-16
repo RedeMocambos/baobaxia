@@ -69,7 +69,7 @@ def media_list(request, repository, mucua, args=None, format=None):
                 elif arg in [key for (key, format_choice) in getFormatChoices() if arg == format_choice]:
                     medias = medias.filter(format__iexact = arg)
                 else:
-                    medias = medias.filter(tags__name__contains = arg)
+                    medias = medias.filter(tags__name__icontains = arg)
         
         # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
