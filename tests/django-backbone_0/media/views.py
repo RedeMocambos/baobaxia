@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
+from django.db.models import Q
 from media.models import Media, mediaFileName, getFilePath
 from tag.models import Tag
 from media.forms import MediaForm
@@ -69,7 +70,7 @@ def media_list(request, repository, mucua, args=None, format=None):
                 elif arg in [key for (key, format_choice) in getFormatChoices() if arg == format_choice]:
                     medias = medias.filter(format__iexact = arg)
                 else:
-                    medias = medias.filter(tags__name__icontains = arg)
+                    medias = medias.filter(Q(tags__name__icontains = arg ) | Q(name__icontains = arg) | Q(note__icontains = arg)) 
         
         # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
