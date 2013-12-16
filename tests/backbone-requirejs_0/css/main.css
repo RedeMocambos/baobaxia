@@ -57,3 +57,7 @@ h3.results-title { color: #fff; padding-left: 20p}
 #media-view .bloco-1 .tags a {font-weight: bold; font-size: 18px; color: #900; text-decoration: none}
 #media-view .bloco-2 .title {font-weight: bold}
 #media-view .bloco-1 .uuid {font-size: 10px}
+
+.caixa-resultado-busca {background-color: #eeffaa; padding: 2px; }
+.caixa-resultado-busca .nome-termo {margin: 12px; }
+.caixa-resultado-busca a {background-color: #cdde87; padding: 4px; text-decoration: none; font-weight: bold }

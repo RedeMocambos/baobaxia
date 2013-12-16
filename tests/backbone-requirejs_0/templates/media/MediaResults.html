@@ -3,7 +3,7 @@
 <h4 class="breadcrumb"></h4>
 <div>
   <% _.each(medias, function(media){ %>
-  <div class="media_box <%= media.get("type") %>">
+  <div class="media_box <%= media.get("type") %> <% _.each(media.get("tags"), function(tagName) { %><%= tagName %> <% }); %>">
     <div class="result-thumb"><div class="assist"></div><img src="images/" /></div>
     <a href="#<%= media.get("repository") %>/<%= media.get("origin") %>/media/<%= media.get("uuid") %>">
       <span class="title"><%= media.get("name") %></span>

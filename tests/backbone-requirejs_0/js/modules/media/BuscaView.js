@@ -10,8 +10,9 @@ define([
     'text!templates/common/menu.html',
     'text!templates/common/busca.html',
     'text!templates/common/footer.html',
-    'text!templates/media/MediaResults.html'
-], function($, _, Backbone, MediaModel, MediaCollection, MucuaModel, RepositoryModel, Header, Menu, Busca, Footer, MediaResults){
+    'text!templates/media/MediaResults.html',
+    'text!templates/media/CaixaResultadoBusca.html'
+], function($, _, Backbone, MediaModel, MediaCollection, MucuaModel, RepositoryModel, Header, Menu, Busca, Footer, MediaResults, CaixaResultadoBusca){
     var BuscaView = Backbone.View.extend({
 	
 	render: function(subroute){
@@ -43,6 +44,18 @@ define([
 		    document.location.href = url;
 		}
 		
+		termos = [];
+		$.each(subroute.split("/"), function(key, term) {
+		    termos.push({repository: repository,
+				 mucua: mucua,
+				 termo: term,
+				 complete_link: subroute
+				});
+		});
+		
+		console.log(termos);
+		
+		$('#menu').after(_.template(CaixaResultadoBusca, termos));
 		$('#busca .button').click(function() { do_search() });
 		$('#expressao_busca').keyup(function(e) { if (e.keyCode == 13) do_search(); });   // enter
 	    }

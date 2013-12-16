@@ -49,9 +49,7 @@ define([
 		    }
 		    
 		    var compiledTemplate = _.template(MediaVisualizacao, data);
-		    if (typeof $('#media-view').html() === 'undefined') {
-			$('#content').html(compiledTemplate);
-		    }
+		    $('#content').html(compiledTemplate);
 		}
 	    });
 	    
