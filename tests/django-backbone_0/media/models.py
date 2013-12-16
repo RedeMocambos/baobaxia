@@ -26,7 +26,7 @@ except ImportError:
     from django.utils.encoding import force_text as force_unicode # NOQA
 
 TYPE_CHOICES = ( ('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'), ('arquivo','arquivo') )
-FORMAT_CHOICES = ( ('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'), ('jpg','jpg') )
+FORMAT_CHOICES = ( ('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'), ('jpg','jpg'), ('pdf', 'pdf') )
 
 
 def mediaFileName(instance, filename):
