@@ -1,0 +1,626 @@
+%% ----------------------------------------------------------------
+%% Thesis.tex -- MAIN FILE (the one that you compile with LaTeX)
+%% ---------------------------------------------------------------- 
+
+% Set up the document
+\documentclass[a4paper, 11pt, oneside]{Relatorio_sem}  % Use the "Relatorio" style, based on the ECS Thesis style by Steve Gunn
+\graphicspath{{Figure/}}  % Location of the graphics files (set up for graphics to be in PDF format)
+
+
+% Include any extra LaTeX packages required
+\usepackage[utf8]{inputenc}
+\usepackage[brazilian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{ae,aecompl}
+\usepackage[square, numbers, comma, sort&compress]{natbib}  % Use the "Natbib" style for the references in the Bibliography
+\usepackage{verbatim}  % Needed for the "comment" environment to make LaTeX comments
+%\usepackage{vector}  % Allows "\bvec{}" and "\buvec{}" for "blackboard" style bold vectors in maths
+%\usepackage{listings}
+\usepackage{listingsutf8}
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{dkblue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4,
+  lineskip={-1.5pt},
+  morekeywords={models, lambda, forms, =}
+  inputencoding=utf8,
+  extendedchars=\true
+}
+
+\lstnewenvironment{code}[1][]%
+  {\minipage{\linewidth} 
+   \lstset{basicstyle=\ttfamily\footnotesize,frame=tb,#1}}
+  {\endminipage}
+
+
+%%%% Color definitions
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{dkblue}{rgb}{0,0,0.5}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.6,0,0.82}
+\definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
+\hypersetup{urlcolor=coolblack, colorlinks=true}  % Colours hyperlinks in blue, but this can be distracting if there are many links.
+%\hypersetup{urlcolor=black, colorlinks=false}  
+
+%% To show a border around all figures
+%\usepackage{float}
+%\floatstyle{boxed} 
+%\restylefloat{figure}
+
+%% ----------------------------------------------------------------
+\begin{document}
+\frontmatter	  % Begin Roman style (i, ii, iii, iv...) page numbering
+
+% Set up the Title Page
+\title  {Baobáxia}
+
+\authors  {\texorpdfstring
+            {\href{mailto:vince@mocambos.net}{Vincenzo Tozzi}} - 
+            {\href{mailto:fernao@riseup.net}{Fernão Lopes}}
+            }
+\addresses  {\taina\\\npdd\\\redemocambos}  % Do not change this here, instead these must be set in the "Thesis.cls" file, please look through it instead
+\date       {\today}
+\subject    {Relatório de execução do projeto}
+\keywords   {Federated Network, Tecnological Autonomy, Free Software, Rede Mocambos, Casa de Cultura Taina, Quilombo}
+
+\maketitle
+%% ----------------------------------------------------------------
+
+\setstretch{1.3}  % It is better to have smaller font and larger line spacing than the other way round
+
+% Define the page headers using the FancyHdr package and set up for one-sided printing
+\fancyhead{}  % Clears all page headers and footers
+\rhead{\thepage}  % Sets the right side header to show the page number
+\lhead{}  % Clears the left side page header
+
+\pagestyle{fancy}  % Finally, use the "fancy" page style to implement the FancyHdr headers
+
+% %% ----------------------------------------------------------------
+% % Declaration Page required for the Thesis, your institution may give you a different text to place here
+% \Declaration{
+
+% \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+% Io, Vincenzo Tozzi, dichiaro che la presente tesi, "Reti federate eventualmente connesse" e il lavoro presentato in essa sono di mia paternità. Dichiaro che:
+
+% \begin{itemize} 
+% \item[\tiny{$\blacksquare$}] Questo lavoro è stato totalmente o per la maggior parte svolto come laureando per la Laurea in Informatica di questa Università.
+ 
+% \item[\tiny{$\blacksquare$}] Ho esplicitamente dichiarato nel testo se qualche parte di questa tesi è stata precedentemente pubblicata in altri lavori da questa o altre Università o istituzioni.
+ 
+% \item[\tiny{$\blacksquare$}] Ho attribuito la paternità ai lavori pubblicati da altri e da me consultati.
+ 
+% \item[\tiny{$\blacksquare$}] Ho sempre citato la fonte di opere altrui. Ad eccezione di tali citazioni, questa tesi è di mia paternità.
+ 
+% \item[\tiny{$\blacksquare$}] Ho ringranziato tutte le principali fonti di supporto.
+ 
+% \item[\tiny{$\blacksquare$}] Ho esplicitamente dichiarato del testo, in parti sviluppate assieme ad altri, qual'è il loro e il mio contributo.
+% \\
+% \end{itemize}
+ 
+ 
+% Firmato:\\
+% \rule[1em]{25em}{0.5pt}  % This prints a line for the signature
+ 
+% Data:\\
+% \rule[1em]{25em}{0.5pt}  % This prints a line to write the date
+% }
+% \clearpage  % Declaration ended, now start a new page
+
+%% ----------------------------------------------------------------
+% The "Funny Quote Page"
+\pagestyle{empty}  % No headers or footers for the following pages
+
+\null\vfill
+% Now comes the "Funny Quote", written in italics
+\textit{``Vamos fazer um mundo mais do nosso jeito...''}
+
+\begin{flushright}
+Zumbi dos Palmares
+\end{flushright}
+
+\vfill\vfill\vfill\vfill\vfill\vfill\null
+\clearpage  % Funny Quote page ended, start a new page
+%% ----------------------------------------------------------------
+
+% The Abstract Page
+\addtotoc{Resumo}  % Add the "Abstract" page entry to the Contents
+\abstract{
+
+\addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+O projeto Baobáxia trata da concepção, desenvolvimento e implementação
+de uma arquitetura distribuída, voltada para a integração de redes
+locais mesmo em localidades nas quais a conexão à internet seja
+instável, lenta ou intermitente. Parte-se da experiência acumulada
+pela Rede Mocambos, que trabalha com a integração de mais de duzentas
+comunidades em todas as regiões do país através da apropriação de
+tecnologias, identificando pontos críticos em que a precariedade do
+acesso à internet se torna um impeditivo para a efetiva comunicação
+entre essas comunidades. O projeto parte do pressuposto de que não
+basta usar as tecnologias de informação já existentes - é preciso
+moldar o próprio desenvolvimento dessas tecnologias, para que atendam
+às demandas da sociedade. Para isso, adota como princípio básico e
+metodologia de trabalho os fundamentos do software livre - tanto na 
+gestão das equipes de trabalho quanto nas soluções tecnológicas que 
+utilizará.
+}
+
+\clearpage  % Abstract ended, start a new page
+%% ----------------------------------------------------------------
+
+\setstretch{1.3}  % Reset the line-spacing to 1.3 for body text (if it has changed)
+
+% The Acknowledgements page, for thanking everyone
+%% \acknowledgements{
+%% \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+%% Um agradecimento especial para as nossas familias\ldots
+
+%% }
+\clearpage  % End of the Acknowledgements
+%% ----------------------------------------------------------------
+
+\pagestyle{fancy}  %The page style headers have been "empty" all this time, now use the "fancy" headers as defined before to bring them back
+
+
+%% ----------------------------------------------------------------
+\lhead{\emph{Contents}}  % Set the left side page header to "Contents"
+\tableofcontents  % Write out the Table of Contents
+
+%% ----------------------------------------------------------------
+%\lhead{\emph{List of Figures}}  % Set the left side page header to "List if Figures"
+%\listoffigures  % Write out the List of Figures
+
+%% ----------------------------------------------------------------
+%\lhead{\emph{List of Tables}}  % Set the left side page header to "List of Tables"
+%\listoftables  % Write out the List of Tables
+
+%% ----------------------------------------------------------------
+\setstretch{1.5}  % Set the line spacing to 1.5, this makes the following tables easier to read
+\clearpage  % Start a new page
+\lhead{\emph{Acrónimos}}  % Set the left side page header to "Abbreviations"
+\listofsymbols{ll}  % Include a list of Abbreviations (a table of two columns)
+{
+% \textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
+  \textbf{RM} & \textbf{R}ede \textbf{M}ocambos\\ \textbf{SP} &
+  \textbf{S}ervice \textbf{P}rovider\\ \textbf{IdP} &
+  \textbf{Id}entity \textbf{P}rovider\\ \textbf{API} &
+  \textbf{A}pplication \textbf{P}rogramming
+  \textbf{I}nterface\\ \textbf{RFC} & \textbf{R}equest \textbf{F}or
+  \textbf{C}omments\\ \textbf{JSON} & \textbf{J}ava\textbf{S}cript
+  \textbf{O}bject \textbf{N}otation\\ \textbf{P2P} & \textbf{P}eer To
+  \textbf{P}eer\\ \textbf{LDAP} & \textbf{L}ightweight
+  \textbf{D}irectory \textbf{A}ccess \textbf{P}rotocol\\ \textbf{YAML}
+  & \textbf{Y}et \textbf{A}nother \textbf{M}arkup
+  \textbf{L}anguage\\ \textbf{XMPP} & e\textbf{X}tensible
+  \textbf{M}essaging and \textbf{P}resence
+  \textbf{P}rotocol\\ \textbf{SSO} & \textbf{S}ingle \textbf{S}ign
+  \textbf{O}n\\ \textbf{VSAT} & \textbf{V}ery \textbf{S}mall
+  \textbf{A}perture \textbf{T}erminal\\ \textbf{DRY} & \textbf{D}on't
+  \textbf{R}epeat \textbf{Y}ourself\\ \textbf{MVC} & \textbf{M}odel
+  \textbf{V}iew \textbf{C}ontroller\\ \textbf{ORM} & \textbf{O}bject
+  \textbf{R}elational \textbf{M}apper\\ \textbf{NPDD} &
+  \textbf{N}úcleo de \textbf{P}esquisa e \textbf{D}esenvolvimento
+  \textbf{D}igital\\ \textbf{NFC} & \textbf{N}úcleo de
+  \textbf{F}ormação \textbf{C}ontinuada\\ \textbf{NCP} &
+  \textbf{N}úcleo de \textbf{C}omunicação e
+  \textbf{P}edagogia\\ \textbf{GESAC} & \textbf{G}overno
+  \textbf{E}letrônico \textbf{S}erviço de \textbf{A}tendimento ao
+  \textbf{C}idadão\\ }
+
+%% ----------------------------------------------------------------
+%\clearpage  % Start a new page
+%\lhead{\emph{Physical Constants}}  % Set the left side page header to "Physical Constants"
+%\listofconstants{lrcl}  % Include a list of Physical Constants (a four column table)
+%{
+%% Constant Name & Symbol & = & Constant Value (with units) \\
+%Speed of Light & $c$ & $=$ & $2.997\ 924\ 58\times10^{8}\ \mbox{ms}^{-\mbox{s}}$ (exact)\\
+%
+%}
+
+%% ----------------------------------------------------------------
+%\clearpage  %Start a new page
+%\lhead{\emph{Simboli}}  % Set the left side page header to "Symbols"
+%\listofnomenclature{lll}  % Include a list of Symbols (a three column table)
+%{
+%% symbol & name & unit \\
+%$a$ & distance & m \\
+%$P$ & power & W (Js$^{-1}$) \\
+%& & \\ % Gap to separate the Roman symbols from the Greek
+%$\omega$ & angular frequency & rads$^{-1}$ \\
+%}
+%% ----------------------------------------------------------------
+% End of the pre-able, contents and lists of things
+% Begin the Dedication page
+
+%% \setstretch{1.3}  % Return the line spacing back to 1.3
+
+%% \pagestyle{empty}  % Page style needs to be empty for this page
+%% \dedicatory{Para nossa Mãe\ldots}
+
+%% \addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+
+
+%% ----------------------------------------------------------------
+\mainmatter	  % Begin normal, numeric (1,2,3...) page numbering
+\pagestyle{fancy}  % Return the page headers back to the "fancy" style
+
+% Include the chapters of the thesis, as separate files
+% Just uncomment the lines as you write the chapters
+
+\part{Julho/Agosto}
+
+\chapter{Organização e inicio do projeto}\lhead{\leftmark}
+O projeto inicia formalmente com as assinaturas no dia 17 de junho na
+agencia BB de Campinas. O NPDD responsável pela condução do projeto
+realiza algumas reuniões para definir o grupo de trabalho da Rede
+Mocambos que vai ser contratada e as metas e etapas do projeto.
+
+\section{Encontro de Culturas Tradicionais/GO}
+A Rede Mocambos participou do XIII Encontro de Culturas Tradicionais
+da Chapada dos Veadeiros, e pela ocasião organizamos uma reunião do
+projeto no Mercado Sul de Taguatinga.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/Rota_Kalungas_1.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Encontro quilombola na Chapada dos Veadeiros]{Encontro quilombola na Chapada dos Veadeiros}
+  \label{fig:EncontroKalungas}
+\end{figure}
+
+\section{Oficinas de introdução a instrumentalização tecnológica/MA}
+Por Milson Onileto, em 26 julho
+2013\footnote{\url{http://culturadigital.br/casaferreirodedeus/2013/07/26/ola-mundo/}}:
+\begin{quote}
+  Rede Mocambos maranhão/Centro Cultural Alagbedê, vem realizando
+  atividades de formações continuada em parceria com a Escola de
+  Capoeira Angola Mandingueiros do Amanha.  As oficinas focadas em
+  apropriação tecnológica em software livre linux e ferramentas
+  mocambolicas, trabalhando o social através do digital. entendendo
+  que nossos territórios transcende o geográfico. as aulas acontecem
+  todos os sábado na sede da escola na rua Portugal, a parti das 09:00
+  da manha.  As atividades são divididas como aulas para os alunos do
+  projeto e um horário especial para os pais e mães dos mesmos.
+  
+  As formações são as primeiras de uma serie itinerante de formações
+  pelos núcleos da rede no estado e parceiros.
+\end{quote}
+
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/Oficina_julho_MA_milson_1.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Oficinas no Centro Cultural Alagbedê]{Oficinas no Centro Cultural Alagbedê}
+  \label{fig:OficinaMA1}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/Oficina_julho_MA_milson_2.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Oficinas no Centro Cultural Alagbedê]{Oficinas no Centro Cultural Alagbedê}
+  \label{fig:OficinaMA2}
+\end{figure}
+
+
+Por Milson Onileto, em 25 agosto
+2013\footnote{\url{http://culturadigital.br/casaferreirodedeus/2013/08/25/segunda-oficina-de-apropriacao-tecnologica/}}:
+\begin{quote}
+  Nessa manha do dia 24.08.2013 aconteceu a segunda oficina de
+  apropriação tecnológica,a oficina partiu da ideia que temos que
+  brigar por um territorio tecnologico que vem nos sendo negado ou vem
+  sendo usado de forma não-critica, pela falta de acesso a informações
+  e instrumentos tecnológicos livre. A rede mocambos vem criando esse
+  vieis entre as tradicionais e o mundo tecnológico moudado ao nosso
+  modo criando um mundo cada vez mais do nosso jeito.
+\end{quote}
+
+\section{Debian Day/ES}
+No 17 de Agosto, o Núcleo de Cidadania Digital (NCD), juntamente com o
+Grupo de Usuários Debian do Espírito Santo (Gud-ES), realizou, no
+Centro de Artes da Ufes, o Debian Day, que contou com a participação
+da Rede Mocambos falando sobre apropriação tecnológica.  O Debian Day
+trata-se de uma comemoração aberta do aniversário do Projeto Debian,
+cuja data de lançamento oficial foi 16 agosto de 1993, visa a produção
+de um sistema operacional livre.  Dentre das atividades, ocorridas uma
+foi a apresentação da rede mocambos falando sobre apropriação
+tecnológica das comunidades quilombolas e movimentos sociais, apos a
+apresentação rolou uma conversar com os participantes e organização do
+evento, surgindo possibilidades de parcerias com o Núcleo de Cidadania
+Digital (NCD), Grupo de Usuários Debian (Gud-ES), Tux-ES e Revista
+Espirito
+Livre.\footnote{\url{http://elegbaraguine.wordpress.com/2013/08/24/debian-day-vitoria-es/},
+  \url{http://softwarelivre.org/gud-es},
+  \url{http://www.mocambos.net/weblog/2013/08/24/rede-mocamdos-no-debian-day-vitoria-es/}.}
+
+\input{./Cap/Relatorio_BBX_Cap1.tex} % NPDD
+
+
+\part{Setembro/Outubro}
+\chapter{Estruturando as Rotas locais e os Metadados}
+O projeto continua com as articulações e oficinas locais no Rio Grande
+do Sul e no norte. A equipe de desenvolvimento, com o apoio de
+consultores da Dynamite, realiza um estudo e uma primeira
+implementação da gestão dos metadados do Baobáxia.
+
+\section{Articulando com os terreiros}
+No dia 11 de setembro de 2013, aconteceu uma reunião com
+representantes do Mansu Nangetu terreiro da Mãe Nangetu, onde a
+possibilidade de fazer uma imersão sobre a rede mocambos com as
+comunidades de terreiro de Belém do Pará foi fechada. A data pra a
+oficina de instrumentalização tecnológica e ferramentas mocambólicas
+com datas de 08 à 10 do mês de Outubro (data sujeita à alterações),
+tendo em vista uma utilização critica da internet que de acordo com
+dados de pesquisas nacionais relaciona a porcentagem de pouca
+utilização dessa ferramenta por parte das comunidades negras e
+tradicionais de terreiro.
+
+Durante a conversa, foi colocado por Milson Onilètó a importância da
+apropriação desse território tecnológico, e dessa forma fortalecer as
+praticas tradicionais e das organizações politicas das comunidades.
+
+Mãe Nangetu falou da articulação das comunidades tradicionais nas
+discussões nacionais sobre as políticas públicas, principalmente as
+culturais. Ela relatou que estão acontecendo constantemente as
+conferências em Belém e que é importante que a juventude de terreiro
+se aproprie destas discussões politicas e que uma organização maior é
+necessária, que é responsabilidade da juventude manter essa luta ao
+lado dos mais velhos, afinal, o conhecimento ancestral deve ser
+repassado para preservarmos nossa história, nossas raízes. Arthur
+Leandro falou um pouco de seu histórico dentro do movimento afro
+religioso e de sua própria história de vida (que renderia um belo
+livro) e se mostrou bastante interessado em compor essa articulação
+local junto à rede mocambos, e que a casa está disposta a mobilizar na
+data estabelecida as lideranças estratégicas para a juventude de
+terreiro e dessa forma fortalecer mais um núcleo rede mocambos em
+Belém do Pará.  
+
+\section{Oficinas}
+A oficina de apropriação tecnológica aconteceu no dia 9 de outubro de
+forma natural, durante a oficina de vídeo, quando o grupo percebeu,
+que era mais viável se instrumentalizar sobre as questões básicas de
+software livre e informática. Dessa forma foi necessário readequá a
+programação uma vez que seria apresentado a oficina de vídeo. A
+oficina foi pensada em três momentos de atividade que eram introdução
+a história dos computadores e internet que é o momento para
+procurarmos causar uma reflexão crítica desses da história e criação
+desses meios, aproveitando para falar de Rede Mocambos seu ideal de
+luta e de como nos inspiramos na causa palmarina para discutir esse
+território digital excludente. Foi mostrado filmes curtos depois de
+apresentação de slides sobre o tema. Esse filmes falaram sobre a
+funcionalidade das principais peças na maquina. Dessa forma esse vídeo
+foi um complemento que de forma visual facilitou o entendimento do que
+é o computador.
+
+O segundo momento foi pensado para contextualização desse entendimento
+tecnológico e a pratica propriamente dita. Partindo pela instalação do
+software, utilização dos principais comandos e instalação dos
+principais programas. Esse momento foi acontecendo a parti de
+provocações do grupo.
+
+O terceiro momento foi pensado para falar sobre as ferramentas
+tecnológicas da Rede Mocambos, onde falamos da historia da wiki e sua
+forma de utilização. Passamos pelo processo de criação de usuário e
+todos os passos para criação dos publicação de conteúdos. O mapa foi
+apresentado e foi descrito sua importância para as comunidades porem o
+tempo não foi o bastante para mostra sua utilização.
+
+\section{Oficina em Bujarú}
+A atividade na comunidade Quilombola de São judas Tadeu foi
+linda. Chegamos Um hora da tarde quando o Aldo representante
+quilombola foi nos pegar na balsa e levar pra comunidade, a presidente
+da associação Kátia recebeu muito bem a equipe, relatando a situação
+da comunidade e que eles já esparavão a anos essa instalação. Foi
+notório a euforia da comunidade que logo se aproximou e quiz saber se
+seu sonho se realizaria naquele momento. O que deveria começar no
+outro dia pela manha, iniciou-se no mesmo passo da chegada. Começamos
+a instalação do telecentro e com as oficinas que iam acontecendo
+naturalmente como conversas, os jovens e crianças, mulheres e homens
+da comunidade todos interagindo com o processo. Logo cada um estava
+contando pela primeira vez um computador. depois da instalação e da
+troca de ideias sobre informática e apropriação tecnológica, começamos
+a falar da realidade das pessoas que viviam ali, e que muitos se quer
+ja tinha assistido filme em uma tela grande. começamos a pensar em uma
+mostra de cinema que aconteceu no espaço do telecentro, logo a sala
+esta cheia de crianças, jovens, mulheres, todo mundo juntos, vidrados
+nas aventuras de Kiriku, o filma acabou e observar os olhares pidões
+querendo mais das crianças foi o bastante pra em poucos cliques,
+começar o filme Quilombos, que conta a historia do Quilombo dos
+Palmares. depois do filme as atividades terminarão. Pela manhã
+começamos ouvindo os mais velhos da comunidade e visitando as áreas de
+plantações que rodeava toda a comunidade com uma bela forma de
+sustentabilidade, ouvimos como começarão as plantações e conhecemos um
+dos igarapé que cortava e dividia as comunidades. Após todo o rolê
+fomos para o telecentro onde terminamos a instalação e demos
+continuidade as oficinas dessa vez de instalação e noções básicas de
+Linux Ubuntu ( comandos e principais programas, entendendo as
+principais diferenças entre o sistema operacional Windows e o Linux,
+observamos que ninguém si quer tinha ouvido falar do Linux antes. Após
+essa atividade fizemos a segunda mostra de cinema com curtas para
+criançada com temáticas ambientais. Isso durante a instalação demorada
+de todo o sistema do telecentro e configuração do Roteador wireless.
+
+\input{./Cap/Relatorio_BBX_Cap2.tex} % Metadados
+
+
+
+\part{Novembro/Dezembro}
+
+\section{Instalação do telecentro de Pitimandeua/PA}
+
+Dia 14 de Novembro de 2013, mais um telecentro quilombola foi
+instalado e conectado.  A comunidade Quilombola Menino Jesus de
+pitimandeua, localizada no munícipio de pitimandeua, proximo a
+Castanhal-PA, recebeu os articuladores da rede mocambos Guinê Ribeiro
+e DJ RG, que realizaram o processo de instalação do telecentro da
+comunidade.  Essa iniciativa e uma ação conjunta dos projetos Baobaxia
+e Núcleos de formação continuda da Rede
+mocambos.\footnote{\url{http://www.mocambos.net/pt-br/weblog/2013/11/20/Destaque/}}
+
+
+\section{Telecentro das Ilhas-Abaitetuba-Rio Genipauba/PA}
+
+Dia 13 de novembro de 2013, a Rede mocambos instalou o telecentro da
+associação de artesãs das ilhas de Abaitetuba, rio Genipauba.
+http://galeria.mocambos.net/Instala-o-do-telecentro-das-Ilhas--Abaitetuba--Rio-Genipauba
+
+
+\section{Visita aos quilombos de Guajará Mirim e Itacoã Mirim/PA}
+Dia 12/11/2013 
+
+Visita nas comunidades com o objetivo de instalar/verificar os
+Telecentros, quais os materiais e maquinários entregues,
+disponibilidade de conexão, estrutura e espaço como salas, escola,
+associação, e a relação da comunidade com a tecnologia e
+comunicação\footnote{\url{http://galeria.mocambos.net/Instala-o-dos-Telecentro-de-Guajar-e-Itaco--PA}}.
+\begin{description}
+  \item[Itacoã] Comunidade com aproximadamente 150 famílias, que
+    desenvolvem atividades de plantio, produção de farinha, entre
+    outras que fazem parte do cotidiano da região. Conversa sobre
+    rotinas, informes locais (ano eleitoral, dezembro, para designar
+    representantes legais da comunidade, propostas e melhorias),
+    realizada na residência de seu Zeca (morador local), no Telecentro
+    chegou apenas o data show, não tem conexão, mesas, computadores e
+    espaço destinado à instalação.
+  \item[Guajará Mirim] Comunidade tem em torno de 120 famílias,realizam
+    atividades de manejo, plantio e produção, mas acabam por se
+    limitar no processo de desenvolvimento do próprio espaço, através
+    de projetos, parcerias e novos investimentos, decorrente dos
+    interesses políticos e econômicos predominantes na região,
+    empresários, gabinetes, prefeituras, tem retido o fluxo de
+    investimentos predestinados à melhoria e crescimento das
+    comunidades. Isso reflete na questão sócio econômica e ambiental
+    da região, como o mal uso da terra (extração de areia) e suas
+    propriedades, ocasionando o desequilíbrio ecológico,
+    desobstrução/erosão do solo e a não produtividades e preservação
+    da flora extensa e rica.  Telecentro na Escola de Ensino
+    Fundamental Stª Marta, recebeu as mesas, 11 computadores, data
+    show, mas não tem antena, conexão, a sala destinada para
+    instalação não tem estrutura elétrica (fiação de modo geral). A
+    conversa teve a participação e colaboração de Valdinei (Pedra),
+    representante da comunidade e atuante do Projeto Ijé Ofé, Marco
+    Antônio (cabeludo), vice-presidente da Associação.  A instalação
+    dos telecentros não foi efetivada, pois em Itancoã não chegou
+    maquinário, apenas data show e, em Guajará Miri o espaço reservado
+    na escola não tem estrutura. Foram feitos registros de fotos e
+    vídeos (Guine e Reginaldo-Dj.RG), entrevistas com os
+    representantes sobre a realidade dos telecentros locais. As
+    comunidades quilombolas reconhecem as suas necessidades,
+    limitações, e mesmo com as problemáticas existentes a resistência
+    e trabalho persistem, pois as ações tem continuidade, seja nas
+    escolas, nas associações e com os próprios moradores. Os
+    telecentros são importantes para a comunicação entre as
+    comunidades, para o crescimento e projetos de ensino nas escolas,
+    para a integração e envolvimento de jovens e adultos, no intuito
+    de fortalecer os interesses (cultura, identidade, valores) e o
+    comprometimento com a comunidade, atribuindo o que se tem de
+    direito que vai muito além da terra.  Como encaminhamento, os
+    representantes Pedra e Marcos, providenciarão um profissional
+    eletricista para fazer um orçamento e ajustes necessários, no
+    espaço que foi destinado para a instalação do Telecentro, à parti
+    disso comunicar (agendar) a Rede para uma nova visita, contactar
+    um correio mais próximo e ver as possibilidades de
+    entrega/endereço, para receber antena ou qualquer outro maquinário
+    que for preciso ser
+    entregue.
+\end{description}
+
+Material produzido: 
+relatoria (Suhellen) ,
+áudio, vídeo e imagens (Reginaldo (RG) e Guine) - 
+
+Vídeos: 
+\begin{itemize}
+ \item docs/relatos com os reprentantes, Pedra e Marco. (Guajará Miri)
+ \item Cantiga com D.Ana Faustina ``Ama do Boi'' (representante da
+   secretaria de cultura da região),bumba boi batuques e
+   jogos. (Guajará Miri)
+ \item relatos da trajetória da viagem (Suh, RG, Guine) -
+\end{itemize}
+
+
+Contatos: -Valdinei (Pedra); 9249-5913 (vivo) e 8164-2455 (tim) -Marco
+Antônio T.Galiza (Cabeludo): 9224-2249 (vivo)
+
+
+
+
+\chapter{Encontro em SP}
+
+
+
+
+\input{./Cap/Relatorio_BBX_Cap3.tex} % Multirepositorio
+
+%\input{./Capitoli/Capitolo1} % Introduzione
+
+%\input{./Capitoli/Capitolo2} % Reti Federate  
+
+\clearpage  % To start a new page
+
+%% ----------------------------------------------------------------
+% The "Funny Quote Page"
+\pagestyle{empty}  % No headers or footers for the following pages
+
+\null\vfill
+% Now comes the "Funny Quote", written in italics
+\textit{``A força da rede esta nos nós''}
+
+\begin{flushright}
+TC
+\end{flushright}
+
+\vfill\vfill\vfill\vfill\vfill\vfill\null
+\clearpage  % Funny Quote page ended, start a new page
+%% ----------------------------------------------------------------
+
+\pagestyle{fancy}  % Finally, use the "fancy" page style to implement
+                   % the FancyHdr headers
+
+%\input{./Capitoli/Capitolo4} % Prototipo
+
+%\input{./Capitoli/Capitolo5} % Conclusioni
+
+%\input{./Chapters/Chapter6} % Results and Discussion
+
+%\input{./Chapters/Chapter7} % Conclusion
+
+%% ----------------------------------------------------------------
+% Now begin the Appendices, including them as separate files
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
+
+\input{./Apen/Relatorio_BBX_ApenA.tex}	% Appendice codice sorgente
+
+%\input{./Appendices/AppendixB} % Appendix Title
+
+%\input{./Appendices/AppendixC} % Appendix Title
+
+\addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+\backmatter
+\nocite{*}
+%% ----------------------------------------------------------------
+\label{Bibliography}
+\lhead{\emph{Bibliografia}}  % Change the left side page header to "Bibliography"
+\bibliographystyle{unsrtnat}  % Use the "unsrtnat" BibTeX style for formatting the Bibliography
+\bibliography{Bibliography}  % The references (bibliography) information are stored in the file named "Bibliography.bib"
+
+\end{document}  % The End
+%% ----------------------------------------------------------------

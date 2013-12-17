@@ -221,14 +221,10 @@
       \bigskip
       %% {\LARGE por \par}
       \bigskip
-      {\LARGE Relatório de execução - Versão 0.2 \par}
-      {\small Consultoria da Gunga \par}
-      {\small Nota fiscal 0145 de 11/2013 \par}
-      \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=3cm]{./Fig/Logo_Gunga.pdf}
-      \end{figure}
-      %% \vfill
+      {\LARGE Relatório \par}
+      {\large Primeiro semestre \par}
+ 
+      \vfill
 
       {\large Parceria\par}
       {\large \fbb \par}

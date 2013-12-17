@@ -22,7 +22,7 @@ import os
 import datetime
 import subprocess
 import logging
-
+import exceptions
 
 """
 Modelos da aplicacao Django. 
@@ -142,10 +142,17 @@ def gitAnnexSync(repoDir):
 
 def gitAnnexStatus(repoDir):
     """View all mucuas in a given repository"""
-    logger.info('git annex status')
+    logger.info('git annex info/status')
     cmd = 'git annex status --json'
     pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir, stdout=subprocess.PIPE)
     return pipe.stdout.read()
+    #except GitAnnexCommandError:
+    #    cmd = 'git annex info --json'
+    #    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir, stdout=subprocess.PIPE)
+    #    return pipe.stdout.read()
+
+
+
 
 def runScheduledJobs():
     """Executa as operacoes programadas em todos os repositorios. """
@@ -214,3 +221,6 @@ class Repository(models.Model):
         super(Repository, self).save(*args, **kwargs)
 
 
+class GitAnnexCommandError(exceptions.Exception):
+    def __init__(self,args=None):
+        self.args = args
