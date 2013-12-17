@@ -143,7 +143,7 @@ def gitAnnexSync(repoDir):
 def gitAnnexStatus(repoDir):
     """View all mucuas in a given repository"""
     logger.info('git annex info/status')
-    cmd = 'git annex status --json'
+    cmd = 'git annex info --json'
     pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir, stdout=subprocess.PIPE)
     return pipe.stdout.read()
     #except GitAnnexCommandError:
