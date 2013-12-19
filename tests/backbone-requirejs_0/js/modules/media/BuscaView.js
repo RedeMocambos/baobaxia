@@ -6,13 +6,11 @@ define([
     'modules/media/collection',
     'modules/mucua/model',
     'modules/repository/model',
-    'text!templates/common/header.html',
     'text!templates/common/menu.html',
     'text!templates/common/busca.html',
-    'text!templates/common/footer.html',
     'text!templates/media/MediaResults.html',
     'text!templates/media/CaixaResultadoBusca.html'
-], function($, _, Backbone, MediaModel, MediaCollection, MucuaModel, RepositoryModel, Header, Menu, Busca, Footer, MediaResults, CaixaResultadoBusca){
+], function($, _, Backbone, MediaModel, MediaCollection, MucuaModel, RepositoryModel, Menu, Busca, MediaResults, CaixaResultadoBusca){
     var BuscaView = Backbone.View.extend({
 	
 	render: function(subroute){
@@ -22,11 +20,6 @@ define([
 	    subroute = (subroute == null) ? '' : subroute;
 	    url = '/api/' + repository + '/' +  mucua + '/bbx/search/' + subroute;
 	    var mediaCollection = new MediaCollection([], {url: url});
-	    
-	    // compila cabecalho
-	    if ($('#header').html() == '') {
-		$('#header').append(_.template(Header, {'name': mucua}));
-	    }
 	    
 	    // compila menu e busca
 	    if (typeof $('#busca-menu').html() === 'undefined') {
@@ -44,6 +37,11 @@ define([
 		    document.location.href = url;
 		}
 		
+		add_term = function() {
+		    // abre caixa de busca de termo adicional (so uma vez, exibe)
+		    $('.resultado-busca').add('p').css('background', 'red');
+		}
+		
 		termos = [];
 		$.each(subroute.split("/"), function(key, term) {
 		    termos.push({repository: repository,
@@ -57,6 +55,7 @@ define([
 		
 		$('#menu').after(_.template(CaixaResultadoBusca, termos));
 		$('#busca .button').click(function() { do_search() });
+		$('.adicionar-termo').click(function() { add_term() });
 		$('#expressao_busca').keyup(function(e) { if (e.keyCode == 13) do_search(); });   // enter
 	    }
 	    
@@ -75,11 +74,6 @@ define([
 		    $('#content').html(compiledTemplate);
 		}
 	    });
-	    
-	    // compila footer
-	    if ($('#footer').html() == '') {
-		$('#footer').append(Footer);
-	    }
 	}
     });
     

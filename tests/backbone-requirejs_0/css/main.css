@@ -61,3 +61,4 @@ h3.results-title { color: #fff; padding-left: 20p}
 .caixa-resultado-busca {background-color: #eeffaa; padding: 2px; }
 .caixa-resultado-busca .nome-termo {margin: 12px; }
 .caixa-resultado-busca a {background-color: #cdde87; padding: 4px; text-decoration: none; font-weight: bold }
+.adicionar-termo {font-size: 16px; font-weight: bold; cursor: pointer}

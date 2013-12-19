@@ -5,8 +5,7 @@ define([
     'modules/media/model', 
     'modules/media/collection',
     'modules/media/MediaView',
-    'modules/media/MediaListView',
-], function($, Backbone, Backbone_Subroute, MediaModel, MediaCollection, MediaView, MediaListView){
+], function($, Backbone, Backbone_Subroute, MediaModel, MediaCollection, MediaView){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    // media

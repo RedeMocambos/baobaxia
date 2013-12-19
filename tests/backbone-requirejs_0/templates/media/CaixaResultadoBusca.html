@@ -1,5 +1,6 @@
-<div class="caixa-resultado-busca">
+<div class="caixa-resultado-busca" id="resultado-busca">
   <% _.each(termos, function(termo){ %>
   <div class="nome-termo"><a href="#<%= termo.repository %>/<%= termo.mucua %>/bbx/search/<%= termo.termo %>"><%= termo.termo %></a></div>
   <% }); %>
+  <a class="adicionar-termo">+</a>
 </div>
