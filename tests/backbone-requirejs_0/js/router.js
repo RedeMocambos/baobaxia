@@ -71,7 +71,6 @@ define([
 		    this.data = data;
 		}
 	    });
-   
 	},	
 	
 	// login
