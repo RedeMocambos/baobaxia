@@ -16,7 +16,6 @@ define([
     
     App.Router = Backbone.Router.extend({
 	Routers: {},
-	data: {'repository': '', 'mucua': ''},
 	
 	routes: {
 	    '' : 'index',
@@ -35,40 +34,38 @@ define([
 	
 	index: function() {
 	    console.log("index");
+	    this._renderCommon();	    
 	    
-	    _.extend(this.data, Backbone.Events);
-	    
-	    this.renderCommon();
-	    this.on("route", function(event) {
+	    $("body").data("data").on("changedData", function() {
 		var indexView = new IndexView();
-		indexView.render();
+		indexView.render($("body").data("data"));
 	    });
+	    //TODO: criar um evento (q funcione) para so carregar a index quando dados tiverem sido carregador pela renderCommon
 	},
 	
-	renderCommon: function() {
+	_renderCommon: function() {
 	    // carrega partes comuns
 	    console.log("common");
 	    
-	    var data = {};
 	    var defaultRepository = new RepositoryModel([], {url: '/api/repository/'});
 	    var defaultMucua = new MucuaModel([], {url: '/api/mucua/'});
 	    
 	    defaultRepository.fetch({
 		success: function() {
-		    data.repository = defaultRepository.attributes[0].name;
-		}
-	    });
-	    defaultMucua.fetch({
-		success: function() {
-		    data.mucua = defaultMucua.attributes[0].description;
+		    $("body").data("data").repository = defaultRepository.attributes[0].name;
 		    
-		    var headerView = new HeaderView();
-		    headerView.render(data);
-		    
-		    var footerView = new FooterView();
-		    footerView.render(data);
-		    
-		    this.data = data;
+		    defaultMucua.fetch({
+			success: function() {
+			    $("body").data("data").mucua = defaultMucua.attributes[0].description;
+			    $("body").data("data").trigger("changedData");
+			    
+			    var headerView = new HeaderView();
+			    headerView.render($("body").data("data"));
+			    
+			    var footerView = new FooterView();
+			    footerView.render($("body").data("data"));
+			}
+		    });
 		}
 	    });
 	},	
@@ -77,7 +74,7 @@ define([
 	login: function(repository='', mucua='') {
 	    console.log("login");
 
-	    this.renderCommon();
+	    this._renderCommon();
 	    
 	    if (repository != "" && mucua != "") {
 		console.log("/" + repository + "/" + mucua + "/login");;
@@ -94,7 +91,7 @@ define([
 	
 	// media
 	invokeMediaModule: function(repository, mucua, subroute) {
-	    this.renderCommon();
+	    this._renderCommon();
 	    
 	    if (!this.Routers.MediaRouter) {
 		this.Routers.MediaRouter = new MediaRouter(repository + "/" + mucua + "/" + "media/", subroute);
@@ -103,7 +100,7 @@ define([
 
 	// mucua
 	invokeMucuaModule: function(repository, mucua) {
-	    this.renderCommon();
+	    this._renderCommon();
 	    
 	    if (!this.Routers.MucuaRouter) {
 		this.Routers.MucuaRouter = new MucuaRouter(repository + "/" + mucua + "/" + "mucua/");
@@ -112,7 +109,7 @@ define([
 	
 	// bbx
 	invokeBbxModule: function(repository, mucua, subroute) {
-	    this.renderCommon();
+	    this._renderCommon();
 	    
 	    if (!this.Routers.BbxRouter) {
 		this.Routers.BbxRouter = new BbxRouter(repository + "/" + mucua + "/" + "bbx/", subroute);
@@ -121,6 +118,12 @@ define([
     });
     
     var initialize = function(){
+	// inicializa
+	//console.log('initialize');
+	
+	// adiciona suporte a eventos para qualquer dado armazenado no "body"
+	$("body").data("data", {repository: '', mucua: ''});	
+	_.extend($("body").data("data"), Backbone.Events);
 	
 	new App.Router();
 	Backbone.history.start();
