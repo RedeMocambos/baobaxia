@@ -2,11 +2,12 @@ define([
     'jquery', 
     'backbone',
     'backbone_subroute',
+    'modules/bbx/base-functions',
     'modules/media/collection',
     'modules/media/BuscaView',
     'text!templates/common/header.html',
     'text!templates/common/footer.html',
-], function($, Backbone, Backbone_Subroute, MediaCollection, BuscaView, Header, Footer){
+], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MediaCollection, BuscaView, Header, Footer){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    // bbx
@@ -39,7 +40,12 @@ define([
 	busca: function(subroute = '') {
 	    repository = this._getRepository();
 	    mucua = this._getMucua();
+	    BBXBaseFunctions._renderCommon(repository, mucua);
 	    
+	    if ($("body").data("data").renderCommon) {
+		// e header vazio
+		//_renderCommon(repository, mucua);
+	    }
 	    var buscaView = new BuscaView();
 	    buscaView.render(subroute);
 	},	
