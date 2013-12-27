@@ -25,7 +25,7 @@ define([
 	    // compila menu e busca
 	    if (typeof $('#busca-menu').html() === 'undefined') {
 		$('#content-full').prepend(_.template(Menu, repository, mucua));
-
+		
 		// TODO: busca está junto com menu nessa versao, talvez separar futuramente como um módulo configurável
 		$('#busca-menu').append(_.template(Busca, {'repository': repository}, {'name': mucua}));
 		

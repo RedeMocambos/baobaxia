@@ -1,11 +1,14 @@
 define([
     'jquery', 
+    'underscore',
     'backbone',
     'modules/repository/model', 
     'modules/mucua/model', 
+    'text!templates/common/menu.html',
+    'text!templates/common/busca.html',
     'modules/common/HeaderView',
     'modules/common/FooterView',
-], function($, Backbone, RepositoryModel, MucuaModel, HeaderView, FooterView){
+], function($, _, Backbone, RepositoryModel, MucuaModel, Menu, Busca, HeaderView, FooterView){
     return {
 	initialize: function() {
 	    console.log('inicializa functions bbx');
@@ -13,8 +16,7 @@ define([
 	
 	// get repository / mucua
 	_getBaseData: function(repository = '', mucua = '') {
-	    
-	    console.log('_getBaseData(' + repository + ',' + mucua + ')');
+	    //console.log('_getBaseData(' + repository + ',' + mucua + ')');
 	    
 	    if (repository != '' && mucua != '') {
 		// get both by url
@@ -63,16 +65,26 @@ define([
 
 	_renderCommon: function(repository = '', mucua = '') {
 	    // carrega partes comuns; carrega dados basicos para todos
-	    console.log("renderCommon");
+	    //console.log("renderCommon");
 	    
 	    this._getBaseData(repository, mucua);
-	    $("body").data("data").on("all", function(event) {console.log(event)});
+	    // debug
+	    // $("body").data("data").on("all", function(event) {console.log(event)});
 	    
 	    $("body").data("data").on("changedData", function() {
 		var headerView = new HeaderView();
 		headerView.render($("body").data("data"));
 		var footerView = new FooterView();
 		footerView.render($("body").data("data"));
+
+		if (typeof $('#busca-menu').html() === 'undefined') {
+		    repository = (repository != '') ? repository : $("body").data("data").repository;
+		    mucua = (mucua != '') ? mucua : $("body").data("data").mucua;
+		    data = {'repository': repository, 'mucua': mucua};
+		    
+		    $('#content-full').prepend(_.template(Menu, data));
+		    $('#busca-menu').append(_.template(Busca, data));
+		}
 	    });    
 	    $("body").data("data").renderCommon = true;
 	}	

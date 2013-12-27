@@ -41,13 +41,11 @@ h3.results-title { color: #fff; padding-left: 20p}
 .media_box .format_type {padding: 6px; font-size: 12px}
 .media_box .license-cc {background-image: url('../images/cc.png'); width: 20px; height: 20px; float: right; margin: 2px }
 
-#busca-menu #expressao_busca { border: 2px solid #a59560; border-radius: 8px; }
+.caixa_busca { border: 2px solid #a59560; border-radius: 8px; }
 #busca-menu .button {float: right;  background-image: url('../images/search.png'); width: 27px; height: 27px; cursor: pointer }
 
 #menu {margin-left: 175px; margin-top: -35px;}
 .menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
-
-.menu-itens #busca-menu {}
 .menu-itens li a {color: #fff; text-decoration: none; }
 
 #media-view .bloco-1 {width: 630px; float: left; padding: 4px; margin-left: 20px}
@@ -62,3 +60,6 @@ h3.results-title { color: #fff; padding-left: 20p}
 .caixa-resultado-busca .nome-termo {margin: 12px; }
 .caixa-resultado-busca a {background-color: #cdde87; padding: 4px; text-decoration: none; font-weight: bold }
 .adicionar-termo {font-size: 16px; font-weight: bold; cursor: pointer}
+.remover-termo {font-size: 16px; font-weight: bold; cursor: pointer}
+#resultado-busca .caixa_busca {display: none}
+#media-results-content h4.not_found {padding: 10px; color: #900}

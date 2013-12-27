@@ -17,5 +17,8 @@
     <% }); %> -->
   </div>
   <% }); %>
+  <% if (_.isEmpty(medias)) { %>
+  <h4 class="not_found"><%= emptyMessage %></h4>
+  <% } %>
 </div>
 </div>

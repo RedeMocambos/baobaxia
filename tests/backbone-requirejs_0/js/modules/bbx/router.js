@@ -42,10 +42,6 @@ define([
 	    mucua = this._getMucua();
 	    BBXBaseFunctions._renderCommon(repository, mucua);
 	    
-	    if ($("body").data("data").renderCommon) {
-		// e header vazio
-		//_renderCommon(repository, mucua);
-	    }
 	    var buscaView = new BuscaView();
 	    buscaView.render(subroute);
 	},	
