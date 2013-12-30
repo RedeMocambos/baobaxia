@@ -14,114 +14,154 @@ define([
     var BuscaView = Backbone.View.extend({
 	
 	render: function(subroute){
-	    mensagemBusca = "Buscando '" + subroute + "' no repositorio '" + repository + "' e na mucua '" + mucua + "'";
-	    console.log(mensagemBusca);
-	    
-	    subroute = (subroute == null) ? '' : subroute;
-	    url = '/api/' + repository + '/' +  mucua + '/bbx/search/' + subroute;
-	    frontend_url = '#' + repository + '/' + mucua + '/bbx/search/' + subroute;
-	    var mediaCollection = new MediaCollection([], {url: url});
-	    $('#form_busca').attr('action', frontend_url);
-	    
-	    get_termos = function(returnArray = false) {
+	    /***
+	     * Funções internas
+	     */
+	    _get_termos = function(returnArray = false) {
 		search_url = $('#form_busca').attr('action');
+		
 		termos = new String(_.rest(search_url.split('search')));
 		termos = termos.replace('//', '/');
 		
 		// return array
 		if (returnArray) {
-		    termos = termos[0].substring(1);
+		    termos = termos.substring(1);
 		    termos = termos.split('/');
 		}
-		
+//		console.log('termos dentro: ' + termos[0]);
 		return termos;
 	    }
 	    
-	    get_base_search_url = function() {
+	    _set_search_url = function(termos) {
+		base_search_url = _get_base_search_url();
+		termos = new String(termos);
+		search_url = base_search_url + "/" + termos.replace(',', '/');
+		
+		$('#form_busca').attr('action', search_url);
+	    }
+
+	    _get_search_url = function() {
+		return $('#form_busca').attr('action');
+	    }
+	    
+	    _get_base_search_url = function() {
 		search_url = $('#form_busca').attr('action');
 		return _.first(search_url.split('search')) + "search";
 	    }
 	    
-	    //TODO: talvez seja legal buscar uma forma backbone de implementar os eventos
-	    do_search = function(termo = '', exclude = '') {
-		// caso venha de um input diferente,
-		base_search_url = get_base_search_url();
-		termos = get_termos();
+	    _do_search = function(termo = '', exclude = '') {
+		console.log("_do_search()...");
 		
+		base_search_url = _get_base_search_url();
+		
+		// caso especifique um input
 		if (termo != '') { 
-		    // adiciona
-		    // concat - busca 
-		    termo = termo.currentTarget.value;		    
-		    url_search = base_search_url + termos + "/" + termo;
+		    if (termo.type == 'keyup') {
+			// adiciona termo à busca
+			arr_termos = _get_termos(true);
+			termo = termo.currentTarget.value;
+			
+			if (!_.contains(arr_termos, termo)) {
+			    str_termos = _get_termos();
+			    url_search = base_search_url + str_termos + "/" + termo;
+			} else {
+			    error = "Termo já existe";
+			    console.log(error);
+			    if (typeof $('mensage').html() === 'undefined') {
+				$('#media-results-content .breadcrumb').append("<h4 class='message'>" + error + "</h4>");
+			    } else {
+				$('.message').html(error);
+			    }
+			    return false;
+			}
+		    }
 		}
 		
-		console.log('exclude: ' + exclude);
-		if (exclude != '') {
-		    // remove
-		    termos = new String(get_termos());
-		    termos = termos.replace(exclude, '');
-		    termos = termos.replace('//', '/');
-		    
-		    url_search = base_search_url + termos;
+		if (typeof url_search === 'undefined') {
+		    url_search = _get_search_url();
 		}
 		
-		console.log("search_url: " + base_search_url + " / termos " + termos);
-
+		// tratamento da url
+		url_search = url_search.replace('//', '/');
 		url_search = url_search.replace(" ", "%20");
 		url_search = url_search.replace("+", "/");
 		
-		console.log('url_search: ' + url_search);
-		
-		$('#form_busca').attr('action', url_search);
 		document.location.href = url_search;
 	    }
 	    
-	    add_term = function() {
+	    _add_term = function(obj) {
+		console.log("_add_term()...");
 		// abre caixa de busca de termo adicional (so uma vez, exibe)
-		console.log("adiciona box ");
-		$('#resultado-busca .caixa_busca').toggle();
+		$(obj).after('<input type="text" class="caixa_busca">');
 	    }
-
-	    remove_term = function(e) {
-		console.log(e);
+	    
+	    _remove_term = function(e) {
+		console.log("_remove_term()...");
+		//console.log(e);
 		// remove termo
 		termoHtml = e.target.parentElement;
 		linhaHtml = termoHtml.parentElement;
-		nomeTermo = linhaHtml.firstChild.firstChild.innerHTML;
+		termoExcluir = linhaHtml.firstChild.firstChild.innerHTML;
+		termos = _get_termos(true);
+		// remove item do array
+		termos = _.without(termos, termoExcluir);
+		_set_search_url(termos);
+		console.log('remover - termos: ' + termos);
+		console.log('termoExcluir: ' + termoExcluir);
 		
+		// TODO: [bug]: remover as caixas de input também
 		$(termoHtml).remove();
 		
-		// conta elementos para ver se tem que remover o que falta		
+		// conta elementos para ver se tem que remover o que falta
 		if (linhaHtml.childElementCount <= 2 ) {
 		    $(linhaHtml).remove();
 		}
-		do_search('', nomeTermo);
+		_do_search();
 	    }
 	    
+	    /***
+	     * Tarefas
+	     */
+	    mensagemBusca = "Buscando '" + subroute + "' no repositorio '" + repository + "' e na mucua '" + mucua + "'";
+	    console.log(mensagemBusca);
+	    
+	    // initial vars
+	    subroute = (subroute == null) ? '' : subroute;
+	    frontend_url = '#' + repository + '/' + mucua + '/bbx/search/' + subroute;
+	    $('#form_busca').attr('action', frontend_url);
+	    
+	    // acessa api
+	    url = '/api/' + repository + '/' +  mucua + '/bbx/search/' + subroute;
+	    var mediaCollection = new MediaCollection([], {url: url});
+	    
+	    // busca termos da url 
 	    termos = [];
+	    complete_link = '';
 	    $.each(subroute.split("/"), function(key, term) {
 		if (term != '') {
+		    complete_link = (complete_link != '') ? complete_link + '/' : '';
+		    complete_link += term;
 		    termos.push({repository: repository,
 				 mucua: mucua,
 				 termo: term,
-				 complete_link: subroute
+				 complete_link: complete_link
 				});
 		}
 	    });
 	    
-	    console.log('termos: ' + termos);
-	    
+	    /*** 
+	     * Render do menu de termos
+	     */
 	    // nao necessariamente adiciona, pode trocar
-	    $('#menu').after(_.template(CaixaResultadoBusca, termos));
+	    if (typeof $('#resultado-busca').html() === 'undefined') {
+		$('#menu').after(_.template(CaixaResultadoBusca, termos));
+	    } else {
+		$('#resultado-busca').html(_.template(CaixaResultadoBusca, termos));
+	    }
 	    
-	    $('#busca .button').click(function() { do_search() });
-	    $('.adicionar-termo').click(function() { add_term() });
-	    $('.remover-termo').click(function(e) { remove_term(e) });
-	    $('.caixa_busca').keyup(function(e) { if (e.keyCode == 13) do_search(e); });   // enter
-	    
-	    // breadcrumb
-	    //$(".breadcrumb").html("");
-	    
+	    /***
+	     * Fetch
+	     */
 	    mediaCollection.fetch({
 		success: function() {
 		    var data = {
@@ -135,6 +175,15 @@ define([
 		    $('#content').html(compiledTemplate);
 		}
 	    });
+	    
+	    /***
+	     * Eventos
+	     */
+	    $('#busca .button').click(function() { _do_search() });
+	    $('.adicionar-termo').click(function() { _add_term(this) });
+	    $('.remover-termo').click(function(e) { _remove_term(e) });
+	    // TODO: [bug]: como fazer para pegar o evento somente da caixa atual, e nao de todas? 
+	    $('.caixa_busca').keyup(function(e) { if (e.keyCode == 13) { _do_search(e); console.log($('.caixa_busca')) } });   // enter
 	}
     });
     

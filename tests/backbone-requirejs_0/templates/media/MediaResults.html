@@ -1,7 +1,7 @@
 <div id="media-results-content">
 <h3 class="results-title"></h3>
 <h4 class="breadcrumb"></h4>
-<div>
+<div id="medias">
   <% _.each(medias, function(media){ %>
   <div class="media_box <%= media.get("type") %> <% _.each(media.get("tags"), function(tagName) { %><%= tagName %> <% }); %>">
     <div class="result-thumb"><div class="assist"></div><img src="images/" /></div>
@@ -18,7 +18,7 @@
   </div>
   <% }); %>
   <% if (_.isEmpty(medias)) { %>
-  <h4 class="not_found"><%= emptyMessage %></h4>
+  <h4 class="message"><%= emptyMessage %></h4>
   <% } %>
 </div>
 </div>

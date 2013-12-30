@@ -61,5 +61,5 @@ h3.results-title { color: #fff; padding-left: 20p}
 .caixa-resultado-busca a {background-color: #cdde87; padding: 4px; text-decoration: none; font-weight: bold }
 .adicionar-termo {font-size: 16px; font-weight: bold; cursor: pointer}
 .remover-termo {font-size: 16px; font-weight: bold; cursor: pointer}
-#resultado-busca .caixa_busca {display: none}
-#media-results-content h4.not_found {padding: 10px; color: #900}
+#resultado-busca .caixa_busca {}
+#media-results-content h4.message {padding: 10px; color: #900}
