@@ -2,6 +2,7 @@ define([
     'jquery', 
     'underscore',
     'backbone',
+    'modules/bbx/base-functions',
     'modules/media/model',
     'modules/media/collection',
     'modules/mucua/model',
@@ -10,7 +11,7 @@ define([
     'text!templates/common/busca.html',
     'text!templates/media/MediaResults.html',
     'text!templates/media/CaixaResultadoBusca.html'
-], function($, _, Backbone, MediaModel, MediaCollection, MucuaModel, RepositoryModel, Menu, Busca, MediaResults, CaixaResultadoBusca){
+], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, MucuaModel, RepositoryModel, Menu, Busca, MediaResults, CaixaResultadoBusca){
     var BuscaView = Backbone.View.extend({
 	
 	render: function(subroute){
@@ -161,13 +162,13 @@ define([
 	    
 	    /***
 	     * Fetch
-	     */
+	     */	    
 	    mediaCollection.fetch({
 		success: function() {
 		    var data = {
 			emptyMessage: 'Nenhum registro encontrado!',
 			medias: mediaCollection.models,
-			config: {'imagePath': ''}, // TODO: centralizar as configuracoes em um arquivo mais central
+			config: BBXBaseFunctions.getConfigurations(),
 	     		_: _ 
 		    };
 		    

@@ -14,6 +14,21 @@ define([
 	    console.log('inicializa functions bbx');
 	},
 	
+	setConfigurations: function(configurations = '') {
+	    defaultConfigurations = {
+		'imagePath': ''
+	    }
+	    
+	    this.configurations = (configurations != '') ? configurations : defaultConfigurations;
+	},
+	
+	getConfigurations: function() {
+	    if (typeof this.configurations === 'undefined') 
+		this.setConfigurations();
+
+	    return this.configurations;
+	},
+	
 	// get repository / mucua
 	_getBaseData: function(repository = '', mucua = '') {
 	    //console.log('_getBaseData(' + repository + ',' + mucua + ')');
