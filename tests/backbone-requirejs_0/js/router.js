@@ -35,7 +35,7 @@ define([
 	
 	index: function() {
 	    console.log("index");
-	    BBXBaseFunctions._renderCommon();
+	    BBXBaseFunctions.renderCommon();
 	    
 	    $("body").data("data").on("changedData", function() {
 		var indexView = new IndexView();
@@ -47,7 +47,7 @@ define([
 	login: function(repository='', mucua='') {
 	    console.log("login");
 	    
-	    BBXBaseFunctions._renderCommon(repository, mucua);
+	    BBXBaseFunctions.renderCommon(repository, mucua);
 	    
 	    if (repository != "" && mucua != "") {
 		console.log("/" + repository + "/" + mucua + "/login");;
@@ -65,7 +65,7 @@ define([
 	
 	// media
 	invokeMediaModule: function(repository, mucua, subroute) {
-	    BBXBaseFunctions._renderCommon(repository, mucua);
+	    BBXBaseFunctions.renderCommon(repository, mucua);
 	    
 	    if (!this.Routers.MediaRouter) {
 		this.Routers.MediaRouter = new MediaRouter(repository + "/" + mucua + "/" + "media/", subroute);
@@ -74,7 +74,7 @@ define([
 
 	// mucua
 	invokeMucuaModule: function(repository, mucua) {
-	    BBXBaseFunctions._renderCommon(repository, mucua);
+	    BBXBaseFunctions.renderCommon(repository, mucua);
 	    
 	    if (!this.Routers.MucuaRouter) {
 		this.Routers.MucuaRouter = new MucuaRouter(repository + "/" + mucua + "/" + "mucua/");
@@ -83,7 +83,7 @@ define([
 	
 	// bbx
 	invokeBbxModule: function(repository, mucua, subroute) {
-	    BBXBaseFunctions._renderCommon(repository, mucua);
+	    BBXBaseFunctions.renderCommon(repository, mucua);
 	    
 	    if (!this.Routers.BbxRouter) {
 		this.Routers.BbxRouter = new BbxRouter(repository + "/" + mucua + "/" + "bbx/", subroute);

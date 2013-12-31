@@ -30,8 +30,8 @@ define([
 	},
 	
 	// get repository / mucua
-	_getBaseData: function(repository = '', mucua = '') {
-	    //console.log('_getBaseData(' + repository + ',' + mucua + ')');
+	getBaseData: function(repository = '', mucua = '') {
+	    //console.log('getBaseData(' + repository + ',' + mucua + ')');
 	    
 	    if (repository != '' && mucua != '') {
 		// get both by url
@@ -78,11 +78,11 @@ define([
 	    }
 	},
 
-	_renderCommon: function(repository = '', mucua = '') {
+	renderCommon: function(repository = '', mucua = '') {
 	    // carrega partes comuns; carrega dados basicos para todos
 	    //console.log("renderCommon");
 	    
-	    this._getBaseData(repository, mucua);
+	    this.getBaseData(repository, mucua);
 	    // debug
 	    // $("body").data("data").on("all", function(event) {console.log(event)});
 	    

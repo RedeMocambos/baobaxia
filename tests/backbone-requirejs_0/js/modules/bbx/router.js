@@ -40,7 +40,7 @@ define([
 	busca: function(subroute = '') {
 	    repository = this._getRepository();
 	    mucua = this._getMucua();
-	    BBXBaseFunctions._renderCommon(repository, mucua);
+	    BBXBaseFunctions.renderCommon(repository, mucua);
 	    
 	    var buscaView = new BuscaView();
 	    buscaView.render(subroute);
