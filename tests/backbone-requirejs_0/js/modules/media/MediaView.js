@@ -41,11 +41,13 @@ define([
 	    // TODO FIM
 	    
 	    url = '/api/' + repository + '/' +  mucua + '/media/' + uuid;
+	    baseurl = '#' + repository + '/' + mucua + '/bbx/search/';
 	    var media = new MediaModel([], {url: url});
 	    media.fetch({
 		success: function() {
 		    var data = {	
 			media: media,
+			baseurl: baseurl,
 		    }
 		    
 		    var compiledTemplate = _.template(MediaVisualizacao, data);
