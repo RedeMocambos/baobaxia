@@ -3,7 +3,7 @@
     <p class="title"><%= media.get("name") %></p>
     <p class="tags">
       <% _.each(media.get("tags"), function(tagName) { %>
-      <a href="<% print(baseurl + tagName) %>"><%= tagName %></a>&nbsp;
+      <a href="<% print(baseurl + '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
       <% }); %>
     </p>
 
@@ -11,7 +11,7 @@
     <p class="uuid">UUID<%= media.get("uuid") %></p>
   </div>
   <div class="bloco-2">
-    <p class="autor"><span class="title">Autoria</span>: <%= media.get("author") %></p>
+    <p class="autor"><span class="title">Autoria</span>: <a href='<% print(baseurl + '/mocambola/' + media.get("author")) %>'><%= media.get("author") %></a></p>
     <p class="date"><span class="title">Data:</span> <%= media.get("date") %></p>
     <p class="origin"><span class="title">Origem:</span> <%= media.get("origin") %></p>
     <p class="format"><span class="title">Formato:</span> <%= media.get("format") %></p>
