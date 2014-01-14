@@ -3,10 +3,9 @@
     <p class="title"><%= media.get("name") %></p>
     <p class="tags">
       <% _.each(media.get("tags"), function(tagName) { %>
-      <a href="<%= baseurl %><%=tagName %>"><%= tagName %></a>&nbsp;
+      <a href="<% print(baseurl + tagName) %>"><%= tagName %></a>&nbsp;
       <% }); %>
     </p>
-
 
     <p class=""><%= media.get("description") %></p>
     <p class="uuid">UUID<%= media.get("uuid") %></p>
