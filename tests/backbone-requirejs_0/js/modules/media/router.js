@@ -2,10 +2,11 @@ define([
     'jquery', 
     'backbone',
     'backbone_subroute',
+    'modules/bbx/base-functions',
     'modules/media/model', 
     'modules/media/collection',
     'modules/media/MediaView',
-], function($, Backbone, Backbone_Subroute, MediaModel, MediaCollection, MediaView){
+], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MediaModel, MediaCollection, MediaView){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    // media
@@ -36,6 +37,7 @@ define([
 	    console.log("visualiza media");
 	    repository = this._getRepository();
 	    mucua = this._getMucua();
+	    BBXBaseFunctions.renderCommon(repository, mucua);
 	    
 	    var mediaView = new MediaView();
 	    mediaView.render(uuid);

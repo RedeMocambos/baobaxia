@@ -3,24 +3,16 @@ define([
     'underscore',
     'backbone', 
     'modules/media/model',
-    'text!templates/common/header.html',
     'text!templates/common/menu.html',
     'text!templates/common/busca.html',
-    'text!templates/common/footer.html',
     'text!templates/media/MediaVisualizacao.html'
-], function($, _, Backbone, MediaModel, Header, Menu, Busca, Footer, MediaVisualizacao){
+], function($, _, Backbone, MediaModel, Menu, Busca, MediaVisualizacao){
     
     var MediaView = Backbone.View.extend({
 	
 	render: function(uuid){
 	    console.log("busca media " + uuid);
 	    console.log("/" + repository + "/" + mucua + "/medias/" + uuid);
-	    
-	    // TODO: colocar todo esse bloco (até o TODO FIM) numa funcao generica externa
-	    // compila cabecalho
-	    if ($('#header').html() == '') {
-		$('#header').append(_.template(Header, {'name': mucua}));
-	    }
 	    
 	    // compila menu e busca
 	    if (typeof $('#busca-menu').html() === 'undefined') {
@@ -54,11 +46,6 @@ define([
 		    $('#content').html(compiledTemplate);
 		}
 	    });
-	    
-	    // compila footer
-	    if ($('#footer').html() == '') {
-		$('#footer').append(Footer);
-	    }
 	}
     });
     return MediaView;
