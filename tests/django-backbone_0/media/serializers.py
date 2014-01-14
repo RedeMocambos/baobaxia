@@ -17,7 +17,7 @@ class MediaSerializer(serializers.ModelSerializer):
     tags = serializers.RelatedField(many = True)
     origin = serializers.RelatedField(many = False)
     repository = serializers.RelatedField(many = False)
-#    author = serializers.RelatedField(many = False)
+    author = serializers.RelatedField(many = False)
 
 #    tags = TagSerializer(required=False)
 #    origin = MucuaSerializer()

@@ -14,4 +14,5 @@ urlpatterns = patterns('',
                        url(r'^', include('media.urls')),
                        url(r'^', include('repository.urls')),
                        url(r'^', include('mucua.urls')),
+                       url(r'^', include('mocambola.urls')),
                        )
