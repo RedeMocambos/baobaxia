@@ -6,13 +6,14 @@ define([
     'modules/media/router', 
     'modules/mucua/router', 
     'modules/bbx/router', 
+    'modules/mocambola/router', 
     'modules/mucua/model',
     'modules/repository/model',
     'modules/common/HeaderView',
     'modules/common/FooterView',
     'modules/auth/LoginView', 
     'modules/common/IndexView', 
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, MediaRouter, MucuaRouter, BbxRouter, MucuaModel, RepositoryModel, HeaderView, FooterView, LoginView, IndexView){
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, MediaRouter, MucuaRouter, BbxRouter, MocambolaRouter, MucuaModel, RepositoryModel, HeaderView, FooterView, LoginView, IndexView){
     var App = {};
     
     App.Router = Backbone.Router.extend({
@@ -31,6 +32,7 @@ define([
 	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
 	    ':repository/:mucua/media/*subroute': 'invokeMediaModule',   
 	    ':repository/:mucua/mucua/*subroute': 'invokeMucuaModule',
+	    ':repository/:mucua/mocambola/*subroute': 'invokeMocambolaModule',	    
 	},
 	
 	index: function() {
@@ -87,6 +89,15 @@ define([
 	    
 	    if (!this.Routers.BbxRouter) {
 		this.Routers.BbxRouter = new BbxRouter(repository + "/" + mucua + "/" + "bbx/", subroute);
+	    }
+	},
+
+	// mocambola
+	invokeMocambolaModule: function(repository, mucua, subroute) {
+	    BBXBaseFunctions.renderCommon(repository, mucua);
+	    
+	    if (!this.Routers.MocambolaRouter) {
+		this.Routers.MocambolaRouter = new MocambolaRouter(repository + "/" + mucua + "/" + "mocambola/", subroute);
 	    }
 	},
     });
