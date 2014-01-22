@@ -202,7 +202,7 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
-def media_last(request, repository, mucua):
+def media_last(request, repository, mucua, qtd = 5):
     """
     List the last added medias
     """
@@ -217,11 +217,8 @@ def media_last(request, repository, mucua):
     except Repository.DoesNotExist:
         repository = Repository.objects.get(name = DEFAULT_REPOSITORY)
         redirect_page = True
-
-    # conf - tirar daqui e colocar num local central
-    LAST = 5
     
-    medias = Media.objects.filter(repository = repository.id).filter(origin = mucua.id).order_by('-date')[:LAST]
+    medias = Media.objects.filter(repository = repository.id).filter(origin = mucua.id).order_by('-date')[:qtd]
     # serializa e da saida
     serializer = MediaSerializer(medias, many=True)
     return Response(serializer.data)
