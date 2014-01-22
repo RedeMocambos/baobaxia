@@ -150,7 +150,7 @@ def gitAnnexStatus(repoDir):
     logger.info('git annex info/status')
     
     # a partir da versao 5
-    if (float(gitAnnexVersion()) <= 4):
+    if (float(gitAnnexVersion()) <= 5):
         cmd = 'git annex status --json'
     else:
         cmd = 'git annex info --json'
