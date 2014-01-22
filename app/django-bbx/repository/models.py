@@ -17,7 +17,7 @@ from repository.signals import filesync_done
 from django.utils.translation import ugettext_lazy as _
 from bbx.settings import DEFAULT_REPOSITORY
 
-
+import re
 import os
 import datetime
 import subprocess
@@ -140,10 +140,21 @@ def gitAnnexSync(repoDir):
     pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
     pipe.wait()
 
+def gitAnnexVersion():
+    version = subprocess.Popen('git annex version --json', shell=True, stdout=subprocess.PIPE)
+    v = re.search('(\d{1})\.(\d{8})', subprocess.Popen('git annex version --json', shell=True, stdout=subprocess.PIPE).stdout.read())
+    return v.group(1)
+
 def gitAnnexStatus(repoDir):
     """View all mucuas in a given repository"""
     logger.info('git annex info/status')
-    cmd = 'git annex info --json'
+    
+    # a partir da versao 5
+    if (int(gitAnnexVersion()) <= 4):
+        cmd = 'git annex status --json'
+    else:
+        cmd = 'git annex info --json'
+
     pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir, stdout=subprocess.PIPE)
     return pipe.stdout.read()
     #except GitAnnexCommandError:
