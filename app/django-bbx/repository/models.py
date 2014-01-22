@@ -143,14 +143,14 @@ def gitAnnexSync(repoDir):
 def gitAnnexVersion():
     version = subprocess.Popen('git annex version --json', shell=True, stdout=subprocess.PIPE)
     v = re.search('(\d{1})\.(\d{8})', subprocess.Popen('git annex version --json', shell=True, stdout=subprocess.PIPE).stdout.read())
-    return v.group(1)
+    return v.group()
 
 def gitAnnexStatus(repoDir):
     """View all mucuas in a given repository"""
     logger.info('git annex info/status')
     
     # a partir da versao 5
-    if (int(gitAnnexVersion()) <= 4):
+    if (float(gitAnnexVersion()) <= 4):
         cmd = 'git annex status --json'
     else:
         cmd = 'git annex info --json'
