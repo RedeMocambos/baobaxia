@@ -1,9 +1,0 @@
-{
-    "name": "string",        // "documentário"  / "video"
-    "namespace": "string",   // ""              / "bbx"
-    "triage": [   // lista de funcoes a serem disparadas ao marcar com essa tag
-	{
-	    "name": "string"  // ex "copy_to_global", "alert_by_mucua"
-	}
-    ]
-}
