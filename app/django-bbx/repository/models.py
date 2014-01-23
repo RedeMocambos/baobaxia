@@ -59,6 +59,23 @@ def getDefaultRepository():
 def getAvailableRepositories():
     return REPOSITORY_CHOICES
 
+def getLatestMedia():
+    # TODO Organizar melhor onde salvar esse apontador
+    try: 
+        lastSyncMark = open('lastSync.txt','r+')
+        lastSync = lastSyncMark.readline()
+    except IOError:
+        lastSync = "HEAD~3"
+
+    logger.info('git show (last modified and added files)')
+    cmd = 'git show --pretty="format:" --name-only ' + lastSync + 'HEAD' \
+        + '| sort | uniq | grep json | grep -v mocambolas'
+    pipe = subprocess.Popen(cmd)
+    output,error = pipe.communicate()
+    logger.info('>>> Revision is: ' + output)
+    return output
+    
+
 def _getAvailableFolders(path):
     """Procura as pastas que podem ser inicializada como repositorio, retorna a lista das pastas."""
     folderList = [( name , name ) for name in os.listdir(path) \

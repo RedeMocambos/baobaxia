@@ -1,6 +1,7 @@
 from django.forms import widgets
 from rest_framework import serializers
 from media.models import Media, FORMAT_CHOICES, TYPE_CHOICES
+from bbx.settings import REPOSITORY_DIR
 from tag.models import Tag
 #from mucua.models import Mucua
 from tag.serializers import TagSerializer
@@ -60,3 +61,30 @@ class MediaSerializer(serializers.ModelSerializer):
     
     def getJSON(self):
         return JSONRenderer().render(self.data)
+
+
+def createObjectsFromFiles():
+    """Recria os midias no Django a partir dos medias serializados em JSON."""
+    print ">>> DESERIALIZING"
+    
+    for serialized_media in repository.getLatestMedia():
+        media_json_file = open(os.path.join(REPOSITORY_DIR, serialized_media))
+        data = JSONParser().parse(media_json_file)
+        media = Media()
+        serializer = MediaSerializer(media, data=data)
+        print "serializer.errors: ", serializer.errors
+        print "serializer.is_valid: ", serializer.is_valid()
+        media.save()
+
+        # Atualiza o arquivo lastSyncMark
+        logger.info('Updating lastSync.txt with last commit hash')
+        cmd = "git log --pretty=format:'%H' -n 1"
+        pipe = subprocess.Popen(cmd)
+        output,error = pipe.communicate()
+        logger.info('>>> Revision is: ' + output)
+        lastSyncMark = open('lastSync.txt', 'w+' )
+        lastSyncMark.write(output)
+        lastSyncMark.close()
+
+
+
