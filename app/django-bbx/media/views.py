@@ -38,11 +38,15 @@ def media_list(request, repository, mucua, args=None, format=None):
         redirect_page = False
         
         # REPOSITORIO: verifica se existe no banco, senao pega a default
-        try:
-            mucua = Mucua.objects.get(description = mucua)        
-        except Mucua.DoesNotExist:
-            mucua = Mucua.objects.get(description = DEFAULT_MUCUA)
-            redirect_page = True
+        if mucua == 'rede':
+            # get actual mucua for excluding it
+            this_mucua = Mucua.objects.get(description = DEFAULT_MUCUA)
+        else:
+            try:
+                mucua = Mucua.objects.get(description = mucua)        
+            except Mucua.DoesNotExist:
+                mucua = Mucua.objects.get(description = DEFAULT_MUCUA)
+                redirect_page = True
 
         try:
             repository = Repository.objects.get(name = repository)
@@ -57,7 +61,10 @@ def media_list(request, repository, mucua, args=None, format=None):
         # TODO LOW: futuramente, otimizar query de busca - elaborar query
         
         # listagem de conteudo filtrando por repositorio e mucua
-        medias = Media.objects.filter(repository = repository.id).filter(origin = mucua.id)
+        if mucua == 'rede':
+            medias = Media.objects.filter(repository = repository.id).exclude(origin = this_mucua.id)
+        else:
+            medias = Media.objects.filter(repository = repository.id).filter(origin = mucua.id)
         # sanitizacao -> remove '/' do final
         args = args.rstrip('/')
         
