@@ -6,11 +6,13 @@ define([
     'modules/media/model', 
     'modules/media/collection',
     'modules/media/MediaView',
+    'modules/media/MediaLast',
 ], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MediaModel, MediaCollection, MediaView){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    // media
 	    '': 'publish',
+	    'last/:qtd': 'last',
 	    ':uuid': 'view',
 	},
 	
@@ -31,6 +33,16 @@ define([
 	    console.log("/" + repository + "/" + mucua + "/medias");
 	    //	    var mediaView = new MediaView();
 	    //	    mediaView.render();
+	},
+	
+	last: function(qdt) {
+	    console.log("baixa ultimas medias");
+	    repository = this._getRepository();
+	    mucua = this._getMucua();
+	    BBXBaseFunctions.renderCommon(repository, mucua);
+	    
+	    var mediaLast = new MediaLast();
+	    mediaLast.render(uuid);
 	},
 	
 	view: function(uuid) {
