@@ -22,5 +22,5 @@ Session.vim
 *.pyc
 
 ### bbx django ###
-tests/django-backbone_0/bbx/database.sqlite
-tests/django-backbone_0/bbx/settings.py
+app/django-bbx/bbx/database.sqlite
+app/django-bbx/bbx/settings.py
