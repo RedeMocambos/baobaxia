@@ -18,7 +18,8 @@ define([
 	    /***
 	     * Funções internas
 	     */
-	    _get_termos = function(returnArray = false) {
+	    _get_termos = function(returnArray) {
+		returnArray = returnArray || false;
 		search_url = $('#form_busca').attr('action');
 		
 		termos = new String(_.rest(search_url.split('search')));
@@ -50,7 +51,9 @@ define([
 		return _.first(search_url.split('search')) + "search";
 	    }
 	    
-	    _do_search = function(termo = '', exclude = '') {
+	    _do_search = function(termo, exclude) {
+		termo = termo || '';
+		exclude = exclude || '';
 		console.log("_do_search()...");
 		
 		base_search_url = _get_base_search_url();

@@ -46,7 +46,10 @@ define([
 	},
 	
 	// login
-	login: function(repository='', mucua='') {
+	login: function(repository, mucua) {
+	    repository = repository || '';
+	    mucua = mucua || '';
+	    
 	    console.log("login");
 	    
 	    BBXBaseFunctions.renderCommon(repository, mucua);
@@ -61,7 +64,9 @@ define([
 	    loginView.render();
 	},
 	
-	logout: function(repository='', mucua='') {	
+	logout: function(repository, mucua) {	
+	    repository = repository || '';
+	    mucua = mucua || '';
 	    console.log("/logout");
 	},
 	

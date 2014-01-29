@@ -37,7 +37,8 @@ define([
 	    console.log("lista comandos bbx");
 	},
 	
-	busca: function(subroute = '') {
+	busca: function(subroute) {
+	    subroute = subroute || '';
 	    repository = this._getRepository();
 	    mucua = this._getMucua();
 	    BBXBaseFunctions.renderCommon(repository, mucua);

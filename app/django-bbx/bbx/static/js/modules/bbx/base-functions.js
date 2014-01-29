@@ -14,7 +14,8 @@ define([
 	    console.log('inicializa functions bbx');
 	},
 	
-	setConfigurations: function(configurations = '') {
+	setConfigurations: function(configurations) {
+	    configurations = configurations | '';
 	    defaultConfigurations = {
 		'imagePath': ''
 	    }
@@ -30,7 +31,9 @@ define([
 	},
 	
 	// get repository / mucua
-	getBaseData: function(repository = '', mucua = '') {
+	getBaseData: function(repository, mucua) {
+	    repository = repository || '';
+	    mucua = mucua || '';
 	    //console.log('getBaseData(' + repository + ',' + mucua + ')');
 	    
 	    if (repository != '' && mucua != '') {
@@ -78,7 +81,9 @@ define([
 	    }
 	},
 
-	renderCommon: function(repository = '', mucua = '') {
+	renderCommon: function(repository, mucua) {
+	    repository = repository || '';
+	    mucua = mucua || '';
 	    // carrega partes comuns; carrega dados basicos para todos
 	    //console.log("renderCommon");
 	    
