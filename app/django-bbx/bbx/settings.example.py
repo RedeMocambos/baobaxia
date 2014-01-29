@@ -3,7 +3,7 @@
 import os
 PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
-REPOSITORY_DIR = "/storage/annex/alternate/pub"
+REPOSITORY_DIR = "/data/repositories"
 MOCAMBOLA_DIR = "mocambola" # Nome da pasta onde sao armazenados os usuarios em .json
 DEFAULT_MUCUA = "dandara"
 DEFAULT_REPOSITORY = "mocambos"
@@ -39,11 +39,11 @@ ALLOWED_HOSTS = ['*']
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/Sao_Paulo'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 SITE_ID = 1
 
