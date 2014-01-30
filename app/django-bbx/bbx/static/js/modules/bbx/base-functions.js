@@ -19,6 +19,7 @@ define([
 	    // configuracoes padrao: config.json
 	    config = config | '';
 	    this.config = (config != '') ? config : DefaultConfig;
+	    $("body").data("data").config = this.config; // HACK para config ser acessivel para algumas funcoes
 	},
 	
 	getConfig: function() {
@@ -33,6 +34,10 @@ define([
 	    repository = repository || '';
 	    mucua = mucua || '';
 	    //console.log('getBaseData(' + repository + ',' + mucua + ')');
+	    
+	    if (typeof this.config === 'undefined') {
+		this.setConfig();
+	    }
 	    
 	    if (repository != '' && mucua != '') {
 		// get both by url
@@ -66,6 +71,7 @@ define([
 		    defaultRepository.fetch({
 			success: function() {
 			    $("body").data("data").repository = defaultRepository.attributes[0].name;
+			    this.config = $("body").data("data").config;
 			    var defaultMucua = new MucuaModel([], {url: this.config.apiUrl + '/mucua/'});
 			    defaultMucua.fetch({
 				success: function() {
