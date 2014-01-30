@@ -2,13 +2,14 @@ define([
     'jquery', 
     'underscore',
     'backbone',
+    'json!config.json',
     'modules/repository/model', 
-    'modules/mucua/model', 
+    'modules/mucua/model',
     'text!templates/common/menu.html',
     'text!templates/common/busca.html',
     'modules/common/HeaderView',
     'modules/common/FooterView',
-], function($, _, Backbone, RepositoryModel, MucuaModel, Menu, Busca, HeaderView, FooterView){
+], function($, _, Backbone, Conf, RepositoryModel, MucuaModel, Menu, Busca, HeaderView, FooterView){
     return {
 	initialize: function() {
 	    console.log('inicializa functions bbx');
@@ -16,8 +17,9 @@ define([
 	
 	setConfigurations: function(configurations) {
 	    configurations = configurations | '';
+	    console.log(Conf);
+	    
 	    defaultConfigurations = {
-		'imagePath': ''
 	    }
 	    
 	    this.configurations = (configurations != '') ? configurations : defaultConfigurations;

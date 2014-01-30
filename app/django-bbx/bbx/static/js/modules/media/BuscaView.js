@@ -91,6 +91,7 @@ define([
 		url_search = url_search.replace("+", "/");
 		
 		document.location.href = url_search;
+		document.location.reload();
 	    }
 	    
 	    _add_term = function(obj) {

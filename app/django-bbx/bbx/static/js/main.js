@@ -15,9 +15,11 @@ require.config({
 	jquery: 'lib/jquery-min',
 	underscore: 'lib/underscore-amd',
 	backbone: 'lib/backbone-amd',
-	backbone_form: 'lib/backbone-forms.min',
+ 	backbone_form: 'lib/backbone-forms.min',
 	templates: '../templates',
 	backbone_subroute: 'lib/backbone.subroute.min',
+        json: 'lib/require/json',
+        text: 'lib/require/text',
     },
     waitSeconds: 200
 });
