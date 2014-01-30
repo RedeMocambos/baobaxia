@@ -54,8 +54,6 @@ define([
 	    _do_search = function(termo, exclude) {
 		termo = termo || '';
 		exclude = exclude || '';
-		console.log("_do_search()...");
-		
 		base_search_url = _get_base_search_url();
 		
 		// caso especifique um input
@@ -83,16 +81,18 @@ define([
 		
 		if (typeof url_search === 'undefined') {
 		    url_search = _get_search_url();
-		}
-		
+		}		
+		_update_url(url_search);
+	    }
+	    
+	    _update_url = function() {
 		// tratamento da url
 		url_search = url_search.replace('//', '/');
 		url_search = url_search.replace(" ", "%20");
 		url_search = url_search.replace("+", "/");
-		
 		document.location.href = url_search;
 	    }
-	    
+
 	    _add_term = function(obj) {
 		console.log("_add_term()...");
 		// abre caixa de busca de termo adicional (so uma vez, exibe)
@@ -110,8 +110,6 @@ define([
 		// remove item do array
 		termos = _.without(termos, termoExcluir);
 		_set_search_url(termos);
-		console.log('remover - termos: ' + termos);
-		console.log('termoExcluir: ' + termoExcluir);
 		
 		// TODO: [bug]: remover as caixas de input também
 		$(termoHtml).remove();
@@ -120,7 +118,9 @@ define([
 		if (linhaHtml.childElementCount <= 2 ) {
 		    $(linhaHtml).remove();
 		}
-		_do_search();
+		
+		url_search = _get_search_url();
+		_update_url(url_search);
 	    }
 	    
 	    /***
