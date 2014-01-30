@@ -3,6 +3,7 @@ define([
     'underscore',
     'backbone',
     'backbone_form',
+    'modules/bbx/base-functions',    
     'modules/auth/model',
     'modules/repository/model',
     'modules/repository/collection',
@@ -11,7 +12,7 @@ define([
     'text!templates/common/header.html',
     'text!templates/common/footer.html',
     'text!templates/auth/LoginTemplate.html'
-], function($, _, Backbone, BackboneForm, LoginModel, RepositoryModel, RepositoryCollection, MucuaModel, MucuaCollection, Header, Footer, LoginTemplate){
+], function($, _, Backbone, BackboneForm, BBXBaseFunctions, LoginModel, RepositoryModel, RepositoryCollection, MucuaModel, MucuaCollection, Header, Footer, LoginTemplate){
     var LoginView = Backbone.View.extend({
 	// define elemento associado
 	//el: $('#form_login_template'),
@@ -22,14 +23,16 @@ define([
 		model: new LoginModel()
 	    }).render();
 	    this.$el.append(form.el);
+	    this.config = BBXBaseFunctions.getConfig();
 	    
-	    var defaultRepository = new RepositoryModel([], {url: '/api/repository/'});
-	    var repositories = new RepositoryCollection([], {url: '/api/repository/list'});	    
+	    var defaultRepository = new RepositoryModel([], {url: this.config.apiUrl + '/repository/'});
+	    var repositories = new RepositoryCollection([], {url: this.config.apiUrl + '/repository/list'});	    
 	    defaultRepository.fetch({
 		success: function() {
 		    repository = defaultRepository.attributes[0];
+		    this.config = BBXBaseFunctions.getConfig();
 		    // com info do repositorio, pode carregar as mucuas
-		    var mucuas = new MucuaCollection([], {url: '/api/' + repository.name + '/mucuas'});
+		    var mucuas = new MucuaCollection([], {url: this.config.apiUrl + repository.name + '/mucuas'});
 		    mucuas.fetch({
 			success: function() {
 			    for (var i = 0; i < mucuas.models.length; i++) {
@@ -38,10 +41,6 @@ define([
 			    }
 			}
 		    });
-
-		    // compila cabecalho
-		    var compiledHeader = _.template(Header, repository);
-		    $('#header').append(compiledHeader);
 		}
 	    });
 	    

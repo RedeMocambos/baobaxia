@@ -2,14 +2,15 @@ define([
     'jquery', 
     'underscore',
     'backbone', 
+    'modules/bbx/base-functions',
     'modules/mocambola/model',
     'text!templates/mocambola/MocambolaVisualizacao.html'
-], function($, _, Backbone, MocambolaModel, MocambolaVisualizacao){
+], function($, _, Backbone, BBXBaseFunctions, MocambolaModel, MocambolaVisualizacao){
     var MocambolaView = Backbone.View.extend({
 	
 	render: function(username){
-	    
-	    urlMocambola = '/api/' + repository + '/' + mucua + '/mocambola/' + username;
+	    this.config = BBXBaseFunctions.getConfig();
+	    urlMocambola = this.config.apiUrl + repository + '/' + mucua + '/mocambola/' + username;
 	    var mocambola = new MocambolaModel([], {url: urlMocambola});
 	    mocambola.fetch({
 		success: function() {

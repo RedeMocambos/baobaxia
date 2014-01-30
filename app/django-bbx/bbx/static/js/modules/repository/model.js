@@ -9,7 +9,7 @@ define([
 	    name:       '',
 	    note:       '',
 	    enableSync: true
-	}
+	},
     });
     
     return RepositoryModel;	

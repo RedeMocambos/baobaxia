@@ -2,11 +2,12 @@ define([
     'jquery', 
     'underscore',
     'backbone', 
+    'modules/bbx/base-functions',
     'modules/media/model',
     'text!templates/common/menu.html',
     'text!templates/common/busca.html',
     'text!templates/media/MediaVisualizacao.html'
-], function($, _, Backbone, MediaModel, Menu, Busca, MediaVisualizacao){
+], function($, _, Backbone, BBXBaseFunctions, MediaModel, Menu, Busca, MediaVisualizacao){
     
     var MediaView = Backbone.View.extend({
 	
@@ -31,8 +32,8 @@ define([
 		$('#expressao_busca').keyup(function(e) { if (e.keyCode == 13) do_search(); });   // enter
 	    }
 	    // TODO FIM
-	    
-	    url = '/api/' + repository + '/' +  mucua + '/media/' + uuid;
+	    this.config = BBXBaseFunctions.getConfig();
+	    url = this.config.apiUrl + repository + '/' +  mucua + '/media/' + uuid;
 	    baseurl = '#' + repository + '/' + mucua;
 	    var media = new MediaModel([], {url: url});
 	    media.fetch({

@@ -91,7 +91,6 @@ define([
 		url_search = url_search.replace("+", "/");
 		
 		document.location.href = url_search;
-		document.location.reload();
 	    }
 	    
 	    _add_term = function(obj) {
@@ -131,12 +130,13 @@ define([
 	    console.log(mensagemBusca);
 	    
 	    // initial vars
+	    this.config = BBXBaseFunctions.getConfig();
 	    subroute = (subroute == null) ? '' : subroute;
 	    frontend_url = '#' + repository + '/' + mucua + '/bbx/search/' + subroute;
 	    $('#form_busca').attr('action', frontend_url);
 	    
 	    // acessa api
-	    url = '/api/' + repository + '/' +  mucua + '/bbx/search/' + subroute;
+	    url = this.config.apiUrl + repository + '/' +  mucua + '/bbx/search/' + subroute;
 	    var mediaCollection = new MediaCollection([], {url: url});
 	    
 	    // busca termos da url 
@@ -172,7 +172,7 @@ define([
 		    var data = {
 			emptyMessage: 'Nenhum registro encontrado!',
 			medias: mediaCollection.models,
-			config: BBXBaseFunctions.getConfigurations(),
+			config: BBXBaseFunctions.getConfig(),
 	     		_: _ 
 		    };
 		    

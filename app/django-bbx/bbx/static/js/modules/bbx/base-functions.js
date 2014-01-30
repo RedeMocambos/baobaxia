@@ -9,27 +9,23 @@ define([
     'text!templates/common/busca.html',
     'modules/common/HeaderView',
     'modules/common/FooterView',
-], function($, _, Backbone, Conf, RepositoryModel, MucuaModel, Menu, Busca, HeaderView, FooterView){
+], function($, _, Backbone, DefaultConfig, RepositoryModel, MucuaModel, Menu, Busca, HeaderView, FooterView){
     return {
 	initialize: function() {
 	    console.log('inicializa functions bbx');
 	},
 	
-	setConfigurations: function(configurations) {
-	    configurations = configurations | '';
-	    console.log(Conf);
-	    
-	    defaultConfigurations = {
-	    }
-	    
-	    this.configurations = (configurations != '') ? configurations : defaultConfigurations;
+	setConfig: function(config) {
+	    // configuracoes padrao: config.json
+	    config = config | '';
+	    this.config = (config != '') ? config : DefaultConfig;
 	},
 	
-	getConfigurations: function() {
-	    if (typeof this.configurations === 'undefined') 
-		this.setConfigurations();
+	getConfig: function() {
+	    if (typeof this.config === 'undefined') 
+		this.setConfig();
 
-	    return this.configurations;
+	    return this.config;
 	},
 	
 	// get repository / mucua
@@ -47,7 +43,7 @@ define([
 		if (repository != '' & mucua == '') {
 		    // repository by url, mucua by API
 		    $("body").data("data").repository = repository;
-		    var defaultMucua = new MucuaModel([], {url: '/api/mucua/'});
+		    var defaultMucua = new MucuaModel([], {url: this.config.apiUrl + '/mucua/'});
 		    defaultMucua.fetch({
 			success: function() {
 			    $("body").data("data").mucua = defaultMucua.attributes[0].description;
@@ -57,7 +53,7 @@ define([
 		} else if (repository == '' & mucua != '') {
 		    // repository by API, mucua by url
 		    $("body").data("data").mucua = mucua;
-		    var defaultRepository = new RepositoryModel([], {url: '/api/repository/'});
+		    var defaultRepository = new RepositoryModel([], {url: this.config.apiUrl + '/repository/'});
 		    defaultRepository.fetch({
 			success: function() {
 			    $("body").data("data").repository = defaultRepository.attributes[0].name;
@@ -66,11 +62,11 @@ define([
 		    });
 		} else {
 		    // get both from API
-		    var defaultRepository = new RepositoryModel([], {url: '/api/repository/'});
+		    var defaultRepository = new RepositoryModel([], {url: this.config.apiUrl + '/repository/'});
 		    defaultRepository.fetch({
 			success: function() {
 			    $("body").data("data").repository = defaultRepository.attributes[0].name;
-			    var defaultMucua = new MucuaModel([], {url: '/api/mucua/'});
+			    var defaultMucua = new MucuaModel([], {url: this.config.apiUrl + '/mucua/'});
 			    defaultMucua.fetch({
 				success: function() {
 				    $("body").data("data").mucua = defaultMucua.attributes[0].description;
