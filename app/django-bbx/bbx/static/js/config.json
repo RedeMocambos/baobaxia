@@ -1,4 +1,5 @@
 {
     "imagePath": "",
-    "apiUrl": "/api/"
+    "apiUrl": "/api",
+    "defaultMucua": ""
 }
