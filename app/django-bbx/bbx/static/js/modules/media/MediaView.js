@@ -33,7 +33,7 @@ define([
 	    }
 	    // TODO FIM
 	    this.config = BBXBaseFunctions.getConfig();
-	    url = this.config.apiUrl + repository + '/' +  mucua + '/media/' + uuid;
+	    url = this.config.apiUrl + '/' + repository + '/' +  mucua + '/media/' + uuid;
 	    baseurl = '#' + repository + '/' + mucua;
 	    var media = new MediaModel([], {url: url});
 	    media.fetch({

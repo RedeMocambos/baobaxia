@@ -19,11 +19,11 @@ define([
 	initialize: function() {
 	    console.log("module BBX loaded");
 	},
-
+	
 	_getRepository: function() {
 	    return this.prefix.split('/')[0];
 	},
-
+	
 	_getMucua: function() {
 	    return this.prefix.split('/')[1];
 	},

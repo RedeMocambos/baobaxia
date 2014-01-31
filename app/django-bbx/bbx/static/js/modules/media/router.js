@@ -19,11 +19,9 @@ define([
 	initialize: function() {
 	    console.log("module Media loaded");
 	},
-
 	_getRepository: function() {
 	    return this.prefix.split('/')[0];
 	},
-
 	_getMucua: function() {
 	    return this.prefix.split('/')[1];
 	},
@@ -37,8 +35,8 @@ define([
 	
 	last: function(qdt) {
 	    console.log("baixa ultimas medias");
-	    repository = this._getRepository();
-	    mucua = this._getMucua();
+	    repository = $("body").data("data").repository;
+	    mucua = $("body").data("data").mucua;
 	    BBXBaseFunctions.renderCommon(repository, mucua);
 	    
 	    var mediaLast = new MediaLast();

@@ -130,13 +130,13 @@ define([
 	    console.log(mensagemBusca);
 	    
 	    // initial vars
-	    this.config = BBXBaseFunctions.getConfig();
+	    config = $("body").data("data").config;
 	    subroute = (subroute == null) ? '' : subroute;
 	    frontend_url = '#' + repository + '/' + mucua + '/bbx/search/' + subroute;
 	    $('#form_busca').attr('action', frontend_url);
 	    
 	    // acessa api
-	    url = this.config.apiUrl + repository + '/' +  mucua + '/bbx/search/' + subroute;
+	    url = config.apiUrl + '/' + repository + '/' +  mucua + '/bbx/search/' + subroute;
 	    var mediaCollection = new MediaCollection([], {url: url});
 	    
 	    // busca termos da url 

@@ -12,11 +12,11 @@ define([
 	    'list': 'list',
 	    ':mocambola': 'view',
 	},
-
+	
 	_getRepository: function() {
 	    return this.prefix.split('/')[0];
 	},
-
+	
 	_getMucua: function() {
 	    return this.prefix.split('/')[1];
 	},
@@ -26,7 +26,7 @@ define([
 	
 	view: function(mocambola) {
 	    console.log('get dados do mocambola ' + mocambola);
-
+	    
 	    repository = this._getRepository();
 	    mucua = this._getMucua();
 	    BBXBaseFunctions.renderCommon(repository, mucua);

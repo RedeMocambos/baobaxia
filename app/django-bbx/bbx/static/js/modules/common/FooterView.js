@@ -6,9 +6,7 @@ define([
 ], function($, _, Backbone, Footer){
     var FooterView = Backbone.View.extend({
 	render: function(data) {
-	    if ($('#footer').html() == '') {
-		$('#footer').append(Footer);
-	    }	    
+	    $('#footer').append(Footer);  
 	}
     });
     return FooterView;

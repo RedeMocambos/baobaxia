@@ -32,7 +32,7 @@ define([
 		    repository = defaultRepository.attributes[0];
 		    this.config = BBXBaseFunctions.getConfig();
 		    // com info do repositorio, pode carregar as mucuas
-		    var mucuas = new MucuaCollection([], {url: this.config.apiUrl + repository.name + '/mucuas'});
+		    var mucuas = new MucuaCollection([], {url: this.config.apiUrl + '/' + repository.name + '/mucuas'});
 		    mucuas.fetch({
 			success: function() {
 			    for (var i = 0; i < mucuas.models.length; i++) {
