@@ -1,7 +1,7 @@
 #!/bin/bash
  
 NAME="bbx" # Name of the application
-DJANGODIR=/srv/baobaxia/django-bbx # Django project directory
+DJANGODIR=/srv/baobaxia/app/django-bbx # Django project directory
 SOCKFILE=/srv/envs/bbx/gunicorn.sock # we will communicte using this unix socket
 USER=exu # the user to run as
 GROUP=exu # the group to run as
