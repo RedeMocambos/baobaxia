@@ -11,6 +11,7 @@ urlpatterns = patterns('',
                        # Uncomment the admin/doc line below to enable admin documentation:
                            # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
                        url(r'^admin/', include(admin.site.urls)),
+                       url(r'^cache/', include('media.urls')),
                        url(r'^', include('media.urls')),
                        url(r'^', include('repository.urls')),
                        url(r'^', include('mucua.urls')),

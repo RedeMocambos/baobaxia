@@ -2,6 +2,8 @@
 from django.db import models
 from django import forms
 from django.utils.text import capfirst
+from django.core.files.storage import FileSystemStorage
+from bbx.settings import THUMBNAILS_ROOT, THUMBNAILS_URL
 
 import os
 import errno
@@ -76,3 +78,9 @@ class MultiSelectField(models.Field):
         if self.choices:
             func = lambda self, fieldname = name, choicedict = dict(self.choices):",".join([choicedict.get(value,value) for value in getattr(self,fieldname)])
             setattr(cls, 'get_%s_display' % self.name, func)
+
+
+class ThumbnailStorage(FileSystemStorage):
+    def __init__(self, **kwargs):
+        super(ThumbnailStorage, self).__init__(
+            location=THUMBNAILS_ROOT, base_url=THUMBNAILS_URL)

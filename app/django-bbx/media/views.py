@@ -17,6 +17,7 @@ import subprocess
 import uuid
 from os import path
 import mimetypes
+from sorl.thumbnail import get_thumbnail
 
 from mucua.models import Mucua
 from repository.models import Repository
@@ -229,3 +230,18 @@ def media_last(request, repository, mucua, qtd = 5):
     # serializa e da saida
     serializer = MediaSerializer(medias, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def show_image(request, uuid, width, height, format_type):
+    
+    try:
+        media = Media.objects.get(uuid=uuid)
+    except Media.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    print media.mediafile
+    image = get_thumbnail(media.mediafile, str(width) + 'x' + str(height), crop='center', quality=99)
+    
+    print path.join(image.url)
+    return Response(True)

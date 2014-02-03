@@ -62,7 +62,6 @@ USE_TZ = True
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = '/data/repositories/'
 
-
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
@@ -77,6 +76,10 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, '../../static')
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/'
+
+THUMBNAILS_ROOT = os.path.join(STATIC_ROOT, 'cache')
+THUMBNAILS_URL = '/cache'
+THUMBNAILS_STORAGE = 'bbx.utils.storage.ThumbnailStorage'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
