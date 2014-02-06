@@ -10,7 +10,7 @@ urlpatterns = patterns('',
                        # url(r'^bbx/', include('bbx.foo.urls')),
                        # Uncomment the admin/doc line below to enable admin documentation:
                            # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-                       url(r'^admin/', include(admin.site.urls)),
+                       url(r'^api/admin/', include(admin.site.urls)),
                        url(r'^cache/', include('media.urls')),
                        url(r'^api/', include('media.urls')),
                        url(r'^api/', include('repository.urls')),
