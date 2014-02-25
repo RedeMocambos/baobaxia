@@ -158,8 +158,8 @@ def gitAnnexSync(repoDir):
     pipe.wait()
 
 def gitAnnexVersion():
-    version = subprocess.Popen('git annex version --json', shell=True, stdout=subprocess.PIPE)
-    v = re.search('(\d{1})\.(\d{8})', subprocess.Popen('git annex version --json', shell=True, stdout=subprocess.PIPE).stdout.read())
+    version = subprocess.Popen('git annex version', shell=True, stdout=subprocess.PIPE)
+    v = re.search('(\d{1})\.(\d{8})', subprocess.Popen('git annex version', shell=True, stdout=subprocess.PIPE).stdout.read())
     return v.group()
 
 def gitAnnexStatus(repoDir):
