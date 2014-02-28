@@ -9,10 +9,12 @@ define([
     'text!templates/common/menu.html',
     'text!templates/common/busca.html',
 ], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, Menu, Busca){
-    var BuscaView = Backbone.View.extend({
+    var MediaLast = Backbone.View.extend({
 	
 	render: function(subroute){
 	    console.log('view last content');
 	}
     })
+
+    return MediaLast;
 });

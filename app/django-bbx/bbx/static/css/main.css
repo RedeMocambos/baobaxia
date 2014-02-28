@@ -63,3 +63,15 @@ h3.results-title { color: #fff; padding-left: 20p}
 .remover-termo {font-size: 16px; font-weight: bold; cursor: pointer}
 #resultado-busca .caixa_busca {}
 #media-results-content h4.message {padding: 10px; color: #900}
+
+/*
+ * media publish
+ */
+#media_publish {padding: 10px}
+#media_publish #uuid {color:#999 }
+#media_publish #arquivo_passo2, #media_publish #dia_hora, #media_publish #dados_gerais, #media_publish #tags_area, #media_publish #uuid_area {display: none}
+
+/* form progress meter */
+.progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
+.bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
+.percent { position:absolute; display:inline-block; top:3px; left:48%; }
