@@ -5,19 +5,21 @@ from django.shortcuts import get_object_or_404, render, render_to_response, redi
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.db.models import Q
-from media.models import Media, mediaFileName, getFilePath
+from media.models import Media, mediaFileName, getFilePath, generateUUID
 from tag.models import Tag
 from media.forms import MediaForm
 from media.serializers import MediaSerializer
 from media.models import getTypeChoices, getFormatChoices
 from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
-import datetime
+from datetime import datetime
 import os
 import subprocess
 import uuid
 from os import path
 import mimetypes
 from sorl.thumbnail import get_thumbnail
+from django.core.context_processors import csrf
+from django.template import Template, RequestContext
 
 from mucua.models import Mucua
 from repository.models import Repository
@@ -25,7 +27,7 @@ from repository.models import Repository
 redirect_base_url = "http://localhost:8000/"  # TODO: tirar / mover
 
 @api_view(['GET'])
-def media_list(request, repository, mucua, args=None, format=None):
+def media_list(request, repository,mucua, args=None, format=None):
     """
     List all medias, or search by terms
     """
@@ -121,10 +123,15 @@ def media_detail(request, repository, mucua, pk = None, format=None):
 
     if request.method == 'GET':
         if pk == '':
-            return HttpResponseRedirect(redirect_base_url + repository.name + '/' + mucua.description + '/bbx/search')
-       
-        serializer = MediaSerializer(media)
-        return Response(serializer.data)
+            # acessa para inicializar tela de publicaocao de conteudo / gera token
+            c = RequestContext(request, {'autoescape': False})
+            c.update(csrf(request))
+            t = Template('{ "csrftoken": "{{ csrf_token  }}" }')
+            return HttpResponse(t.render(c), mimetype = u'application/json')
+            
+        if pk != '':
+            serializer = MediaSerializer(media)
+            return Response(serializer.data)
 
     elif request.method == 'PUT':
         if pk == '':
@@ -166,19 +173,33 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         """
         create a new media    
         """
+        default_user = 'fernao@namaste.mocambos.net' ## TODO: tirar
+        if request.DATA['author'] != '':
+            author = request.DATA['author']
+        else: 
+            author = default_user
         
-        # Linha curl mista para testar upload E mandar data
-        # $ curl -F "name=teste123" -F "tags=entrevista" -F "note=" -F "license=" -F "date=2013/06/07" -F "type=imagem" -F "mediafile=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/media/ > /tmp/x.html          
-        media = Media(repository = repository, 
-                      origin = mucua,
-                      author = author, 
-                      name = request.DATA['name'], 
+        try:
+            author = User.objects.get(username = author),
+        except User.DoesNotExist:        
+            #         print "media.author: " + media.author + " / default_user" + default_user            
+            author = User.objects.get(username = default_user)
+        
+        print mucua
+        media = Media(repository = repository,
+                      origin = mucua, #request.DATA['origin'],
+                      author = author[0],
+                      name = request.DATA['name'],
                       note = request.DATA['note'],
                       type = request.DATA['type'],
                       license = request.DATA['license'],
-                      date = request.DATA['date'],
-                      mediafile = request.FILES['mediafile']
+                      date = request.DATA['date'] if request.DATA['date'] != '' else datetime.now(),
+                      mediafile = request.FILES['mediafile'],
+                      uuid = generateUUID()
                       )
+        
+        # Linha curl mista para testar upload E mandar data
+        # $ curl -F "name=teste123" -F "tags=entrevista" -F "note=" -F "license=" -F "date=2013/06/07" -F "type=imagem" -F "mediafile=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/media/ > /tmp/x.html          
         
         media.save()
         if media.id:
@@ -197,9 +218,9 @@ def media_detail(request, repository, mucua, pk = None, format=None):
 
                 media.tags.add(tag)
             media.save() # salva de novo para chamar o post_save
-            
             # TODO: return serialized data
-            return Response("created media - OK", status=status.HTTP_201_CREATED)
+            serializer = MediaSerializer(media)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response("error while creating media", status=status.HTTP_400_BAD_REQUEST)
 

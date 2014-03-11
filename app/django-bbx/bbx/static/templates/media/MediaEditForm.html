@@ -1,0 +1,83 @@
+<div id="media_publish">
+
+  <form action="" method="post" enctype="multipart/form-data" id="form_media_publish">  
+    <input type="hidden" name="csrfmiddlewaretoken" id="csrfmiddlewaretoken" value="" />
+    <div id="identificacao">
+      <h4>Título</h4>
+      <input type="text" name="name" id="name" value="<%= media.get('name') %>">
+      <br/>
+      <br/>
+      <input type="checkbox" name="urgente" id="urgente" value="urgente" />&nbsp;<span>Urgente</span>
+    </div>
+
+    <div id="uuid_area">
+      <h4>UUID</h4>
+      <input type="hidden" name="uuid" id="uuid" value="<%= media.get('uuid') %>">
+      <span id="uuid_label"><%= media.get('uuid') %></span>
+      <br/>
+    </div>
+    
+    <div id="arquivo">
+      <div id="arquivo_passo1">
+	<h4>Arquivo</h4>
+	<input type="file" name="mediafile" id="mediafile" value="<%= media.get('mediafile') %>" />
+      </div>
+      <div class="progress">
+        <div class="bar"></div >
+        <div class="percent">0%</div >
+      </div>
+
+      <input type="submit" value="subir arquivo" />
+      
+      <div id="arquivo_passo2">
+	<h4>Formato</h4>
+	<input type="hidden" name="format" id="format" value="<%= media.get('format') %>">
+	<span id="format_label"><%= media.get('format') %></span>    
+	<h4>Tipo de arquivo</h4>
+	<input type="hidden" name="type" id="type" value="<%= media.get('type') %>">
+	<span id="type_label"><%= media.get('uuid') %></span>
+      </div>
+    </div>    
+
+    <div id="dados_gerais">
+      <h4>Repositório</h4>
+      <input type="hidden" name="repository" id="repository" value="<%= media.get('type') %>">
+      <span id="repository_label"><%= media.get('repository') %></span>
+      <a id="alterar_repositorio"></a>
+      <br/>
+      <h4>Origem</h4>
+      <input type="hidden" name="origin" id="origin" value="<%= media.get('origin') %>">
+      <span id="origin_label"><%= media.get('origin') %></span>
+      <a id="alterar_origem"></a>
+      <br/>
+      <h4>Autoria</h4>
+      <input type="hidden" name="author" id="author" value="<%= media.get('author') %>">
+      <span id="author_label"><%= media.get('author') %></span>
+      <a id="alterar_autoria"></a>
+      <br/>
+      <h4>Licença</h4>
+      <input type="hidden" name="license" id="license" value="<%= media.get('license') %>">
+      <select name="license" id="license_label">
+	<option></option>
+      </select>
+      <h4>Comentários</h4>
+      <textarea name="note" id="note"><%= media.get('note') %></textarea>
+    </div>
+    
+    <div id="dia_hora">
+      <h4>Data</h4>
+      <input type="text" name="date" id="date" value="<%= media.get('date') %>"/>
+      <h4>Hora</h4>
+      <input type="text" name="time" id="time" value="<%= media.get('time') %>"/>
+    </div>
+    
+    <div id="tags_area">
+      <input type="checkbox" name="local" id="local" value="local" />&nbsp;<span>Local</span>  <br/>
+      <input type="checkbox" name="publico" id="publico" value="publico" />&nbsp;<span>Público</span>  <br/>
+      <input type="checkbox" name="patrimonio" id="patrimonio" value="patrimonio" />&nbsp;<span>Patrimônio</span>  <br/>
+      <h4>Tags</h4>
+      <textarea name="tags" id="tags"><%= media.tags %></textarea>
+    </div>
+
+    </form>
+</div>  
