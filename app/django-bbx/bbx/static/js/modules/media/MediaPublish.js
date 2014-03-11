@@ -2,13 +2,14 @@ define([
     'jquery', 
     'underscore',
     'jquery_cookie',
+    'jquery_form',
     'backbone', 
     'modules/bbx/base-functions',
     'modules/media/model',
     'text!templates/common/menu.html',
     'text!templates/common/busca.html',
     'text!templates/media/MediaPublish.html'
-], function($, _, jQueryCookie, Backbone, BBXBaseFunctions, MediaModel, Menu, Busca, MediaPublishTpl){
+], function($, _, jQueryCookie, jQueryForm, Backbone, BBXBaseFunctions, MediaModel, Menu, Busca, MediaPublishTpl){
     var MediaPublish = Backbone.View.extend({
 	
 	render: function(uuid){
