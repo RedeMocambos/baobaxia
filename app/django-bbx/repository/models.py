@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 from django.db import models
@@ -21,6 +20,7 @@ import re
 import os
 import datetime
 import subprocess
+from subprocess import PIPE
 import logging
 import exceptions
 
@@ -34,7 +34,6 @@ Neste arquivo sao definidos os modelos de dados da aplicacao *gitannex*.
 REPOSITORY_CHOICES = [ ('mocambos', 'mocambos'), ('sarava', 'sarava') ]
 logger = logging.getLogger(__name__)
 repository_dir = settings.REPOSITORY_DIR
-
 
 # Connecting to Media signal
 @receiver(post_save, sender=Media)
@@ -59,19 +58,29 @@ def getDefaultRepository():
 def getAvailableRepositories():
     return REPOSITORY_CHOICES
 
-def getLatestMedia():
+def getLatestMedia(repository=DEFAULT_REPOSITORY):
+    """
+    Returns a list of json serialized media
+    """
     # TODO Organizar melhor onde salvar esse apontador
     try: 
-        lastSyncMark = open('lastSync.txt','r+')
+        lastSyncMark = open(os.path.join(repository_dir, repository, 'lastSync.txt'), 'r+')
         lastSync = lastSyncMark.readline()
+        lastSync = lastSync.replace("'", "")
     except IOError:
-        lastSync = "HEAD~3"
+        lastSync = "HEAD~1"
 
     logger.info('git show (last modified and added files)')
-    cmd = 'git show --pretty="format:" --name-only ' + lastSync + 'HEAD' \
-        + '| sort | uniq | grep json | grep -v mocambolas'
-    pipe = subprocess.Popen(cmd)
-    output,error = pipe.communicate()
+#    cmd = 'git show --pretty="format:" --name-only ' + lastSync + 'HEAD' \
+#        + '| sort | uniq | grep json | grep -v mocambolas'
+
+    cwd = os.path.join(repository_dir, repository)
+    p1 = subprocess.Popen(['git', 'show', '--pretty=format:', '--name-only' , lastSync, 'HEAD'], cwd=cwd, stdout=PIPE)
+    p2 = subprocess.Popen(["sort"], stdin=p1.stdout, stdout=PIPE)
+    p3 = subprocess.Popen(["uniq"], stdin=p2.stdout, stdout=PIPE)
+    p4 = subprocess.Popen(["grep", "json"], stdin=p3.stdout, stdout=PIPE)
+    p5 = subprocess.Popen(["grep", "-v", "mocambolas"], stdin=p4.stdout, stdout=PIPE)
+    output,error = p5.communicate()
     logger.info('>>> Revision is: ' + output)
     return output
     
@@ -220,7 +229,6 @@ class Repository(models.Model):
 
     def __unicode__(self):
         return self.name
-
 
     def getName(self):
         """Retorna o nome do repositorio."""

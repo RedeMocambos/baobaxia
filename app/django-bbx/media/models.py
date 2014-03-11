@@ -57,10 +57,10 @@ def getFormatChoices():
 class Media(models.Model):
     uuid = models.CharField(_('uuid'),
                             help_text = _('Media universal unique identifier'),
-                            max_length=36, default="")
+                            max_length=36, default=_('No UUID'))
     name = models.CharField(_('name'),
                             help_text = _('Media name'),
-                            max_length=100, default='')
+                            max_length=100, default=_('No title'))
     mediafile = models.FileField(upload_to=mediaFileName, blank=True)
     date = models.DateTimeField(_('date'),
                                 help_text = _('Media criation date'))
@@ -68,7 +68,7 @@ class Media(models.Model):
                             help_text=_('Note.. use as you wish!'),
                             max_length=300, blank=True)
     author = models.ForeignKey(User)
-    origin = models.ForeignKey('mucua.Mucua', related_name='media')
+    origin = models.ForeignKey('mucua.Mucua')
     type = models.CharField(_('type'),
                             help_text = _('Type of the media, like image, document, video, ...'),
                             max_length=14, choices=TYPE_CHOICES, 
@@ -80,8 +80,8 @@ class Media(models.Model):
     license = models.CharField(_('license'),
                                help_text = _('License of the media, like, cc, gpl, bsd, ...'),
                                max_length=100, blank=True)
-    repository = models.ForeignKey('repository.Repository', related_name='media')
-    tags = models.ManyToManyField(Tag, related_name='tags')
+    repository = models.ForeignKey('repository.Repository')
+    tags = models.ManyToManyField(Tag)
     
     def __init__(self, *args, **kwargs):
         super(Media, self).__init__(*args, **kwargs)

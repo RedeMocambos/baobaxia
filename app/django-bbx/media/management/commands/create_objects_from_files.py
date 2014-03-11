@@ -9,6 +9,9 @@ Definicoes do comando para recriar objetos no Django a partir de media serializa
 class Command(BaseCommand):
     """Recria os objetos no Django a partir dos media serializados em JSON."""
     help = 'Create media objects from new serialized objects.'
+    args = '[repository name] [repository name] ...'
 
     def handle(self, *args, **options):
-        createObjectsFromFiles(args[0])
+        for x in args:
+            createObjectsFromFiles(x)
+

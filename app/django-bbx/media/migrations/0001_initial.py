@@ -11,17 +11,17 @@ class Migration(SchemaMigration):
         # Adding model 'Media'
         db.create_table(u'media_media', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('uuid', self.gf('django.db.models.fields.CharField')(default='', max_length=36)),
-            ('name', self.gf('django.db.models.fields.CharField')(default='', max_length=100)),
+            ('uuid', self.gf('django.db.models.fields.CharField')(default=u'No UUID', max_length=36)),
+            ('name', self.gf('django.db.models.fields.CharField')(default=u'No title', max_length=100)),
             ('mediafile', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
             ('date', self.gf('django.db.models.fields.DateTimeField')()),
             ('note', self.gf('django.db.models.fields.TextField')(max_length=300, blank=True)),
             ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('origin', self.gf('django.db.models.fields.related.ForeignKey')(related_name='media', to=orm['mucua.Mucua'])),
+            ('origin', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['mucua.Mucua'])),
             ('type', self.gf('django.db.models.fields.CharField')(default='arquivo', max_length=14, blank=True)),
             ('format', self.gf('django.db.models.fields.CharField')(default='ogg', max_length=14, blank=True)),
             ('license', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
-            ('repository', self.gf('django.db.models.fields.related.ForeignKey')(related_name='media', to=orm['repository.Repository'])),
+            ('repository', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['repository.Repository'])),
         ))
         db.send_create_signal(u'media', ['Media'])
 
@@ -88,13 +88,13 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'license': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'mediafile': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '100'}),
+            'name': ('django.db.models.fields.CharField', [], {'default': "u'No title'", 'max_length': '100'}),
             'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
-            'origin': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'media'", 'to': u"orm['mucua.Mucua']"}),
-            'repository': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'media'", 'to': u"orm['repository.Repository']"}),
-            'tags': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'tags'", 'symmetrical': 'False', 'to': u"orm['tag.Tag']"}),
+            'origin': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['mucua.Mucua']"}),
+            'repository': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['repository.Repository']"}),
+            'tags': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['tag.Tag']", 'symmetrical': 'False'}),
             'type': ('django.db.models.fields.CharField', [], {'default': "'arquivo'", 'max_length': '14', 'blank': 'True'}),
-            'uuid': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '36'})
+            'uuid': ('django.db.models.fields.CharField', [], {'default': "u'No UUID'", 'max_length': '36'})
         },
         u'mocambola.mocambola': {
             'Meta': {'object_name': 'Mocambola'},
@@ -107,9 +107,9 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('description',)", 'object_name': 'Mucua'},
             'description': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'mocambolas': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'mucuas'", 'symmetrical': 'False', 'through': u"orm['mocambola.Mocambola']", 'to': u"orm['auth.User']"}),
+            'mocambolas': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.User']", 'through': u"orm['mocambola.Mocambola']", 'symmetrical': 'False'}),
             'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
-            'repository': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'mucuas'", 'symmetrical': 'False', 'to': u"orm['repository.Repository']"}),
+            'repository': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['repository.Repository']", 'symmetrical': 'False'}),
             'uuid': ('django.db.models.fields.CharField', [], {'default': "'dandara'", 'max_length': '36'})
         },
         u'repository.repository': {

@@ -9,11 +9,39 @@ import os
 import errno
 
 def check_if_path_exists_or_create(path):
+    """Function to check or create a given path.
+    
+    Atributos:
+        path: check if "path" exist or create
+    """
     try:
         os.makedirs(path)
     except OSError as exception:
         if exception.errno != errno.EEXIST:
             raise
+
+def dumpclean(obj):
+    """Function to print all field/dictionary of a given object.
+    
+    Atributos:
+        obj: print all field/dictionary of "obj"
+    """
+    if type(obj) == dict:
+        for k, v in obj.items():
+            if hasattr(v, '__iter__'):
+                print k
+                dumpclean(v)
+            else:
+                print '%s : %s' % (k, v)
+    elif type(obj) == list:
+        for v in obj:
+            if hasattr(v, '__iter__'):
+                dumpclean(v)
+            else:
+                print v
+    else:
+        print obj
+
 
 
 # Multi Select Field, originally taken from:
@@ -84,3 +112,5 @@ class ThumbnailStorage(FileSystemStorage):
     def __init__(self, **kwargs):
         super(ThumbnailStorage, self).__init__(
             location=THUMBNAILS_ROOT, base_url=THUMBNAILS_URL)
+
+

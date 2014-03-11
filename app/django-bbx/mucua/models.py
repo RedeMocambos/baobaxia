@@ -53,8 +53,8 @@ class Mucua(models.Model):
     description = models.CharField(max_length=100, editable=False)
     note = models.TextField(max_length=300, blank=True)
     uuid = models.CharField("Mucua", max_length=36, choices=getAvailableMucuas(), default='dandara')
-    repository = models.ManyToManyField('repository.Repository', related_name='mucuas')
-    mocambolas = models.ManyToManyField(User, through='mocambola.Mocambola', related_name='mucuas')
+    repository = models.ManyToManyField('repository.Repository')
+    mocambolas = models.ManyToManyField(User, through='mocambola.Mocambola')
 
     def getDescription(self):
         return self.description
