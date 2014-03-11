@@ -6,47 +6,42 @@ define([
     'backbone', 
     'modules/bbx/base-functions',
     'modules/media/model',
-    'text!templates/common/menu.html',
-    'text!templates/common/busca.html',
-    'text!templates/media/MediaPublish.html'
-], function($, _, jQueryCookie, jQueryForm, Backbone, BBXBaseFunctions, MediaModel, Menu, Busca, MediaPublishTpl){
+    'text!templates/media/MediaEditForm.html'
+], function($, _, jQueryCookie, jQueryForm, Backbone, BBXBaseFunctions, MediaModel, MediaEditFormTpl){
     var MediaPublish = Backbone.View.extend({
 	
 	render: function(uuid){
-	    
-	    this.config = BBXBaseFunctions.getConfig();
-	    
-	    /*
-	    url = this.config.apiUrl + '/media/get_uuid';
-	    
-	    // get uuid
-	    var mediaUuid = new MediaModel([], {url: url});
-	    mediaUuid.fetch({
-		success: function() {
-		    uuid = mediaUuid.attributes.uuid;
-		    $('#uuid').html(uuid);
-		}
-	    });
-	    */
-	    
+	    /***
+	     * Funções internas
+	     */
 	    getMediaBaseData = function() {
 		repository = $('body').data('data').repository;
-		mucua = $('body').data('data').mucua;
+		origin = $('body').data('data').mucua;
 		author = $('body').data('data').author;
-		//console.log($('body').data('data'));
-		media = {
-		    repository: repository,
-		    mucua: mucua,
-		    author: author
-		}
+
+		//var media = { 		    get: function(attr) {return this.attr}, 		}
+		var media = new MediaModel([]);
+		media.repository = repository;
+		media.origin = origin;
+		media.author = author;
+		media.date = '';
+		media.uuid = '';
+		media.name = '';
+		media.format = '';
+		media.license = '';
+		media.mediafile = '';
+		media.note = '';
+		media.tags = [];
+		media.type = '';
+		
 		return media;
-	    }
-	    
+	    }    
 	    
 	    uploadFile = function() {
 		console.log('upload');
 
-		url = $('body').data('data').config.apiUrl + "/" + mediaBase.repository + "/" + mediaBase.mucua + "/media/";
+		url = $('body').data('data').config.apiUrl + "/" + mediaBase.repository + "/" + mediaBase.origin + "/media/";
+		console.log(url);
 		var media = new MediaModel([], {url: url});
 		
 		media.fetch({
@@ -77,19 +72,28 @@ define([
 		    note: fields['note'].value,
 		    mediafile: fields['mediafile'].value
 		}
-		//console.log('data');
-		//		console.log(data);
-		url = $('body').data('data').config.apiUrl + "/" + mediaBase.repository + "/" + mediaBase.mucua + "/media/";
+		url = $('body').data('data').config.apiUrl + "/" + mediaBase.repository + "/" + mediaBase.origin + "/media/";
 		$('#form_media_publish').attr('action', url);
 		
 		var media = new MediaModel([], {url: url});
 	    }
 	    
+	    updateMedia = function(media) {
+		url = $('body').data('data').config.interfaceUrl + mediaBase.repository + "/" + mediaBase.origin + "/media/" + media.uuid + '/edit';
+		console.log(url);
+		document.location.href = url;
+	    }
+
+	    /***
+	     * Tarefas
+	     */
+	    this.config = BBXBaseFunctions.getConfig();
+
 	    data = {
 		media: getMediaBaseData()
 	    };
-	    
-	    var compiledTpl = _.template(MediaPublishTpl, data);
+	    console.log(data);
+	    var compiledTpl = _.template(MediaEditFormTpl, data);
 	    $('#content').html(compiledTpl);
 	    $("body").data("data").on("all", function(event) {console.log(event)});
 	    $('#mediafile').change(function() {uploadFile()});
@@ -118,20 +122,19 @@ define([
 		},
 		complete: function(xhr) {
 		    status.html(xhr.responseText);
-		    serializedData = xhr.responseText;
-		    console.log(serializedData);
-		    console.log('// abre tela de update (completa)');
+		    mediaSerialized = eval('('+ xhr.responseText +')');
+		    updateMedia(mediaSerialized);
 		}
 	    });
 
 	    mediaBase = getMediaBaseData();
 	    $('#repository').attr('value', mediaBase.repository);
-	    $('#origin').attr('value', mediaBase.mucua);
+	    $('#origin').attr('value', mediaBase.origin);
 	    $('#author').attr('value', mediaBase.author);
 	    
 	    // passo 1:
-	    // - sobe titulo e arquivo (upload)
-	    // - instancia e retorna com uuid etc
+	    // - sobe titulo e arquivo (upload) - ok
+	    // - instancia e retorna com uuid etc - ok
 	    // - ativa preenchimento do resto, de acordo com o arquivo
 	    //   - pega tipo de arquivo e formato
 	    //   - futuramente: diferenciar preenchimento por tipo de arquivo

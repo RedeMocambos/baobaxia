@@ -1,5 +1,6 @@
 {
     "imagePath": "",
     "apiUrl": "/api",
+    "interfaceUrl": "/bbx/#",
     "defaultMucua": ""
 }
