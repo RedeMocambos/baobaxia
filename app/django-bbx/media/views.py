@@ -193,18 +193,15 @@ def media_detail(request, repository, mucua, pk = None, format=None):
                       note = request.DATA['note'],
                       type = request.DATA['type'],
                       license = request.DATA['license'],
-                      date = request.DATA['date'],
-                      mediafile = request.FILES['mediafile'])
+                      date = request.DATA['date'] if request.DATA['date'] != '' else datetime.now(),
+                      mediafile = request.FILES['mediafile'],
+                      uuid = generateUUID()
+                      )
         
-        if media.date == '':
-            media.date = datetime.now()
-            
-         # Linha curl mista para testar upload E mandar data
+        # Linha curl mista para testar upload E mandar data
         # $ curl -F "name=teste123" -F "tags=entrevista" -F "note=" -F "license=" -F "date=2013/06/07" -F "type=imagem" -F "mediafile=@img_0001.jpg" -X POST http://localhost:8000/redemocambos/dandara/media/ > /tmp/x.html          
-        print "tenta salvar"
         
         media.save()
-        
         if media.id:
             # get tags by list or separated by ','
             tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
@@ -221,9 +218,9 @@ def media_detail(request, repository, mucua, pk = None, format=None):
 
                 media.tags.add(tag)
             media.save() # salva de novo para chamar o post_save
-            
             # TODO: return serialized data
-            return Response("created media - OK", status=status.HTTP_201_CREATED)
+            serializer = MediaSerializer(media)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response("error while creating media", status=status.HTTP_400_BAD_REQUEST)
 

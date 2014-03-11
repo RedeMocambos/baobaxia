@@ -83,9 +83,6 @@ define([
 		$('#form_media_publish').attr('action', url);
 		
 		var media = new MediaModel([], {url: url});
-		//media.set();
-
-		//MediaModel.save(data);
 	    }
 	    
 	    data = {
@@ -96,7 +93,6 @@ define([
 	    $('#content').html(compiledTpl);
 	    $("body").data("data").on("all", function(event) {console.log(event)});
 	    $('#mediafile').change(function() {uploadFile()});
-	    
 	    
 	    // form upload progress meter
 	    var bar = $('.bar');
@@ -122,6 +118,9 @@ define([
 		},
 		complete: function(xhr) {
 		    status.html(xhr.responseText);
+		    serializedData = xhr.responseText;
+		    console.log(serializedData);
+		    console.log('// abre tela de update (completa)');
 		}
 	    });
 
