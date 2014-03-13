@@ -27,7 +27,9 @@ h3 #nome_mucua { color: #e33; }
 /*
  * media & busca
  */
-h3.results-title { color: #fff; padding-left: 20p}
+#media_publish, #media_update, #media_view {font-size: 12px}
+#media_publish, #media_update, #media_view .title {font-size: 14px}
+h3.results-title { color: #fff; padding-left: 20px}
 .media_box { float: left; width: 192px; height: 170px; background: #f4efdd; margin: 5px; font-size: 12px; border-radius: 5px; padding: 10px; text-align: center}
 .format_type { color: #aaa; text-transform: uppercase }
 .video .result-thumb { width: 192px; height: 130px; background: #c99 }
@@ -37,9 +39,22 @@ h3.results-title { color: #fff; padding-left: 20p}
 .media_box .date {font-size: 10px }
 .video .result-thumb .assist {background-image: url('../images/play.png'); background-repeat: no-repeat; width: 79px; height: 79px; float: left; margin: 26px; margin-left: 58px}
 .audio .result-thumb .assist {}
-.media_box .title { font-size: 14px }
+.media_box .title { font-size: 12px }
 .media_box .format_type {padding: 6px; font-size: 12px}
 .media_box .license-cc {background-image: url('../images/cc.png'); width: 20px; height: 20px; float: right; margin: 2px }
+#license {font-size: 13px}
+#license_image {width: 88px; height: 31px; float: right; margin: 2px }
+.license-gplv3 {background: url('../images/license-gplv3.png') no-repeat;}
+.license-gfdl {background: url('../images/license-gfdl.png') no-repeat;}
+.license-lgplv3 {background: url('../images/license-lgplv3.png') no-repeat;}
+.license-agplv3 {background: url('../images/license-agplv3.png') no-repeat;}
+.license-copyleft {background: url('../images/license-copyleft.png') no-repeat;}
+.license-cc {background: url('../images/license-cc.png') no-repeat;}
+.license-cc_nc {background: url('../images/license-cc_nc.png') no-repeat;}
+.license-cc_ci {background: url('../images/license-cc_ci.png') no-repeat;}
+.license-cc_ci_nc {background: url('../images/license-cc_ci_nc.png') no-repeat;}
+.license-cc_sd {background: url('../images/license-cc_sd.png') no-repeat;}
+.license-cc_sd_nc {background: url('../images/license-cc_sd_nc.png') no-repeat;}
 
 .caixa_busca { border: 2px solid #a59560; border-radius: 8px; }
 #busca-menu .button {float: right;  background-image: url('../images/search.png'); width: 27px; height: 27px; cursor: pointer }
@@ -48,13 +63,17 @@ h3.results-title { color: #fff; padding-left: 20p}
 .menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
 .menu-itens li a {color: #fff; text-decoration: none; }
 
-#media-view .bloco-1, #mocambola-view .bloco-1 {width: 630px; float: left; padding: 4px; margin-left: 20px}
-#media-view .bloco-2, #mocambola-view .bloco-2 {width: 280px; float: left; padding: 4px}
+#media-view .bloco-1, #media-update .bloco-1, #mocambola-view .bloco-1 {width: 630px; float: left; padding: 4px; margin-left: 20px}
+#media-view .bloco-2, #media-update .bloco-2, #mocambola-view .bloco-2 {width: 480px; float: left; padding: 4px}
 
-#media-view .bloco-1 .title {font-weight: bold; font-size: 20px}
-#media-view .bloco-1 .tags a {font-weight: bold; font-size: 18px; color: #900; text-decoration: none}
-#media-view .bloco-2 .title, #mocambola-view .bloco-2 .title {font-weight: bold}
-#media-view .bloco-1 .uuid {font-size: 10px}
+.bloco-1 .title {font-weight: bold; font-size: 16px}
+.bloco-1 .name {font-weight: bold; font-size: 16px}
+.bloco-1 .tags a {font-weight: bold; font-size: 16px; color: #900; text-decoration: none}
+.bloco-2 .title, #mocambola-view .bloco-2 .title {font-weight: bold}
+.bloco-1 .uuid {font-size: 10px}
+
+div.image_preview {height: 130px; background: url(../images/no-preview-video.png) no-repeat center center; text-align: center;}
+.image_preview span {font-size:28px; color: #fff; 
 
 .caixa-resultado-busca {background-color: #eeffaa; padding: 2px; }
 .caixa-resultado-busca .nome-termo {margin: 12px; }

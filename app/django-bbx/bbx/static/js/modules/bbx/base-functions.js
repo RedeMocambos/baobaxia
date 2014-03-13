@@ -81,6 +81,14 @@ define([
 		} else {
 		    // get both from API
 		    var defaultRepository = new RepositoryModel([], {url: this.config.apiUrl + '/repository/'});
+		    
+		    // TODO: usar jquery defered objects 
+		    // $.when(blabla.fetch(), abcd.fetch())
+		    //   .done(
+		    //     do_stuff();
+		    //   );
+		    // http://stackoverflow.com/questions/19502719/backbone-multiple-collection-fetch
+		    // http://api.jquery.com/category/deferred-object/
 		    defaultRepository.fetch({
 			success: function() {
 			    $("body").data("data").repository = defaultRepository.attributes[0].name;

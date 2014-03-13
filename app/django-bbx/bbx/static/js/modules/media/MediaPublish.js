@@ -16,9 +16,11 @@ define([
 	     */
 	    getMediaBaseData = function() {
 		repository = $('body').data('data').repository;
-		origin = $('body').data('data').mucua;
+		mucua = $('body').data('data').mucua;
+		origin = mucua;
 		author = $('body').data('data').author;
-
+		baseurl = '#' + repository + '/' + mucua;
+		
 		//var media = { 		    get: function(attr) {return this.attr}, 		}
 		var media = new MediaModel([]);
 		media.repository = repository;
@@ -80,7 +82,6 @@ define([
 	    
 	    updateMedia = function(media) {
 		url = $('body').data('data').config.interfaceUrl + mediaBase.repository + "/" + mediaBase.origin + "/media/" + media.uuid + '/edit';
-		console.log(url);
 		document.location.href = url;
 	    }
 
@@ -88,14 +89,18 @@ define([
 	     * Tarefas
 	     */
 	    this.config = BBXBaseFunctions.getConfig();
-
+	    
 	    data = {
 		media: getMediaBaseData()
 	    };
 	    console.log(data);
 	    var compiledTpl = _.template(MediaEditFormTpl, data);
 	    $('#content').html(compiledTpl);
-	    $("body").data("data").on("all", function(event) {console.log(event)});
+	    
+	    $('#media-update .bloco-2').hide();
+	    $('#media-update .bloco-1 .tags').hide();
+	    
+	    $('body').data('data').on('all', function(event) {console.log(event)});
 	    $('#mediafile').change(function() {uploadFile()});
 	    
 	    // form upload progress meter
