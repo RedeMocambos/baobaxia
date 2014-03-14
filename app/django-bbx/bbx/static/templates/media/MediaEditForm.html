@@ -23,6 +23,9 @@
 	  <% } %>
 	  <% } %>
 	</p>
+	<span class="mediafile">
+	  <a id="mediafile-original" href='file:<%= media.get('mediafile') %>'><%= media.get('mediafile') %></a>
+	  </span>
 	<input type="file" name="mediafile" id="mediafile" value="<%= media.get('mediafile') %>" />
 	<br />
 	<div class="progress">
@@ -31,7 +34,7 @@
 	</div>
 	<% if (_.isEmpty(media.get("uuid"))) { %>
 	<% } else { %> 
-	<p class="uuid">UUID<%= media.get("uuid") %></p>
+	<p class="uuid">UUID: <%= media.get("uuid") %></p>
 	<% } %>
 	<% if (page == 'MediaUpdate') { %>
 	<div id="view-media" class="button-nav">

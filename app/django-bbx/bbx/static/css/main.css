@@ -57,6 +57,7 @@ h3.results-title { color: #fff; padding-left: 20px}
 .license-cc_ci_nc {background: url('../images/license-cc_ci_nc.png') no-repeat;}
 .license-cc_sd {background: url('../images/license-cc_sd.png') no-repeat;}
 .license-cc_sd_nc {background: url('../images/license-cc_sd_nc.png') no-repeat;}
+.mediafile a {font-size:9px }
 
 #media-view .bloco-1, #media-update .bloco-1, #mocambola-view .bloco-1 {width: 630px; float: left; padding: 4px; margin-left: 20px}
 #media-view .bloco-2, #media-update .bloco-2, #mocambola-view .bloco-2 {width: 380px; float: left; padding: 4px; margin-left: 20px}

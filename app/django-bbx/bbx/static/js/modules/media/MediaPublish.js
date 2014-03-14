@@ -43,7 +43,6 @@ define([
 		console.log('upload');
 
 		url = $('body').data('data').config.apiUrl + "/" + mediaBase.repository + "/" + mediaBase.origin + "/media/";
-		console.log(url);
 		var media = new MediaModel([], {url: url});
 		
 		media.fetch({
@@ -57,10 +56,8 @@ define([
 		fields = {};
 		$('#form_media_publish :input').each(function() {
 		    fields[this.name] = this.value;
-//		    console.log(this);
 		});
 		
-		//console.log(fields);
 		// TODO: adicionar tags separadas (patrimonio, publico) a tags
 		data = {
 		    name: fields['name'].value,
@@ -91,7 +88,9 @@ define([
 	    this.config = BBXBaseFunctions.getConfig();
 	    
 	    data = {
-		media: getMediaBaseData()
+		media: getMediaBaseData(),
+		licenses: {'': ''},
+		page: 'MediaPublish',
 	    };
 	    console.log(data);
 	    var compiledTpl = _.template(MediaEditFormTpl, data);
@@ -132,6 +131,10 @@ define([
 		}
 	    });
 
+	    $('#submit').on('click', function() {
+		$('#form_media_publish').submit()
+	    });
+	    
 	    mediaBase = getMediaBaseData();
 	    $('#repository').attr('value', mediaBase.repository);
 	    $('#origin').attr('value', mediaBase.origin);
@@ -140,7 +143,7 @@ define([
 	    // passo 1:
 	    // - sobe titulo e arquivo (upload) - ok
 	    // - instancia e retorna com uuid etc - ok
-	    // - ativa preenchimento do resto, de acordo com o arquivo
+	    // - ativa preenchimento do resto, de acordo com o arquivo - ok
 	    //   - pega tipo de arquivo e formato
 	    //   - futuramente: diferenciar preenchimento por tipo de arquivo
 	    //   - preencher resto das informacoes
