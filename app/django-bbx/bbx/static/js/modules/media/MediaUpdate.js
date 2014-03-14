@@ -50,13 +50,13 @@ define([
 	    
 	    update_media = function() {
 		data = getFormData();
-		console.log(data.media);
 		var media = new MediaModel([data.media], {url: data.urlApi});
 		options = {}
 		options.beforeSend = function(xhr){
 		    xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
 		};
-
+		//HACK para passar o objeto corretamente
+		media.attributes =  _.clone(media.attributes[0]);
 		Backbone.sync('update', media, options);		
 	    }
 	    
