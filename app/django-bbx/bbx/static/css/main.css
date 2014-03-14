@@ -25,7 +25,7 @@ body {margin: 0; padding: 0}
 h3 #nome_mucua { color: #e33; }
 
 /*
- * media & busca
+ * media view, edit & publish
  */
 #media_publish, #media_update, #media_view {font-size: 12px}
 #media_publish, #media_update, #media_view .title {font-size: 14px}
@@ -41,8 +41,10 @@ h3.results-title { color: #fff; padding-left: 20px}
 .audio .result-thumb .assist {}
 .media_box .title { font-size: 12px }
 .media_box .format_type {padding: 6px; font-size: 12px}
-.media_box .license-cc {background-image: url('../images/cc.png'); width: 20px; height: 20px; float: right; margin: 2px }
-#license {font-size: 13px}
+#media_publish .button-nav, #media_update .button-nav {cursor: pointer; font-size: 16px; background-color: #B5A570; text-align: center; width: 150px; float: right; padding: 8px; border-radius: 4px; border: 2px solid #958555; margin: 2px }
+#media_publish .button-nav:hover, #media_update .button-nav:hover {background-color: #E5D5A0; }
+
+#license {font-size: 11px}
 #license_image {width: 88px; height: 31px; float: right; margin: 2px }
 .license-gplv3 {background: url('../images/license-gplv3.png') no-repeat;}
 .license-gfdl {background: url('../images/license-gfdl.png') no-repeat;}
@@ -56,37 +58,24 @@ h3.results-title { color: #fff; padding-left: 20px}
 .license-cc_sd {background: url('../images/license-cc_sd.png') no-repeat;}
 .license-cc_sd_nc {background: url('../images/license-cc_sd_nc.png') no-repeat;}
 
-.caixa_busca { border: 2px solid #a59560; border-radius: 8px; }
-#busca-menu .button {float: right;  background-image: url('../images/search.png'); width: 27px; height: 27px; cursor: pointer }
-
-#menu {margin-left: 175px; margin-top: -35px;}
-.menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
-.menu-itens li a {color: #fff; text-decoration: none; }
-
 #media-view .bloco-1, #media-update .bloco-1, #mocambola-view .bloco-1 {width: 630px; float: left; padding: 4px; margin-left: 20px}
-#media-view .bloco-2, #media-update .bloco-2, #mocambola-view .bloco-2 {width: 480px; float: left; padding: 4px}
-
+#media-view .bloco-2, #media-update .bloco-2, #mocambola-view .bloco-2 {width: 380px; float: left; padding: 4px; margin-left: 20px}
 .bloco-1 .title {font-weight: bold; font-size: 16px}
 .bloco-1 .name {font-weight: bold; font-size: 16px}
 .bloco-1 .tags a {font-weight: bold; font-size: 16px; color: #900; text-decoration: none}
 .bloco-2 .title, #mocambola-view .bloco-2 .title {font-weight: bold}
 .bloco-1 .uuid {font-size: 10px}
+.edit .bloco-1 input[type=text] {width: 500px; float: right}
+.edit .bloco-2 input[type=text] {width: 350px; float: right}
+div.image_preview {height: 130px; background: url(../images/no-preview-video.png) no-repeat center center; text-align: center; padding-top: 10px}
+.image_preview span {font-size:28px; color: #fff; }
+.edit #note {width: 375px; height: 75px}
 
-div.image_preview {height: 130px; background: url(../images/no-preview-video.png) no-repeat center center; text-align: center;}
-.image_preview span {font-size:28px; color: #fff; 
+.modo-edicao {background-color: #a59560; padding: 4px; border-radius: 4px; border: 2px solid #958555; margin: 2px }
+.modo-edicao .title {font-size: 20px; font-weight: bold}
 
-.caixa-resultado-busca {background-color: #eeffaa; padding: 2px; }
-.caixa-resultado-busca .nome-termo {margin: 12px; }
-.caixa-resultado-busca a {background-color: #cdde87; padding: 4px; text-decoration: none; font-weight: bold }
-.adicionar-termo {font-size: 16px; font-weight: bold; cursor: pointer}
-.remover-termo {font-size: 16px; font-weight: bold; cursor: pointer}
-#resultado-busca .caixa_busca {}
-#media-results-content h4.message {padding: 10px; color: #900}
-
-/*
- * media publish
- */
-#media_publish {padding: 10px}
+/* media publish */
+#media_publish {}
 #media_publish #uuid {color:#999 }
 #media_publish #arquivo_passo2, #media_publish #dia_hora, #media_publish #dados_gerais, #media_publish #tags_area, #media_publish #uuid_area {display: none}
 #media_publish h4 {margin-top: 10px; margin-bottom: 10px}
@@ -100,3 +89,21 @@ div.image_preview {height: 130px; background: url(../images/no-preview-video.png
 .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
 .bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
 .percent { position:absolute; display:inline-block; top:3px; left:48%; }
+
+/*
+ * busca / resultados
+ */
+
+.caixa_busca { border: 2px solid #a59560; border-radius: 8px; }
+#busca-menu .button {float: right;  background-image: url('../images/search.png'); width: 27px; height: 27px; cursor: pointer }
+
+#menu {margin-left: 175px; margin-top: -35px;}
+.menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
+.menu-itens li a {color: #fff; text-decoration: none; }
+.caixa-resultado-busca {background-color: #eeffaa; padding: 2px; }
+.caixa-resultado-busca .nome-termo {margin: 12px; }
+.caixa-resultado-busca a {background-color: #cdde87; padding: 4px; text-decoration: none; font-weight: bold }
+.adicionar-termo {font-size: 16px; font-weight: bold; cursor: pointer}
+.remover-termo {font-size: 16px; font-weight: bold; cursor: pointer}
+#resultado-busca .caixa_busca {}
+#media-results-content h4.message {padding: 10px; color: #900}

@@ -4,7 +4,7 @@
     <input type="hidden" name="csrfmiddlewaretoken" id="csrfmiddlewaretoken" value="" />
 
     <!-- begin of media-update -->    
-    <div id="media-update">
+    <div id="media-update" class="edit">
       <div class="bloco-1">
 	<p class="name"><span class="title">Título:</span><input type="text" name="name" id="name" value="<%= media.get('name') %>"></p>
 	<p class="tags"><span class="title">Tags:</span> 
@@ -25,16 +25,38 @@
 	</p>
 	<input type="file" name="mediafile" id="mediafile" value="<%= media.get('mediafile') %>" />
 	<br />
-	<input type="submit" value="subir arquivo" />
+	<div class="progress">
+          <div class="bar"></div >
+          <div class="percent">0%</div >
+	</div>
 	<% if (_.isEmpty(media.get("uuid"))) { %>
 	<% } else { %> 
 	<p class="uuid">UUID<%= media.get("uuid") %></p>
 	<% } %>
+	<% if (page == 'MediaUpdate') { %>
+	<div id="view-media" class="button-nav">
+	  <img src="images/view-media.png">
+	  <br />
+	  <span>Visualizar mídia</span>
+	</div>
+	<% } %>
+
+	<div id="submit" class="button-nav">
+	  <img src="images/save.png">
+	  <br />
+	  <span><% if (page == 'MediaUpdate') { %>Atualizar<% } else { %>Subir arquivo<% } %></span>
+	</div>
+	
       </div>
       <!-- end of bloco-1 -->
 
       <!-- begin bloco-2 -->      
       <div class="bloco-2">
+	<div class="modo-edicao">
+	  <img src="images/modo-edicao.png" />
+	  <span class="title">edição de arquivo</span>
+	</div>
+
 	<input type="hidden" name="repository" id="repository" value="<%= media.get('repository') %>">
 	<input type="hidden" name="author" id="author" value="<%= media.get('author') %>">
 	<input type="hidden" name="origin" id="origin" value="<%= media.get('origin') %>">
@@ -66,7 +88,7 @@
 	</div>
 	<p class="quem-tem"><span class="title">Disponibilidade: </span></p>
 	<br/>
-	<p class="note"><span class="">Comentários</span>
+	<p class="note"><span class="title">Comentários</span>
 	<textarea name="note" id="note"><%= media.get('note') %></textarea>
 
       </div>
