@@ -18,7 +18,7 @@ define([
 	
 	setConfig: function(config) {
 	    // configuracoes padrao: config.json
-	    config = config | '';
+	    config = config || '';
 	    
 	    if (typeof this.config === 'undefined') {
 		this.config = (config != '') ? config : DefaultConfig;
