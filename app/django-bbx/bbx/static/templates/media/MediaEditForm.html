@@ -84,7 +84,7 @@
 	<div class="license"><span class="title">Licença:</span>
 	  <select name="license" id="license">
 	    <% _.each(licenses, function(value, key) { %>
-	    <option value="<%= key %>"><%= value %></option>
+	    <option value="<%= key %>" <% if (media.get("license") == key) { %>selected<% } %>><%= value %></option>
 	    <% }) %>
 	  </select>
 	  <div id="license_image" class="license-<%= media.get("license") %>"></div>
