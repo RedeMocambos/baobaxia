@@ -144,19 +144,17 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         
         media.save()
         if media.id:        
-            tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')            
+            tags = request.DATA['tags'] if iter(request.DATA['tags']) == True else request.DATA['tags'].split(',')
             media.tags.clear()
             for tag in tags:
-                try:
-                    if tag.find(':') > 0:
-                        args = tag.split(':')
-                        tag = args[1]
-                    tag = Tag.objects.get(tag = tag)
-                except Tag.DoesNotExist:
-                    tag = Tag.objects.create(tag = tag)
-                    tag.save()
-                
-                media.tags.add(tag)
+                if tag != '':
+                    try:
+                        tag = Tag.objects.get(name = tag)
+                    except Tag.DoesNotExist:
+                        tag = Tag.objects.create(name = tag)
+                        tag.save()
+                        
+                    media.tags.add(tag)
             
             # TODO: return serialized data
             return Response("updated media - OK", status=status.HTTP_201_CREATED)
