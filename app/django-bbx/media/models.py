@@ -11,6 +11,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import slugify
 
 import os
 import uuid
@@ -94,7 +95,7 @@ class Media(models.Model):
         return self.name
 
     def getFileName(self):
-        return str(self.uuid)  + '.' + self.format
+        return slugify(self.getName()) + '-' + str(self.uuid[:5])  + '.' + self.format
     
     def getRepository(self):
         return self.repository.getName()

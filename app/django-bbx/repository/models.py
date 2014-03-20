@@ -45,7 +45,7 @@ def gitMediaPostSave(instance, **kwargs):
     gitAnnexAdd(instance.getFileName(), getFilePath(instance))
     serializer = MediaSerializer(instance)
     mediapath = getFilePath(instance)+'/'
-    mediadata = instance.uuid + '.json'
+    mediadata = os.path.splitext(instance.getFileName())[0] + '.json'
     fout = open(mediapath + mediadata, 'w')
     fout.write(str(serializer.getJSON()))
     fout.close()
