@@ -68,20 +68,22 @@ def getLatestMedia(repository=DEFAULT_REPOSITORY):
         lastSync = lastSyncMark.readline()
         lastSync = lastSync.replace("'", "")
     except IOError:
-        lastSync = "HEAD~1"
+        cwd = os.path.join(repository_dir, repository)
+        p1 = subprocess.Popen(['git', 'rev-list', 'HEAD'], cwd=cwd, stdout=PIPE)
+        p2 = subprocess.Popen(['tail', '-n 1'], stdin=p1.stdout, stdout=PIPE)
+        output,error = p2.communicate()
+        lastSync = output.rstrip()
 
-    logger.info('git show (last modified and added files)')
-#    cmd = 'git show --pretty="format:" --name-only ' + lastSync + 'HEAD' \
+#    cmd = 'git diff --pretty="format:" --name-only ' + lastSync + 'HEAD' \
 #        + '| sort | uniq | grep json | grep -v mocambolas'
 
     cwd = os.path.join(repository_dir, repository)
-    p1 = subprocess.Popen(['git', 'show', '--pretty=format:', '--name-only' , lastSync, 'HEAD'], cwd=cwd, stdout=PIPE)
+    p1 = subprocess.Popen(['git', 'diff', '--pretty=format:', '--name-only' , 'HEAD', lastSync], cwd=cwd, stdout=PIPE)
     p2 = subprocess.Popen(["sort"], stdin=p1.stdout, stdout=PIPE)
     p3 = subprocess.Popen(["uniq"], stdin=p2.stdout, stdout=PIPE)
     p4 = subprocess.Popen(["grep", "json"], stdin=p3.stdout, stdout=PIPE)
-    p5 = subprocess.Popen(["grep", "-v", "mocambolas"], stdin=p4.stdout, stdout=PIPE)
+    p5 = subprocess.Popen(["grep", "-v", "mocambola"], stdin=p4.stdout, stdout=PIPE)
     output,error = p5.communicate()
-    logger.info('>>> Revision is: ' + output)
     return output
     
 

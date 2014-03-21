@@ -5,6 +5,8 @@ from mocambola.serializers import UserSerializer
 from mucua.models import Mucua
 from repository.models import Repository
 from bbx.settings import MOCAMBOLA_DIR, REPOSITORY_DIR
+from django.utils.translation import ugettext_lazy as _
+
 
 from StringIO import StringIO
 from rest_framework.parsers import JSONParser
@@ -12,6 +14,10 @@ from rest_framework.parsers import JSONParser
 from urlparse import urlparse
 import os
 import re
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 try:
     import json                 # Python 2.6
@@ -46,30 +52,23 @@ class FileBackend(object):
         mocambola_path = os.path.join(str(REPOSITORY_DIR), str(current_repository), str(current_mucua), MOCAMBOLA_DIR)
         
         for jmocambola in os.listdir(mocambola_path):
-            print "jmocambola: ", jmocambola
-            print "current_mocambola: ", current_mocambola
-            
+
             if jmocambola == username + '.json':
                 # Deserialize the customized User object
                 mocambola_json_file = open(os.path.join(mocambola_path, jmocambola))
                 data = JSONParser().parse(mocambola_json_file)
                 u = User() 
                 serializer = UserSerializer(u, data=data)
-                print "serializer.errors: ", serializer.errors
-                print "serializer.is_valid: ", serializer.is_valid()
+                logger.debug(u"%s %s" % (_('Error deserialing'), serializer.errors))
+                serializer.is_valid()
 
                 current_user = serializer.object
         
-                print username , "==", current_user.username
-                
                 login_valid = (username == current_user.username)
                 pwd_valid = check_password(password, current_user.password)
                 
-                print "current_user: ", current_user
-                print "login_valid: ", login_valid
-                print "pwd_valid: ", pwd_valid
-                
                 if login_valid and pwd_valid:
+                    logger.info(u"%s %s %s" % (_('User'), current_mocambola, _('logged in')))
                     try:
                         user = User.objects.get(username=username)                
                     except User.DoesNotExist:
@@ -80,10 +79,9 @@ class FileBackend(object):
                         user = User(username=username, password=current_user.password, \
                                         is_staff=current_user.is_staff, is_superuser=current_user.is_superuser)
                         user.save()
-                    print "User:", user
                     return user
                 else:
-                    print "invalid username and/or password"
+                    logger.info(u"%s %s %s" % (_('User'), current_mocambola, _('doesn\'t exists or password is wrong!')))
                     return None
                 return True
             # fim do if

@@ -62,15 +62,9 @@ def UserPostSave(instance, **kwargs):
     rep = urlparse('http://' + mucua_repository)
     current_mucua, current_repository, current_tld = rep.hostname.split('.')
     
-    print "current_mocambola:", current_mocambola
-    print "current_repository:", current_repository
-    print "username:", instance.username
-    
     mucua = mucua_model.objects.get(description = current_mucua)
     repository = Repository.objects.get(name = current_repository)
     mocambola, created = Mocambola.objects.get_or_create(mucua=mucua, 
                           user=instance,
                           repository=repository)
     
-    print "Created: ", created
-    print "mocambola: ", mocambola
