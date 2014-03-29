@@ -12,6 +12,7 @@
 \usepackage[brazilian]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{ae,aecompl}
+\usepackage{tabularx}
 \usepackage[square, numbers, comma, sort&compress]{natbib}  % Use the "Natbib" style for the references in the Bibliography
 \usepackage{verbatim}  % Needed for the "comment" environment to make LaTeX comments
 %\usepackage{vector}  % Allows "\bvec{}" and "\buvec{}" for "blackboard" style bold vectors in maths
@@ -39,8 +40,8 @@
 }
 
 \lstnewenvironment{code}[1][]%
-  {\minipage{\linewidth} 
-   \lstset{basicstyle=\ttfamily\footnotesize,frame=tb,#1}}
+  {\minipage{\linewidth}
+   \lstset{basicstyle=\ttfamily\footnotesize,frame=tb,keepspaces=true,#1}}
   {\endminipage}
 
 
@@ -264,6 +265,7 @@ utilizará.
 \input{./Cap/Relatorio_BBX_Cap1.tex} % NPDD
 \input{./Cap/Relatorio_BBX_Cap2.tex} % Metadados
 \input{./Cap/Relatorio_BBX_Cap3.tex} % Multirepositorio
+\input{./Cap/Relatorio_BBX_Cap4.tex} % Sincronizacao
 
 %\input{./Capitoli/Capitolo1} % Introduzione
 

@@ -1,4 +1,4 @@
-filename=Relatorio_BBX_sem
+filename=Relatorio_BBX
 
 all: pdf read
 

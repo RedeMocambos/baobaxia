@@ -1,6 +1,7 @@
 # Django settings for bbx project.
 
 import os
+import sys
 PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
 REPOSITORY_DIR = "/data/repositories/"
@@ -161,7 +162,7 @@ INSTALLED_APPS = (
 # more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -172,12 +173,27 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+            },
+        'console':{
+                'level':'INFO',
+                'class':'logging.StreamHandler',
+                'stream': sys.stdout
+                }
     },
     'loggers': {
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
+            'propagate': True,
+        },
+        'media.serializers': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'bbx.auth': {
+            'handlers': ['console'],
+            'level': 'INFO',
             'propagate': True,
         },
     }

@@ -1,10 +1,65 @@
-== Dependencias ==
-ecstatic express multipart posix request
+* Colocar um flag no model do media para arquivo presente localmente ou nao (rotina para "verificar") (NO SERIALIZE)
+* Colocar um flag no model do media para arquivos solicitados (rotina para "baixar") (NO SERIALIZE)
+* Colocar um valor no model do media como peso para determinar a presença do media na rede (rotina para "baixar") (NO SERIALIZE)
+* Colocar um valor no model do media com o codigo da solicitaçao (para poder remover) (NO SERIALIZE)
 
-== Publicaçao ==
-Para publicacao de uma media precisa definir os caminhos baseados no esquema proposto:
+* Colocar a opção de o media ser um link web aproveitando a logica do git-annex 
+* Automatizar as sincronizações:
+  - alem de git annex sync , git pull & push
+  - cron?
+  - preferred content vira fundamental ja? Por enquanto usar num-copies generico: 3
 
-comunidade/tipo/anomesdia_titulo/nomearquivo.abc
 
-Para isso uma funcao de prepublish precisa levantar essas informacoes.
+== Rotina para "baixar" ==
+
+Pode ser um processo stocastico a tempo determinado (considerando o
+tamanho e os tempos de sync da RM, t=4).
+
+E' interessante pesquisar mais desde as praticas de comunicação
+ancestrais entre as comunidades e aproveitar de algoritmos de
+mapeamento automatico como rede neural.  Como primeira implementação,
+o neuronio (mucua) v ao tempo tn teria o impulso:
+
+x0=(git annex $media numcopies +=1 && git annex get $media, ttl=4) 
+
+ao tempo t1:
+x1=(git annex get $media, ttl=3)
+
+e tn+1:
+xn+1=(git rm $thisfile, ttl=0)
+
+A rotina cron de sync, assumimos, conseguir uma copia do media na
+mucua proxima, no tempo t maximo ttl=4.
+
+O impulso pode ser codificado como arquivo json com nome aleatorio
+(date_UUID[:5]) que cada mucua mantem numa pasta de solicitações
+(ex. mocambos/dpadua/semeando/):
+
+{"mediafile" : "$path", "ttl" : "4" }
+
+Isso garante a falta de conflitos entre arquivos porque cada mucua
+altera seus impulsos. A cada ciclo de cron, e sob determinadas
+condições, a mucua consulta os impulsos das outras proximas (ver
+rotas/remotes) e copia os impulsos reduzindo o peso, de fato
+propagando o impulso.
+
+Os impulsos decaem e os arquivos sao removidos quando as mucuas
+conseguem uma copia do media.  Nesse caso o valor do numcopies volta
+ao padrão (a cada git annex get realizada com sucesso numcopies-=1).
+
+
+=== Teoria (esboçando) ===
+
+P(X(n)) = Probabilidade de encontrar o media ao tempo/passo n.
+
+P(X(n)<=xn+1 | P(xn)=xn)
+
+Com P(x0)=0 e P(xn+1)=1
+
+P(Xn+1) = P(Xn)+P(xn-1)
+
+
+
+
+
 
