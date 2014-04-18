@@ -7,6 +7,7 @@ from repository.models import Repository
 from bbx.settings import MOCAMBOLA_DIR, REPOSITORY_DIR
 from django.utils.translation import ugettext_lazy as _
 
+from bbx.utils import dumpclean
 
 from StringIO import StringIO
 from rest_framework.parsers import JSONParser
@@ -37,7 +38,7 @@ class FileBackend(object):
             current_mocambola, current_mucua, current_repository, term = match[0]
             # verifica se mucua e repositorio sao validos
             try:
-                current_mucua = Mucua.objects.get(note = current_mucua)
+                current_mucua = Mucua.objects.get(description = current_mucua)
             except Mucua.DoesNotExist:
                 return None
             try:
@@ -47,7 +48,8 @@ class FileBackend(object):
         else:
             print "invalid address"
             return None
-        
+
+
         # Get file from MOCAMBOLA_DIR
         mocambola_path = os.path.join(str(REPOSITORY_DIR), str(current_repository), str(current_mucua), MOCAMBOLA_DIR)
         
@@ -59,7 +61,8 @@ class FileBackend(object):
                 data = JSONParser().parse(mocambola_json_file)
                 u = User() 
                 serializer = UserSerializer(u, data=data)
-                logger.debug(u"%s %s" % (_('Error deserialing'), serializer.errors))
+                if serializer.errors:
+                    logger.debug(u"%s %s" % (_('Error deserialing'), serializer.errors))
                 serializer.is_valid()
 
                 current_user = serializer.object
@@ -72,7 +75,7 @@ class FileBackend(object):
                     try:
                         user = User.objects.get(username=username)                
                     except User.DoesNotExist:
-                        print "User.DoesNotExist"
+                        logger.debug(u"%s" % (_('Exception caught, UserDoesNotExist')))
                         # Create a new user. Note that we can set password
                         # to anything, because it won't be checked; the password
                         # from settings.py will.

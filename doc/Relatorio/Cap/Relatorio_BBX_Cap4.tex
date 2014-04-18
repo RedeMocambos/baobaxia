@@ -104,7 +104,6 @@ processo exemplificado de polinização. Uma borboleta que espalha pólen
 nas flores aos redores (mucuas) numa intensidade decrescente ate
 acabar.
 
-\subsection{Cibernética}
 Impostamos a cibernética de polinização digital como um processo
 estocástico a tempo determinado. Considerando o tamanho e os ritmos
 produtivos da RM, impostamos um tempo/distancia, $t=4$. O neurônio (mucua)
@@ -135,8 +134,8 @@ O impulso pode ser codificado como arquivo json com nome aleatório
 (ex. $mocambos/dpadua/semeando/$):
 
 \begin{code}
-  {"mediafile" : "$path", "ttl" : "4" }
-\end{code}
+  {"mediafile" : "path", "ttl" : "4" } 
+\end{code} 
 
 Isso garante a falta de conflitos entre arquivos porque cada mucua
 altera seus impulsos. A cada ciclo de cron, e sob determinadas
@@ -148,21 +147,65 @@ Os impulsos decaem e os arquivos são removidos quando as mucuas
 conseguem uma copia do media.  
 
 \section{Sincronização do git}
+Os clones dos repositórios mantém as informações sincronizadas por
+meio do comando ``git annex sync''.
+
+No caso que os clones usam uma configuração totalmente
+descentralizada, sem repositório central, pode ser dificil ``enviar''
+as mudançãs diretamente para outros clones, porque git não deixa
+efetuar ``push'' para os remotes diretamente no branch atualmente em
+uso naquele clone.
+
+git annex sync resolve esse problema usando um esquema (proposto por
+Joachim Breitner). A ideia de base é ter um branch chamado
+synced/master (no especifico synced/\$currentbranch), que nunca é
+usado diretamente, mas é usado para receber os push dos outros clones.
+
+Quando chamamos o comando git annex sync, ele faz o merge do branch
+synced/master no branch master, atualizando as novas informações
+(eventuais conflitos são resolvidos com a resolução automatica de
+conflitos). Depois são executadas fetch dos outros remotes e o merge
+das mudanças. Por fim o branch synced/master é atualizado com o estado
+do master e são executadas push para os outros remotes.
+
+Dessa maneira as mudanças se propagam entres os clones cada vez que
+git annex sync é chamado. Os clones dos repositorios não precisam se
+comunicar todos diretamente; na medida que os repositorio fazem parte
+de um grafo conectado, e git annex sync é executado de tempos em
+tempos em cada repositorio, as mudanças chegam eventualmente em todos
+os clones.
+
+
 além de git annex sync , git pull \& push
 
-\section{Teoria estocástica}
 
-$P(X(n))$, \ Probabilidade de encontrar o media ao tempo/passo n.
 
-$$
-P(x_n<=x_{n+1} | P(x_n)=x_n)
-$$
 
-Com, $P(x_0)=0$, $P(x_{n+1})=1$ e:
 
-$$
-P(X_{n+1}) = P(X_n)+P(x_{n-1})
-$$
+
+
+
+
+
+
+
+
+
+
+
+%% \section{Teoria estocástica}
+
+%% $P(X(n))$, \ Probabilidade de encontrar o media ao tempo/passo n.
+
+%% $$
+%% P(x_n<=x_{n+1} | P(x_n)=x_n)
+%% $$
+
+%% Com, $P(x_0)=0$, $P(x_{n+1})=1$ e:
+
+%% $$
+%% P(X_{n+1}) = P(X_n)+P(x_{n-1})
+%% $$
 
 
 

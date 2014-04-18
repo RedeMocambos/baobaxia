@@ -44,7 +44,6 @@ def getFilePath(instance):
     else:
         date = instance.date.strftime("%y/%m/%d/")
 
-    t = datetime.now()
     return os.path.join(REPOSITORY_DIR, instance.getRepository(),
                         instance.getMucua(), instance.getType(), 
                         date)
@@ -83,6 +82,16 @@ class Media(models.Model):
                                max_length=100, blank=True)
     repository = models.ForeignKey('repository.Repository')
     tags = models.ManyToManyField(Tag)
+
+    is_local = models.BooleanField(_('is local'), \
+                                       help_text = _('True if media content is available locally'),
+                                   default=False)
+    is_requested = models.BooleanField(_('is requested'), \
+                                           help_text = _('True if media content is awaiting a local copy'), \
+                                           default=False)
+    request_code = models.CharField(max_length=100, editable=False, blank=True)
+    num_copies = models.IntegerField(_('number of copies'), default=1, blank=True, \
+                                         help_text = _('Number of copies of the media in the repository'))
     
     def __init__(self, *args, **kwargs):
         super(Media, self).__init__(*args, **kwargs)
@@ -109,6 +118,12 @@ class Media(models.Model):
     def getFormat(self):
         return self.format
 
+    # FIX
+    def _set_is_local(self):
+        print os.path.join(getFilePath(self), self.getFileName())
+        self.is_local = os.path.isfile(os.path.join(getFilePath(self), self.getFileName()))
+
+
     # # perform validation
     # def clean(self):
     #     from django.core.exceptions import ValidationError
@@ -121,6 +136,10 @@ class Media(models.Model):
     def getTags(self):
         return self.tags
 
+    def save(self, *args, **kwargs):
+        self._set_is_local()
+        super(Media, self).save(*args, **kwargs)
+
     class Meta:
         ordering = ('date',)
 
@@ -131,10 +150,14 @@ class TagPolicyDoesNotExist(exceptions.Exception):
 
 @receiver(post_save, sender=Media)
 def startPostSavePolicies(instance, **kwargs):
-    """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e inicializa as policies de post-save"""
-# FIX: parece que nao intercepta o sinal quando se cria um Media,
-# somente funciona nos "saves" seguidos. Deve ser um problema de
-# disponibilidade da relaçao com a tag.
+    """
+    Intercepta o sinal de *post_save* de objetos multimedia (*media*) e
+    inicializa as policies de post-save
+    """
+    
+    # FIX: parece que nao intercepta o sinal quando se cria um Media,
+    # somente funciona nos "saves" seguidos. Deve ser um problema de
+    # disponibilidade da relaçao com a tag.
     
     tags = instance.getTags()
     if tags.all():
