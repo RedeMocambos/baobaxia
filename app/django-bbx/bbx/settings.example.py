@@ -5,7 +5,7 @@ import sys
 PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
 REPOSITORY_DIR = "/data/repositories/"
-MOCAMBOLA_DIR = "mocambola" # Nome da pasta onde sao armazenados os usuarios em .json
+MOCAMBOLA_DIR = "mocambolas" # Nome da pasta onde sao armazenados os usuarios em .json
 DEFAULT_MUCUA = "dandara"
 DEFAULT_REPOSITORY = "mocambos"
 
