@@ -22,6 +22,10 @@ class Migration(SchemaMigration):
             ('format', self.gf('django.db.models.fields.CharField')(default='ogg', max_length=14, blank=True)),
             ('license', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
             ('repository', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['repository.Repository'])),
+            ('is_local', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('is_requested', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('request_code', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('num_copies', self.gf('django.db.models.fields.IntegerField')(default=1, blank=True)),
         ))
         db.send_create_signal(u'media', ['Media'])
 
@@ -86,12 +90,16 @@ class Migration(SchemaMigration):
             'date': ('django.db.models.fields.DateTimeField', [], {}),
             'format': ('django.db.models.fields.CharField', [], {'default': "'ogg'", 'max_length': '14', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_local': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'is_requested': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'license': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'mediafile': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'default': "u'No title'", 'max_length': '100'}),
             'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
+            'num_copies': ('django.db.models.fields.IntegerField', [], {'default': '1', 'blank': 'True'}),
             'origin': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['mucua.Mucua']"}),
             'repository': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['repository.Repository']"}),
+            'request_code': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'tags': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['tag.Tag']", 'symmetrical': 'False'}),
             'type': ('django.db.models.fields.CharField', [], {'default': "'arquivo'", 'max_length': '14', 'blank': 'True'}),
             'uuid': ('django.db.models.fields.CharField', [], {'default': "u'No UUID'", 'max_length': '36'})
