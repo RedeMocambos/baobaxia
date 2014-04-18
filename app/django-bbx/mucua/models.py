@@ -19,6 +19,12 @@ from django.contrib import admin
 def getDefaultMucua():
     return Mucua.objects.get(note = DEFAULT_MUCUA)
 
+def update_mucuas_list(repository):
+    mucuas = getAvailableMucuas(None, repository)
+    for mucua in mucuas:
+        mucuainstance = Mucua(description = mucua[description], uuid = mucua[uuid]) 
+        mucuainstance.save()
+
 def getAvailableMucuas(uuid=None, repository=None):
     if not repository:
         try:
