@@ -64,11 +64,11 @@ def getLatestMedia(repository=DEFAULT_REPOSITORY):
     """
     # TODO Organizar melhor onde salvar esse apontador
     try: 
-        lastSyncMark = open(os.path.join(repository_dir, repository, 'lastSync.txt'), 'r+')
+        lastSyncMark = open(os.path.join(repository_dir, repository.name, 'lastSync.txt'), 'r+')
         lastSync = lastSyncMark.readline()
         lastSync = lastSync.replace("'", "")
     except IOError:
-        cwd = os.path.join(repository_dir, repository)
+        cwd = os.path.join(repository_dir, repository.name)
         p1 = subprocess.Popen(['git', 'rev-list', 'HEAD'], cwd=cwd, stdout=PIPE)
         p2 = subprocess.Popen(['tail', '-n 1'], stdin=p1.stdout, stdout=PIPE)
         output,error = p2.communicate()
@@ -77,7 +77,7 @@ def getLatestMedia(repository=DEFAULT_REPOSITORY):
 #    cmd = 'git diff --pretty="format:" --name-only ' + lastSync + 'HEAD' \
 #        + '| sort | uniq | grep json | grep -v mocambolas'
 
-    cwd = os.path.join(repository_dir, repository)
+    cwd = os.path.join(repository_dir, repository.name)
     p1 = subprocess.Popen(['git', 'diff', '--pretty=format:', '--name-only' , 'HEAD', lastSync], cwd=cwd, stdout=PIPE)
     p2 = subprocess.Popen(["sort"], stdin=p1.stdout, stdout=PIPE)
     p3 = subprocess.Popen(["uniq"], stdin=p2.stdout, stdout=PIPE)
@@ -250,7 +250,7 @@ class Repository(models.Model):
 
     def syncRepository(self):
         """Sincroniza o repositorio com sua origem."""
-        gitAnnexSync(self.repositoryURLOrPath)
+        gitAnnexSync(self.getPath())
 
         filesync_done.send(sender=self, name=self.getName(), \
                                repositoryDir=self.getPath())

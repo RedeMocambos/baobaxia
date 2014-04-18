@@ -119,7 +119,7 @@ def createObjectsFromFiles(repository = getDefaultRepository().name):
     try:
         for serialized_media in getLatestMedia(repository).splitlines():
             logger.info(u"%s: %s" % (_('Serialized Media'), serialized_media)) 
-            media_json_file_path = os.path.join(REPOSITORY_DIR, repository, serialized_media)
+            media_json_file_path = os.path.join(REPOSITORY_DIR, repository.name, serialized_media)
             media_json_file = open(media_json_file_path)
             data = JSONParser().parse(media_json_file)
             
@@ -130,14 +130,14 @@ def createObjectsFromFiles(repository = getDefaultRepository().name):
                 serializer = MediaSerializer(data=data)
                 print serializer.is_valid()
                 print serializer.errors
-                print serializer.object.mediafile
+#                print serializer.object.mediafile
                 #logger.error(serializer.errors)
                 serializer.object.save()
             else:
                 logger.info(u"%s" % _('This media already exist') ) 
 
             # Atualiza o arquivo lastSyncMark
-            path = os.path.join(REPOSITORY_DIR, repository)
+            path = os.path.join(REPOSITORY_DIR, repository.name)
             output = subprocess.check_output(["git", "log", "--pretty=format:'%H'", "-n 1"], cwd=path)
             logger.info(u"%s: %s" % (_('Revision is'), output ))
             logger.info('<<<')

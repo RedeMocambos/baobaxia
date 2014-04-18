@@ -6,14 +6,43 @@ from django.db.models import get_model
 from repository.models import Repository, gitAdd, gitCommit
 from bbx.settings import REPOSITORY_DIR, MOCAMBOLA_DIR
 from mocambola.serializers import UserSerializer
+from mucua.models import getAvailableMucuas
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from urlparse import urlparse
 import os
+from rest_framework.parsers import JSONParser
+from django.utils.translation import ugettext_lazy as _
+from bbx.utils import dumpclean
+import logging
+
+logger = logging.getLogger(__name__)
 
 def getFilePath(instance):
     return os.path.join(REPOSITORY_DIR, instance.repository.getName(),
                         instance.mucua.getDescription(), MOCAMBOLA_DIR)
+
+
+def create_user_from_files(repository):
+    mucuas = getAvailableMucuas(None, repository)
+    
+    for mucua in mucuas:
+        if not mucua[1] == 'web':
+            mocambola_path = os.path.join(str(REPOSITORY_DIR), str(repository.name), str(mucua[1]), MOCAMBOLA_DIR)
+            
+            for jmocambola in os.listdir(mocambola_path):
+                mocambola_json_file = open(os.path.join(mocambola_path, jmocambola))
+                data = JSONParser().parse(mocambola_json_file)
+                u = User()
+                serializer = UserSerializer(u, data=data)
+                
+                if serializer.errors:
+                    logger.debug(u"%s %s" % (_('Error deserialing'), serializer.errors))
+                serializer.is_valid()
+                
+                current_user = serializer.object
+                current_user.save()
+    
 
 class Mocambola(models.Model):
     mucua = models.ForeignKey('mucua.Mucua')

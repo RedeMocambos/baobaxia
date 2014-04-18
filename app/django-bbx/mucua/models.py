@@ -22,7 +22,7 @@ def getDefaultMucua():
 def update_mucuas_list(repository):
     mucuas = getAvailableMucuas(None, repository)
     for mucua in mucuas:
-        mucuainstance = Mucua(description = mucua[description], uuid = mucua[uuid]) 
+        mucuainstance = Mucua(description = mucua[1], uuid = mucua[0]) 
         mucuainstance.save()
 
 def getAvailableMucuas(uuid=None, repository=None):
