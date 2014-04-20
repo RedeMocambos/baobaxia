@@ -27,7 +27,7 @@ def create_user_from_files(repository):
     mucuas = getAvailableMucuas(None, repository)
     
     for mucua in mucuas:
-        if not mucua[1] == 'web' or not "":
+        if not mucua[1] == 'web' and not "":
             mocambola_path = os.path.join(str(REPOSITORY_DIR), str(repository.name), str(mucua[1]), MOCAMBOLA_DIR)
 
             for jmocambola in os.listdir(mocambola_path):
