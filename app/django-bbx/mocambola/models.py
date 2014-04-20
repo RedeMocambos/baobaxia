@@ -27,9 +27,9 @@ def create_user_from_files(repository):
     mucuas = getAvailableMucuas(None, repository)
     
     for mucua in mucuas:
-        if not mucua[1] == 'web':
+        if not mucua[1] == 'web' or not "":
             mocambola_path = os.path.join(str(REPOSITORY_DIR), str(repository.name), str(mucua[1]), MOCAMBOLA_DIR)
-            
+
             for jmocambola in os.listdir(mocambola_path):
                 mocambola_json_file = open(os.path.join(mocambola_path, jmocambola))
                 data = JSONParser().parse(mocambola_json_file)
