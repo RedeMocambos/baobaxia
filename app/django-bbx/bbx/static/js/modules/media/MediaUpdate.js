@@ -81,6 +81,15 @@ define([
 		'cc_sd': 'creative commons - sem derivação',
 		'cc_sd_nc': 'creative commons - sem derivação - não comercial'
 	    }
+
+	    // TODO: pegar da API etc
+	    var types = {
+		'': '',
+		'audio': 'audio',
+		'imagem': 'imagem',
+		'video': 'video',
+		'arquivo': 'arquivo'
+	    }
 	    
 	    var media = new MediaModel([], {url: urlApi});
 	    media.fetch({
@@ -93,6 +102,7 @@ define([
 			urlApi: urlApi,
 			urlMediaView: urlMediaView,
 			licenses: licenses,
+			types: types,
 			page: 'MediaUpdate',
 		    }
 		    

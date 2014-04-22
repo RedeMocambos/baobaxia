@@ -11,7 +11,13 @@
 	  <input type="text" name="tags" id="tags" value="<% _.each(media.get("tags"), function(tagName) { %><%= tagName %><% }); %>">
 	</p>
 	
-	<input type="hidden" name="type" id="type" value="<%= media.get('type') %>">
+	<p class="type"><span class="title">Tipo de arquivo</span>
+	  <select name="type" id="type">
+	    <% _.each(types, function(value, key) { %>
+	    <option value="<%= key %>" <% if (media.get("type") == key) { %>selected<% } %>><%= value %></option>
+	    <% }) %>
+	  </select>
+	</p>
 	<p class="imagem">
 	  <!-- TODO: visualização por tipo de arquivo -->
 	  <% if (_.isEmpty(media.get("uuid"))) { %>

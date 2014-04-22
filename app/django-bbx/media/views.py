@@ -24,7 +24,8 @@ from django.template import Template, RequestContext
 from mucua.models import Mucua
 from repository.models import Repository
 
-redirect_base_url = "http://localhost:8000"  # TODO: tirar / mover
+
+redirect_base_url = "http://localhost/api/"  # TODO: tirar / mover
 
 @api_view(['GET'])
 def media_list(request, repository,mucua, args=None, format=None):
@@ -114,7 +115,6 @@ def media_detail(request, repository, mucua, pk = None, format=None):
     
     # TODO: get author (url?)
     author = User.objects.get(pk = 1)
-    
     if pk:
         try:
             media = Media.objects.get(uuid=pk)
@@ -140,7 +140,7 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         media.note = request.DATA['note']
         media.type = request.DATA['type']
         media.license = request.DATA['license']
-#        media.date = request.DATA['date']
+        media.date = request.DATA['date']
         
         media.save()
         if media.id:        
@@ -171,22 +171,21 @@ def media_detail(request, repository, mucua, pk = None, format=None):
         """
         create a new media    
         """
-        default_user = 'fernao@namaste.mocambos.net' ## TODO: tirar
+        default_user = 'a@namaste-laptop.mocambos.net' ## TODO: tirar
         if request.DATA['author'] != '':
             author = request.DATA['author']
         else: 
             author = default_user
         
         try:
-            author = User.objects.get(username = author),
+            author = User.objects.get(username = author)
         except User.DoesNotExist:        
             #         print "media.author: " + media.author + " / default_user" + default_user            
             author = User.objects.get(username = default_user)
-        
-        print mucua
+
         media = Media(repository = repository,
                       origin = mucua, #request.DATA['origin'],
-                      author = author[0],
+                      author = author,
                       name = request.DATA['name'],
                       note = request.DATA['note'],
                       type = request.DATA['type'],
