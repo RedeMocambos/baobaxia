@@ -22,6 +22,7 @@ define([
 	    
 	    if (typeof this.config === 'undefined') {
 		this.config = (config != '') ? config : DefaultConfig;
+		this.config['mucuaLocal'] = $.cookie('bbxMucuaLocal');
 		$("body").data("data").config = this.config;
 		
 		// busca informacoes da mucua default na api
@@ -117,6 +118,8 @@ define([
 
 	    //// event catchers para os carregamentos de dados
 	    // atualizacao de repositorio e mucua
+
+	    /*
 	    $("body").data("data").on("changedData", function() {
 		$("body").data("data").changedData = true;
 		if ($("body").data("data").updatedConfig == true) {
@@ -133,29 +136,30 @@ define([
 		    $("body").data("data").changedData = false;
 		    $("body").data("data").updatedConfig = false;
 		}
-	    });
-
+	    });*/
+	    
 	    // renderiza quando todos os dados forem carregados
-	    $("body").data("data").on("renderFinish", function() {
-		if ($("body").data("data").repository != '' && $("body").data("data").mucua != '') {
-		    repository = (repository != '') ? repository : $("body").data("data").repository;
-		    mucua = (mucua != '') ? mucua : $("body").data("data").mucua;
-		    data = {'repository': repository, 'mucua': mucua, 'config': $("body").data("data").config};
-		    
-		    if ($('#header').html() == '') {			
-			var headerView = new HeaderView();
-			headerView.render(data);
-		    }
-		    if ($('#footer').html() == '') {
-			var footerView = new FooterView();
-			footerView.render(data);
-		    }		
-		    if (typeof $('#busca-menu').html() === 'undefined') {
-			$('#content-full').prepend(_.template(Menu, data));
-			$('#busca-menu').append(_.template(Busca, data));
-		    }
+	    //	    $("body").data("data").on("renderFinish", function() {
+	    if ($("body").data("data").repository != '' && $("body").data("data").mucua != '') {
+		repository = (repository != '') ? repository : $("body").data("data").repository;
+		mucua = (mucua != '') ? mucua : $("body").data("data").mucua;
+		mucuaLocal = $.cookie('bbxMucuaLocal'); 
+		data = {'repository': repository, 'mucuaLocal': mucuaLocal, 'config': $("body").data("data").config};
+		
+		if ($('#header').html() == '') {			
+		    var headerView = new HeaderView();
+		    headerView.render(data);
 		}
-	    });
+		if ($('#footer').html() == '') {
+		    var footerView = new FooterView();
+		    footerView.render(data);
+		}		
+		if (typeof $('#busca-menu').html() === 'undefined') {
+		    $('#content-full').prepend(_.template(Menu, data));
+			$('#busca-menu').append(_.template(Busca, data));
+		}
+	    }
+	    //	});
 
 	    $("body").data("data").renderCommon = true;
 	}	

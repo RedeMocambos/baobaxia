@@ -43,6 +43,7 @@ define([
 		console.log('upload');
 
 		url = $('body').data('data').config.apiUrl + "/" + mediaBase.repository + "/" + mediaBase.origin + "/media/";
+		console.log(url);
 		var media = new MediaModel([], {url: url});
 		
 		media.fetch({
@@ -130,7 +131,7 @@ define([
 		    updateMedia(mediaSerialized);
 		}
 	    });
-
+	    
 	    $('#submit').on('click', function() {
 		$('#form_media_publish').submit()
 	    });

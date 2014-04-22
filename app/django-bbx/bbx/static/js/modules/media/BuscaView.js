@@ -19,7 +19,10 @@ define([
 	     * Funções internas
 	     */
 	    _get_termos = function(returnArray) {
-		returnArray = returnArray || false;
+		var returnArray = returnArray || false,
+		search_url = '',
+		termos = '';
+		
 		search_url = $('#form_busca').attr('action');
 		
 		termos = new String(_.rest(search_url.split('search')));
@@ -30,7 +33,6 @@ define([
 		    termos = termos.substring(1);
 		    termos = termos.split('/');
 		}
-//		console.log('termos dentro: ' + termos[0]);
 		return termos;
 	    }
 	    

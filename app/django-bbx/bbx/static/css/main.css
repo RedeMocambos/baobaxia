@@ -19,7 +19,7 @@ body {margin: 0; padding: 0}
  */
 #cabecalho {height: 150px;}
 #cabecalho img { margin-top: 25px; margin-left: 100px; float: left}
-#title-mucua { color: #f4c00a; float: left; margin-top: 70px; margin-left: 20px}
+#title-mucua { color: #f4c00a; float: left; margin-top: 70px; margin-left: 20px; font-size: 14px}
 
 .posicoes {display: none}
 h3 #nome_mucua { color: #e33; }
