@@ -26,12 +26,6 @@ def mucua_list(request, repository = None):
         return Response(None)
     
     for mucua_obj in mucuas:
-<<<<<<< HEAD
-        mucua_note = mucua_obj[1]
-        
-        try:
-            mucua = Mucua.objects.get(description = mucua_note)
-=======
         if mucua_obj[1] != 'web':
             mucua_description = mucua_obj[1]
             try:
@@ -39,7 +33,6 @@ def mucua_list(request, repository = None):
             except Mucua.DoesNotExist:
                 print "not found: ", mucua_description
                 return Response("Mucua not found")
->>>>>>> c56f20f9495fe81075fbe3cfaabd0492efbffe23
             
             if mucua:
                 mucuas_list.append(mucua)
