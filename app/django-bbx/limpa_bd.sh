@@ -29,3 +29,8 @@ python manage.py schemamigration --initial --traceback repository
 
 
 python manage.py migrate --all
+
+
+echo "usuário do login número 1:"
+echo "zumbi@dandara.mocambos.net"
+echo "livre"
