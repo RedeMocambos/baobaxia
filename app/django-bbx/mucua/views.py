@@ -26,17 +26,16 @@ def mucua_list(request, repository = None):
         return Response(None)
     
     for mucua_obj in mucuas:
-        mucua_note = mucua_obj[1]
-        
-        try:
-            mucua = Mucua.objects.get(note = mucua_note)
+        if mucua_obj[1] != 'web':
+            mucua_description = mucua_obj[1]
+            try:
+                mucua = Mucua.objects.get(description = mucua_description)
+            except Mucua.DoesNotExist:
+                print "not found: ", mucua_description
+                return Response("Mucua not found")
             
-        except Mucua.DoesNotExist:
-            print "not found: ", mucua_note
-            #return Response("Mucua not found")
-        
-        if mucua:
-            mucuas_list.append(mucua)
+            if mucua:
+                mucuas_list.append(mucua)
     
     serializer = MucuaSerializer(mucuas_list, many=True)
     
