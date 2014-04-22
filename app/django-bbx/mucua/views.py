@@ -29,7 +29,7 @@ def mucua_list(request, repository = None):
         mucua_note = mucua_obj[1]
         
         try:
-            mucua = Mucua.objects.get(note = mucua_note)
+            mucua = Mucua.objects.get(description = mucua_note)
             
         except Mucua.DoesNotExist:
             print "not found: ", mucua_note

@@ -24,7 +24,7 @@ from django.template import Template, RequestContext
 from mucua.models import Mucua
 from repository.models import Repository
 
-redirect_base_url = "http://localhost:8000/"  # TODO: tirar / mover
+redirect_base_url = "http://localhost:8000"  # TODO: tirar / mover
 
 @api_view(['GET'])
 def media_list(request, repository,mucua, args=None, format=None):

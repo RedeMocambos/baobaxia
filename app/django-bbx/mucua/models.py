@@ -17,7 +17,7 @@ from django.contrib import admin
 # MUCUA_NAME_UUID = [ ('a30a926a-3a8c-11e2-a817-cb26bd9bc8d3','dandara'), ('0492621a-4195-11e2-b8c7-43de40a4e11c','acotirene') ]
 
 def getDefaultMucua():
-    return Mucua.objects.get(note = DEFAULT_MUCUA)
+    return Mucua.objects.get(description = DEFAULT_MUCUA)
 
 def update_mucuas_list(repository):
     mucuas = getAvailableMucuas(None, repository)
