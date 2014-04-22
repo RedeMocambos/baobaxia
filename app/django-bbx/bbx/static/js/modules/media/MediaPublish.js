@@ -20,7 +20,14 @@ define([
 		origin = mucua;
 		author = $('body').data('data').author;
 		baseurl = '#' + repository + '/' + mucua;
-		
+		types = {
+		    '': '',
+		    'audio': 'audio',
+		    'imagem': 'imagem',
+		    'video': 'video',
+		    'arquivo': 'arquivo'
+		};
+
 		//var media = { 		    get: function(attr) {return this.attr}, 		}
 		var media = new MediaModel([]);
 		media.repository = repository;
@@ -93,14 +100,13 @@ define([
 		licenses: {'': ''},
 		page: 'MediaPublish',
 	    };
-	    console.log(data);
 	    var compiledTpl = _.template(MediaEditFormTpl, data);
 	    $('#content').html(compiledTpl);
 	    
 	    $('#media-update .bloco-2').hide();
 	    $('#media-update .bloco-1 .tags').hide();
 	    
-	    $('body').data('data').on('all', function(event) {console.log(event)});
+	    $('body').data('data').on('all', function(event) {});
 	    $('#mediafile').change(function() {uploadFile()});
 	    
 	    // form upload progress meter

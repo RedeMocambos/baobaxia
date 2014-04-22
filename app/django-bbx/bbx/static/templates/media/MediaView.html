@@ -6,7 +6,7 @@
       <a href="<% print(baseurl + '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
       <% }); %>
     </p>
-
+    <a id="mediafile-original" href='file:<%= media.get('mediafile') %>'><%= media.get(staticfile') %></a>
     <p class=""><%= media.get("description") %></p>
     <p class="uuid">UUID<%= media.get("uuid") %></p>
   </div>
