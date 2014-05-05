@@ -9,8 +9,6 @@ MOCAMBOLA_DIR = "mocambolas" # Nome da pasta onde sao armazenados os usuarios em
 DEFAULT_MUCUA = "dandara"
 DEFAULT_REPOSITORY = "mocambos"
 
-POLICIES_DIR = PROJECT_ROOT + "/../policy"
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
