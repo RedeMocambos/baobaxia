@@ -17,7 +17,7 @@ create_user() {
     USER_EXISTS=`cat /etc/passwd | grep $USER_BBX`
     if [[ "$USER_EXISTS" == '' ]]; then
 	echo "criando usuario $USER_BBX ..."
-	useradd --uid $USER_UID -p "$EXU_PASSWD" $USERNAME
+	useradd --uid $USER_UID --create-home -p "$EXU_PASSWD" $USERNAME
     fi
 }
 
@@ -25,7 +25,7 @@ create_user() {
 # PRE: pkgs:
 
 # dependencies: se for deb pkg, tirar
-apt-get install git git-annex nginx supervisor python-pip usbmount xhost
+apt-get install git git-annex nginx supervisor python-pip usbmount
 
 ### cria diretorio basico
 mkdir -p $DEFAULT_REPOSITORY_DIR
