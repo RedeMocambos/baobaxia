@@ -15,12 +15,8 @@ create_user() {
     USER_UID=$2
     # checa se usuario ja existe
     USER_EXISTS=false
-    for USER in `cat /etc/passwd | cut -d ':' -f1`; do
-	if [[ "$USERNAME" == $USER_BBX ]]; then
-	    USER_EXISTS=true
-	fi
-    done;
-
+    USER_EXISTS=`cat /etc/passwd | grep $USER_BBX`
+    
     if [[ "$USER_EXISTS" == false ]]; then
 	echo "criando usuario $USER_BBX ..."
 	useradd --uid $USER_UID -p "$EXU_PASSWD" $USERNAME
