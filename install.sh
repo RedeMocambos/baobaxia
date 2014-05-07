@@ -6,7 +6,9 @@ USER_BBX_PASSWD='abre os caminhos'
 UID_BBX=10000
 DEFAULT_REPOSITORY_DIR='/data/repositories'
 DEFAULT_REPOSITORY_NAME='mocambos'
-INSTALL_DIR='/srv/'
+INSTALL_DIR='/srv'
+BBX_LOCAL_REPO='/srv/bbx-repo'
+BBX_REMOTE_REPO='http://github.com/RedeMocambos/baobaxia'
 
 create_user() {
     USERNAME=$1
@@ -151,7 +153,14 @@ echo "Copiando arquivos do Baobáxia ..."
 cd $INSTALL_DIR
 # GARANTIR PERMISSAO DE GRAVACAO
 # TODO: pegar futuramente um pacote offline
-git clone http://github.com/RedeMocambos/baobaxia
+
+echo ""
+read -p "De onde você vai baixar o repositório do baobáxia? (ex: http://github.com/RedeMocambos/baobaxia) - (1 - local / 2 - internet): " BBX_REPO_FROM
+case "$BBX_REPO_FROM" in
+    2|internet) BBX_REPO_FROM=$BBX_REMOTE_REPO ;;
+    1|local|*) BBX_REPO_FROM=$BBX_LOCAL_REPO ;;
+esac
+git clone $BBX_REPO_FROM baobaxia
 
 echo ""
 echo "Criando arquivo de configuração do Baobáxia ..."
@@ -165,12 +174,12 @@ pip install virtualenv
 mkdir $INSTALL_DIR/envs
 chown root:$USER_BBX $INSTALL_DIR/envs 
 chmod 775 envs
-su $USER_BBX
-cd $INSTALL_DIR/envs
-virtualenv bbx
-source $INSTALL_DIR/envs/bbx/bin/activate
-
-pip install baobaxia.pybundle -r $INSTALL_DIR/baobaxia/app/django-bbx/requirements.txt
+xhost +
+su - $USER_BBX -c "cd $INSTALL_DIR/envs"
+su - $USER_BBX -c "virtualenv bbx"
+su - $USER_BBX -c "source $INSTALL_DIR/envs/bbx/bin/activate"
+su - $USER_BBX -c "cd $INSTALL_DIR/"
+su - $USER_BBX -c "pip install $INSTALL_DIR/baobaxia.pybundle -r $INSTALL_DIR/baobaxia/app/django-bbx/requirements.txt"
 
 echo ""
 echo "Definindo permissões do baobáxia ..."
@@ -178,6 +187,8 @@ chown -R exu:exu $INSTALL_DIR/baobaxia
 
 echo ""
 echo "Criando banco de dados do baobáxia ..."
+cd $INSTALL_DIR/baobaxia/app/django-bbx
+find . -name '000*.py' -exec rm '{}' \; && echo "OK!"
 python manage.py syncdb --noinput
 python manage.py schemamigration --initial --traceback mocambola
 python manage.py schemamigration --initial --traceback mucua
@@ -185,13 +196,14 @@ python manage.py schemamigration --initial --traceback tag
 python manage.py schemamigration --initial --traceback media
 python manage.py schemamigration --initial --traceback repository
 python manage.py migrate --all
+echo ""
 echo "usuário do login número 1:"
-echo "username: $USER_BBX@$MUCUA.mocambos.net"
+echo "username: zumbi@$MUCUA.mocambos.net"
 echo "senha: $USER_BBX_PASSWD"
 
 echo ""
 echo "Setando permissão do guinicorn ..."
-chmod +x /srv/baobaxia/app/django-bbx/bin/guinicorn_start.sh
+chmod +x /srv/baobaxia/app/django-bbx/bin/gunicorn_start.sh
 
 # 7) recriar mucuas da rede no django-bbx (mucuaLocal)
 # sync a partir dos jsons
