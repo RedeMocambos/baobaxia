@@ -125,7 +125,7 @@ esac
 echo ""
 echo "Configurando permissões do repositório"
 chown root:$USER_BBX $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME
-chmod 775 root:$USER_BBX $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME
+chmod 775 $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME
 
 echo ""
 echo "Definindo usuário git para usuário do baobáxia ($USER_BBX) ..."
