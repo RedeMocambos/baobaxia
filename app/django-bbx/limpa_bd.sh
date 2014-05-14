@@ -3,7 +3,12 @@
 echo "----------------------"
 echo "removendo arquivos de migracao e banco ..."
 echo "----------------------"
-rm bbx/database.sqlite
+
+if [ -f bbx/.database.sqlite ]
+then 
+    rm bbx/.database.sqlite
+fi
+    
 find . -name '000*.py' -exec rm '{}' \; && echo "OK!"
 
 source ~/bbxenv/bin/activate

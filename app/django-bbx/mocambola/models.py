@@ -47,7 +47,7 @@ def create_user_from_files(repository):
 
 class Mocambola(models.Model):
     mucua = models.ForeignKey('mucua.Mucua')
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, unique=True, related_name='mocambola')
     repository = models.ForeignKey(Repository)
 
     def __unicode__(self):
@@ -88,6 +88,8 @@ def UserPostSave(instance, **kwargs):
     mucua_model = get_model('mucua', 'Mucua')
     
     # TODO LOW: substituir por regexp
+    # TODO: HIGH: The coupling between username and repository should not be so
+    # tight.
     current_mocambola, mucua_repository = instance.username.split("@")
     rep = urlparse('http://' + mucua_repository)
     current_mucua, current_repository, current_tld = rep.hostname.split('.')

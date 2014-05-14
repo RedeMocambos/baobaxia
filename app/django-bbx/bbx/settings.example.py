@@ -2,14 +2,20 @@
 
 import os
 import sys
-PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
-REPOSITORY_DIR = "/data/repositories/"
+PROJECT_ROOT = os.path.realpath(
+    os.path.join(
+        os.path.dirname(__file__), 
+        ".."
+    )
+)
+
+REPOSITORY_DIR = "/home/agger/src/RedeMocambos/data"
 MOCAMBOLA_DIR = "mocambolas" # Nome da pasta onde sao armazenados os usuarios em .json
 DEFAULT_MUCUA = "dandara"
 DEFAULT_REPOSITORY = "mocambos"
 
-POLICIES_DIR = PROJECT_ROOT + "/../policy"
+POLICIES_DIR = os.path.join(PROJECT_ROOT, "policy")
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -22,13 +28,13 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_ROOT, 'database.sqlite'),                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', 
+        'NAME': os.path.join(PROJECT_ROOT, 'bbx/.database.sqlite'),
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'HOST': '',
+        'PORT': '',
     }
 }
 
@@ -61,7 +67,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = '/data/repositories/'
+MEDIA_ROOT = os.path.join(REPOSITORY_DIR, 'repositories')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -72,11 +78,11 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_ROOT, '../../static')
+STATIC_ROOT = os.path.join(REPOSITORY_DIR, 'static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/'
+STATIC_URL = '/static/'
 
 THUMBNAILS_ROOT = os.path.join(STATIC_ROOT, 'cache')
 THUMBNAILS_URL = '/cache'
@@ -131,7 +137,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/home/befree/dev/baobaxia/tests/django-backbone_0/templates"
+    PROJECT_ROOT + 'bbx/static/templates',
 )
 
 INSTALLED_APPS = (
@@ -198,3 +204,6 @@ LOGGING = {
         },
     }
 }
+
+AUTH_PROFILE_MODULE = 'mocambola.Mocambola'
+
