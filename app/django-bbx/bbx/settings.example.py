@@ -10,7 +10,8 @@ PROJECT_ROOT = os.path.realpath(
     )
 )
 
-REPOSITORY_DIR = "/home/agger/src/RedeMocambos/data"
+# Change this to the full path to your own repository
+REPOSITORY_DIR = "/data"
 MOCAMBOLA_DIR = "mocambolas" # Nome da pasta onde sao armazenados os usuarios em .json
 DEFAULT_MUCUA = "dandara"
 DEFAULT_REPOSITORY = "mocambos"
