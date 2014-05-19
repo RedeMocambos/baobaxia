@@ -1,7 +1,8 @@
-# triage function 
+# triage function
 #
 # sync()
 
+
 def postSave_copyToTaina(mediainstance):
-    print mediainstance        
+    print mediainstance
     return mediainstance

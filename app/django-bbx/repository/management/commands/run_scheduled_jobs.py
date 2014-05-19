@@ -1,10 +1,11 @@
-from django.core.management.base import NoArgsCommand, CommandError
+from django.core.management.base import NoArgsCommand
 
-from repository.models import Repository, runScheduledJobs
+from repository.models import runScheduledJobs
 
 """
 Definicoes do comando para executar as operacoes planejadas.
 """
+
 
 class Command(NoArgsCommand):
     """Executa as operacoes planejadas."""
@@ -12,4 +13,3 @@ class Command(NoArgsCommand):
 
     def handle_noargs(self, **options):
         runScheduledJobs()
-        

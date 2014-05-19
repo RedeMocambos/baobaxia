@@ -3,7 +3,7 @@
 """
  Tags (etiqueta) in Bbx define some behaviours of the system, beside qualifying
  contents. Each tag can be associated to a set of policies
- (POLICIES_DIR). 
+ (POLICIES_DIR).
 
  Actually policies will be linked to Django Signals selected by name. For
  example, a policy called "postSave_copyToTaina" is imported and executed
@@ -18,7 +18,6 @@
 from django.db import models
 from bbx.settings import POLICIES_DIR
 from bbx.utils import MultiSelectField
-import json
 import os
 import exceptions
 
@@ -29,45 +28,51 @@ add_introspection_rules([], ["bbx.utils.MultiSelectField"])
 
 
 class PoliciesPersistentDataUnavailable(exceptions.Exception):
-    def __init__(self,args=None):
+    def __init__(self, args=None):
         self.args = args
+
 
 def getAvailablePolicies():
     """Get a list of available policies from POLICIES_DIR."""
-    policiesList = [( os.path.splitext(name)[0], os.path.splitext(name)[0]) \
-                        for name in os.listdir(POLICIES_DIR) if name.endswith(".py") \
-                        if not (name.startswith("__")) ]
+    policiesList = [(os.path.splitext(name)[0], os.path.splitext(name)[0]) for
+                    name in os.listdir(POLICIES_DIR) if name.endswith(".py") if
+                    not (name.startswith("__"))]
     return policiesList
-   
+
+
 class Tag(models.Model):
     namespace = models.CharField(max_length=10, blank=True, default='')
     note = models.TextField(max_length=300, blank=True)
     name = models.CharField(max_length=26)
-    policies = MultiSelectField(max_length=100, choices=getAvailablePolicies(), blank=True)
+    policies = MultiSelectField(max_length=100,
+                                choices=getAvailablePolicies(),
+                                blank=True)
 
     def __unicode__(self):
-        return self.namespace + ":" + self.name if self.namespace != '' else self.name
+        return (self.namespace + ":" + self.name if self.namespace != '' else
+                self.name)
 
     def getId(self):
         """
         Returns tag's id built as namespace + name, ex.:
         bbx:publico ("name" attribute shoul'd be "name" FIX:
         rename!)
-        
+
         """
-        return self.namespace + ":" + self.name if self.namespace != '' else self.name 
+        return (self.namespace + ":" + self.name if self.namespace != '' else
+                self.name)
 
     def _getPoliciesFilename(self):
         """
         Policies file is built with POLICIES_DIR and tag's id
-        
+
         """
-        return POLICIES_DIR +'/'+ self.getId() + '.json'
+        return POLICIES_DIR + '/' + self.getId() + '.json'
 
     def setNamespace(self):
         """
         Sets tag's namespace like in bbx:publico gets "bbx" :)
-        
+
         """
         if self.name.find(':') > 0:
             args = self.name.split(':')
@@ -76,7 +81,7 @@ class Tag(models.Model):
     def setName(self):
         """
         Sets tag's name. FIX
-        
+
         """
         if self.name.find(':') > 0:
             args = self.name.split(':')
@@ -85,13 +90,13 @@ class Tag(models.Model):
     def save(self, *args, **kwargs):
         """
         Save also tag's policies to a JSON file.
-        
+
         """
 
         self.setNamespace()
         self.setName()
         super(Tag, self).save(*args, **kwargs)
-    
+
     class Meta:
         ordering = ('name',)
         unique_together = ("namespace", "name")

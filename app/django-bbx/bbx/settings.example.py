@@ -5,14 +5,14 @@ import sys
 
 PROJECT_ROOT = os.path.realpath(
     os.path.join(
-        os.path.dirname(__file__), 
+        os.path.dirname(__file__),
         ".."
     )
 )
 
 # Change this to the full path to your own repository
 REPOSITORY_DIR = "/data"
-MOCAMBOLA_DIR = "mocambolas" # Nome da pasta onde sao armazenados os usuarios em .json
+MOCAMBOLA_DIR = "mocambolas"  # Nome da pasta onde estao os usuarios em .json
 DEFAULT_MUCUA = "dandara"
 DEFAULT_REPOSITORY = "mocambos"
 
@@ -29,7 +29,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', 
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(PROJECT_ROOT, 'bbx/.database.sqlite'),
         # The following settings are not used with sqlite3:
         'USER': '',
@@ -101,7 +101,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -111,7 +111,7 @@ SECRET_KEY = '+zx%#f$tj&z_&1el&wm@sj0y4a56w14*^z40ea*hgd%n0i(ga)'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#    'django.template.loaders.eggs.Loader',
+    #'django.template.loaders.eggs.Loader',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -135,7 +135,8 @@ ROOT_URLCONF = 'bbx.urls'
 WSGI_APPLICATION = 'bbx.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Put strings here, like "/home/html/django_templates" or
+    # "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_ROOT + 'bbx/static/templates',
@@ -151,7 +152,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
-        # 'django.contrib.admindocs',
+    # 'django.contrib.admindocs',
     'rest_framework',
     'media',
     'mucua',
@@ -181,11 +182,11 @@ LOGGING = {
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
             },
-        'console':{
-                'level':'INFO',
-                'class':'logging.StreamHandler',
-                'stream': sys.stdout
-                }
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout
+        }
     },
     'loggers': {
         'django.request': {
@@ -207,4 +208,3 @@ LOGGING = {
 }
 
 AUTH_PROFILE_MODULE = 'mocambola.Mocambola'
-

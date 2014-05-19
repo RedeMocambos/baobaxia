@@ -1,10 +1,12 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from media.serializers import createObjectsFromFiles
 
 """
-Definicoes do comando para recriar objetos no Django a partir de media serializados em JSON.
+Definicoes do comando para recriar objetos no Django a partir de media
+serializados em JSON.
 """
+
 
 class Command(BaseCommand):
     """Recria os objetos no Django a partir dos media serializados em JSON."""
@@ -14,4 +16,3 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for x in args:
             createObjectsFromFiles(x)
-

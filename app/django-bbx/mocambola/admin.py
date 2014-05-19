@@ -4,9 +4,11 @@ from django.contrib.auth.admin import UserAdmin
 
 from mocambola.models import Mocambola
 
+
 class UserInline(admin.TabularInline):
     model = Mocambola
     extra = 1
+
 
 class MyUserAdmin(UserAdmin):
     inlines = [UserInline]
@@ -15,4 +17,3 @@ class MyUserAdmin(UserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, MyUserAdmin)
 #admin.site.register(Mocambola)
-

@@ -1,48 +1,46 @@
-from django.forms import widgets
-from rest_framework import serializers
-from media.models import Media, FORMAT_CHOICES, TYPE_CHOICES
-from repository.models import getLatestMedia, getDefaultRepository
-from bbx.settings import REPOSITORY_DIR
-from tag.models import Tag
-from tag.serializers import TagSerializer
-from mucua.serializers import MucuaSerializer
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
-from bbx.utils import dumpclean
-from django.utils.translation import ugettext_lazy as _
-from django.db.models import fields
-
-from django.db.models import get_model
-from django.core.management.base import CommandError
-from django.core.exceptions import ValidationError
-
 import os
 import logging
 import subprocess
 
+from rest_framework import serializers
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+
+from django.utils.translation import ugettext_lazy as _
+from django.core.management.base import CommandError
+from django.core.exceptions import ValidationError
+
+from media.models import Media
+from repository.models import getLatestMedia, getDefaultRepository
+from bbx.settings import REPOSITORY_DIR
+from bbx.utils import dumpclean
+
 logger = logging.getLogger(__name__)
 
+
 class MediaSerializer(serializers.ModelSerializer):
-    tags = serializers.SlugRelatedField(many=True, slug_field='name', read_only=True)
-    origin = serializers.SlugRelatedField(many = False, slug_field='description')
-    repository = serializers.SlugRelatedField(many = False, slug_field='name')
-    author = serializers.SlugRelatedField(many = False, slug_field='username')
+    tags = serializers.SlugRelatedField(many=True,
+                                        slug_field='name',
+                                        read_only=True)
+    origin = serializers.SlugRelatedField(many=False, slug_field='description')
+    repository = serializers.SlugRelatedField(many=False, slug_field='name')
+    author = serializers.SlugRelatedField(many=False, slug_field='username')
 #    mediafile = serializers.FileField()
-    
+
     class Meta:
         model = Media
-        fields = ('date', 'uuid', 'name', 'note', 'author', 'type', \
-                      'format', 'license', 'mediafile', 'origin', \
-                      'repository', 'tags')
-        depth = 1  
-        
+        fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
+                  'format', 'license', 'mediafile', 'origin',
+                  'repository', 'tags')
+        depth = 1
+
     def restore_fields(self, data, files):
         """
         Core of deserialization, together with `restore_object`.
         Converts a dictionary of data into a dictionary of deserialized fields.
         """
         reverted_data = {}
-        
+
         if data is not None and not isinstance(data, dict):
             self._errors['non_field_errors'] = ['Invalid data']
             return None
@@ -54,28 +52,32 @@ class MediaSerializer(serializers.ModelSerializer):
                 field = serializers.CharField()
                 try:
                     # restore using the built in mechanism
-                    field.field_from_native(data, files, field_name, reverted_data)
+                    field.field_from_native(data, files, field_name,
+                                            reverted_data)
                     # take the dataUri, save it to disk and return the Path
                     value = reverted_data[field_name]
                     path = value
-                    # set the file <Path> property on the model, remove the old dataUri
+                    # set the file <Path> property on the model,
+                    # remove the old dataUri
                     reverted_data['mediafile'] = path
                     del reverted_data[field_name]
-                    
+
                 except ValidationError as err:
                     self._errors[field_name] = list(err.messages)
                 else:
                     field.initialize(parent=self, field_name=field_name)
                     try:
-                        field.field_from_native(data, files, field_name, reverted_data)
+                        field.field_from_native(data, files, field_name,
+                                                reverted_data)
                     except ValidationError as err:
                         self._errors[field_name] = list(err.messages)
             else:
                 try:
-                    field.field_from_native(data, files, field_name, reverted_data)
+                    field.field_from_native(data, files, field_name,
+                                            reverted_data)
                 except ValidationError as err:
                     self._errors[field_name] = list(err.messages)
-                    
+
         return reverted_data
 
     def restore_object(self, attrs, instance=None):
@@ -97,7 +99,8 @@ class MediaSerializer(serializers.ModelSerializer):
             instance.type = attrs.get('type', instance.type)
             instance.format = attrs.get('format', instance.format)
             instance.license = attrs.get('license', instance.license)
-            instance.mediafile(upload_to=attrs.get('mediafile', instance.mediafile))
+            instance.mediafile(upload_to=attrs.get('mediafile',
+                                                   instance.mediafile))
             instance.tags = attrs.get('tags', instance.tags)
             instance.repository = attrs.get('repository', instance.repository)
             return instance
@@ -111,18 +114,20 @@ class MediaSerializer(serializers.ModelSerializer):
         return JSONRenderer().render(self.data)
 
 
-def createObjectsFromFiles(repository = getDefaultRepository().name):
+def createObjectsFromFiles(repository=getDefaultRepository().name):
     """Recria os midias no Django a partir dos medias serializados em JSON."""
-    logger.info(u">>> %s" % _('DESERIALIZING') )
-    logger.info(u"%s: %s" % (_('Repository'),  repository) )
+    logger.info(u">>> %s" % _('DESERIALIZING'))
+    logger.info(u"%s: %s" % (_('Repository'),  repository))
     print getLatestMedia(repository).splitlines()
     try:
         for serialized_media in getLatestMedia(repository).splitlines():
-            logger.info(u"%s: %s" % (_('Serialized Media'), serialized_media)) 
-            media_json_file_path = os.path.join(REPOSITORY_DIR, repository.name, serialized_media)
+            logger.info(u"%s: %s" % (_('Serialized Media'), serialized_media))
+            media_json_file_path = os.path.join(REPOSITORY_DIR,
+                                                repository.name,
+                                                serialized_media)
             media_json_file = open(media_json_file_path)
             data = JSONParser().parse(media_json_file)
-            
+
             media = Media.objects.filter(uuid=data["uuid"])
 
             if not media:
@@ -134,18 +139,18 @@ def createObjectsFromFiles(repository = getDefaultRepository().name):
                 #logger.error(serializer.errors)
                 serializer.object.save()
             else:
-                logger.info(u"%s" % _('This media already exist') ) 
+                logger.info(u"%s" % _('This media already exist'))
 
             # Atualiza o arquivo lastSyncMark
             path = os.path.join(REPOSITORY_DIR, repository.name)
-            output = subprocess.check_output(["git", "log", "--pretty=format:'%H'", "-n 1"], cwd=path)
-            logger.info(u"%s: %s" % (_('Revision is'), output ))
+            output = subprocess.check_output(
+                ["git", "log", "--pretty=format:'%H'", "-n 1"],
+                cwd=path)
+            logger.info(u"%s: %s" % (_('Revision is'), output))
             logger.info('<<<')
-            lastSyncMark = open(os.path.join(path, 'lastSync.txt'), 'w+' )
+            lastSyncMark = open(os.path.join(path, 'lastSync.txt'), 'w+')
             lastSyncMark.write(output)
             lastSyncMark.close()
-            
+
     except CommandError:
         pass
-
-

@@ -20,4 +20,3 @@ serializer = MediaSerializer(data=data)
 serializer.is_valid()
 
 serializer.object
-
