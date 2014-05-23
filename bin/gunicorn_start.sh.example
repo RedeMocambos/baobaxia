@@ -1,8 +1,8 @@
 #!/bin/bash
  
 NAME="bbx" # Name of the application
-DJANGODIR=/srv/baobaxia/app/django-bbx # Django project directory
-SOCKFILE=/srv/envs/bbx/gunicorn.sock # we will communicte using this unix socket
+DJANGODIR=/srv/_domain_/baobaxia/app/django-bbx # Django project directory
+SOCKFILE=/srv/_domain_/run/gunicorn.sock # we will communicte using this unix socket
 USER=exu # the user to run as
 GROUP=exu # the group to run as
 NUM_WORKERS=3 # how many worker processes should Gunicorn spawn
@@ -13,7 +13,7 @@ echo "Starting $NAME as `whoami`"
  
 # Activate the virtual environment
 cd $DJANGODIR
-source /srv/envs/bbx/bin/activate
+source /srv/_domain_/envs/bbx/bin/activate
 export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$DJANGODIR:$PYTHONPATH
  
@@ -23,7 +23,7 @@ test -d $RUNDIR || mkdir -p $RUNDIR
  
 # Start your Django Unicorn
 # Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
-exec /srv/envs/bbx/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
+exec /srv/_domain_/envs/bbx/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
 --name $NAME \
 --workers $NUM_WORKERS \
 --user=$USER --group=$GROUP \

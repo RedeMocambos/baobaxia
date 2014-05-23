@@ -2,21 +2,21 @@ upstream bbx_app_server {
 	 # fail_timeout=0 means we always retry an upstream even if it failed
  	 # to return a good HTTP response (in case the Unicorn master nukes a
  	 # single worker for timing out).
-	 server unix:/srv/envs/bbx/gunicorn.sock fail_timeout=0;
+	 server unix:/srv/_domain_/run/gunicorn.sock fail_timeout=0;
 }
  
 server {
        listen 80;
-       server_name dpadua dpadua.zapto.org;
+       server_name _domain_aliases_;
        client_max_body_size 4G;
-       access_log /srv/envs/bbx/nginx-access.log;
-       error_log /srv/envs/bbx/nginx-error.log;
+       access_log /srv/_domain_/log/nginx-access.log;
+       error_log /srv/_domain_/log/nginx-error.log;
        location / {
-       		alias /srv/baobaxia/app/static/;
+       		alias /srv/_domain_/static/;
 		}	
 
        location /media/ {
-       		alias /data/repositories/;
+       		alias /data/_domain_/media/;
        		}	
  
        location /api/ {
@@ -50,7 +50,7 @@ server {
 		}		   
 
 	location /cache {
-	      	 alias /srv/baobaxia/app/static/cache/;	
+	      	 alias /srv/_domain_/static/cache/;	
 	         error_page 404 @bbx; 
 	} 
 
@@ -64,6 +64,6 @@ server {
 	# Error pages
 	error_page 500 502 503 504 /500.html;
 	location = /500.html {
-		 root /srv/baobaxia/app/static/;
+		 root /srv/_domain_/static/;
 		 }
 }

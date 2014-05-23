@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from mocambola.serializers import UserSerializer
 from mucua.models import Mucua
 from repository.models import Repository
-from bbx.settings import MOCAMBOLA_DIR, REPOSITORY_DIR
+from bbx.settings import MOCAMBOLA_DIR, MEDIA_ROOT
 
 logger = logging.getLogger(__name__)
 
@@ -42,10 +42,11 @@ class FileBackend(object):
             print "invalid address"
             return None
         # Get file from MOCAMBOLA_DIR
-        mocambola_path = os.path.join(str(REPOSITORY_DIR),
+        mocambola_path = os.path.join(str(MEDIA_ROOT),
                                       str(current_repository),
                                       str(current_mucua),
                                       MOCAMBOLA_DIR)
+        print "Mocambola Path: " + mocambola_path
 
         for jmocambola in os.listdir(mocambola_path):
 

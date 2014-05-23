@@ -4,9 +4,13 @@
 USER_BBX='exu'
 USER_BBX_PASSWD='abre os caminhos'
 UID_BBX=10000
-DEFAULT_REPOSITORY_DIR='/data/repositories'
+BBX_DIR_NAME='bbx'
+DEFAULT_REPOSITORY_DIR_NAME='repositories'
+DEFAULT_MEDIA_ROOT='/data/bbx/'
+DEFAULT_REPOSITORY_DIR=$DEFAULT_MEDIA_ROOT$DEFAULT_REPOSITORY_DIR_NAME
 DEFAULT_REPOSITORY_NAME='mocambos'
-INSTALL_DIR='/srv'
+INSTALL_DIR='/srv/bbx/'
+LOG_DIR = 'log/'
 BBX_LOCAL_REPO='/srv/bbx-repo'
 BBX_REMOTE_REPO='http://github.com/RedeMocambos/baobaxia'
 
@@ -34,23 +38,23 @@ mkdir -p $DEFAULT_REPOSITORY_DIR
 # 1) escolha do nome da mucuaLocal
 echo "------------------------"
 echo "          /"
-echo "     _ \ /"
-echo "      \_| |/__"
-echo "    <== | / ()"
-echo "    ==> |/ NPDD/Rede Mocambos"
-echo "    nnn |"
-echo "        | http://wiki.mocambos.net/wiki/NPDD"
-echo "        | Vamos fazer um mundo digital mais do nosso jeito..."
-echo "______/~~~\"_____________________________________________________________ _ _ _"
+echo "    \_ \ /"
+echo "      \ |  /___"
+echo "  <==  \| /   ()"
+echo "  ==>   ||    NPDD/Rede Mocambos"
+echo "  nnn   ||/   "
+echo "        ||    http://wiki.mocambos.net/wiki/NPDD"
+echo "        ||    Vamos fazer um mundo digital mais do nosso jeito..."
+echo "______/~~~~\_____________________________________________________________ _ _ _"
 echo ""
-echo "E ku abo ilê Baobáxia!"
-echo "Bem vindo ao Baobáxia!"
-echo "Welcome to Baobáxia!"
+echo " E ku abo ilê Baobáxia!"
+echo " Bem vindo ao Baobáxia!"
+echo " Welcome to Baobáxia!"
 echo ""
 echo "Esse é o instador do Baobáxia. "
 echo ""
 echo "----------------"
-echo "1) Escolha o nome da sua mucua"
+echo "Escolha o nome da sua mucua"
 echo "----------------"
 echo ""
 read -p `hostname`" -> este é o nome da sua mucua? (s/n)" ESCOLHA
@@ -62,11 +66,26 @@ echo ""
 echo "O nome da mucua é $MUCUA"
 echo ""
 
+echo "----------------"
+echo " Escolha o endereço da sua mucua"
+echo "----------------"
+echo ""
+read -p `hostname`".mocambos.net" " -> este é o url da sua mucua? (s/n)" ESCOLHA
+case "$ESCOLHA" in
+    s|S) MUCUA_URL=`hostname`".mocambos.net";;
+    n|N|*) read -p "Escolha o url da mucua: " MUCUA_URL;;
+esac
+echo ""
+echo "O url da mucua é $MUCUA_URL"
+echo ""
+
+
+
 echo ""
 echo "Criando usuário padrão para o Baobáxia ..."
 create_user $USER_BBX $UID_BBX
 
-# 2) define repositorioRemoto para espelhar / caminho do repositório 
+# define repositorioRemoto para espelhar / caminho do repositório 
 echo "----------------"
 echo "Defina um repositório remoto para espelhar:"
 echo "----------------"
@@ -85,7 +104,7 @@ case "$PROTOCOL" in
 	case $MIRROR_REPOSITORY_PORT in
 	    '') MIRROR_REPOSITORY_PORT=22 ;;
 	esac
-	read -p "Defina a pasta do repositório para espelhar (ex: /data/repositories/mocambos):" MIRROR_REPOSITORY_FOLDER
+	read -p "Defina a pasta do repositório para espelhar (ex: /data/bbx/repositories/mocambos):" MIRROR_REPOSITORY_FOLDER
 	git clone ssh://$MIRROR_REPOSITORY_NAME:$MIRROR_REPOSITORY_PORT:$MIRROR_REPOSITORY_FOLDER
 	;;
     # git clone de media
@@ -141,6 +160,11 @@ git annex init $MUCUA
 echo ""
 echo "Criando diretórios locais da mucua $MUCUA ..."
 mkdir -p $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME/$MUCUA/mocambolas
+mkdir -p $INSTALL_DIR/media
+mkdir -p $INSTALL_DIR/static
+mkdir -p $INSTALL_DIR/run
+mkdir -p $INSTALL_DIR/log
+mkdir -p $INSTALL_DIR/envs
 
 echo ""
 echo "Copiando arquivos do Baobáxia ..."
@@ -159,13 +183,17 @@ git clone $BBX_REPO_FROM baobaxia
 echo ""
 echo "Criando arquivo de configuração do Baobáxia ..."
 cp $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.example.py $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
+sed -i -e '/REPOSITORY_DIR_NAME =/ s/= .*/= $DEFAULT_REPOSITORY_DIR_NAME/' $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
+sed -i -e '/MEDIA_ROOT =/ s/= .*/= $DEFAULT_MEDIA_ROOT/' $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
+sed -i -e '/DEFAULT_MUCUA =/ s/= .*/= $MUCUA/' $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
+sed -i -e '/DEFAULT_REPOSITORY =/ s/= .*/= $DEFAULT_REPOSITORY_NAME/' $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
+
 
 ### instalacao do baobaxia
 echo ""
 echo "Criando ambiente virtual do python ..."
 # cria ambiente virtual
 pip install virtualenv
-mkdir $INSTALL_DIR/envs
 chown root:$USER_BBX $INSTALL_DIR/envs 
 chmod 775 envs
 xhost +
@@ -197,13 +225,38 @@ echo "senha: $USER_BBX_PASSWD"
 
 echo ""
 echo "Setando permissão do guinicorn ..."
-chmod +x /srv/baobaxia/app/django-bbx/bin/gunicorn_start.sh
+chmod +x $INSTALL_DIR/baobaxia/app/django-bbx/bin/gunicorn_start.sh
 
 # 7) recriar mucuas da rede no django-bbx (mucuaLocal)
 # sync a partir dos jsons
 echo ""
 echo "Primeira sincronização, criando objetos a partir dos arquivos ..."
 python manage.py create_objects_from_files
+
+
+echo ""
+echo "Criando arquivo de configuração do NGINX ..."
+cp $INSTALL_DIR/baobaxia/conf/nginx/bbx /etc/nginx/site-available/bbx
+
+sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/nginx/site-available/bbx
+sed -i "s:_domain_aliases_:${MUCUA} ${MUCUA_URL}:g" /etc/nginx/site-available/bbx
+
+ln -s /etc/nginx/site-available/bbx /etc/nginx/site-enabled/bbx
+
+echo ""
+echo "Ativando NGINX ..."
+service nginx restart
+
+echo ""
+echo "Criando arquivo de configuração do Supervisor ..."
+cp $INSTALL_DIR/baobaxia/conf/supervisor/bbx /etc/supervisor/conf.d/bbx.conf
+
+sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/supervisor/conf.d/bbx.conf
+
+echo ""
+echo "Ativando o Baobáxia ..."
+supervisorctl start bbx
+
 
 echo "..."
 echo "Instalação completa!"
