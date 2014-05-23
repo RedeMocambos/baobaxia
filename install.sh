@@ -160,6 +160,7 @@ git annex init $MUCUA
 echo ""
 echo "Criando diretórios locais da mucua $MUCUA ..."
 mkdir -p $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME/$MUCUA/mocambolas
+mkdir -p $INSTALL_DIR/bin
 mkdir -p $INSTALL_DIR/media
 mkdir -p $INSTALL_DIR/static
 mkdir -p $INSTALL_DIR/run
@@ -224,8 +225,11 @@ echo "username: zumbi@$MUCUA.mocambos.net"
 echo "senha: $USER_BBX_PASSWD"
 
 echo ""
-echo "Setando permissão do guinicorn ..."
-chmod +x $INSTALL_DIR/baobaxia/app/django-bbx/bin/gunicorn_start.sh
+echo "Configurando o gunicorn ..."
+cp $INSTALL_DIR/baobaxia/bin/gunicorn_start.sh.example $INSTALL_DIR/bin/gunicorn_start.sh
+sed -i "s:_domain_:${BBX_DIR_NAME}:g" $INSTALL_DIR/bin/gunicorn_start.sh
+chmod +x $INSTALL_DIR/bin/gunicorn_start.sh
+
 
 # 7) recriar mucuas da rede no django-bbx (mucuaLocal)
 # sync a partir dos jsons
