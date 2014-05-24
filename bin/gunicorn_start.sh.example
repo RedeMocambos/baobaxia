@@ -1,13 +1,13 @@
 #!/bin/bash
  
 NAME="bbx" # Name of the application
-DJANGODIR=/srv/_domain_/baobaxia/app/django-bbx # Django project directory
-SOCKFILE=/srv/_domain_/run/gunicorn.sock # we will communicte using this unix socket
-USER=exu # the user to run as
-GROUP=exu # the group to run as
+DJANGODIR="/srv/_domain_/baobaxia/app/django-bbx" # Django project directory
+SOCKFILE="/srv/_domain_/run/gunicorn.sock" # we will communicte using this unix socket
+USER="exu" # the user to run as
+GROUP="exu" # the group to run as
 NUM_WORKERS=3 # how many worker processes should Gunicorn spawn
-DJANGO_SETTINGS_MODULE=bbx.settings # which settings file should Django use
-DJANGO_WSGI_MODULE=bbx.wsgi # WSGI module name
+DJANGO_SETTINGS_MODULE="bbx.settings" # which settings file should Django use
+DJANGO_WSGI_MODULE="bbx.wsgi" # WSGI module name
  
 echo "Starting $NAME as `whoami`"
  

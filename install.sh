@@ -172,6 +172,8 @@ mkdir -p $INSTALL_DIR/static
 mkdir -p $INSTALL_DIR/run
 mkdir -p $INSTALL_DIR/log
 mkdir -p $INSTALL_DIR/envs
+chown -R $USER_BBX:$USER_BBX $INSTALL_DIR
+chmod -R 775 $INSTALL_DIR
 
 echo ""
 echo "Copiando arquivos do Baobáxia ..."
@@ -213,7 +215,7 @@ pip install $INSTALL_DIR/baobaxia.pybundle;
 
 echo ""
 echo "Definindo permissões do baobáxia ..."
-chown -R exu:exu $INSTALL_DIR/baobaxia
+chown -R $USER_BBX:$USER_BBX $INSTALL_DIR/baobaxia
 
 echo ""
 echo "Criando banco de dados do baobáxia ..."
@@ -239,7 +241,10 @@ echo ""
 echo "Configurando o gunicorn ..."
 cp $INSTALL_DIR/baobaxia/bin/gunicorn_start.sh.example $INSTALL_DIR/bin/gunicorn_start.sh
 sed -i "s:_domain_:${BBX_DIR_NAME}:g" $INSTALL_DIR/bin/gunicorn_start.sh
+touch $INSTALL_DIR/log/gunicorn_supervisor.log
 chmod +x $INSTALL_DIR/bin/gunicorn_start.sh
+chmod 775 $INSTALL_DIR/log/gunicorn_supervisor.log 
+chown $USER_BBX:$USER_BBX $INSTALL_DIR/log/gunicorn_supervisor.log 
 
 
 # 7) recriar mucuas da rede no django-bbx (mucuaLocal)
@@ -248,6 +253,7 @@ echo ""
 echo "Primeira sincronização, criando objetos a partir dos arquivos ..."
 su - $USER_BBX -c "
 source $INSTALL_DIR/envs/bbx/bin/activate;
+cd $INSTALL_DIR/baobaxia/app/django-bbx/;
 python manage.py create_objects_from_files mocambos
 "
 
@@ -257,7 +263,6 @@ cp $INSTALL_DIR/baobaxia/conf/nginx/bbx /etc/nginx/sites-available/bbx
 
 sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/nginx/sites-available/bbx
 sed -i "s:_domain_aliases_:${MUCUA} ${MUCUA_URL}:g" /etc/nginx/sites-available/bbx
-
 ln -s /etc/nginx/sites-available/bbx /etc/nginx/sites-enabled/bbx
 
 echo ""
