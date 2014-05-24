@@ -195,7 +195,8 @@ cp $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.example.py $INSTALL_DIR/bao
 sed -i "s:^\(MEDIA_ROOT\s*=\s*\).*$:\1\"${DEFAULT_MEDIA_ROOT}\":" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
 sed -i "s:^\(DEFAULT_MUCUA\s*=\s*\).*$:\1\"${MUCUA}\":" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
 sed -i "s:^\(REPOSITORY_DIR_NAME\s*=\s*\).*$:\1\"${DEFAULT_REPOSITORY_DIR_NAME}\":" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
-sed -i "s:^\(DEFAULT_REPOSITORY\s*=\s*\).*$:\1\"${DEFAULT_REPOSITORY}\":" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
+sed -i "s:^\(DEFAULT_REPOSITORY\s*=\s*\).*$:\1\"${DEFAULT_REPOSITORY_NAME}\":" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
+sed -i "s:^\(STATIC_ROOT\s*=\s*\).*$:\1\"${INSTALL_DIR}\/static\":" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
 
 
 ### instalacao do baobaxia
@@ -230,6 +231,7 @@ python manage.py schemamigration --initial --traceback tag;
 python manage.py schemamigration --initial --traceback media;
 python manage.py schemamigration --initial --traceback repository;
 python manage.py migrate --all;
+python manage.py collectstatic --noinput
 "
 
 echo ""
