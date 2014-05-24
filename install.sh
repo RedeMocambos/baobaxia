@@ -197,7 +197,7 @@ echo "Criando ambiente virtual do python ..."
 pip install virtualenv
 chown root:$USER_BBX $INSTALL_DIR/envs 
 chmod 775 envs
-xhost +
+#xhost +
 su - $USER_BBX -c "cd $INSTALL_DIR/envs"
 su - $USER_BBX -c "virtualenv bbx"
 su - $USER_BBX -c "source $INSTALL_DIR/envs/bbx/bin/activate"
@@ -240,12 +240,12 @@ python manage.py create_objects_from_files
 
 echo ""
 echo "Criando arquivo de configuração do NGINX ..."
-cp $INSTALL_DIR/baobaxia/conf/nginx/bbx /etc/nginx/site-available/bbx
+cp $INSTALL_DIR/baobaxia/conf/nginx/bbx /etc/nginx/sites-available/bbx
 
-sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/nginx/site-available/bbx
+sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/nginx/sites-available/bbx
 sed -i "s:_domain_aliases_:${MUCUA} ${MUCUA_URL}:g" /etc/nginx/site-available/bbx
 
-ln -s /etc/nginx/site-available/bbx /etc/nginx/site-enabled/bbx
+ln -s /etc/nginx/sites-available/bbx /etc/nginx/sites-enabled/bbx
 
 echo ""
 echo "Ativando NGINX ..."
