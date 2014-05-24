@@ -10,7 +10,7 @@ DEFAULT_MEDIA_ROOT='/data/bbx/'
 DEFAULT_REPOSITORY_DIR=$DEFAULT_MEDIA_ROOT$DEFAULT_REPOSITORY_DIR_NAME
 DEFAULT_REPOSITORY_NAME='mocambos'
 INSTALL_DIR='/srv/bbx/'
-LOG_DIR = 'log/'
+LOG_DIR='log/'
 BBX_LOCAL_REPO='/srv/bbx-repo'
 BBX_REMOTE_REPO='http://github.com/RedeMocambos/baobaxia'
 
@@ -70,7 +70,8 @@ echo "----------------"
 echo " Escolha o endereço da sua mucua"
 echo "----------------"
 echo ""
-read -p `hostname`".mocambos.net" " -> este é o url da sua mucua? (s/n)" ESCOLHA
+MUCUA_URL=
+read -p `hostname`".mocambos.net -> este é o url da sua mucua? (s/n)" ESCOLHA
 case "$ESCOLHA" in
     s|S) MUCUA_URL=`hostname`".mocambos.net";;
     n|N|*) read -p "Escolha o url da mucua: " MUCUA_URL;;
@@ -78,7 +79,6 @@ esac
 echo ""
 echo "O url da mucua é $MUCUA_URL"
 echo ""
-
 
 
 echo ""
@@ -105,7 +105,7 @@ case "$PROTOCOL" in
 	    '') MIRROR_REPOSITORY_PORT=22 ;;
 	esac
 	read -p "Defina a pasta do repositório para espelhar (ex: /data/bbx/repositories/mocambos):" MIRROR_REPOSITORY_FOLDER
-	git clone ssh://$MIRROR_REPOSITORY_NAME:$MIRROR_REPOSITORY_PORT:$MIRROR_REPOSITORY_FOLDER
+	git clone ssh://$MIRROR_REPOSITORY_NAME:$MIRROR_REPOSITORY_PORT/$MIRROR_REPOSITORY_FOLDER
 	;;
     # git clone de media
     media|MEDIA|*) PROTOCOL='media' 
