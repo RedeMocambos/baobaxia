@@ -9,7 +9,7 @@ DEFAULT_REPOSITORY_DIR_NAME='repositories'
 DEFAULT_MEDIA_ROOT='/data/bbx/'
 DEFAULT_REPOSITORY_DIR=$DEFAULT_MEDIA_ROOT$DEFAULT_REPOSITORY_DIR_NAME
 DEFAULT_REPOSITORY_NAME='mocambos'
-INSTALL_DIR='/srv/bbx/'
+INSTALL_DIR='/srv/bbx'
 LOG_DIR='log/'
 BBX_LOCAL_REPO='/srv/bbx-repo'
 BBX_REMOTE_REPO='http://github.com/RedeMocambos/baobaxia'
@@ -202,7 +202,7 @@ chmod 775 envs
 su - $USER_BBX -c "cd $INSTALL_DIR/envs"
 su - $USER_BBX -c "virtualenv bbx"
 su - $USER_BBX -c "source $INSTALL_DIR/envs/bbx/bin/activate"
-su - $USER_BBX -c "cd $INSTALL_DIR/"
+su - $USER_BBX -c "cd $INSTALL_DIR"
 su - $USER_BBX -c "pip install $INSTALL_DIR/baobaxia.pybundle -r $INSTALL_DIR/baobaxia/app/django-bbx/requirements.txt"
 
 echo ""
