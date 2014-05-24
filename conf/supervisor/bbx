@@ -1,5 +1,5 @@
 [program:bbx]
-command = /srv/_domain_/baobaxia/app/django-bbx/bin/gunicorn_start.sh            ; Command to start app
+command = /srv/_domain_/bin/gunicorn_start.sh					 ; Command to start app
 user = exu                                                              	 ; User to run as
 stdout_logfile = /srv/_domain_/log/gunicorn_supervisor.log                  	 ; Where to write log messages
 redirect_stderr = true                                                  	 ; Save stderr in the same log

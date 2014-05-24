@@ -190,10 +190,10 @@ git clone $BBX_REPO_FROM baobaxia
 echo ""
 echo "Criando arquivo de configuração do Baobáxia ..."
 cp $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.example.py $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
-sed -i -e "/REPOSITORY_DIR_NAME =/ s/= .*/= \"${DEFAULT_REPOSITORY_DIR_NAME}\"/" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
-sed -i -e "/MEDIA_ROOT =/ s/= .*/= \"${DEFAULT_MEDIA_ROOT}\"/" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
-sed -i -e "/DEFAULT_MUCUA =/ s/= .*/= \"${MUCUA}\"/" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
-sed -i -e "/DEFAULT_REPOSITORY =/ s/= .*/= \"${DEFAULT_REPOSITORY_NAME}\"/" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
+sed -i "s:^\(MEDIA_ROOT\s*=\s*\).*$:\1\"${DEFAULT_MEDIA_ROOT}\":" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
+sed -i "s:^\(DEFAULT_MUCUA\s*=\s*\).*$:\1\"${MUCUA}\":" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
+sed -i "s:^\(REPOSITORY_DIR_NAME\s*=\s*\).*$:\1\"${DEFAULT_REPOSITORY_DIR_NAME}\":" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
+sed -i "s:^\(DEFAULT_REPOSITORY\s*=\s*\).*$:\1\"${DEFAULT_REPOSITORY}\":" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
 
 
 ### instalacao do baobaxia
@@ -246,8 +246,10 @@ chmod +x $INSTALL_DIR/bin/gunicorn_start.sh
 # sync a partir dos jsons
 echo ""
 echo "Primeira sincronização, criando objetos a partir dos arquivos ..."
-python manage.py create_objects_from_files
-
+su - $USER_BBX -c "
+source $INSTALL_DIR/envs/bbx/bin/activate;
+python manage.py create_objects_from_files mocambos
+"
 
 echo ""
 echo "Criando arquivo de configuração do NGINX ..."
@@ -265,7 +267,6 @@ service nginx restart
 echo ""
 echo "Criando arquivo de configuração do Supervisor ..."
 cp $INSTALL_DIR/baobaxia/conf/supervisor/bbx /etc/supervisor/conf.d/bbx.conf
-
 sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/supervisor/conf.d/bbx.conf
 
 echo ""
