@@ -199,8 +199,7 @@ pip install virtualenv
 chown root:$USER_BBX $INSTALL_DIR/envs 
 chmod 775 envs
 #xhost +
-su - $USER_BBX -c "cd $INSTALL_DIR/envs"
-su - $USER_BBX -c "virtualenv bbx"
+su - $USER_BBX -c "virtualenv $INSTALL_DIR/envs/bbx"
 su - $USER_BBX -c "source $INSTALL_DIR/envs/bbx/bin/activate"
 su - $USER_BBX -c "cd $INSTALL_DIR"
 su - $USER_BBX -c "pip install $INSTALL_DIR/baobaxia.pybundle -r $INSTALL_DIR/baobaxia/app/django-bbx/requirements.txt"
