@@ -105,7 +105,7 @@ case "$PROTOCOL" in
 	    '') MIRROR_REPOSITORY_PORT=22 ;;
 	esac
 	read -p "Defina a pasta do repositório para espelhar (ex: /data/bbx/repositories/mocambos):" MIRROR_REPOSITORY_FOLDER
-	git clone ssh://$MIRROR_REPOSITORY_NAME:$MIRROR_REPOSITORY_PORT/$MIRROR_REPOSITORY_FOLDER
+	git clone ssh://$USER_BBX@$MIRROR_REPOSITORY_NAME:$MIRROR_REPOSITORY_PORT/$MIRROR_REPOSITORY_FOLDER
 	;;
     # git clone de media
     media|MEDIA|*) PROTOCOL='media' 
