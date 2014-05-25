@@ -164,13 +164,14 @@ chmod -R 775 $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME
 
 echo ""
 echo "Definindo usuário git para usuário do baobáxia ($USER_BBX) ..."
-cd $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME
-git config --global user.name "Exu do BBX"
-git config --global user.email exu@mocambos.org
-echo ""
 echo "Criando novo repositório na mucua $MUCUA ..."
-git init .
-git annex init $MUCUA
+su - $USER_BBX -c "
+cd $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME;
+git config --global user.name "Exu do BBX";
+git config --global user.email exu@mocambos.org;
+git init . ;
+git annex init $MUCUA;
+"
 
 # 5) criar diretórios locais
 echo ""
