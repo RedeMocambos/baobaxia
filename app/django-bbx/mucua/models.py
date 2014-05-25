@@ -46,6 +46,9 @@ def getAvailableMucuas(uuid=None, repository=None):
                 print "Mucua description: ", mucua['description']
                 return mucua['description']
     else:
+        print [(mucua['uuid'], mucua['description']) for mucua in
+               jsonRepositoryStatus['semitrusted repositories']]
+        
         return [(mucua['uuid'], mucua['description']) for mucua in
                 jsonRepositoryStatus['semitrusted repositories']]
 
