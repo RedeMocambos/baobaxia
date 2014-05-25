@@ -93,7 +93,8 @@ echo ""
 echo "É possível conectar-se de diferentes formas a um repositório:"
 echo "- pela rede (ssh)"
 echo "- por um dispositivo externo: pendrive, hd externo (media)"
-read -p "Como você vai conectar? (ssh/media, padrão é media)" PROTOCOL
+echo "- de uma pasta local (local)"
+read -p "Como você vai conectar? (ssh/media/local, padrão é local)" PROTOCOL
 case "$PROTOCOL" in
     # git clone via ssh
     ssh|SSH) PROTOCOL='ssh';
@@ -144,7 +145,7 @@ case "$PROTOCOL" in
 	cd $DEFAULT_REPOSITORY_DIR
 	git clone $REPO_NAME
 	;;
-    local|LOCAL) PROTOCOL='local'
+    local|LOCAL|*) PROTOCOL='local'
 	read -p "Defina a pasta do repositório para espelhar (padrão: /root/baobaxia/mocambos):" MIRROR_REPOSITORY_FOLDER
 	case $MIRROR_REPOSITORY_FOLDER in
 	    '') MIRROR_REPOSITORY_FOLDER="/root/baobaxia/mocambos" ;;
@@ -181,6 +182,8 @@ mkdir -p $INSTALL_DIR/static
 mkdir -p $INSTALL_DIR/run
 mkdir -p $INSTALL_DIR/log
 mkdir -p $INSTALL_DIR/envs
+chown -R $USER_BBX:$USER_BBX $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME
+chmod -R 775 $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME
 chown -R $USER_BBX:$USER_BBX $INSTALL_DIR
 chmod -R 775 $INSTALL_DIR
 
