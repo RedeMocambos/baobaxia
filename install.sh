@@ -144,6 +144,15 @@ case "$PROTOCOL" in
 	cd $DEFAULT_REPOSITORY_DIR
 	git clone $REPO_NAME
 	;;
+    local|LOCAL) PROTOCOL='local'
+	read -p "Defina a pasta do repositório para espelhar (padrão: /root/baobaxia/mocambos):" MIRROR_REPOSITORY_FOLDER
+	case $MIRROR_REPOSITORY_FOLDER in
+	    '') MIRROR_REPOSITORY_FOLDER="/root/baobaxia/mocambos" ;;
+	esac
+	cd $DEFAULT_REPOSITORY_DIR
+	git clone $MIRROR_REPOSITORY_FOLDER
+	;;
+
 esac
 
 ## configurar permissoes
