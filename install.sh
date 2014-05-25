@@ -264,7 +264,7 @@ echo "Criando arquivo de configuração do NGINX ..."
 cp $INSTALL_DIR/baobaxia/conf/nginx/bbx /etc/nginx/sites-available/bbx
 
 sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/nginx/sites-available/bbx
-sed -i "s:_domain_aliases_:${MUCUA} ${MUCUA_URL}:g" /etc/nginx/sites-available/bbx
+sed -i "s:_domainaliases_:${MUCUA} ${MUCUA_URL}:g" /etc/nginx/sites-available/bbx
 ln -s /etc/nginx/sites-available/bbx /etc/nginx/sites-enabled/bbx
 
 echo ""

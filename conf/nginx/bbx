@@ -7,7 +7,7 @@ upstream bbx_app_server {
  
 server {
        listen 80;
-       server_name _domain_aliases_;
+       server_name _domainaliases_;
        client_max_body_size 4G;
        access_log /srv/_domain_/log/nginx-access.log;
        error_log /srv/_domain_/log/nginx-error.log;
