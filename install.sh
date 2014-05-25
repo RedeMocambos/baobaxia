@@ -29,7 +29,7 @@ create_user() {
 # PRE: pkgs:
 
 # dependencies: se for deb pkg, tirar
-apt-get install git git-annex nginx supervisor python-pip usbmount
+apt-get install git nginx supervisor python-pip
 
 ### cria diretorio basico
 mkdir -p $DEFAULT_REPOSITORY_DIR
