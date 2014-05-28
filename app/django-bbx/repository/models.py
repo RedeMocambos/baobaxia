@@ -68,13 +68,19 @@ def getLatestMedia(repository=DEFAULT_REPOSITORY):
     """
     # TODO Organizar melhor onde salvar esse apontador
     try:
+        current_repository = Repository.objects.get(
+            name=repository)
+    except Repository.DoesNotExist:
+        return None
+    try:
+        repo = Repository.objects.get(name=repository)
         lastSyncMark = open(
-            os.path.join(repository_dir, repository.name, 'lastSync.txt'),
+            os.path.join(repository_dir, current_repository.name, 'lastSync.txt'),
             'r+')
         lastSync = lastSyncMark.readline()
         lastSync = lastSync.replace("'", "")
     except IOError:
-        cwd = os.path.join(repository_dir, repository.name)
+        cwd = os.path.join(repository_dir, current_repository.name)
         p1 = subprocess.Popen(['git', 'rev-list', 'HEAD'],
                               cwd=cwd, stdout=PIPE)
         p2 = subprocess.Popen(['tail', '-n 1'], stdin=p1.stdout, stdout=PIPE)
@@ -84,7 +90,7 @@ def getLatestMedia(repository=DEFAULT_REPOSITORY):
 #    cmd = 'git diff --pretty="format:" --name-only ' + lastSync + 'HEAD' \
 #        + '| sort | uniq | grep json | grep -v mocambolas'
 
-    cwd = os.path.join(repository_dir, repository.name)
+    cwd = os.path.join(repository_dir, current_repository.name)
     p1 = subprocess.Popen(
         ['git', 'diff', '--pretty=format:', '--name-only', 'HEAD', lastSync],
         cwd=cwd, stdout=PIPE

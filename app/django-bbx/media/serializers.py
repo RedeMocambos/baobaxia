@@ -11,7 +11,7 @@ from django.core.management.base import CommandError
 from django.core.exceptions import ValidationError
 
 from media.models import Media
-from repository.models import getLatestMedia, getDefaultRepository
+from repository.models import getLatestMedia, getDefaultRepository, Repository
 from bbx.settings import REPOSITORY_DIR
 from bbx.utils import dumpclean
 
@@ -116,6 +116,12 @@ class MediaSerializer(serializers.ModelSerializer):
 
 def createObjectsFromFiles(repository=getDefaultRepository().name):
     """Recria os midias no Django a partir dos medias serializados em JSON."""
+    try:
+        repository = Repository.objects.get(
+            name=repository)
+    except Repository.DoesNotExist:
+        return None
+
     logger.info(u">>> %s" % _('DESERIALIZING'))
     logger.info(u"%s: %s" % (_('Repository'),  repository))
     print getLatestMedia(repository).splitlines()

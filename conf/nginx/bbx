@@ -15,6 +15,10 @@ server {
        		alias /srv/_domain_/static/;
 		}	
 
+       location /static {
+       		alias /srv/_domain_/static/;
+		}	
+
        location /media/ {
        		alias /data/_domain_/media/;
        		}	
