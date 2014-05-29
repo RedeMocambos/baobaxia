@@ -171,6 +171,7 @@ git config --global user.name "Exu do BBX";
 git config --global user.email exu@mocambos.org;
 git init . ;
 git annex init $MUCUA;
+git annex describe here $MUCUA;
 "
 
 # 5) criar diretórios locais
