@@ -29,7 +29,7 @@ create_user() {
 # PRE: pkgs:
 
 # dependencies: se for deb pkg, tirar
-apt-get install git nginx supervisor python-pip
+apt-get install git git-annex nginx supervisor python-pip
 
 ### cria diretorio basico
 mkdir -p $DEFAULT_REPOSITORY_DIR
@@ -167,7 +167,7 @@ echo "Definindo usuário git para usuário do baobáxia ($USER_BBX) ..."
 echo "Criando novo repositório na mucua $MUCUA ..."
 su - $USER_BBX -c "
 cd $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME;
-git config --global user.name 'Exu do BBX;
+git config --global user.name 'Exu do BBX';
 git config --global user.email 'exu@mocambos.org';
 git init . ;
 git annex init $MUCUA;
