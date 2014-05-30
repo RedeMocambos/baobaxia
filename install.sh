@@ -167,8 +167,8 @@ echo "Definindo usuário git para usuário do baobáxia ($USER_BBX) ..."
 echo "Criando novo repositório na mucua $MUCUA ..."
 su - $USER_BBX -c "
 cd $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME;
-git config --global user.name "Exu do BBX";
-git config --global user.email exu@mocambos.org;
+git config --global user.name 'Exu do BBX;
+git config --global user.email 'exu@mocambos.org';
 git init . ;
 git annex init $MUCUA;
 git annex describe here $MUCUA;
