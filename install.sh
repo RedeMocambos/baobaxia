@@ -202,6 +202,8 @@ case "$BBX_REPO_FROM" in
     1|local|*) BBX_REPO_FROM=$BBX_LOCAL_REPO ;;
 esac
 git clone $BBX_REPO_FROM baobaxia
+git checkout refactoring 
+
 
 echo ""
 echo "Criando arquivo de configuração do Baobáxia ..."

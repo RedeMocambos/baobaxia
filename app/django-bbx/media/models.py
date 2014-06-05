@@ -103,12 +103,12 @@ class Media(models.Model):
     type = models.CharField(
         _('type'),
         help_text=_('Type of the media, like image, document, video, ...'),
-        max_length=14, choices=get_type_choices,
+        max_length=14, choices=lazy(get_type_choices, tuple)(),
         default='arquivo', blank=True)
     format = models.CharField(
         _('format'),
         help_text=('Format of the media, like ogg, jpg, pdf, ...'),
-        max_length=14, choices=get_format_choices,
+        max_length=14, choices=lazy(get_format_choices, tuple)(),
         default='ogg', blank=True)
     license = models.CharField(
         _('license'),
