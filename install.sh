@@ -222,7 +222,7 @@ echo "Criando ambiente virtual do python ..."
 # cria ambiente virtual
 pip install virtualenv
 chown root:$USER_BBX $INSTALL_DIR/envs
-chmod 775 envs
+chmod 775 $INSTALL_DIR/envs
 #xhost +
 su - $USER_BBX -c "
 virtualenv $INSTALL_DIR/envs/bbx;
