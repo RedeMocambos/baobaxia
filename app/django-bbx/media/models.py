@@ -13,6 +13,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
+from django.utils.functional import lazy
 
 from tag.models import Tag
 from bbx.settings import REPOSITORY_DIR
