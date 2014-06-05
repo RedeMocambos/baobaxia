@@ -1,59 +1,100 @@
 # -*- coding: utf-8 -*-
 
-from django.db import models
-#from repository.models import Repository
-#from repository.models import gitAnnexStatus
-from django.contrib.auth.models import User
-from bbx.settings import DEFAULT_MUCUA
-from django.db.utils import DatabaseError
 import exceptions
+import json
 
+from django.db import models
+from django.contrib.auth.models import User
+from django.db.utils import DatabaseError
+from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 
-# MUCUA_NAME_UUID é uma tupla com nome e uuid da mucua (ler do settings.py)
-# MUCUA_NAME_UUID = settings.MUCUA_NAME_UUID
-# MUCUA_NAME_UUID = [ ('a30a926a-3a8c-11e2-a817-cb26bd9bc8d3','dandara'),
-#                     ('0492621a-4195-11e2-b8c7-43de40a4e11c','acotirene') ]
+from bbx.settings import DEFAULT_MUCUA
+from bbx.utils import dumpclean
+from repository.models import get_default_repository, git_annex_status
 
 
-def getDefaultMucua():
+def get_default_mucua():
+    u"""Retorna a mucua padrão (objeto)"""
     return Mucua.objects.get(description=DEFAULT_MUCUA)
 
-
 def update_mucuas_list(repository):
-    mucuas = getAvailableMucuas(None, repository)
+    u"""Atualiza a lista de mucuas disponivéis no repositório"""
+    mucuas = get_available_mucuas(None, repository)
     for mucua in mucuas:
-        mucuainstance = Mucua(description=mucua[1], uuid=mucua[0])
-        mucuainstance.save()
-
-
-def getAvailableMucuas(uuid=None, repository=None):
+        print ">>> Mucua description: " + mucua[1]
+        print ">>> Mucua uuid: " + mucua[0]
+        mucua_description = str(mucua[1])
+        obj, created = Mucua.objects.get_or_create(description=mucua_description)
+        if created: 
+            print ">>> Created"
+        else:
+            print ">>> Not created"
+        
+def get_mucua_from_UUID(uuid=None, repository=None):
+    """Retorna a descrição da mucua"""
     if not repository:
         try:
-#            repository_model = get_model('repository', 'Repository')
-            from repository.models import getDefaultRepository
-            repository = getDefaultRepository()
+            repository = get_default_repository()
         except DatabaseError:
             return []
 
-    import json
-    from repository.models import gitAnnexStatus
-    jsonRepositoryStatus = json.loads(gitAnnexStatus(repository.getPath()))
+    json_repository_status = json.loads(git_annex_status(repository.get_path()))
+
+    try:
+        description = ''
+        for mucua in json_repository_status['semitrusted repositories']:
+            if mucua['uuid'] == uuid:
+                description = mucua['description']
+                
+        for mucua in json_repository_status['trusted repositories']:
+            if mucua['uuid'] == uuid:
+                description = mucua['description']
+        return description
+    except MucuaDoesNotExists:
+        return "Invalid"
+
+def get_available_mucuas(uuid=None, repository=None):
+    u"""
+    Retorna uma lista de mucuas
+
+    A lista são tuplas com uuid e descrição, por ex.:
+    [('41f7a561-9678-437e-8f74-9531e67f2aea','dpadua'), 
+    ('72c5d0e9-2bfb-43fb-bf3e-0002602b1844', 'kalakuta-laptop')]
+
+    Atributos:
+        uuid: retorna o nome (description) da mucua com 'uuid' 
+        repository: retorna a lista de mucuas de 'repository'
+    """
+    if not repository:
+        try:
+            repository = get_default_repository()
+        except DatabaseError:
+            return []
+
+    json_repository_status = json.loads(git_annex_status(repository.get_path()))
+
+    mucuas = []
 
     if uuid:
-        for mucua in jsonRepositoryStatus['semitrusted repositories']:
+        for mucua in json_repository_status['semitrusted repositories']:
             if mucua['uuid'] == uuid:
-                print "Mucua description: ", mucua['description']
-                return mucua['description']
+                mucuas.append(mucua['description'])
+        for mucua in json_repository_status['trusted repositories']:
+            if mucua['uuid'] == uuid:
+                mucuas.append(mucua['description'])
+        return mucuas
+                
     else:
-        print [(mucua['uuid'], mucua['description']) for mucua in
-               jsonRepositoryStatus['semitrusted repositories']]
-        
-        return [(mucua['uuid'], mucua['description']) for mucua in
-                jsonRepositoryStatus['semitrusted repositories']]
+        mucuas.extend([(mucua['uuid'], mucua['description'])
+                                for mucua 
+                                in json_repository_status['semitrusted repositories']])
+        mucuas.extend([(mucua['uuid'], mucua['description'])
+                                for mucua 
+                                in json_repository_status['trusted repositories']])
+        return mucuas
 
-
-class RepositoryDoesNotExist(exceptions.Exception):
+class MucuaDoesNotExists(exceptions.Exception):
     def __init__(self, args=None):
         self.args = args
 
@@ -63,21 +104,32 @@ class MucuaAdmin(admin.ModelAdmin):
 
 
 class Mucua(models.Model):
+    u"""
+    Classe de definição dos objetos Mucua
+
+    Atributos
+    description: nome da mucua
+    note: anotações livres
+    uuid: identificador univoco da 'mucua'
+    repository: relação com objeto 'repository'
+    mocambolas: relação com objeto 'mocambola'
+    """
+
     description = models.CharField(max_length=100, editable=False)
     note = models.TextField(max_length=300, blank=True)
     uuid = models.CharField("Mucua", max_length=36,
-                            choices=getAvailableMucuas(),
+                            choices=get_available_mucuas(),
                             default='dandara')
     repository = models.ManyToManyField('repository.Repository')
     mocambolas = models.ManyToManyField(User, through='mocambola.Mocambola')
 
-    def getDescription(self):
+    def get_description(self):
         return self.description
 
     def save(self, *args, **kwargs):
         print "Self.uuid: ", self.uuid
-        self.description = getAvailableMucuas(uuid=self.uuid)
-        super(Mucua, self).save(*args, **kwargs)  # Call "real" save() method.
+        self.description = get_mucua_from_UUID(uuid=self.uuid)
+        super(Mucua, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.description

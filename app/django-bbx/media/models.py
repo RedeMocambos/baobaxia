@@ -28,36 +28,63 @@ FORMAT_CHOICES = (('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'),
                   ('jpg', 'jpg'), ('pdf', 'pdf'))
 
 
-def mediaFileName(instance, filename):
-    logging.debug(os.path.join(getFilePath(instance) + instance.getFileName()))
-    return os.path.join(getFilePath(instance), instance.getFileName())
+def media_file_name(instance, file_name):
+    """Retorna o caminho, completo de nome, do media"""
+    logging.debug(os.path.join(get_file_path(instance) + instance.get_file_name()))
+    return os.path.join(get_file_path(instance), instance.get_file_name())
 
 
-def generateUUID():
+def generate_UUID():
+    """Gera um uuid4"""
     return str(uuid.uuid4())
 
 
-def getFilePath(instance):
+def get_file_path(instance):
+    """Retorna o caminho do media"""
     if instance.date == '':
         t = datetime.now
         date = t.strftime("%y/%m/%d/")
     else:
         date = instance.date.strftime("%y/%m/%d/")
 
-    return os.path.join(REPOSITORY_DIR, instance.getRepository(),
-                        instance.getMucua(), instance.getType(),
+    return os.path.join(REPOSITORY_DIR, instance.get_repository(),
+                        instance.get_mucua(), instance.get_type(),
                         date)
 
 
-def getTypeChoices():
+def get_type_choices():
+    """Retorna uma tupla com os tipos de media suportados"""
     return TYPE_CHOICES
 
 
-def getFormatChoices():
+def get_format_choices():
+    """Retorna uma tupla com os tipos de arquivo suportado"""
     return FORMAT_CHOICES
 
 
 class Media(models.Model):
+    """
+    Classe de definição dos objetos multimedia.
+
+    Atributos
+    uuid: identificador univoco do media
+    name: nome do media
+    media_file: relação com arquivo
+    date: data do media
+    note: anotações livres
+    author: relação com objeto user
+    origin: relação com objeto mucua
+    type: tipo de media
+    format: formato do arquivo
+    license: licença do media
+    repository: relação com objeto repository
+    tags: etiquetas do media
+    is_local:  sinaliza que tem uma copia local do media
+    is_requestes: sinaliza que foi solicitada uma copia local 
+                  do media
+    request_code: identifica o pedido de copia local
+    num_copies: numero de copias desse media no bbx
+    """
     uuid = models.CharField(
         _('uuid'),
         help_text=_('Media universal unique identifier'),
@@ -65,7 +92,7 @@ class Media(models.Model):
     name = models.CharField(_('name'),
                             help_text=_('Media name'),
                             max_length=100, default=_('No title'))
-    mediafile = models.FileField(upload_to=mediaFileName, blank=True)
+    media_file = models.FileField(upload_to=media_file_name, blank=True)
     date = models.DateTimeField(_('date'),
                                 help_text=_('Media criation date'))
     note = models.TextField(_('note'),
@@ -76,12 +103,12 @@ class Media(models.Model):
     type = models.CharField(
         _('type'),
         help_text=_('Type of the media, like image, document, video, ...'),
-        max_length=14, choices=TYPE_CHOICES,
+        max_length=14, choices=get_type_choices,
         default='arquivo', blank=True)
     format = models.CharField(
         _('format'),
         help_text=('Format of the media, like ogg, jpg, pdf, ...'),
-        max_length=14, choices=FORMAT_CHOICES,
+        max_length=14, choices=get_format_choices,
         default='ogg', blank=True)
     license = models.CharField(
         _('license'),
@@ -110,41 +137,32 @@ class Media(models.Model):
     def __unicode__(self):
         return self.name
 
-    def getName(self):
+    def get_name(self):
         return self.name
 
-    def getFileName(self):
-        return (slugify(self.getName()) + '-' + str(self.uuid[:5]) + '.' +
+    def get_file_name(self):
+        return (slugify(self.get_name()) + '-' + str(self.uuid[:5]) + '.' +
                 self.format)
 
-    def getRepository(self):
-        return self.repository.getName()
+    def get_repository(self):
+        return self.repository.get_name()
 
-    def getMucua(self):
+    def get_mucua(self):
         return self.origin.description
 
-    def getType(self):
+    def get_type(self):
         return self.type
 
-    def getFormat(self):
+    def get_format(self):
         return self.format
 
     # FIX
     def _set_is_local(self):
-        print os.path.join(getFilePath(self), self.getFileName())
-        self.is_local = os.path.isfile(os.path.join(getFilePath(self),
-                                                    self.getFileName()))
+        print os.path.join(get_file_path(self), self.get_file_name())
+        self.is_local = os.path.isfile(os.path.join(get_file_path(self),
+                                                    self.get_file_name()))
 
-    # # perform validation
-    # def clean(self):
-    #     from django.core.exceptions import ValidationError
-    #     try:
-    #         self.full_clean()
-    #     except ValidationError as e:
-    #         # do stuff
-    #         print e
-
-    def getTags(self):
+    def get_tags(self):
         return self.tags
 
     def save(self, *args, **kwargs):
@@ -161,7 +179,7 @@ class TagPolicyDoesNotExist(exceptions.Exception):
 
 
 @receiver(post_save, sender=Media)
-def startPostSavePolicies(instance, **kwargs):
+def start_post_save_policies(instance, **kwargs):
     """
     Intercepta o sinal de *post_save* de objetos multimedia (*media*) e
     inicializa as policies de post-save
@@ -171,15 +189,15 @@ def startPostSavePolicies(instance, **kwargs):
     # somente funciona nos "saves" seguidos. Deve ser um problema de
     # disponibilidade da relaçao com a tag.
 
-    tags = instance.getTags()
+    tags = instance.get_tags()
     if tags.all():
         for tag in tags.all():
             try:
                 for policy in tag.policies:
                     print policy
-                    if "postSave" in policy:
-                        policyModule = "policy." + policy
-                        module = import_module(policyModule)
+                    if "post_save" in policy:
+                        policy_module = "policy." + policy
+                        module = import_module(policy_module)
                         result = getattr(module, policy)(instance)
                         # TODO: I *assume* this is what is needed.
                         return result

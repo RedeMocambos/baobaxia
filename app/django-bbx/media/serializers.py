@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-                                                                                                                                                           
 import os
 import logging
 import subprocess
@@ -11,7 +12,7 @@ from django.core.management.base import CommandError
 from django.core.exceptions import ValidationError
 
 from media.models import Media
-from repository.models import getLatestMedia, getDefaultRepository, Repository
+from repository.models import get_latest_media, get_default_repository, Repository
 from bbx.settings import REPOSITORY_DIR
 from bbx.utils import dumpclean
 
@@ -25,19 +26,17 @@ class MediaSerializer(serializers.ModelSerializer):
     origin = serializers.SlugRelatedField(many=False, slug_field='description')
     repository = serializers.SlugRelatedField(many=False, slug_field='name')
     author = serializers.SlugRelatedField(many=False, slug_field='username')
-#    mediafile = serializers.FileField()
 
     class Meta:
         model = Media
         fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
-                  'format', 'license', 'mediafile', 'origin',
+                  'format', 'license', 'media_file', 'origin',
                   'repository', 'tags')
         depth = 1
 
     def restore_fields(self, data, files):
-        """
-        Core of deserialization, together with `restore_object`.
-        Converts a dictionary of data into a dictionary of deserialized fields.
+        u"""Converte um dicionário de dados em um dicionário de campos
+        deserializados.
         """
         reverted_data = {}
 
@@ -47,7 +46,7 @@ class MediaSerializer(serializers.ModelSerializer):
 
         for field_name, field in self.fields.items():
             field.initialize(parent=self, field_name=field_name)
-            if(field_name == 'mediafile'):
+            if(field_name == 'media_file'):
                 # field_name = 'dataUri'
                 field = serializers.CharField()
                 try:
@@ -59,7 +58,7 @@ class MediaSerializer(serializers.ModelSerializer):
                     path = value
                     # set the file <Path> property on the model,
                     # remove the old dataUri
-                    reverted_data['mediafile'] = path
+                    reverted_data['media_file'] = path
                     del reverted_data[field_name]
 
                 except ValidationError as err:
@@ -81,12 +80,9 @@ class MediaSerializer(serializers.ModelSerializer):
         return reverted_data
 
     def restore_object(self, attrs, instance=None):
-        """
-        Create or update a new media instance, given a dictionary
-        of deserialized field values.
-
-        Note that if we don't define this method, then deserializing
-        data will simply return a dictionary of items.
+        u"""
+        Crea o atualiza um media, dado um dicionário de valores dos 
+        campos deserializados.
         """
         if instance:
             # Update existing instance
@@ -99,8 +95,8 @@ class MediaSerializer(serializers.ModelSerializer):
             instance.type = attrs.get('type', instance.type)
             instance.format = attrs.get('format', instance.format)
             instance.license = attrs.get('license', instance.license)
-            instance.mediafile(upload_to=attrs.get('mediafile',
-                                                   instance.mediafile))
+            instance.media_file(upload_to=attrs.get('media_file',
+                                                   instance.media_file))
             instance.tags = attrs.get('tags', instance.tags)
             instance.repository = attrs.get('repository', instance.repository)
             return instance
@@ -114,7 +110,7 @@ class MediaSerializer(serializers.ModelSerializer):
         return JSONRenderer().render(self.data)
 
 
-def createObjectsFromFiles(repository=getDefaultRepository().name):
+def create_objects_from_files(repository=get_default_repository().name):
     """Recria os midias no Django a partir dos medias serializados em JSON."""
     try:
         repository = Repository.objects.get(
@@ -124,9 +120,9 @@ def createObjectsFromFiles(repository=getDefaultRepository().name):
 
     logger.info(u">>> %s" % _('DESERIALIZING'))
     logger.info(u"%s: %s" % (_('Repository'),  repository))
-    print getLatestMedia(repository).splitlines()
+    print get_latest_media(repository).splitlines()
     try:
-        for serialized_media in getLatestMedia(repository).splitlines():
+        for serialized_media in get_latest_media(repository).splitlines():
             logger.info(u"%s: %s" % (_('Serialized Media'), serialized_media))
             media_json_file_path = os.path.join(REPOSITORY_DIR,
                                                 repository.name,
@@ -141,8 +137,6 @@ def createObjectsFromFiles(repository=getDefaultRepository().name):
                 serializer = MediaSerializer(data=data)
                 print serializer.is_valid()
                 print serializer.errors
-#                print serializer.object.mediafile
-                #logger.error(serializer.errors)
                 serializer.object.save()
             else:
                 logger.info(u"%s" % _('This media already exist'))
@@ -154,9 +148,9 @@ def createObjectsFromFiles(repository=getDefaultRepository().name):
                 cwd=path)
             logger.info(u"%s: %s" % (_('Revision is'), output))
             logger.info('<<<')
-            lastSyncMark = open(os.path.join(path, 'lastSync.txt'), 'w+')
-            lastSyncMark.write(output)
-            lastSyncMark.close()
+            last_sync_mark = open(os.path.join(path, 'lastSync.txt'), 'w+')
+            last_sync_mark.write(output)
+            last_sync_mark.close()
 
     except CommandError:
         pass

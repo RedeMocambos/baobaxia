@@ -12,10 +12,10 @@ from django.db.models import Q
 from django.core.context_processors import csrf
 from django.template import Template, RequestContext
 
-from media.models import Media, generateUUID
+from media.models import Media, generate_UUID
 from tag.models import Tag
 from media.serializers import MediaSerializer
-from media.models import getTypeChoices, getFormatChoices
+from media.models import get_type_choices, get_format_choices
 from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
 from mucua.models import Mucua
 from repository.models import Repository
