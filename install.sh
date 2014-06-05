@@ -295,7 +295,7 @@ sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/supervisor/conf.d/bbx.conf
 
 echo ""
 echo "Ativando o Baobáxia ..."
-supervisorctl start bbx
+supervisorctl restart bbx
 
 
 echo "..."

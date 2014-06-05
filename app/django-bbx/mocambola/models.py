@@ -26,8 +26,8 @@ logger = logging.getLogger(__name__)
 
 def get_file_path(instance):
     """Retorna o caminho onde são memorizados os mocambolas"""
-    return os.path.join(REPOSITORY_DIR, instance.repository.getName(),
-                        instance.mucua.getDescription(), MOCAMBOLA_DIR)
+    return os.path.join(REPOSITORY_DIR, instance.repository.get_name(),
+                        instance.mucua.get_description(), MOCAMBOLA_DIR)
 
 
 def create_user_from_files(repository):
@@ -95,9 +95,9 @@ def mocambola_post_save(instance, **kwargs):
     fout = open(mocambolapath + mocamboladata, 'w')
     fout.write(str(serializer.getJSON()))
     fout.close()
-    gitAdd(mocamboladata, mocambolapath)
-    gitCommit(mocamboladata, instance.user.get_username(),
-              instance.user.email, instance.repository.getPath())
+    git_add(mocamboladata, mocambolapath)
+    git_commit(mocamboladata, instance.user.get_username(),
+              instance.user.email, instance.repository.get_path())
 
 # TODO HIGH: Precisa serializar o user tambem na criaçao e update
 # diretamente pelo usuario
