@@ -202,6 +202,7 @@ case "$BBX_REPO_FROM" in
     1|local|*) BBX_REPO_FROM=$BBX_LOCAL_REPO ;;
 esac
 git clone $BBX_REPO_FROM baobaxia
+cd $INSTALL_DIR/baobaxia
 git checkout refactoring 
 
 
@@ -239,7 +240,7 @@ echo "Criando banco de dados do baobáxia ..."
 su - $USER_BBX -c "
 source $INSTALL_DIR/envs/bbx/bin/activate;
 cd $INSTALL_DIR/baobaxia/app/django-bbx;
-find . -name '000*.py' -exec rm '{}' \; && echo "OK!";
+find . -name '000*.py' -exec rm '{}' \; && echo 'OK!';
 python manage.py syncdb --noinput;
 python manage.py schemamigration --initial --traceback mocambola;
 python manage.py schemamigration --initial --traceback mucua;

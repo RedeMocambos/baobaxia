@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from media.serializers import createObjectsFromFiles
+from media.serializers import create_objects_from_files
 
 """
 Definicoes do comando para recriar objetos no Django a partir de media
