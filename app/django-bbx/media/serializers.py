@@ -120,7 +120,7 @@ def create_objects_from_files(repository=get_default_repository().name):
 
     logger.info(u">>> %s" % _('DESERIALIZING'))
     logger.info(u"%s: %s" % (_('Repository'),  repository))
-    print get_latest_media(repository).splitlines()
+    logger.debug(u"%s \n %s" % (_('List of media found in repository..'), get_latest_media(repository).splitlines()))
     try:
         for serialized_media in get_latest_media(repository).splitlines():
             logger.info(u"%s: %s" % (_('Serialized Media'), serialized_media))
@@ -146,7 +146,7 @@ def create_objects_from_files(repository=get_default_repository().name):
             output = subprocess.check_output(
                 ["git", "log", "--pretty=format:'%H'", "-n 1"],
                 cwd=path)
-            logger.info(u"%s: %s" % (_('Revision is'), output))
+            logger.debug(u"%s: %s" % (_('Revision is'), output))
             logger.info('<<<')
             last_sync_mark = open(os.path.join(path, 'lastSync.txt'), 'w+')
             last_sync_mark.write(output)

@@ -203,7 +203,6 @@ def git_annex_status(repository_path):
     logger.info('git annex info/status')
 
     # a partir da versao 5
-    print git_annex_version()
     if (float(git_annex_version()) <= 5):
         cmd = 'git annex status --json'
     else:

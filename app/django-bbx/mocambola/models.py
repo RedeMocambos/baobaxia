@@ -11,7 +11,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.core import serializers
-
+from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework.parsers import JSONParser
 
@@ -56,7 +56,10 @@ def create_user_from_files(repository):
                     serializer.is_valid()
 
                     current_user = serializer.object
-                    current_user.save()
+                    try:
+                        User.objects.get(username=current_user.username)
+                    except ObjectDoesNotExist:
+                        current_user.save()
 
 
 class Mocambola(models.Model):

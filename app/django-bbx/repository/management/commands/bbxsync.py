@@ -2,7 +2,7 @@
 
 from django.core.management.base import BaseCommand
 
-from media.serializers import createObjectsFromFiles
+from media.serializers import create_objects_from_files
 from repository.models import Repository
 from mucua.models import update_mucuas_list
 from mocambola.models import create_user_from_files
@@ -13,7 +13,7 @@ Definicoes do comando para sincronizar a mucua local.
 
 
 class Command(BaseCommand):
-    """Sincroniza o a mucua local, a partir dos metadados e configurações do
+    u"""Sincroniza a mucua local, a partir dos metadados e configurações do
     repositório."""
     help = 'Create media objects from new serialized objects.'
     args = '[repository name] [repository name] ...'
@@ -21,11 +21,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for repository in args:
             try:
-                repositoryinstance = Repository.objects.get(name=repository)
+                repository_instance = Repository.objects.get(name=repository)
             except Repository.DoesNotExist:
                 return False
 
-            update_mucuas_list(repositoryinstance)
-            create_user_from_files(repositoryinstance)
-            repositoryinstance.syncRepository()
-            createObjectsFromFiles(repositoryinstance)
+            update_mucuas_list(repository_instance)
+            create_user_from_files(repository_instance)
+            repository_instance.sync_repository()
+            create_objects_from_files(repository_instance)

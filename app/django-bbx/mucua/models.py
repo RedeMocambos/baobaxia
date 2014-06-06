@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.db.utils import DatabaseError
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
+from django.core.exceptions import ObjectDoesNotExist
+
 
 from bbx.settings import DEFAULT_MUCUA
 from bbx.utils import dumpclean
@@ -25,12 +27,15 @@ def update_mucuas_list(repository):
         print ">>> Mucua description: " + mucua[1]
         print ">>> Mucua uuid: " + mucua[0]
         mucua_description = str(mucua[1])
-        obj, created = Mucua.objects.get_or_create(description=mucua_description)
-        if created: 
-            print ">>> Created"
-        else:
-            print ">>> Not created"
-        
+        mucua_uuid = str(mucua[0])
+        try:
+            mucua = Mucua.objects.get(description=mucua_description)
+            print "Vi a mucuaa"
+        except Mucua.DoesNotExist:
+            m = Mucua(description=mucua_description, uuid=mucua_uuid) 
+            m.save()
+            print "Criei a mucua " + mucua_description
+
 def get_mucua_from_UUID(uuid=None, repository=None):
     """Retorna a descrição da mucua"""
     if not repository:
@@ -39,7 +44,8 @@ def get_mucua_from_UUID(uuid=None, repository=None):
         except DatabaseError:
             return []
 
-    json_repository_status = json.loads(git_annex_status(repository.get_path()))
+    json_repository_status = json.loads(
+        git_annex_status(repository.get_path()))
 
     try:
         description = ''
@@ -51,7 +57,7 @@ def get_mucua_from_UUID(uuid=None, repository=None):
             if mucua['uuid'] == uuid:
                 description = mucua['description']
         return description
-    except MucuaDoesNotExists:
+    except Mucua.DoesNotExists:
         return "Invalid"
 
 def get_available_mucuas(uuid=None, repository=None):
@@ -72,7 +78,8 @@ def get_available_mucuas(uuid=None, repository=None):
         except DatabaseError:
             return []
 
-    json_repository_status = json.loads(git_annex_status(repository.get_path()))
+    json_repository_status = json.loads(
+        git_annex_status(repository.get_path()))
 
     mucuas = []
 
@@ -87,14 +94,14 @@ def get_available_mucuas(uuid=None, repository=None):
                 
     else:
         mucuas.extend([(mucua['uuid'], mucua['description'])
-                                for mucua 
-                                in json_repository_status['semitrusted repositories']])
+                       for mucua 
+                       in json_repository_status['semitrusted repositories']])
         mucuas.extend([(mucua['uuid'], mucua['description'])
-                                for mucua 
-                                in json_repository_status['trusted repositories']])
+                       for mucua 
+                       in json_repository_status['trusted repositories']])
         return mucuas
 
-class MucuaDoesNotExists(exceptions.Exception):
+class MucuaDoesNotExists(ObjectDoesNotExist):
     def __init__(self, args=None):
         self.args = args
 
@@ -127,7 +134,6 @@ class Mucua(models.Model):
         return self.description
 
     def save(self, *args, **kwargs):
-        print "Self.uuid: ", self.uuid
         self.description = get_mucua_from_UUID(uuid=self.uuid)
         super(Mucua, self).save(*args, **kwargs)
 
