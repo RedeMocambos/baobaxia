@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from mucua.models import Mucua, getAvailableMucuas, getDefaultMucua
+from mucua.models import Mucua, get_available_mucuas, get_default_mucua
 from repository.models import Repository
 from mucua.serializers import MucuaSerializer
 
@@ -16,7 +16,7 @@ def mucua_list(request, repository=None):
         except Repository.DoesNotExist:
             return Response("Repository not found")
 
-    mucuas = getAvailableMucuas(None, repository)   # retorna tupla de mucuas
+    mucuas = get_available_mucuas(None, repository)   # retorna tupla de mucuas
     mucuas_list = []
 
     if mucuas is None:
@@ -41,9 +41,8 @@ def mucua_list(request, repository=None):
 
 @api_view(['GET'])
 def mucua_get_default(request):
-
     mucuas_list = []
-    mucuas_list.append(getDefaultMucua())
+    mucuas_list.append(get_default_mucua())
     serializer = MucuaSerializer(mucuas_list, many=True)
 
     return Response(serializer.data)

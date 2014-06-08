@@ -14,85 +14,75 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from media.models import Media
-from media.models import getFilePath
-
+from media.models import get_file_path
 from repository.signals import filesync_done
-
 from bbx.settings import DEFAULT_REPOSITORY
 
-"""
-Modelos da aplicacao Django.
-
-Neste arquivo sao definidos os modelos de dados da aplicacao *gitannex*.
-"""
-
-# REPOSITORY_CHOICE é uma tupla com repositorios dentro da pasta /annex
-REPOSITORY_CHOICES = [('mocambos', 'mocambos'), ('sarava', 'sarava')]
+# REPOSITORY_CHOICE é uma tupla com repositórios dentro da pasta /annex
+#REPOSITORY_CHOICES = [('mocambos', 'mocambos'), ('sarava', 'sarava')]
 logger = logging.getLogger(__name__)
 repository_dir = settings.REPOSITORY_DIR
 
 
 # Connecting to Media signal
 @receiver(post_save, sender=Media)
-def gitMediaPostSave(instance, **kwargs):
-    """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e
-    adiciona o objeto ao repositorio."""
+def git_media_post_save(instance, **kwargs):
+    u"""Intercepta o sinal de *post_save* de objetos multimedia (*media*) e
+    adiciona o objeto ao repositório."""
     from media.serializers import MediaSerializer
     logger.debug(instance.type)
     logger.debug(type(instance))
-    gitAnnexAdd(instance.getFileName(), getFilePath(instance))
+    git_annex_add(instance.get_file_name(), get_file_path(instance))
     serializer = MediaSerializer(instance)
-    mediapath = getFilePath(instance)+'/'
-    mediadata = os.path.splitext(instance.getFileName())[0] + '.json'
+    mediapath = get_file_path(instance)+'/'
+    mediadata = os.path.splitext(instance.get_file_name())[0] + '.json'
     fout = open(mediapath + mediadata, 'w')
     fout.write(str(serializer.getJSON()))
     fout.close()
-    gitAdd(mediadata, mediapath)
-    gitCommit(instance.getFileName(),
+    git_add(mediadata, mediapath)
+    git_commit(instance.get_file_name(),
               instance.author.username,
               instance.author.email,
-              getFilePath(instance))
+              get_file_path(instance))
 
 
-def getDefaultRepository():
+def get_default_repository():
     return Repository.objects.get(name=DEFAULT_REPOSITORY)
 
+def get_available_repositories():
+    return Repository.objects.all()
 
-def getAvailableRepositories():
-    return REPOSITORY_CHOICES
-
-
-def getLatestMedia(repository=DEFAULT_REPOSITORY):
-    """
-    Returns a list of json serialized media
-    """
-    # TODO Organizar melhor onde salvar esse apontador
+def get_latest_media(repository=DEFAULT_REPOSITORY):
+    u"""Retorna uma lista de caminhos dos novos medias no repositório,
+    desde a ultima sincronização (last_sync)."""
     try:
         current_repository = Repository.objects.get(
             name=repository)
     except Repository.DoesNotExist:
-        return None
+        return []
     try:
-        repo = Repository.objects.get(name=repository)
-        lastSyncMark = open(
-            os.path.join(repository_dir, current_repository.name, 'lastSync.txt'),
-            'r+')
-        lastSync = lastSyncMark.readline()
-        lastSync = lastSync.replace("'", "")
+        last_sync_mark = open(
+            os.path.join(repository_dir, current_repository.name,
+                         'last_sync.txt'), 'r+')
+        last_sync = last_sync_mark.readline()
+        last_sync = last_sync.replace("'", "")
     except IOError:
         cwd = os.path.join(repository_dir, current_repository.name)
         p1 = subprocess.Popen(['git', 'rev-list', 'HEAD'],
                               cwd=cwd, stdout=PIPE)
-        p2 = subprocess.Popen(['tail', '-n 1'], stdin=p1.stdout, stdout=PIPE)
+        p2 = subprocess.Popen(['tail', '-n 1'],
+                              stdin=p1.stdout, stdout=PIPE)
         output, error = p2.communicate()
-        lastSync = output.rstrip()
-
-#    cmd = 'git diff --pretty="format:" --name-only ' + lastSync + 'HEAD' \
-#        + '| sort | uniq | grep json | grep -v mocambolas'
+        last_sync = output.rstrip()
+        #  Este é um exemplo do comando para pegar os ultimos medias desde
+        #  last_sync 
+        #    cmd = 'git diff --pretty="format:" --name-only ' +
+        #    last_sync + 'HEAD' \ + '| sort | uniq | grep json | grep -v
+        #    mocambolas'
 
     cwd = os.path.join(repository_dir, current_repository.name)
     p1 = subprocess.Popen(
-        ['git', 'diff', '--pretty=format:', '--name-only', 'HEAD', lastSync],
+        ['git', 'diff', '--pretty=format:', '--name-only', 'HEAD', last_sync],
         cwd=cwd, stdout=PIPE
     )
     p2 = subprocess.Popen(["sort"], stdin=p1.stdout, stdout=PIPE)
@@ -104,104 +94,103 @@ def getLatestMedia(repository=DEFAULT_REPOSITORY):
     return output
 
 
-def _getAvailableFolders(path):
-    """Procura as pastas que podem ser inicializada como repositorio, retorna
-    a lista das pastas."""
-    folderList = [(name, name) for name in os.listdir(path)
+def _get_available_folders(path):
+    u"""Retorna a lista das pastas/repositórios"""
+    folder_list = [(name, name) for name in os.listdir(path)
                   if os.path.isdir(os.path.join(path, name))]
-    return folderList
+    return folder_list
 
 
-def gitAdd(fileName, repoDir):
-    """Adiciona um arquivo no repositorio."""
-    logger.info('git add ' + fileName)
-    cmd = 'git add ' + fileName
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+def git_add(file_name, repository_path):
+    u"""Adiciona um arquivo no repositório."""
+    logger.info('git add ' + file_name)
+    cmd = 'git add ' + file_name
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 
-def gitCommit(fileTitle, authorName, authorEmail, repoDir):
-    """Executa o *commit* no repositorio impostando os dados do author."""
-    logger.info('git commit --author="' + authorName + ' <' + authorEmail +
-                '>" -m "' + fileTitle + '"')
-    cmd = ('git commit --author="' + authorName + ' <' + authorEmail +
-           '>" -m "' + fileTitle + '"')
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+def git_commit(file_title, author_name, author_email, repository_path):
+    u"""Executa o *commit* no repositório impostando os dados do author."""
+    logger.info('git commit --author="' + author_name + ' <' + author_email +
+                '>" -m "' + file_title + '"')
+    cmd = ('git commit --author="' + author_name + ' <' + author_email +
+           '>" -m "' + file_title + '"')
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 
-def gitPush(repoDir):
-    """Executa o *push* do repositorio, atualizando o repositorio de origem."""
+def git_push(repository_path):
+    u"""Executa o *push* do repositório, atualizando o repositório de origem."""
     logger.info('git push ')
     cmd = 'git push '
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 
-def gitPull(repoDir):
-    """Executa o *pull* do repositorio, atualizando o repositorio local."""
+def git_pull(repository_path):
+    u"""Executa o *pull* do repositório, atualizando o repositório local."""
     logger.info('git pull ')
     cmd = 'git pull '
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 
-def gitGetSHA(repoDir):
-    """Resgata o codigo identificativo (SHA) da ultima revisao do repositorio,
+def git_get_SHA(repository_path):
+    u"""Resgata o codigo identificativo (SHA) da ultima revisao do repositório,
     retorna o codigo."""
     logger.info('git rev-parse HEAD')
     cmd = 'git rev-parse HEAD'
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     output, error = pipe.communicate()
     logger.debug('>>> Revision is: ' + output)
     return output
 
 
-def gitAnnexAdd(fileName, repoDir):
-    """Adiciona um arquivo no repositorio *git-annex*."""
-    logger.info('git annex add ' + fileName)
-    cmd = 'git annex add ' + fileName
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+def git_annex_add(file_name, repository_path):
+    u"""Adiciona um arquivo no repositório *git-annex*."""
+    logger.info('git annex add ' + file_name)
+    cmd = 'git annex add ' + file_name
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 
-def gitAnnexMerge(repoDir):
-    """Executa o *merge* do repositorio, reunindo eventuais diferencias entre
-    o repositorio local e remoto."""
+def git_annex_merge(repository_path):
+    u"""Executa o *merge* do repositório, reunindo eventuais
+    diferencias entre o repositório local e remoto."""
     logger.info('git annex merge ')
     cmd = 'git annex merge '
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 
-def gitAnnexCopyTo(repoDir):
-    """Envia os conteudos binarios para o repositorio remoto."""
+def git_annex_copy_to(repository_path):
+    u"""Envia os conteudos binarios para o repositório remoto."""
     # TODO: Next release with dynamic "origin"
     logger.info('git annex copy --fast --to origin ')
     cmd = 'git annex copy --fast --to origin'
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 
-def gitAnnexGet(repoDir):
-    """Baixa os conteudos binarios desde o repositorio remoto."""
+def git_annex_get(repository_path):
+    u"""Baixa os conteudos binarios desde o repositório remoto."""
     # TODO: Next release with possibility to choice what to get
     logger.info('git annex get .')
     cmd = 'git annex get .'
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 
-def gitAnnexSync(repoDir):
-    """Sincroniza o repositorio com os outros clones remotos."""
+def git_annex_sync(repository_path):
+    u"""Sincroniza o repositório com os outros clones remotos."""
     # TODO: Next release with possibility to choice what to get
     logger.info('git annex sync')
     cmd = 'git annex sync'
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir)
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 
-def gitAnnexVersion():
+def git_annex_version():
     v = re.search('(\d{1})\.(\d{8})',
                   subprocess.Popen('git annex version',
                                    shell=True,
@@ -209,58 +198,53 @@ def gitAnnexVersion():
     return v.group()
 
 
-def gitAnnexStatus(repoDir):
-    """View all mucuas in a given repository"""
+def git_annex_status(repository_path):
+    u"""View all mucuas in a given repository"""
     logger.info('git annex info/status')
 
     # a partir da versao 5
-    print gitAnnexVersion()
-    if (float(gitAnnexVersion()) <= 5):
+    if (float(git_annex_version()) <= 5):
         cmd = 'git annex status --json'
     else:
         cmd = 'git annex info --json'
 
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir,
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path,
                             stdout=subprocess.PIPE)
     return pipe.stdout.read()
-    #except GitAnnexCommandError:
-    #    cmd = 'git annex info --json'
-    #    pipe = subprocess.Popen(cmd, shell=True, cwd=repoDir,
-    #                            stdout=subprocess.PIPE)
-    #    return pipe.stdout.read()
 
 
-def runScheduledJobs():
-    """Executa as operacoes programadas em todos os repositorios. """
-    allRep = Repository.objects.all()
-    for rep in allRep:
-        if rep.enableSync:
+def run_scheduled_jobs():
+    u"""Executa as operacoes programadas em todos os repositórios. """
+    repositories = Repository.objects.all()
+    for rep in repositories:
+        if rep.enable_sync:
             # TODO: Manage time of syncing
             # if rep.syncStartTime >= datetime.datetime.now():
-            rep.syncRepository()
+            rep.sync_repository()
 
 
 class Repository(models.Model):
-    """Classe de implementacao do modelo de repositorio *git-annex*.
+    u"""
+    Classe de implementacao do modelo de repositório *git-annex*.
 
-    Atributos:
-        name: nome do repositorio (campo preenchido por
-              *_getAvailableFolders()*)
-        note: Note.. use as you wish!
-        enableSync = flag booleano para abilitar ou disabilitar a sincronizacao
+    Atributos
+    name: nome do repositório (campo preenchido por
+    *_getAvailableFolders()*)
+    note: anotações livres
+    enableSync = flag booleano para abilitar ou disabilitar a sincronizacao
     """
 
     name = models.CharField(
         _('name'),
         help_text=_('Repository name taken from available repositories'),
         max_length=60,
-        choices=_getAvailableFolders(repository_dir))
+        choices=_get_available_folders(repository_dir))
     note = models.TextField(
         _('notes'),
         help_text=_('Note.. use as you wish!'),
         max_length=300, blank=True)
 
-    enableSync = models.BooleanField(
+    enable_sync = models.BooleanField(
         _('synchronize'),
         help_text=_('Tick here to enable'
                     'syncronization of this repository'),)
@@ -273,32 +257,32 @@ class Repository(models.Model):
     def __unicode__(self):
         return self.name
 
-    def getName(self):
-        """Retorna o nome do repositorio."""
+    def get_name(self):
+        u"""Retorna o nome do repositório."""
         return str(self.name)
 
-    def getPath(self):
-        """Retorna o caminho no disco (path) do repositorio."""
-        return os.path.join(repository_dir, self.getName())
+    def get_path(self):
+        u"""Retorna o caminho no disco (path) do repositório."""
+        return os.path.join(repository_dir, self.get_name())
 
-    def createRepository(self):
-        """Cria e inicializa o repositorio."""
+    def create_repository(self):
+        u"""Cria e inicializa o repositório."""
         #TODO: Implement this!
         #_createRepository(self.name, self.getPath())
         pass
 
-    def cloneRepository(self):
-        """Clona e inicializa o repositorio."""
+    def clone_repository(self):
+        u"""Clona e inicializa o repositório."""
         #TODO: Implement this!
         #_cloneRepository(self.getPath, self.name)
         pass
 
-    def syncRepository(self):
-        """Sincroniza o repositorio com sua origem."""
-        gitAnnexSync(self.getPath())
+    def sync_repository(self):
+        u"""Sincroniza o repositório com sua origem."""
+        git_annex_sync(self.get_path())
 
-        filesync_done.send(sender=self, name=self.getName(),
-                           repositoryDir=self.getPath())
+        filesync_done.send(sender=self, name=self.get_name(),
+                           repositoryDir=self.get_path())
 
     def save(self, *args, **kwargs):
         super(Repository, self).save(*args, **kwargs)
@@ -307,3 +291,8 @@ class Repository(models.Model):
 class GitAnnexCommandError(exceptions.Exception):
     def __init__(self, args=None):
         self.args = args
+
+class RepositoryDoesNotExists(exceptions.Exception):
+    def __init__(self, args=None):
+        self.args = args
+
