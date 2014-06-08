@@ -11,6 +11,8 @@ DEFAULT_REPOSITORY_DIR=$DEFAULT_MEDIA_ROOT$DEFAULT_REPOSITORY_DIR_NAME
 DEFAULT_REPOSITORY_NAME='mocambos'
 INSTALL_DIR='/srv/bbx'
 LOG_DIR='log/'
+PACK_DIR='/root/baobaxia'
+PACK_FILE='pip_wheel_20140606.tbz'
 BBX_LOCAL_REPO='/root/baobaxia'
 BBX_REMOTE_REPO='http://github.com/RedeMocambos/baobaxia'
 
@@ -184,11 +186,13 @@ mkdir -p $INSTALL_DIR/static
 mkdir -p $INSTALL_DIR/run
 mkdir -p $INSTALL_DIR/log
 mkdir -p $INSTALL_DIR/envs
-mkdir -p $INSTALL_DIR/db
+mkdir -p $DEFAULT_MEDIA_ROOT/db
 chown -R $USER_BBX:$USER_BBX $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME
 chmod -R 775 $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME
 chown -R $USER_BBX:$USER_BBX $INSTALL_DIR
 chmod -R 775 $INSTALL_DIR
+chown -R $USER_BBX:$USER_BBX $DEFAULT_MEDIA_ROOT/db
+chmod -R 775 $DEFAULT_MEDIA_ROOT/db
 
 echo ""
 echo "Copiando arquivos do Baobáxia ..."
@@ -222,14 +226,27 @@ echo ""
 echo "Criando ambiente virtual do python ..."
 # cria ambiente virtual
 pip install virtualenv
+cp $PACK_DIR/$PACK_FILE $INSTALL_DIR/ 
 chown root:$USER_BBX $INSTALL_DIR/envs
 chmod 775 $INSTALL_DIR/envs
 #xhost +
 su - $USER_BBX -c "
 virtualenv $INSTALL_DIR/envs/bbx;
 source $INSTALL_DIR/envs/bbx/bin/activate;
+pip install --upgrade pip ;
+pip install --upgrade setuptools ;
 cd $INSTALL_DIR;
-pip install $INSTALL_DIR/baobaxia.pybundle;
+tar xjvf pip_wheel_20140606.tbz ;
+pip install --use-wheel --no-index --find-links=local/wheel local/wheel/argparse-1.2.1-py2-none-any.whl;
+pip install --use-wheel --no-index --find-links=local/wheel local/wheel/Django-1.6.5-py2.py3-none-any.whl;
+pip install --use-wheel --no-index --find-links=local/wheel local/wheel/django_extensions-1.1.1-py2-none-any.whl;
+pip install --use-wheel --no-index --find-links=local/wheel local/wheel/djangorestframework-2.3.6-py2-none-any.whl;
+pip install --use-wheel --no-index --find-links=local/wheel local/wheel/gunicorn-18.0-py2-none-any.whl;
+pip install --use-wheel --no-index --find-links=local/wheel local/wheel/six-1.3.0-py2-none-any.whl;
+pip install --use-wheel --no-index --find-links=local/wheel local/wheel/sorl_thumbnail-11.12.1b-py27-none-any.whl;
+pip install --use-wheel --no-index --find-links=local/wheel local/wheel/South-0.8.4-py2.py3-none-any.whl;
+pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wheel-0.23.0-py2.py3-none-any.whl;
+pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wsgiref-0.1.2-py2-none-any.whl;
 "
 
 echo ""
@@ -274,7 +291,7 @@ echo "Primeira sincronização, criando objetos a partir dos arquivos ..."
 su - $USER_BBX -c "
 source $INSTALL_DIR/envs/bbx/bin/activate;
 cd $INSTALL_DIR/baobaxia/app/django-bbx/;
-python manage.py create_objects_from_files mocambos
+python manage.py bbxsync mocambos
 "
 
 echo ""
