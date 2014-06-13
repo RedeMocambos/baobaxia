@@ -103,7 +103,7 @@ div.image_preview {height: 130px; background: url(../images/no-preview-video.png
 .menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
 .menu-itens li a {color: #fff; text-decoration: none; }
 .caixa-resultado-busca {background-color: #eeffaa; padding: 2px; }
-.caixa-resultado-busca .nome-termo {margin: 12px; }
+.caixa-resultado-busca .nome-termo {margin: 12px; display:inline }
 .caixa-resultado-busca a {background-color: #cdde87; padding: 4px; text-decoration: none; font-weight: bold }
 .adicionar-termo {font-size: 16px; font-weight: bold; cursor: pointer}
 .remover-termo {font-size: 16px; font-weight: bold; cursor: pointer}

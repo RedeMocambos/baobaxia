@@ -1,6 +1,6 @@
 {
     "imagePath": "",
     "apiUrl": "/api",
-    "interfaceUrl": "/baobaxia/#",
+    "interfaceUrl": "/bbx/app/django-bbx/bbx/static/#",
     "defaultMucua": ""
 }

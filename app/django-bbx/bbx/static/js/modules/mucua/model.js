@@ -3,9 +3,9 @@ define([
     'underscore',
     'backbone'
 ], function($, _, Backbone) {
-    var MediaModel = Backbone.Model.extend({
+    var MucuaModel = Backbone.Model.extend({
 	idAttribute: 'uuid'
     });
     
-    return MediaModel;	
+    return MucuaModel;	
 });
