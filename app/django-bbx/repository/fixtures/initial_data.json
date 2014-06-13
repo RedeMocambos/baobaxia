@@ -1,1 +1,1 @@
-[{"pk": 1, "model": "repository.repository", "fields": {"note": "mocambos", "enableSync": true, "name": "mocambos"}}]
+[{"pk": 1, "model": "repository.repository", "fields": {"note": "mocambos", "enable_sync": true, "name": "mocambos"}}]

@@ -12,10 +12,10 @@ PROJECT_ROOT = os.path.realpath(
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = '/data/baobaxia/'
+MEDIA_ROOT = "/data/bbx/"
 
 # Change this to the full path to your own repository
-REPOSITORY_DIR_NAME ="repositories" 
+REPOSITORY_DIR_NAME ="repositories"
 REPOSITORY_DIR = os.path.join(MEDIA_ROOT, REPOSITORY_DIR_NAME)
 MOCAMBOLA_DIR = "mocambolas"  # Nome da pasta onde estao os usuarios em .json
 DEFAULT_MUCUA = "dandara"
@@ -35,7 +35,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_ROOT, 'bbx/.database.sqlite'),
+        'NAME': os.path.join(MEDIA_ROOT, 'db/.database.sqlite'),
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -80,7 +80,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = '/srv/bbx/static'
+STATIC_ROOT = "/srv/bbx/static"
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -115,6 +115,16 @@ TEMPLATE_LOADERS = (
     #'django.template.loaders.eggs.Loader',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages"
+    )
+
 AUTHENTICATION_BACKENDS = (
     'bbx.auth.FileBackend',
     'django.contrib.auth.backends.ModelBackend',
@@ -144,6 +154,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'longerusername',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -155,12 +166,12 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'rest_framework',
+    'bbx',
     'media',
     'mucua',
     'tag',
     'repository',
     'mocambola',
-    'bbx',
     'south',
 )
 

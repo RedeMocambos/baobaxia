@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from repository.models import Repository, getAvailableRepositories
-from repository.models import getDefaultRepository
+from repository.models import Repository, get_available_repositories
+from repository.models import get_default_repository
 from repository.serializers import RepositorySerializer
 
 
@@ -10,7 +10,7 @@ def repository_list(request):
     """
     List all repositories
     """
-    repositories = getAvailableRepositories()
+    repositories = get_available_repositories()
     repositories_list = []
     for repository_obj in repositories:
         repo_name = repository_obj[0]
@@ -32,9 +32,8 @@ def repository_list(request):
 
 @api_view(['GET'])
 def repository_get_default(request):
-
     repositories_list = []
-    repositories_list.append(getDefaultRepository())
+    repositories_list.append(get_default_repository())
     serializer = RepositorySerializer(repositories_list, many=True)
 
     return Response(serializer.data)

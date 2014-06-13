@@ -5,7 +5,7 @@ from repository.models import Repository
 class RepositorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Repository
-        fields = ('name', 'note', 'enableSync')
+        fields = ('name', 'note', 'enable_sync')
 
     def restore_object(self, attrs, instance=None):
 

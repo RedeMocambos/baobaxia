@@ -15,11 +15,12 @@
 
 """
 
+import os
+import exceptions
+
 from django.db import models
 from bbx.settings import POLICIES_DIR
 from bbx.utils import MultiSelectField
-import os
-import exceptions
 
 # This is to specify to south how to work with MultiSelectField:
 # http://south.readthedocs.org/en/latest/customfields.html
@@ -32,12 +33,12 @@ class PoliciesPersistentDataUnavailable(exceptions.Exception):
         self.args = args
 
 
-def getAvailablePolicies():
-    """Get a list of available policies from POLICIES_DIR."""
-    policiesList = [(os.path.splitext(name)[0], os.path.splitext(name)[0]) for
+def get_available_policies():
+    """Retorna a lista de politicas disponíveis em POLICIES_DIR."""
+    policy_list = [(os.path.splitext(name)[0], os.path.splitext(name)[0]) for
                     name in os.listdir(POLICIES_DIR) if name.endswith(".py") if
                     not (name.startswith("__"))]
-    return policiesList
+    return policy_list
 
 
 class Tag(models.Model):
@@ -45,40 +46,33 @@ class Tag(models.Model):
     note = models.TextField(max_length=300, blank=True)
     name = models.CharField(max_length=26)
     policies = MultiSelectField(max_length=100,
-                                choices=getAvailablePolicies(),
+                                choices=get_available_policies(),
                                 blank=True)
 
     def __unicode__(self):
         return (self.namespace + ":" + self.name if self.namespace != '' else
                 self.name)
 
-    def getId(self):
-        """
-        Returns tag's id built as namespace + name, ex.:
-        bbx:publico ("name" attribute shoul'd be "name" FIX:
-        rename!)
+    def get_id(self):
+        u"""
+        Retorna o id da etiqueta 
 
+        Por ex.:  bbx:publico 
         """
         return (self.namespace + ":" + self.name if self.namespace != '' else
                 self.name)
 
-    def _getPoliciesFilename(self):
-        """
-        Policies file is built with POLICIES_DIR and tag's id
+    def _get_policies_filename(self):
+        u"""Retorna o nome do arquivo das politicas"""
+        return POLICIES_DIR + '/' + self.get_id() + '.json'
 
-        """
-        return POLICIES_DIR + '/' + self.getId() + '.json'
-
-    def setNamespace(self):
-        """
-        Sets tag's namespace like in bbx:publico gets "bbx" :)
-
-        """
+    def set_namespace(self):
+        u"""Imposta o namespace da etiqueta"""
         if self.name.find(':') > 0:
             args = self.name.split(':')
             self.namespace = args[0]
 
-    def setName(self):
+    def set_name(self):
         """
         Sets tag's name. FIX
 
@@ -93,8 +87,8 @@ class Tag(models.Model):
 
         """
 
-        self.setNamespace()
-        self.setName()
+        self.set_namespace()
+        self.set_name()
         super(Tag, self).save(*args, **kwargs)
 
     class Meta:
