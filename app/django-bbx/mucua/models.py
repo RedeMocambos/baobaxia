@@ -36,6 +36,11 @@ def update_mucuas_list(repository):
             m.save()
             print "Criei a mucua " + mucua_description
 
+
+# Helper function to map repository description to correct 
+# mucua name if in the new format.
+rpr = lambda s: s[s.find("(")+1:s.find(")")] if "(" in s else s
+
 def get_mucua_from_UUID(uuid=None, repository=None):
     """Retorna a descrição da mucua"""
     if not repository:
@@ -56,7 +61,7 @@ def get_mucua_from_UUID(uuid=None, repository=None):
         for mucua in json_repository_status['trusted repositories']:
             if mucua['uuid'] == uuid:
                 description = mucua['description']
-        return description
+        return rpr(description)
     except Mucua.DoesNotExists:
         return "Invalid"
 
@@ -90,7 +95,6 @@ def get_available_mucuas(uuid=None, repository=None):
         for mucua in json_repository_status['trusted repositories']:
             if mucua['uuid'] == uuid:
                 mucuas.append(mucua['description'])
-        return mucuas
                 
     else:
         mucuas.extend([(mucua['uuid'], mucua['description'])
@@ -99,7 +103,10 @@ def get_available_mucuas(uuid=None, repository=None):
         mucuas.extend([(mucua['uuid'], mucua['description'])
                        for mucua 
                        in json_repository_status['trusted repositories']])
-        return mucuas
+ 
+    mucuas =  [(m[0], rpr(m[1])) for m in mucuas]
+    return mucuas
+
 
 class MucuaDoesNotExists(ObjectDoesNotExist):
     def __init__(self, args=None):
