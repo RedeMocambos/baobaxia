@@ -5,7 +5,8 @@ define([
     'backbone',
     'backbone_subroute',
     'modules/bbx/base-functions',
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions){
+    'modules/auth/LoginView', 
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView){
     var App = {};
     
     App.Router = Backbone.Router.extend({
@@ -37,7 +38,10 @@ define([
 	    console.log('login');
 	    var repository = repository || '',
 	    mucua = mucua || '';
-	    BBXBaseFunctions.initialize();
+	    BBXBaseFunctions.init();
+	    	    
+	    var loginView = new LoginView();
+	    loginView.render();
 	},
 	
 	logout: function(repository, mucua) {	
