@@ -33,18 +33,18 @@ def dumpclean(obj):
     if type(obj) == dict:
         for k, v in obj.items():
             if hasattr(v, '__iter__'):
-                print k
+                print k.encode('ascii', 'ignore')
                 dumpclean(v)
             else:
-                print '%s : %s' % (k, v)
+                print '%s : %s'.encode('ascii', 'ignore') % (k, v)
     elif type(obj) == list:
         for v in obj:
             if hasattr(v, '__iter__'):
                 dumpclean(v)
             else:
-                print v
+                print v.encode('ascii', 'ignore')
     else:
-        print obj
+        print obj.encode('ascii', 'ignore')
 
 
 class MultiSelectFormField(forms.MultipleChoiceField):

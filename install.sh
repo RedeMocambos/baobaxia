@@ -1,4 +1,4 @@
-# !/bin/sh
+#!/bin/bash
 
 # script de instalação do baobáxia
 USER_BBX='exu'
@@ -208,8 +208,6 @@ case "$BBX_REPO_FROM" in
 esac
 git clone $BBX_REPO_FROM baobaxia
 cd $INSTALL_DIR/baobaxia
-git checkout refactoring 
-
 
 echo ""
 echo "Criando arquivo de configuração do Baobáxia ..."
@@ -225,15 +223,18 @@ sed -i "s:^\(STATIC_ROOT\s*=\s*\).*$:\1\"${INSTALL_DIR}\/static\":" $INSTALL_DIR
 echo ""
 echo "Criando ambiente virtual do python ..."
 # cria ambiente virtual
+pip install --upgrade pip
 pip install virtualenv
-cp $PACK_DIR/$PACK_FILE $INSTALL_DIR/ 
+cp $PACK_DIR/$PACK_FILE $INSTALL_DIR/
 chown root:$USER_BBX $INSTALL_DIR/envs
 chmod 775 $INSTALL_DIR/envs
 #xhost +
 su - $USER_BBX -c "
-virtualenv $INSTALL_DIR/envs/bbx;
-source $INSTALL_DIR/envs/bbx/bin/activate;
-pip install --upgrade pip ;
+virtualenv $INSTALL_DIR/envs/bbx ;
+. $INSTALL_DIR/envs/bbx/bin/activate ;
+#export VIRTUAL_ENV='$INSTALL_DIR/envs/bbx' ;
+#export PATH='$VIRTUAL_ENV/bin:$PATH' ;
+#unset PYTHON_HOME ;
 pip install --upgrade setuptools ;
 cd $INSTALL_DIR;
 tar xjvf pip_wheel_20140606.tbz ;
@@ -247,6 +248,7 @@ pip install --use-wheel --no-index --find-links=local/wheel local/wheel/sorl_thu
 pip install --use-wheel --no-index --find-links=local/wheel local/wheel/South-0.8.4-py2.py3-none-any.whl;
 pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wheel-0.23.0-py2.py3-none-any.whl;
 pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wsgiref-0.1.2-py2-none-any.whl;
+pip install longerusername
 "
 
 echo ""
@@ -256,7 +258,7 @@ chown -R $USER_BBX:$USER_BBX $INSTALL_DIR/baobaxia
 echo ""
 echo "Criando banco de dados do baobáxia ..."
 su - $USER_BBX -c "
-source $INSTALL_DIR/envs/bbx/bin/activate;
+. $INSTALL_DIR/envs/bbx/bin/activate;
 cd $INSTALL_DIR/baobaxia/app/django-bbx;
 find . -name '000*.py' -exec rm '{}' \; && echo 'OK!';
 python manage.py syncdb --noinput;
@@ -289,7 +291,7 @@ chown $USER_BBX:$USER_BBX $INSTALL_DIR/log/gunicorn_supervisor.log
 echo ""
 echo "Primeira sincronização, criando objetos a partir dos arquivos ..."
 su - $USER_BBX -c "
-source $INSTALL_DIR/envs/bbx/bin/activate;
+. $INSTALL_DIR/envs/bbx/bin/activate;
 cd $INSTALL_DIR/baobaxia/app/django-bbx/;
 python manage.py bbxsync mocambos
 "
