@@ -36,8 +36,7 @@ def dumpclean(obj):
                 print repr(k)
                 dumpclean(v)
             else:
-#                print '%s : %s'.encode('ascii', 'ignore') % (k, v)
-		print repr(k) + " : " + repr(v)
+		print k.encode('ascii', 'ignore') + " : " + v.encode('ascii', 'ignore')
     elif type(obj) == list:
         for v in obj:
             if hasattr(v, '__iter__'):
