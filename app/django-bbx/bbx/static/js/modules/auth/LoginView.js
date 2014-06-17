@@ -6,9 +6,23 @@ define([
     'modules/mucua/model',
     'modules/mucua/collection',
     'json!config.json',
-    'text!templates/auth/LoginTemplate.html'
+    'text!templates/auth/LoginTemplate.html',
 ], function($, _, Backbone, RepositoryModel, MucuaModel, MucuaCollection, Config, LoginTemplate){
     var LoginView = Backbone.View.extend({
+	el: "body",
+	
+	events: {
+	    "click .submit": "doLogin"
+	},
+	
+	doLogin: function() {
+	    var postData = {}
+	    postData.username = $("#mocambola").val();
+	    postData.repository = $("#repository").val();
+	    postData.mucua = $("#mucua").val();
+	    postData.password = CryptoJS.SHA256($("#password").val()).toString();
+	    console.log(postData);
+	},
 	
 	render: function(){
 	    var __parseTemplate = function(data) {
@@ -49,7 +63,6 @@ define([
 				myMucua: myMucua,
 				repositoryList: repositoriesList
 			    }
-			    console.log(data);
 			    __parseTemplate(data);			    
 			}
 		    });
@@ -59,5 +72,6 @@ define([
 	    }, 50);
 	}
     })
+
     return LoginView;
 });

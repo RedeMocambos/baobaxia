@@ -27,7 +27,7 @@ h3 #nome_mucua { color: #e33; }
 /*
  * login
  */
-.login #header {background-image: url('../images/login-home-header.png');background-size: 100% auto; height: 400px; margin-top: -100px }
+.login #header {background-image: url('../images/login-home-header.png');background-size: 100% auto; height: 452px; margin-top: -100px }
 .login #content  { height: 400px; background: url('../images/home-login-content.png') no-repeat; background-size: 100% auto;}
 .login #content .left {width:45%; float: left; height: 400px}
 .login #content .middle {width:15%; float: left; height: 400px; }
@@ -42,6 +42,7 @@ h3 #nome_mucua { color: #e33; }
 .login #content .right #form_login .second-line div {clear: both; color: #2f7f37; font-weight: bold }
 .login #content .right #form_login input,
 .login #content .right #form_login select {border: #81bc5f solid 1px; border-radius: 4px; font-size: 10px; width: 100px; margin: 5px }
+.login input.submit {width: 30px !important }
 
 /*
  * media view, edit & publish
