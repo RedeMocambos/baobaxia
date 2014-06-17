@@ -33,10 +33,11 @@ def dumpclean(obj):
     if type(obj) == dict:
         for k, v in obj.items():
             if hasattr(v, '__iter__'):
-                print k.encode('ascii', 'ignore')
+                print repr(k)
                 dumpclean(v)
             else:
-                print '%s : %s'.encode('ascii', 'ignore') % (k, v)
+#                print '%s : %s'.encode('ascii', 'ignore') % (k, v)
+		print repr(k) + " : " + repr(v)
     elif type(obj) == list:
         for v in obj:
             if hasattr(v, '__iter__'):
