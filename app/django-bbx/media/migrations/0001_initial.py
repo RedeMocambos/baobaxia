@@ -13,7 +13,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('uuid', self.gf('django.db.models.fields.CharField')(default=u'No UUID', max_length=36)),
             ('name', self.gf('django.db.models.fields.CharField')(default=u'No title', max_length=100)),
-            ('mediafile', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('media_file', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
             ('date', self.gf('django.db.models.fields.DateTimeField')()),
             ('note', self.gf('django.db.models.fields.TextField')(max_length=300, blank=True)),
             ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
@@ -93,7 +93,7 @@ class Migration(SchemaMigration):
             'is_local': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_requested': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'license': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'mediafile': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
+            'media_file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'default': "u'No title'", 'max_length': '100'}),
             'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'}),
             'num_copies': ('django.db.models.fields.IntegerField', [], {'default': '1', 'blank': 'True'}),
@@ -122,7 +122,7 @@ class Migration(SchemaMigration):
         },
         u'repository.repository': {
             'Meta': {'ordering': "('name',)", 'object_name': 'Repository'},
-            'enableSync': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'enable_sync': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
             'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'})
