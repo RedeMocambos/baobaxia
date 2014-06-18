@@ -222,9 +222,10 @@ sed -i "s:^\(STATIC_ROOT\s*=\s*\).*$:\1\"${INSTALL_DIR}\/static\":" $INSTALL_DIR
 ### instalacao do baobaxia
 echo ""
 echo "Criando ambiente virtual do python ..."
-# cria ambiente virtual
 pip install --upgrade pip
+# atualiza mapa das variaveis de ambiente
 hash -r
+# cria ambiente virtual
 pip install virtualenv
 cp $PACK_DIR/$PACK_FILE $INSTALL_DIR/
 chown root:$USER_BBX $INSTALL_DIR/envs
@@ -313,6 +314,7 @@ sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/supervisor/conf.d/bbx.conf
 
 echo ""
 echo "Ativando o Baobáxia ..."
+supervisorctl reload
 supervisorctl restart bbx
 
 
