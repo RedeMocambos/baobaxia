@@ -224,6 +224,7 @@ echo ""
 echo "Criando ambiente virtual do python ..."
 # cria ambiente virtual
 pip install --upgrade pip
+hash -r
 pip install virtualenv
 cp $PACK_DIR/$PACK_FILE $INSTALL_DIR/
 chown root:$USER_BBX $INSTALL_DIR/envs
@@ -232,9 +233,6 @@ chmod 775 $INSTALL_DIR/envs
 su - $USER_BBX -c "
 virtualenv $INSTALL_DIR/envs/bbx ;
 . $INSTALL_DIR/envs/bbx/bin/activate ;
-#export VIRTUAL_ENV='$INSTALL_DIR/envs/bbx' ;
-#export PATH='$VIRTUAL_ENV/bin:$PATH' ;
-#unset PYTHON_HOME ;
 pip install --upgrade setuptools ;
 cd $INSTALL_DIR;
 tar xjvf pip_wheel_20140606.tbz ;
