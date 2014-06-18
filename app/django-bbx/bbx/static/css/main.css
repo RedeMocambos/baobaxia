@@ -34,6 +34,7 @@ h3 #nome_mucua { color: #e33; }
 .login #content .right {width:40%; float: left; height: 400px; font-size: 13px; }
 .login #content .right #form_login .first-line div {float: left; }
 .login #content .right #form_login p,
+.login #content .right #form_login span,
 .login #content .right #form_login a {color: #2f7f37; font-weight: bold; margin: 6px; margin-bottom:0; text-decoration: none}
 .login #content .right #form_login .second-line p {color: #d1c188 }
 .login #content .right #form_login .second-line input {border: #d1c188 solid 1px }

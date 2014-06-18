@@ -15,19 +15,12 @@
 <!-- right -->
 <div class="right">
   <div id="form_login">
-    <form>
+    <form method="post">
+      <input type="hidden" name="csrfmiddlewaretoken" id="csrfmiddlewaretoken" value="" />
       <div class="first-line">
 	<div id="mocambola-area">
 	  <p>Mocambola</p>
 	  <input type="text" name="mocambola" id="mocambola" /><img src="images/arroba.png"/>
-	</div>
-	<div id="repositorio-area">
-	  <p>Repositório</p>
-	  <select name="repository" id="repository">
-	    <% _.each(repositoryList, function(repository) { %>
-	    <option name="<%=repository.name %>"><%=repository.name %></option>
-	    <% }) %>
-	  </select><img src="images/ponto.png"/>
 	</div>
 	<div id="mucua-area">
 	  <p>Mucua</p>
@@ -36,6 +29,15 @@
 	    <option name="<%=mucua.description %>"><%=mucua.description %></option>
 	    <% }) %>
 	  </select>
+	  </select><img src="images/ponto.png"/>
+	</div>
+	<div id="repositorio-area">
+	  <p>Repositório</p>
+	  <select name="repository" id="repository">
+	    <% _.each(repositoryList, function(repository) { %>
+	    <option name="<%=repository.name %>"><%=repository.name %></option>
+	    <% }) %>
+	  </select><img src="images/ponto.png"/><span>net</span>
 	</div>
       </div>
       <div class="second-line">
