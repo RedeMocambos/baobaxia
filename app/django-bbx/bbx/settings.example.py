@@ -153,8 +153,8 @@ TEMPLATE_DIRS = (
     PROJECT_ROOT + 'bbx/static/templates',
 )
 
-INSTALLED_APPS = 
-     'longerusername',
+INSTALLED_APPS = (
+    'longerusername',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
