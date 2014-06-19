@@ -23,7 +23,6 @@ define([
 	    postData.username = $("#mocambola").val();
 	    postData.repository = $("#repository").val();
 	    postData.mucua = $("#mucua").val();
-	    postData.csrfmiddlewaretoken = $("#csrfmiddlewaretoken").val();
 	    postData.password = CryptoJS.SHA256($("#password").val()).toString();
 	    return postData;
 	},
@@ -32,8 +31,8 @@ define([
 	    //TODO: fazer check_login na API
 	    var mocambola = new MocambolaModel(loginData, 					       
 					       {url: Config.apiUrl + '/' + loginData.repository + '/' + loginData.mucua + '/mocambola/login'});	    
-	    console.log(mocambola);
 	    mocambola.save();
+	    
 /*	    mocambola.fetch({
 		success: function() {
 		    // TODO: pegar dados ok da API
@@ -53,7 +52,7 @@ define([
 	    });
 */
 	},
-
+	    
 	doLogin: function() {
 	    loginData = this.__prepareLoginData();
 	    login = this.__checkLogin(loginData);
@@ -119,17 +118,14 @@ define([
 	    }, 50);
 
 	    var __getToken = function(data) {
+		// remove cookie if it exists
+		if ($.cookie('csrftoken')) {
+		    $.removeCookie('csrftoken');
+		}
 		
 		url = Config.apiUrl + "/" + data.repository + "/" + data.mucua + "/mocambola/login";
 		var mocambola = new MocambolaModel([], {url: url});
-		
-		mocambola.fetch({
-		    success: function() {
-			var csrftoken = $.cookie('csrftoken');
-			console.log(csrftoken);
-			$('#csrfmiddlewaretoken').attr('value', csrftoken);
-		    }
-		});
+		mocambola.fetch({});
 	    };
 	}
     })

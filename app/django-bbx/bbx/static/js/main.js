@@ -11,11 +11,10 @@ require.config({
 	    exports: 'Backbone'
 	},
 	'crypto': {
-	    exports: ['CryptoJS']
+	    exports: 'CryptoJS'
 	},
         'crypto.SHA2': {
 	    deps: ['crypto'],
-	    exports: ['CryptoJS.SHA2']
 	},
     },
     paths: {
@@ -36,6 +35,18 @@ require.config({
 });
 
 require([
-    'jquery', 'underscore', 'backbone', 'app', 'backbone_subroute', 'crypto', 'crypto.SHA2'], function($, _, Backbone, App){
+    'jquery', 'underscore', 'backbone', 'app', 'crypto', 'backbone_subroute', 'crypto.SHA2'], function($, _, Backbone, App, CryptoJS){
+
+	// add csrftoken support to backbone posts
+	// thx to https://gist.github.com/gcollazo/1240683 :D
+	var oldSync = Backbone.sync;
+	Backbone.sync = function(method, model, options) {
+	    options.beforeSend = function(xhr) {
+		xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
+	    }
+	    return oldSync(method, model, options);
+	}
+
+
     App.initialize();
 });
