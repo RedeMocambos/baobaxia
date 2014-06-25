@@ -3,18 +3,20 @@ define([
     'underscore',
     'backbone',
     'jquery_cookie',
+    'modules/bbx/base-functions',
     'modules/repository/model',
     'modules/mucua/model',
     'modules/mucua/collection',
     'modules/mocambola/model',
     'json!config.json',
     'text!templates/auth/LoginTemplate.html',
-], function($, _, Backbone, jQueryCookie, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, Config, LoginTemplate){
+], function($, _, Backbone, jQueryCookie, BBXBaseFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, Config, LoginTemplate){
     var LoginView = Backbone.View.extend({
 	el: "body",
 	
 	events: {
 	    "click .submit": "doLogin"
+	    // TODO: get ENTER type on password field
 	},
 	
 	__prepareLoginData: function() { 
@@ -56,13 +58,13 @@ define([
 	doLogin: function() {
 	    var loginData = this.__prepareLoginData(),
 	    login = this.__checkLogin(loginData);
-	    var urlRedirect = this.__getDefaultHome();
+	    var urlRedirect = BBXBaseFunctions.getDefaultHome();
 	    //timeout nessa parte de baixo
 	    var loginOK = setInterval(function() {
 		userData = $("body").data("bbx").userData;
 		if (typeof userData !== 'undefined') {
-		    // set cookie
-		    $.cookie('sessionBBX', userData);
+		    // set cookie that expires in one day
+		    $.cookie('sessionBBX', userData, { expires: 1});
 		    // redirect
 		    window.location.href = urlRedirect;
 		    clearInterval(loginOK);
