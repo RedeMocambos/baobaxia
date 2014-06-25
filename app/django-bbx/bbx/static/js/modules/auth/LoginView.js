@@ -66,6 +66,7 @@ define([
 		    // set cookie that expires in one day
 		    $.cookie('sessionBBX', userData, { expires: 1});
 		    // redirect
+		    $('#content').html('');
 		    window.location.href = urlRedirect;
 		    clearInterval(loginOK);
 		}

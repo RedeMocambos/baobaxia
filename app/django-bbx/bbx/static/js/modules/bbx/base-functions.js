@@ -13,10 +13,14 @@ define([
     'underscore',
     'backbone',
     'jquery_cookie',
+    'modules/common/HeaderView',
     'modules/mucua/model',
     'modules/repository/model',
     'json!config.json',
-], function($, _, Backbone, jQueryCookie, MucuaModel, RepositoryModel, DefaultConfig){
+    'text!templates/common/content.html',
+    'text!templates/common/sidebar.html',
+    'text!templates/common/UsageBar.html'
+], function($, _, Backbone, jQueryCookie, HeaderView, MucuaModel, RepositoryModel, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl){
     
     var init = function() {
 	if (typeof $("body").data("bbx") === 'undefined') {
@@ -53,18 +57,41 @@ define([
     var getDefaultHome = function() {
 	// MAYBE, this should be a configurable field
 	var config = $("body").data("bbx");
-	console.log(config);
 	var url = '#' + config.defaultRepository.name + '/' + config.myMucua;
 	return url;
     }
     
     /**
-     * parse header for internal pages at baobaxia
+     * render common for internal pages at baobaxia
      *
-     * @return ?
+     * @return [jQuery modify #header]
      */
-    var parseHeader = function() {
+    var renderCommon = function() {
+	data = $("body").data("bbx");
+	console.log('render common');
+	if ($('body').hasClass('login') || $('#content').html() == '') {
+	    $('body').removeClass("login");
+	    $('#content').html(_.template(ContentTpl));
+	    $('#footer').before(_.template(SidebarTpl));
+	}
 	
+	var headerView = new HeaderView();
+	headerView.render(data);
+    }
+
+    /**
+     * render usage bar at footer
+     *
+     * @return [jquery modify #footer]
+     */
+    var renderUsage = function(data) {
+	if (_.isObject(data)) {
+	    data.usedPercent = Math.round(data.used / data.total * 100);
+	    data.demandedPercent = Math.round(data.demanded / data.total * 100);
+	    
+	    compiledUsage = _.template(UsageBarTpl, data);
+	    $('#footer').html(compiledUsage);
+	}
     }
     
     /**
@@ -140,7 +167,8 @@ define([
 	init: init,
 	isLogged: isLogged,
 	getDefaultHome: getDefaultHome,
-	parseHeader: parseHeader
+	renderCommon: renderCommon,
+	renderUsage: renderUsage
     }
 });
     

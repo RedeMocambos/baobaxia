@@ -7,7 +7,8 @@ define([
     'modules/bbx/base-functions',
     'modules/auth/LoginView', 
     'modules/mucua/router',
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, MucuaRouter){
+    'text!templates/common/content.html',
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, MucuaRouter, ContentTpl){
     var App = {};
     
     App.Router = Backbone.Router.extend({
@@ -76,8 +77,8 @@ define([
 	// mucua
 	invokeMucuaModule: function(repository, mucua, subroute) {
 	    var subroute = subroute || '';
-	    
 	    console.log('mucua');
+	    BBXBaseFunctions.renderCommon();
 	    this.Routers.MucuaRouter = new MucuaRouter(repository + "/" + mucua + "/" + subroute);
 	},
 	
