@@ -1,3 +1,5 @@
+import json
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -35,7 +37,6 @@ def mocambola_detail(request, repository, mucua, mocambola):
 
 @api_view(['GET', 'POST'])
 def login(request):
-    print request.method
     if request.method == 'GET':
         # gera token para tela de login
         c = RequestContext(request, {'autoescape': False})
@@ -48,6 +49,9 @@ def login(request):
         password = request.DATA['password']
         fileBackend = FileBackend()
         authenticate = fileBackend.authenticate(username, password)
+        
+        # TODO: get this data from logger or bbx/auth.py,
+        # so the next section won't be needed anymore
         if (authenticate):
             try:
                 user = User.objects.get(username=username)
@@ -59,6 +63,13 @@ def login(request):
                 serializer = UserSerializer(user)
                 return Response(serializer.data)
             else:
-                return Response('Usuario inexistente.')
+                response_data = {'errorMessage': 'Usuario inexistente.'}
+                return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
         else:
-                return Response('Usuario ou senha invalid@s.')
+            response_data = {
+                'error': True,
+                'errorMessage': 'Usuario ou senha invalid@s.',
+                }
+            
+            return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+        

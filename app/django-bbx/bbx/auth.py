@@ -7,6 +7,7 @@ from rest_framework.parsers import JSONParser
 
 from django.contrib.auth.models import User, check_password
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.hashers import PBKDF2PasswordHasher
 
 from mocambola.serializers import UserSerializer
 from mucua.models import Mucua
@@ -63,10 +64,8 @@ class FileBackend(object):
                 serializer.is_valid()
 
                 current_user = serializer.object
-
                 login_valid = (username == current_user.username)
                 pwd_valid = check_password(password, current_user.password)
-
                 if login_valid and pwd_valid:
                     logger.info(u"%s %s %s" % (_('User'),
                                                current_mocambola,
