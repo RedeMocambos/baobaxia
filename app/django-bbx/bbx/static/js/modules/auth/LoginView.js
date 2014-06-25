@@ -46,16 +46,28 @@ define([
 		});		
 	},
 	
+	__getDefaultHome: function() {
+	    // MAYBE, this should be a configurable field
+	    var config = $("body").data("bbx"),
+	    url = '#' + config.defaultRepository.name + '/' + myMucua;
+	    return url;
+	},
+	
 	doLogin: function() {
-	    loginData = this.__prepareLoginData();
+	    var loginData = this.__prepareLoginData(),
 	    login = this.__checkLogin(loginData);
+	    var urlRedirect = this.__getDefaultHome();
 	    //timeout nessa parte de baixo
 	    var loginOK = setInterval(function() {
 		userData = $("body").data("bbx").userData;
-		if (!_.isEmpty(userData)) {
-		    // check
+		if (typeof userData !== 'undefined') {
+		    // set cookie
+		    $.cookie('sessionBBX', userData);
+		    // redirect
+		    window.location.href = urlRedirect;
+		    clearInterval(loginOK);
 		}
-	    });
+	    }, 50);
 	},
 	
 	render: function(){
