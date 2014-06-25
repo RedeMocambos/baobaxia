@@ -44,6 +44,7 @@ h3 #nome_mucua { color: #e33; }
 .login #content .right #form_login input,
 .login #content .right #form_login select {border: #81bc5f solid 1px; border-radius: 4px; font-size: 10px; width: 100px; margin: 5px }
 .login input.submit {width: 30px !important }
+.login #message-area {color: #f66 !important}
 
 /*
  * media view, edit & publish
