@@ -6,7 +6,8 @@ define([
     'backbone_subroute',
     'modules/bbx/base-functions',
     'modules/auth/LoginView', 
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView){
+    'modules/mucua/router',
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, MucuaRouter){
     var App = {};
     
     App.Router = Backbone.Router.extend({
@@ -27,7 +28,12 @@ define([
 	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
 	    ':repository/:mucua/media/*subroute': 'invokeMediaModule',   
 	    ':repository/:mucua/mucua/*subroute': 'invokeMucuaModule',
+	    ':repository/:mucua/*subroute': 'invokeMucuaModule',
+	    ':repository/:mucua': 'invokeMucuaModule',
 	    ':repository/:mucua/mocambola/*subroute': 'invokeMocambolaModule',	    
+	},
+
+	__parseHeader: function() {
 	},
 
 	index: function() {
@@ -38,10 +44,13 @@ define([
 	    console.log('login');
 	    var repository = repository || '',
 	    mucua = mucua || '';
-	    BBXBaseFunctions.init();	    
 	    if (!BBXBaseFunctions.isLogged()) {
 		var loginView = new LoginView();
 		loginView.render();
+	    } else {
+		// redirect to home
+		var urlRedirect = BBXBaseFunctions.getDefaultHome();
+		window.location.href = urlRedirect;
 	    }
 	},
 	
@@ -65,9 +74,11 @@ define([
 	},
 
 	// mucua
-	invokeMucuaModule: function(repository, mucua) {
+	invokeMucuaModule: function(repository, mucua, subroute) {
+	    var subroute = subroute || '';
+	    
 	    console.log('mucua');
-	    this.Routers.MucuaRouter = new MucuaRouter(repository + "/" + mucua + "/" + "mucua/");
+	    this.Routers.MucuaRouter = new MucuaRouter(repository + "/" + mucua + "/" + subroute);
 	},
 	
 	// bbx
@@ -90,8 +101,16 @@ define([
     });
     
     var initialize = function(){
-	new App.Router();
-	Backbone.history.start();
+	// loads bbx configs
+	BBXBaseFunctions.init();
+	// waits for bbx init() in order to load navigation and routing
+	var loadConfigs = setInterval(function() {
+	    if ($("body").data("bbx").configLoaded === true) {
+		new App.Router();
+		Backbone.history.start();
+		clearInterval(loadConfigs);
+	    }
+	}, 50);
     };
 
     return {
