@@ -23,7 +23,10 @@ define([
 	    postData.username = $("#mocambola").val();
 	    postData.repository = $("#repository").val();
 	    postData.mucua = $("#mucua").val();
-	    postData.password = CryptoJS.SHA256($("#password").val()).toString();
+	    // TODO: encrypt password OR implement auth on django layer
+	    // - https://github.com/RedeMocambos/baobaxia/issues/24
+	    // while not solved, auth with no crypt
+	    postData.password = $("#password").val().toString();
 	    return postData;
 	},
 	
@@ -31,28 +34,18 @@ define([
 	    //TODO: fazer check_login na API
 	    var mocambola = new MocambolaModel(loginData, 					       
 					       {url: Config.apiUrl + '/' + loginData.repository + '/' + loginData.mucua + '/mocambola/login'});	    
-	    mocambola.save();
 	    
-/*	    mocambola.fetch({
-		success: function() {
-		    // TODO: pegar dados ok da API
-		    authorized = mocambola.models.attributes;
-		    if (authorized) {
-			userData = {
-			    'auth': true,
-			    'profile': {}
-			};
+	    mocambola.save()
+		.always(function(userData) {
+		    if (userData.error === true) {
+			$('#message-area').html(userData.errorMessage);
 		    } else {
-			userData = {
-			    'auth': false
-			}
+			$('#message-area').html('login bem sucedido!');
+			$("body").data("bbx").userData = userData;
 		    }
-		    $("body").data("bbx").userData = userData;
-		}
-	    });
-*/
+		});		
 	},
-	    
+	
 	doLogin: function() {
 	    loginData = this.__prepareLoginData();
 	    login = this.__checkLogin(loginData);

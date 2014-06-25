@@ -2,10 +2,11 @@ define([
     'jquery', 
     'underscore',
     'backbone',
+    'jquery_cookie',
     'modules/mucua/model',
     'modules/repository/model',
     'json!config.json',
-], function($, _, Backbone, MucuaModel, RepositoryModel, DefaultConfig){
+], function($, _, Backbone, jQueryCookie, MucuaModel, RepositoryModel, DefaultConfig){
     
     var init = function() {
 	if (typeof $("body").data("bbx") === 'undefined') {
@@ -21,6 +22,14 @@ define([
 	}
     }
     
+    //// isLogged()
+    // - checks if there's an opened session
+    var isLogged = function() {
+	if ($.cookie('sessionBBX')) {
+	    
+	}
+	return false;
+    }
     
     //// getMyMucua
     // - get actual mucua
@@ -77,6 +86,7 @@ define([
     
     return {
 	init: init,
+	isLogged: isLogged
     }
 });
 

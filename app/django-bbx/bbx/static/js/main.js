@@ -10,12 +10,6 @@ require.config({
 	    deps: ['underscore', 'jquery'],
 	    exports: 'Backbone'
 	},
-	'crypto': {
-	    exports: 'CryptoJS'
-	},
-        'crypto.SHA2': {
-	    deps: ['crypto'],
-	},
     },
     paths: {
 	jquery: 'lib/jquery-min',
@@ -27,15 +21,13 @@ require.config({
 	templates: '../templates',
 	backbone_subroute: 'lib/backbone.subroute.min',
         json: 'lib/require/json',
-        text: 'lib/require/text',
-        'crypto': 'lib/cryptojs/crypto',
-        'crypto.SHA2': 'lib/cryptojs/sha256',
+        text: 'lib/require/text',	
     },
     waitSeconds: 200
 });
 
 require([
-    'jquery', 'underscore', 'backbone', 'app', 'crypto', 'backbone_subroute', 'crypto.SHA2'], function($, _, Backbone, App, CryptoJS){
+    'jquery', 'underscore', 'backbone', 'app', 'backbone_subroute'], function($, _, Backbone, App){
 
 	// add csrftoken support to backbone posts
 	// thx to https://gist.github.com/gcollazo/1240683 :D

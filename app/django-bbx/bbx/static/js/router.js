@@ -29,7 +29,7 @@ define([
 	    ':repository/:mucua/mucua/*subroute': 'invokeMucuaModule',
 	    ':repository/:mucua/mocambola/*subroute': 'invokeMocambolaModule',	    
 	},
-	
+
 	index: function() {
 	    console.log('index');
 	},
@@ -38,10 +38,11 @@ define([
 	    console.log('login');
 	    var repository = repository || '',
 	    mucua = mucua || '';
-	    BBXBaseFunctions.init();
-	    	    
-	    var loginView = new LoginView();
-	    loginView.render();
+	    BBXBaseFunctions.init();	    
+	    if (!BBXBaseFunctions.isLogged()) {
+		var loginView = new LoginView();
+		loginView.render();
+	    }
 	},
 	
 	logout: function(repository, mucua) {	
