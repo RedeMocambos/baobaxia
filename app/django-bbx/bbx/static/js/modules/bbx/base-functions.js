@@ -68,7 +68,7 @@ define([
      */
     var getAvatar = function() {
 	var avatarUrl = "",
-	defaultAvatar = 'default-avatar.png';
+	defaultAvatar = 'avatar-default.png';
 	
 	// TODO: implement avatar
 	

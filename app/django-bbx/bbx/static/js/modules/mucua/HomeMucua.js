@@ -20,14 +20,32 @@ define([
 		var userProfile = $.parseJSON($.cookie('sessionBBX'));
 		userProfile.mocambolaUrl = BBXBaseFunctions.getDefaultHome() + '/mocambola/' + userProfile.username
 		userProfile.avatar = BBXBaseFunctions.getAvatar();
-		$('#sidebar').html(_.template(UserProfileTpl, userProfile));
+		$('#sidebar').append(_.template(UserProfileTpl, userProfile));
 	    }
-	    console.log(config);
-	    //urlMucua = config;
-	    var mucua = new MucuaModel([], {url: config.apiUrl});
-	    mucua.get(config.myMucua);
 	    
-	    
+	    urlMucua = config.apiUrl +  '/mucua/' + config.myMucua;
+	    var mucua = new MucuaModel([], {url: urlMucua});
+	    mucua.fetch({
+		success: function() {
+		    mucuaData = mucua.attributes[0];
+		    mucuaData.url = "http://www.mocambos.net";
+		    mucuaData.image = config.imagePath + '/mucua-default.png';
+		    mucuaData.storageSize = 300;
+		    $('#sidebar').append(_.template(MucuaProfileTpl, mucuaData));
+		    //TODO: get cloud
+		    /*
+		      $.fn.tagcloud.defaults = {
+		          size: {start: 10, end: 16, unit: 'pt'},
+			      color: {start: '#fada53', end: '#fada53'}
+			      };
+			      
+			      $(function () {
+			          $('#tag_cloud a').tagcloud();
+				  });
+		     */
+		}
+	    });
+	    //mucua.get(config.myMucua);	    
 	    
 	    /*
 		-> media.getContentByMucua(mucua) # retorna lista de conteúdos da mucua

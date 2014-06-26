@@ -20,6 +20,7 @@ require.config({
  	backbone_form: 'lib/backbone-forms.min',
 	templates: '../templates',
 	backbone_subroute: 'lib/backbone.subroute.min',
+	tagcloud: 'lib/jquery.tagcloud',
         json: 'lib/require/json',
         text: 'lib/require/text',	
     },
