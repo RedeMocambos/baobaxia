@@ -56,7 +56,7 @@ define([
      */
     var getDefaultHome = function() {
 	// MAYBE, this should be a configurable field
-	var config = $("body").data("bbx");
+	var config = $("body").data("bbx").config;
 	var url = '#' + config.defaultRepository.name + '/' + config.myMucua;
 	return url;
     }
@@ -82,7 +82,7 @@ define([
      * @return [jQuery modify #header]
      */
     var renderCommon = function() {
-	var data = $("body").data("bbx");
+	var data = {};
 	console.log('render common');
 	if ($('body').hasClass('login') || $('#content').html() == '') {
 	    $('body').removeClass("login");
@@ -100,13 +100,11 @@ define([
      * @return [jquery modify #footer]
      */
     var renderUsage = function(data) {
-	if (_.isObject(data)) {
-	    data.usedPercent = Math.round(data.used / data.total * 100);
-	    data.demandedPercent = Math.round(data.demanded / data.total * 100);
-	    
-	    compiledUsage = _.template(UsageBarTpl, data);
-	    $('#footer').html(compiledUsage);
-	}
+	var data = data || '';
+	data.usedPercent = Math.round(data.used / data.total * 100);
+	data.demandedPercent = Math.round(data.demanded / data.total * 100);
+	var compiledUsage = _.template(UsageBarTpl, data);
+	$('#footer').html(compiledUsage);
     }
     
     /**
@@ -115,11 +113,12 @@ define([
      * @config {Object} input Object with config data
      * @return {None} don't return values
      */
-    var __getMyMucua = function(config) {
+    var __getMyMucua = function() {
+	var config = $("body").data("bbx").config;
 	var myMucua = new MucuaModel([], {url: config.apiUrl + '/mucua/'});
 	myMucua.fetch({
 	    success: function() {		    
-		$("body").data("bbx").myMucua = myMucua.attributes[0].description;
+		config.myMucua = myMucua.attributes[0].description;
 	    }
 	});
     }
@@ -130,11 +129,13 @@ define([
      * @config {Object} input Object with config data
      * @return {None} don't return values (only by jQuery)
      */
-    var __getDefaultRepository = function(config) {
+    var __getDefaultRepository = function() {
+	var config = $("body").data("bbx").config;
+	
 	var defaultRepository = new RepositoryModel([], {url: config.apiUrl + '/repository/'});
 	defaultRepository.fetch({
 	    success: function() {
-		$("body").data("bbx").defaultRepository = defaultRepository.attributes[0]; 
+		config.defaultRepository = defaultRepository.attributes[0]; 
 	    }
 	});
     }    
@@ -145,9 +146,11 @@ define([
      * @return {None} don't return values (only by jQuery)
      */
     var __getRepositories = function() {
+	var config = $("body").data("bbx").config;
+	
 	// TODO: puxar lista real de repositorios
 	//var listRepositories = new RepositoryModel([], {url: Config.apiUrl + '/repository/list'});
-	$("body").data("bbx").repositoriesList = [{name: 'mocambos'}];  // hardcoded enquanto nao esta funcional
+	config.repositoriesList = [{name: 'mocambos'}];  // hardcoded enquanto nao esta funcional
     }
     
     /**
@@ -156,21 +159,21 @@ define([
      * @config {Object} input Object with config data
      * @return {None} don't return values (only by jQuery)
      */
-    var __setConfig = function(config) {
+    var __setConfig = function(jsConfig) {
 	// configuracoes padrao: config.json
+	var jsConfig = jsConfig || '',
+	config = jsConfig;
+	$("body").data("bbx").config = jsConfig;
 	
-	var config = config || '',	
-	bbxData = $("body").data("bbx");
-	
-	__getMyMucua(config);
-	__getDefaultRepository(config);
-	__getRepositories(config);
+	__getMyMucua();
+	__getDefaultRepository();
+	__getRepositories();
 	
 	// so preenche quando todos tiverem carregado
 	var loadData = setInterval(function() {
-	    if (typeof bbxData.myMucua !== 'undefined' &&
-		typeof bbxData.defaultRepository !== 'undefined' &&
-		typeof bbxData.repositoriesList !== 'undefined') {		 
+	    if (typeof config.myMucua !== 'undefined' &&
+		typeof config.defaultRepository !== 'undefined' &&
+		typeof config.repositoriesList !== 'undefined') {	
 		console.log('configs loaded!');
 		$("body").data("bbx").configLoaded = true;
 		clearInterval(loadData);

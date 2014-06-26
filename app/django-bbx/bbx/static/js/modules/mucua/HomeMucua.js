@@ -6,24 +6,27 @@ define([
     'modules/mucua/model',
     'modules/mucua/collection',
     'modules/mocambola/model',
-    'json!config.json',
     'text!templates/common/user-profile.html',
     'text!templates/common/mucua-profile.html',
-], function($, _, Backbone, BBXBaseFunctions, MucuaModel, MucuaCollection, MocambolaModel, Config, UserProfileTpl, MucuaProfileTpl){
+], function($, _, Backbone, BBXBaseFunctions, MucuaModel, MucuaCollection, MocambolaModel, UserProfileTpl, MucuaProfileTpl){
     var MucuaView = Backbone.View.extend({
 	el: "body",
 	
 	render: function() {
 	    $('#content').html('Home da mucua');
-	    var config = $("body").data("bbx");
+	    var config = $("body").data("bbx").config;
 	    
 	    if (BBXBaseFunctions.isLogged()) {
 		var userProfile = $.parseJSON($.cookie('sessionBBX'));
 		userProfile.mocambolaUrl = BBXBaseFunctions.getDefaultHome() + '/mocambola/' + userProfile.username
 		userProfile.avatar = BBXBaseFunctions.getAvatar();
-		data.userProfile = userProfile;
-		$('#sidebar').html(_.template(UserProfileTpl, data));
+		$('#sidebar').html(_.template(UserProfileTpl, userProfile));
 	    }
+	    console.log(config);
+	    //urlMucua = config;
+	    var mucua = new MucuaModel([], {url: config.apiUrl});
+	    mucua.get(config.myMucua);
+	    
 	    
 	    
 	    /*
@@ -43,7 +46,7 @@ define([
 		total: 260,
 		used: 100,
 		demanded: 20
-	    }	    
+	    }
 	    BBXBaseFunctions.renderUsage(usageData);
 	}
     });

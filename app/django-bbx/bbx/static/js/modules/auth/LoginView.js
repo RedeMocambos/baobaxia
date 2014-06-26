@@ -58,15 +58,17 @@ define([
 	
 	doLogin: function() {
 	    var loginData = this.__prepareLoginData(),
-	    login = this.__checkLogin(loginData);
-	    var urlRedirect = BBXBaseFunctions.getDefaultHome();
+	    login = this.__checkLogin(loginData),
+	    urlRedirect = BBXBaseFunctions.getDefaultHome();
+	    userData = '';
+	    
 	    //timeout nessa parte de baixo
 	    var loginOK = setInterval(function() {
 		userData = $.toJSON($("body").data("bbx").userData);
 		if (typeof userData !== 'undefined') {
 		    // set cookie that expires in one day
 		    $.cookie('sessionBBX', userData, { expires: 1});
-		    $('body').data('bbx').userData('');
+		    $('body').data('bbx').userData = '';
 		    // redirect
 		    $('#content').html('');
 		    window.location.href = urlRedirect;
@@ -86,40 +88,35 @@ define([
 	    }
 	    
 	    var loadedData = setInterval(function() {
-		var configLoaded = $("body").data("bbx").configLoaded;
+		var configLoaded = $("body").data("bbx").configLoaded,
+		config = $("body").data("bbx").config;		
 		
 		// when all configs are loaded, load mucuas
 		if (configLoaded) {
-		    repository = $("body").data("bbx").defaultRepository;
-		    myMucua = $("body").data("bbx").myMucua;
-		    repositoriesList = $("body").data("bbx").repositoriesList;
-		    
 		    // get mucuas 
-		    var mucuas = new MucuaCollection([], {url: Config.apiUrl + '/' + repository.name + '/mucuas'});
+		    var mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.defaultRepository.name + '/mucuas'});
 		    mucuas.fetch({
 			success: function() {
 			    var mucuasLength = mucuas.models.length,
-			    mucuaList = [];
-			    $("body").data("bbx").mucuaList = [];
+			    mucuaList = [],
+			    data = {};
+			    $("body").data("bbx").config.mucuaList = [];
 			    
 			    for (var m = 0; m < mucuasLength; m++) {
 				mucuaName = mucuas.models[m].attributes;
 				mucuaList.push(mucuaName);
-		    }
-			    $("body").data("bbx").mucuaList = mucuaList;
+			    }
+			    // set mucua list
+			    $("body").data("bbx").config.mucuaList = mucuaList;
 			    
 			    data = {
-				defaultRepository: repository,
+				defaultRepository: config.defaultRepository,
 				mucuaList: mucuaList,
-				myMucua: myMucua,
-				repositoryList: repositoriesList
+				myMucua: config.myMucua,
+				repositoryList: config.repositoriesList
 			    }
 			    __parseTemplate(data);			    
-			    __getToken(
-				{'repository': repository.name,
-				 'mucua': myMucua
-				}
-			    );
+			    __getToken();
 			}
 		    });
 		    
@@ -127,13 +124,14 @@ define([
 		}
 	    }, 50);
 
-	    var __getToken = function(data) {
+	    var __getToken = function() {
+		var config = $("body").data("bbx").config;
 		// remove cookie if it exists
 		if ($.cookie('csrftoken')) {
 		    $.removeCookie('csrftoken');
 		}
 		
-		url = Config.apiUrl + "/" + data.repository + "/" + data.mucua + "/mocambola/login";
+		url = config.apiUrl + "/" + config.repository + "/" + config.mucua + "/mocambola/login";
 		var mocambola = new MocambolaModel([], {url: url});
 		mocambola.fetch({});
 	    };
