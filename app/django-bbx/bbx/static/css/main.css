@@ -66,7 +66,7 @@ html, body, #container {height: 100% }
  * mucua
  */
 
-#sidebar #profile h4 {float: right; text-decoration: none; color: #D5C590 }
+#sidebar #user-profile h4 {float: right; text-decoration: none; color: #D5C590 }
 
 
 /* COMMENTED EVERYTHING (old template)

@@ -19,7 +19,7 @@ define([
     'json!config.json',
     'text!templates/common/content.html',
     'text!templates/common/sidebar.html',
-    'text!templates/common/UsageBar.html'
+    'text!templates/common/usage-bar.html'
 ], function($, _, Backbone, jQueryCookie, HeaderView, MucuaModel, RepositoryModel, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl){
     
     var init = function() {
@@ -30,7 +30,7 @@ define([
 			   });
 	}
 	
-	configLoaded = $("body").data("bbx").configLoaded;
+	var configLoaded = $("body").data("bbx").configLoaded;
 	if (configLoaded === false) {
 	    __setConfig(DefaultConfig);
 	}
@@ -82,7 +82,7 @@ define([
      * @return [jQuery modify #header]
      */
     var renderCommon = function() {
-	data = $("body").data("bbx");
+	var data = $("body").data("bbx");
 	console.log('render common');
 	if ($('body').hasClass('login') || $('#content').html() == '') {
 	    $('body').removeClass("login");

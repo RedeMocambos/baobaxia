@@ -16,11 +16,11 @@ define([
 	    console.log("module mucua loaded");
 	},
 	
-	homeMucua: function() {
-	    var data = {};
-	    
+	homeMucua: function() {	    
 	    console.log("home mucua");
-	    homeMucua = new HomeMucua(); 
+	    
+	    var data = {};
+	    var homeMucua = new HomeMucua(); 
 	    homeMucua.render();
 	},
 
