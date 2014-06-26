@@ -62,6 +62,21 @@ define([
     }
     
     /**
+     * get avatar
+     * 
+     * @return {String} a url
+     */
+    var getAvatar = function() {
+	var avatarUrl = "",
+	defaultAvatar = 'default-avatar.png';
+	
+	// TODO: implement avatar
+	
+	avatarUrl = "images/" + defaultAvatar;
+	return avatarUrl;
+    }
+    
+    /**
      * render common for internal pages at baobaxia
      *
      * @return [jQuery modify #header]
@@ -167,6 +182,7 @@ define([
 	init: init,
 	isLogged: isLogged,
 	getDefaultHome: getDefaultHome,
+	getAvatar: getAvatar,
 	renderCommon: renderCommon,
 	renderUsage: renderUsage
     }

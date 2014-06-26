@@ -14,7 +14,7 @@ require.config({
     paths: {
 	jquery: 'lib/jquery-min',
 	jquery_cookie: 'lib/jquery.cookie',
-	jquery_form: 'lib/jquery.form.min',
+	jquery_json: 'lib/jquery.json.min',
 	underscore: 'lib/underscore-amd',
 	backbone: 'lib/backbone-amd',
  	backbone_form: 'lib/backbone-forms.min',

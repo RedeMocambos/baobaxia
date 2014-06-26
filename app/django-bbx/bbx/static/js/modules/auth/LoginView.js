@@ -3,6 +3,7 @@ define([
     'underscore',
     'backbone',
     'jquery_cookie',
+    'jquery_json',
     'modules/bbx/base-functions',
     'modules/repository/model',
     'modules/mucua/model',
@@ -10,7 +11,7 @@ define([
     'modules/mocambola/model',
     'json!config.json',
     'text!templates/auth/LoginTemplate.html',
-], function($, _, Backbone, jQueryCookie, BBXBaseFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, Config, LoginTemplate){
+], function($, _, Backbone, jQueryCookie, jQueryJson, BBXBaseFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, Config, LoginTemplate){
     var LoginView = Backbone.View.extend({
 	el: "body",
 	
@@ -61,10 +62,11 @@ define([
 	    var urlRedirect = BBXBaseFunctions.getDefaultHome();
 	    //timeout nessa parte de baixo
 	    var loginOK = setInterval(function() {
-		userData = $("body").data("bbx").userData;
+		userData = $.toJSON($("body").data("bbx").userData);
 		if (typeof userData !== 'undefined') {
 		    // set cookie that expires in one day
 		    $.cookie('sessionBBX', userData, { expires: 1});
+		    $('body').data('bbx').userData('');
 		    // redirect
 		    $('#content').html('');
 		    window.location.href = urlRedirect;

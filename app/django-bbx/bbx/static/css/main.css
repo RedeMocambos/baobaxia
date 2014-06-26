@@ -29,11 +29,11 @@ html, body, #container {height: 100% }
 /*
  * login
  */
-.login #header {background-image: url('../images/login-home-header.png'); background-repeat: no-repeat; background-size: 100% auto; height: 450px; margin-top: -100px }
-.login #content  { height: 400px; background: url('../images/home-login-content.png') no-repeat; background-size: 100% auto;}
-.login #content .left {width:45%; float: left; height: 400px}
-.login #content .middle {width:15%; float: left; height: 400px; }
-.login #content .right {width:40%; float: left; height: 400px; font-size: 13px; }
+.login #header {background-image: url('../images/login-home-header.png'); background-repeat: no-repeat; background-size: 100% auto; height: 50%}
+.login #content  { height: 50%; background: url('../images/home-login-content.png') no-repeat; background-size: 100% auto; padding:0; width: 100%}
+.login #content .left {width:45%; float: left; height: 100%}
+.login #content .middle {width:15%; float: left; height: 100%; }
+.login #content .right {width:40%; float: left; height: 100%; font-size: 13px; }
 .login #content .right #form_login .first-line div {float: left; }
 .login #content .right #form_login p,
 .login #content .right #form_login span,
@@ -47,6 +47,7 @@ html, body, #container {height: 100% }
 .login #content .right #form_login select {border: #81bc5f solid 1px; border-radius: 4px; font-size: 10px; width: 100px; margin: 5px }
 .login input.submit {width: 30px !important }
 .login #message-area {color: #f66 !important}
+.login #footer {display: none}
 
 /*
  * footer
@@ -64,6 +65,8 @@ html, body, #container {height: 100% }
 /*
  * mucua
  */
+
+#sidebar #profile h4 {float: right; text-decoration: none; color: #D5C590 }
 
 
 /* COMMENTED EVERYTHING (old template)

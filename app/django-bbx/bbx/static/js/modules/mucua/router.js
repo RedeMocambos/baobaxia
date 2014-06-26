@@ -17,6 +17,8 @@ define([
 	},
 	
 	homeMucua: function() {
+	    var data = {};
+	    
 	    console.log("home mucua");
 	    homeMucua = new HomeMucua(); 
 	    homeMucua.render();
