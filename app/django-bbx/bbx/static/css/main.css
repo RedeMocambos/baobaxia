@@ -12,6 +12,7 @@ html, body, #container {height: 100% }
 #content {float: left; width: 60%; padding: 10px}
 #sidebar {float: left; width: 30%; height: 70%; max-width: 400px !important; margin-right: 5%; background-color: #fff; padding: 10px }
 #footer {clear: both; height: 40px; position: fixed; z-index: 10; background-color: #D5C590; width: 100%; bottom: -2px; border-top: #fff solid 2px; }
+a {text-decoration: none;}
 
 /*
  * general
@@ -78,6 +79,39 @@ html, body, #container {height: 100% }
 #mucua-profile .cloud {padding: 20px}
 #mucua-profile .cloud div {display: inline}
 #mucua-profile .cloud div a {color: #aac0ca; font-weight: bold}
+
+/*
+ * visualizacoes de media
+ */
+.destaques {clear: both}
+.destaques h3.title {color: #fff; font-size: 26px; margin: 4px}
+
+/*
+ * media grid
+  */
+.media_box { float: left; width: 192px; height: 170px; background: #f4efdd; margin: 5px; font-size: 12px; border-radius: 5px; padding: 10px; text-align: center}
+.media_box .result-thumb {width: 192px; height: 130px; background: #aa6}
+.media_box .title {font-size: 12px }
+.media_box .format_type { color: #aaa; text-transform: uppercase }
+.media_box .date {font-size: 10px }
+.media_box .format_type {padding: 6px; font-size: 12px}
+.media_box .origin {font-size: 10px; color: #aaa; padding-right: 10px }
+.media_box .license {color: #b96c;}
+.media_box a {color: #333}
+.media_box a:hover {color: #000}
+
+
+
+/*
+ * functional tags
+ */
+.video .result-thumb { }
+.audio .result-thumb { }
+.imagem .result-thumb { } /*background: #f00*/
+.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
+.video .result-thumb .assist {background-image: url('../images/play.png'); background-repeat: no-repeat; width: 79px; height: 79px; float: left; margin: 26px; margin-left: 58px}
+.audio .result-thumb .assist {}
+
 
 /* COMMENTED EVERYTHING (old template)
  * media view, edit & publish

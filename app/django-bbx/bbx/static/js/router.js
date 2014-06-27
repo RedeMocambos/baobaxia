@@ -10,7 +10,6 @@ define([
     'text!templates/common/content.html',
 ], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, MucuaRouter, ContentTpl){
     var App = {};
-    
     App.Router = Backbone.Router.extend({
 	Routers: {},
 	
@@ -45,7 +44,9 @@ define([
 	    console.log('login');
 	    var repository = repository || '',
 	    mucua = mucua || '';
+
 	    if (!BBXBaseFunctions.isLogged()) {
+		$('#content').html('aguarde, carregando...');		
 		var loginView = new LoginView();
 		loginView.render();
 	    } else {
@@ -101,17 +102,22 @@ define([
 
     });
     
-    var initialize = function(){
+    var __loadConfig = function(callback) {
 	// loads bbx configs
+	BBXBaseFunctions.init();
+
+    };    
+    
+    var initialize = function(){
 	BBXBaseFunctions.init();
 	// waits for bbx init() in order to load navigation and routing
 	var loadConfigs = setInterval(function() {
 	    if ($("body").data("bbx").configLoaded === true) {
 		new App.Router();
-		Backbone.history.start();
-		clearInterval(loadConfigs);
+		Backbone.history.start();		
+		clearInterval(loadConfigs);		
 	    }
-	}, 50);
+	}, 30);
     };
 
     return {

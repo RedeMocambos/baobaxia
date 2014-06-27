@@ -29,7 +29,6 @@ require.config({
 
 require([
     'jquery', 'underscore', 'backbone', 'app', 'backbone_subroute'], function($, _, Backbone, App){
-
 	// add csrftoken support to backbone posts
 	// thx to https://gist.github.com/gcollazo/1240683 :D
 	var oldSync = Backbone.sync;
@@ -39,7 +38,6 @@ require([
 	    }
 	    return oldSync(method, model, options);
 	}
-
-
-    App.initialize();
+	
+	App.initialize();
 });

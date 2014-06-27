@@ -100,9 +100,21 @@ define([
      * @return [jquery modify #footer]
      */
     var renderUsage = function(data) {
-	var data = data || '';
-	data.usedPercent = Math.round(data.used / data.total * 100);
-	data.demandedPercent = Math.round(data.demanded / data.total * 100);
+	var data = data || '',
+	reStripUnit = /^([0-9\.]+)([\w]*)/,
+	total = data.total.match(reStripUnit);
+	used = data.used.match(reStripUnit);
+	
+	// split values from regexp
+	data.total = total[1];
+	data.totalUnit = total[2];
+	data.used = used[1];
+	data.usedUnit = used[2];
+	
+	// calculate the percentages
+	data.usedPercent = Math.round(parseFloat(data.used) / parseFloat(data.total) * 100);
+	data.demandedPercent = Math.round(parseFloat(data.demanded) / parseFloat(data.total) * 100);
+	
 	var compiledUsage = _.template(UsageBarTpl, data);
 	$('#footer').html(compiledUsage);
     }
