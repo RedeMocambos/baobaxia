@@ -12,9 +12,26 @@ define([
     var MucuaView = Backbone.View.extend({
 	el: "body",
 	
+	getMucuaResources: function(uuid) {
+	    var config = $("body").data("bbx").config;
+	    url = config.apiUrl + '/mucua/' + uuid + '/info';
+	    mucua = new MucuaModel([], {url: url});
+	    mucua.fetch({
+		success: function() {
+		    $("body").data("bbx").mucua.info = mucua.attributes;
+		}
+	    });
+	},
+	
 	render: function() {
 	    $('#content').html('Home da mucua');
-	    var config = $("body").data("bbx").config;
+	    var config = $("body").data("bbx").config,
+	    urlMucua = config.apiUrl +  '/mucua/' + config.myMucua;
+	    // start mucua DOM field
+	    $("body").data("bbx").mucua = {};
+	    
+	    // set as global function
+	    getMucuaResources = this.getMucuaResources;
 	    
 	    if (BBXBaseFunctions.isLogged()) {
 		var userProfile = $.parseJSON($.cookie('sessionBBX'));
@@ -23,15 +40,38 @@ define([
 		$('#sidebar').append(_.template(UserProfileTpl, userProfile));
 	    }
 	    
-	    urlMucua = config.apiUrl +  '/mucua/' + config.myMucua;
 	    var mucua = new MucuaModel([], {url: urlMucua});
 	    mucua.fetch({
 		success: function() {
-		    mucuaData = mucua.attributes[0];
+		    // get mucua data
+		    var mucuaData = mucua.attributes[0];
 		    mucuaData.url = "http://www.mocambos.net";
 		    mucuaData.image = config.imagePath + '/mucua-default.png';
-		    mucuaData.storageSize = 300;
-		    $('#sidebar').append(_.template(MucuaProfileTpl, mucuaData));
+		    
+		    // get mucua resources
+		    getMucuaResources(mucuaData.uuid);		   
+		    mucuaDOM = $("body").data("bbx").mucua;
+		    mucuaResourcesLoad = setInterval(function() {
+			if (typeof mucuaDOM.info !== 'undefined') {
+			    mucuaData.storageSize = mucuaDOM.info['local annex size'];
+			    mucuaData.storageAvailable = mucuaDOM.info['available local disk space'];
+			    // TODO: treat this as a changable variable
+			    mucuaData.demanded = 0;
+			    $('#sidebar').append(_.template(MucuaProfileTpl, mucuaData));			    
+			    
+			    // usage data - mucua footer
+			    // TODO: get from mucua / git annex
+			    var usageData = {
+				total: mucuaData.storageSize,
+				used: mucuaData.storageAvailable,
+				demanded: mucuaData.demanded
+			    }
+			    BBXBaseFunctions.renderUsage(usageData);
+			    
+			    clearInterval(mucuaResourcesLoad);
+			}
+		    }, 50);
+		    
 		    //TODO: get cloud
 		    /*
 		      $.fn.tagcloud.defaults = {
@@ -44,9 +84,7 @@ define([
 				  });
 		     */
 		}
-	    });
-	    //mucua.get(config.myMucua);	    
-	    
+	    });	    
 	    /*
 		-> media.getContentByMucua(mucua) # retorna lista de conteúdos da mucua
 		-> mucua.getData()              # retorna lista de dados gerais da mucua
@@ -57,15 +95,6 @@ define([
 		-> media.getNovidadesRede() # retorna lista de novidades da rede
 		-> media.checkFunctionalTag()   # verifica por tags funcionais
 	    */
-	    
-	    // usage data - mucua footer
-	    // TODO: get from mucua / git annex
-	    var usageData = {
-		total: 260,
-		used: 100,
-		demanded: 20
-	    }
-	    BBXBaseFunctions.renderUsage(usageData);
 	}
     });
     

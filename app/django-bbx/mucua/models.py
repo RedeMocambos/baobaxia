@@ -107,6 +107,17 @@ def get_available_mucuas(uuid=None, repository=None):
     mucuas =  [(m[0], rpr(m[1])) for m in mucuas]
     return mucuas
 
+def get_mucua_info(uuid, repository=None):
+    if not repository:
+        try:
+            repository = get_default_repository()
+        except DatabaseError:
+            return []
+    
+    status = git_annex_status(repository.get_path())
+    
+    return status
+
 
 class MucuaDoesNotExists(ObjectDoesNotExist):
     def __init__(self, args=None):

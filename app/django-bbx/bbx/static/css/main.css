@@ -55,8 +55,8 @@ html, body, #container {height: 100% }
 #usage-content {padding: 6px; width: 1000px; font-size: 10px; font-weight: bold }
 #usage-content .usage-bar,
 #usage-content .legend {width: 700px; height: 15px; padding-left: 6px }
-#usage-content .legend .used {color: #36a}
-#usage-content .legend .demanded {color: #c33}
+#usage-content .legend .used {color: #36a; width: 150px}
+#usage-content .legend .demanded {color: #c33; width: 150px}
 #usage-content .usage-bar .the-bar {border: 3px solid #fff; height: 9px; width: 700px}
 #usage-content .usage-bar .the-bar .used {background-color: #36a; height: 9px}
 #usage-content .usage-bar .the-bar .demanded {background-color: #c33; height: 9px}
