@@ -71,14 +71,14 @@ a {text-decoration: none;}
 #sidebar #user-profile h4 {float: left; text-decoration: none; color: #D5C590; margin: 0 auto; padding-top: 12px; padding-left: 8px}
 
 #user-profile {height: 50px}
-#mucua-profile {padding-top: 5px; text-align: center; color: #aac0ca }
-#mucua-profile a {text-decoration: none}
-#mucua-profile .link a {color: #005880; font-weight: bold}
-#mucua-profile div {padding: 3px}
-#mucua-profile .more-info a {border-radius: 4px; border: 2px solid #aac0ca; color: #aac0ca; padding-left: 6px; padding-right: 6px; }
-#mucua-profile .cloud {padding: 20px}
-#mucua-profile .cloud div {display: inline}
-#mucua-profile .cloud div a {color: #aac0ca; font-weight: bold}
+#place-profile {padding-top: 5px; text-align: center; color: #aac0ca }
+#place-profile a {text-decoration: none}
+#place-profile .link a {color: #005880; font-weight: bold}
+#place-profile div {padding: 3px}
+#place-profile .more-info a {border-radius: 4px; border: 2px solid #aac0ca; color: #aac0ca; padding-left: 6px; padding-right: 6px; }
+#cloud {padding: 20px}
+#cloud div {display: inline}
+#cloud div a {color: #aac0ca; font-weight: bold}
 
 /*
  * visualizacoes de media

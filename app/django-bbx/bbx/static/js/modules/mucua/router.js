@@ -4,7 +4,7 @@ define([
     'backbone_subroute',
     'modules/bbx/base-functions',
     'modules/mucua/model',
-    'modules/mucua/HomeMucua',
+    'views/mucua/HomeMucua',
 ], function($, Backbone, BackboneSubroute, BBXBaseFunctions, MucuaModel, HomeMucua){
     var Router = Backbone.SubRoute.extend({
 	routes: {

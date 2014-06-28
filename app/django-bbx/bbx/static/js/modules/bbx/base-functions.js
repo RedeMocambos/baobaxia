@@ -13,7 +13,7 @@ define([
     'underscore',
     'backbone',
     'jquery_cookie',
-    'modules/common/HeaderView',
+    'views/common/HeaderView',
     'modules/mucua/model',
     'modules/repository/model',
     'json!config.json',

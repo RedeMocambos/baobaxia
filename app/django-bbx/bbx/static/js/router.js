@@ -5,7 +5,7 @@ define([
     'backbone',
     'backbone_subroute',
     'modules/bbx/base-functions',
-    'modules/auth/LoginView', 
+    'views/auth/LoginView', 
     'modules/mucua/router',
     'text!templates/common/content.html',
 ], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, MucuaRouter, ContentTpl){
