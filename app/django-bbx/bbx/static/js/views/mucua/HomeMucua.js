@@ -37,7 +37,6 @@ define([
 	    if (BBXBaseFunctions.isLogged() &&
 		((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() == "")) {
 		var userProfile = $.parseJSON($.cookie('sessionBBX'));
-		console.log(userProfile);
 		userProfile.mocambolaUrl = BBXBaseFunctions.getDefaultHome() + '/mocambola/' + userProfile.username
 		userProfile.avatar = BBXBaseFunctions.getAvatar();
 		$('#user-profile').html(_.template(UserProfileTpl, userProfile));

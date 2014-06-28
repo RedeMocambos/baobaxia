@@ -37,7 +37,6 @@ define([
 	},
 	
 	__checkLogin: function(loginData) {
-	    console.log('__checkLogin()');
 	    //TODO: fazer check_login na API
 	    var mocambola = new MocambolaModel(loginData, 					       
 					       {url: Config.apiUrl + '/' + loginData.repository + '/' + loginData.mucua + '/mocambola/login'});	    
@@ -69,13 +68,11 @@ define([
 	    //timeout nessa parte de baixo
 	    var loginOK = setInterval(function() {
 		userData = $.toJSON($("body").data("bbx").userData);
-		//console.log('checando');
-		//console.log(userData);
 		if (typeof userData !== 'undefined') {
 		    // set cookie that expires in one day
-		    console.log(userData);
 		    $.cookie('sessionBBX', userData, { expires: 1});
 		    $('body').data('bbx').userData = '';
+		    
 		    // redirect
 		    $('#content').html('');
 		    window.location.href = urlRedirect;
