@@ -6,9 +6,10 @@ define([
     'backbone_subroute',
     'modules/bbx/base-functions',
     'views/auth/LoginView', 
+    'views/auth/LogoutView',
+    'views/common/IndexView',  
     'modules/mucua/router',
-    'text!templates/common/content.html',
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, MucuaRouter, ContentTpl){
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter){
     var App = {};
     App.Router = Backbone.Router.extend({
 	Routers: {},
@@ -33,20 +34,28 @@ define([
 	    ':repository/:mucua/mocambola/*subroute': 'invokeMocambolaModule',	    
 	},
 
+	
 	__parseHeader: function() {
 	},
 
 	index: function() {
 	    console.log('index');
+	    $('body').removeClass().addClass('home');
+	    var indexView = new IndexView();
+	    indexView.render();
+	    
+	    var urlRedirect = "/#login";
+	    window.location.href = urlRedirect;
 	},
 	
 	login: function(repository, mucua) {
 	    console.log('login');
 	    var repository = repository || '',
 	    mucua = mucua || '';
-
+	    $('body').removeClass().addClass('home');
 	    if (!BBXBaseFunctions.isLogged()) {
-		$('#content').html('aguarde, carregando...');		
+		// undelegate elements // TODO: achar uma solucao mais elegante
+		$('body').off();
 		var loginView = new LoginView();
 		loginView.render();
 	    } else {
@@ -56,17 +65,23 @@ define([
 	    }
 	},
 	
-	logout: function(repository, mucua) {	
+	logout: function(repository, mucua) {
 	    console.log('logout');
 	    var repository = repository || '',
-	    mucua = mucua || '';
+	    mucua = mucua || '',
+	    urlRedirect = '#login',
+	    logoutView = new LogoutView();
+	    logoutView.doLogout();
+	    $('body').removeClass().addClass('home');
+	    
+	    // redirect
+	    window.location.href = urlRedirect;
 	},
 
 	register: function(repository, mucua) {
 	    console.log('register');
 	    var repository = repository || '',
 	    mucua = mucua || '';
-	    
 	},
 	
 	// media
@@ -79,12 +94,12 @@ define([
 	invokeMucuaModule: function(repository, mucua, subroute) {
 	    var subroute = subroute || '';
 	    console.log('mucua');
-	    BBXBaseFunctions.renderCommon();
 	    this.Routers.MucuaRouter = new MucuaRouter(repository + "/" + mucua + "/" + subroute);
 	},
 	
 	// bbx
 	invokeBbxModule: function(repository, mucua, subroute) {
+	    console.log('bbx');
 	    this.Routers.BbxRouter = new BbxRouter(repository + "/" + mucua + "/" + "bbx/", subroute);
 	},
 
@@ -96,7 +111,7 @@ define([
 
 	// rede
 	invokeRedeModule: function(repository, mucua, subroute) {
-	    console.log('mocambola');
+	    console.log('rede');
 	    this.Routers.MocambolaRouter = new MocambolaRouter(repository + "/" + mucua + "/" + "mocambola/", subroute);
 	},
 

@@ -15,8 +15,8 @@ define([
 	el: "body",
 	
 	getMucuaResources: function(uuid) {
-	    var config = $("body").data("bbx").config;
-	    url = config.apiUrl + '/mucua/' + uuid + '/info';
+	    var config = $("body").data("bbx").config,
+	    url = config.apiUrl + '/mucua/' + uuid + '/info',
 	    mucua = new MucuaModel([], {url: url});
 	    mucua.fetch({
 		success: function() {
@@ -25,42 +25,6 @@ define([
 	    });
 	},
 	
-	    /*
-	__getMediaByMucua: function() {
-	    var config = $("body").data("bbx").config;
-	    url = config.apiUrl + '/' + config.defaultRepository.name + '/' + config.myMucua + '/bbx/search' ;
-	    var media = new MediaModel([], {url: url});
-	    media.fetch({
-		success: function() {
-		    //$("body").data("bbx").media.byMucua = media.attributes;
-		    mediaData = {
-			medias: media.attributes,
-			emptyMessage: 'Nenhum conteúdo em destaque.'
-		    };
-		    $('#content').prepend(_.template(MediaDestaquesMucua));
-		    $('#destaques-mucua .media').html(_.template(MediaGrid, mediaData));		    
-		}
-	    });
-	},
-
-	__getMediaByNovidades: function() {
-	    var config = $("body").data("bbx").config;
-	    // TODO: apontar para endereco dos ultimos conteudos
-	    url = config.apiUrl + '/' + config.defaultRepository.name + '/' + config.myMucua + '/bbx/search' ;
-	    var media = new MediaModel([], {url: url});
-	    media.fetch({
-		success: function() {
-		    //$("body").data("bbx").media.byMucua = media.attributes;
-		    mediaData = {
-			medias: media.attributes,
-			emptyMessage: 'Nenhum conteúdo em destaque.'
-		    };
-		    $('#content').append(_.template(MediaNovidades));
-		    $('#novidades .media').html(_.template(MediaGrid, mediaData));		    
-		}
-	    });	    
-	    },*/
-	
 	render: function() {
 	    var config = $("body").data("bbx").config,
 	    urlMucua = config.apiUrl +  '/mucua/' + config.myMucua;
@@ -68,12 +32,12 @@ define([
 	    $("body").data("bbx").mucua = {};
 	    $("body").data("bbx").media = {};	    
 	    // set as global function
-	    getMucuaResources = this.getMucuaResources;
-
-	    // TODO: mover para lugar comum
+	    BBX.getMucuaResources = this.getMucuaResources;
+	    
 	    if (BBXBaseFunctions.isLogged() &&
-		$("#user-profile").html() == "") {
+		((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() == "")) {
 		var userProfile = $.parseJSON($.cookie('sessionBBX'));
+		console.log(userProfile);
 		userProfile.mocambolaUrl = BBXBaseFunctions.getDefaultHome() + '/mocambola/' + userProfile.username
 		userProfile.avatar = BBXBaseFunctions.getAvatar();
 		$('#user-profile').html(_.template(UserProfileTpl, userProfile));
@@ -93,15 +57,14 @@ define([
 		    mucuaData.image = config.imagePath + '/mucua-default.png';
 		    
 		    // get mucua resources
-		    getMucuaResources(mucuaData.uuid);		   
-		    mucuaDOM = $("body").data("bbx").mucua;
-		    mucuaResourcesLoad = setInterval(function() {
+		    BBX.getMucuaResources(mucuaData.uuid);		   
+		    var mucuaDOM = $("body").data("bbx").mucua;
+		    var mucuaResourcesLoad = setInterval(function() {
 			if (typeof mucuaDOM.info !== 'undefined') {
 			    mucuaData.storageSize = mucuaDOM.info['local annex size'];
 			    mucuaData.storageAvailable = mucuaDOM.info['available local disk space'];
 			    // TODO: treat this as a changable variable
 			    mucuaData.demanded = 0;
-			    console.log(mucuaData);
 			    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));			    
 			    
 			    // usage data - mucua footer

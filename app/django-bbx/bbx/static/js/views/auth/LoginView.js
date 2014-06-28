@@ -20,6 +20,9 @@ define([
 	    // TODO: get ENTER type on password field
 	},
 	
+	// problema: eventos duplicados atrapalham qdo carrega de novo!
+	//	    this.delegateEvents(".submit", "click", "doLogin");
+	
 	__prepareLoginData: function() { 
 	    // TODO: add form checks
 	    var postData = {}
@@ -34,6 +37,7 @@ define([
 	},
 	
 	__checkLogin: function(loginData) {
+	    console.log('__checkLogin()');
 	    //TODO: fazer check_login na API
 	    var mocambola = new MocambolaModel(loginData, 					       
 					       {url: Config.apiUrl + '/' + loginData.repository + '/' + loginData.mucua + '/mocambola/login'});	    
@@ -52,21 +56,24 @@ define([
 	__getDefaultHome: function() {
 	    // MAYBE, this should be a configurable field
 	    var config = $("body").data("bbx"),
-	    url = '#' + config.defaultRepository.name + '/' + myMucua;
+	    url = '#' + config.defaultRepository.name + '/' + config.myMucua;
 	    return url;
 	},
 	
 	doLogin: function() {
-	    var loginData = this.__prepareLoginData(),
+	    var userData,
+	    loginData = this.__prepareLoginData(),
 	    login = this.__checkLogin(loginData),
 	    urlRedirect = BBXBaseFunctions.getDefaultHome();
-	    userData = '';
 	    
 	    //timeout nessa parte de baixo
 	    var loginOK = setInterval(function() {
 		userData = $.toJSON($("body").data("bbx").userData);
+		//console.log('checando');
+		//console.log(userData);
 		if (typeof userData !== 'undefined') {
 		    // set cookie that expires in one day
+		    console.log(userData);
 		    $.cookie('sessionBBX', userData, { expires: 1});
 		    $('body').data('bbx').userData = '';
 		    // redirect
@@ -103,13 +110,12 @@ define([
 			    $("body").data("bbx").config.mucuaList = [];
 			    
 			    for (var m = 0; m < mucuasLength; m++) {
-				mucuaName = mucuas.models[m].attributes;
+				var mucuaName = mucuas.models[m].attributes;
 				mucuaList.push(mucuaName);
 			    }
 			    // set mucua list
 			    $("body").data("bbx").config.mucuaList = mucuaList;
-			    
-			    data = {
+			    var data = {
 				defaultRepository: config.defaultRepository,
 				mucuaList: mucuaList,
 				myMucua: config.myMucua,
@@ -130,8 +136,7 @@ define([
 		if ($.cookie('csrftoken')) {
 		    $.removeCookie('csrftoken');
 		}
-		
-		url = config.apiUrl + "/" + config.repository + "/" + config.mucua + "/mocambola/login";
+		url = config.apiUrl + "/" + config.defaultRepository.name + "/" + config.myMucua + "/mocambola/login";
 		var mocambola = new MocambolaModel([], {url: url});
 		mocambola.fetch({});
 	    };

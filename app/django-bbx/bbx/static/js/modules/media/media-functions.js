@@ -32,36 +32,36 @@ define([
 	var media = new MediaModel([], {url: url});
 	media.fetch({
 	    success: function() {
-		mediaData = {
+		var mediaData = {
 		    medias: media.attributes,
 		    emptyMessage: 'Nenhum conteúdo em destaque.'
 		};
 		// callback / altera
 		if (typeof callback == 'function') {
 		    // execute callback
-		    callback();
+		    callback(mediaData);
 		}
 	    }
 	})
     };		   
     
     var getMediaByMucua = function() {
-	var config = this.__getConfig();
+	var config = this.__getConfig(),
 	url = config.apiUrl + '/' + config.defaultRepository.name + '/' + config.myMucua + '/bbx/search';
 	
-	this.getMedia(url, function(){
+	this.getMedia(url, function(data){
 	    $('#content').prepend(_.template(MediaDestaquesMucua))
-	    $('#destaques-mucua .media').html(_.template(MediaGrid, mediaData));		    
+	    $('#destaques-mucua .media').html(_.template(MediaGrid, data));
 	});
     };
 
     var getMediaByNovidades = function() {
-	var config = this.__getConfig();
+	var config = this.__getConfig(),
 	url = config.apiUrl + '/' + config.defaultRepository.name + '/' + config.myMucua + '/bbx/search' ;	
 	
-	this.getMedia(url, function(){
+	this.getMedia(url, function(data){
 	    $('#content').append(_.template(MediaNovidades));
-	    $('#novidades .media').html(_.template(MediaGrid, mediaData));
+	    $('#novidades .media').html(_.template(MediaGrid, data));
 	});
     };
 

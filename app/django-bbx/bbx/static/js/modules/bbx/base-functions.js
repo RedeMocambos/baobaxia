@@ -56,8 +56,8 @@ define([
      */
     var getDefaultHome = function() {
 	// MAYBE, this should be a configurable field
-	var config = $("body").data("bbx").config;
-	var url = '#' + config.defaultRepository.name + '/' + config.myMucua;
+	var config = $("body").data("bbx").config,
+	url = '#' + config.defaultRepository.name + '/' + config.myMucua;
 	return url;
     }
     
@@ -81,19 +81,20 @@ define([
      *
      * @return [jQuery modify #header]
      */
-    var renderCommon = function() {
+    var renderCommon = function(name) {
 	var data = {};
+	$('body').removeClass().addClass(name);
 	console.log('render common');
-	if ($('body').hasClass('login') || $('#content').html() == '') {
-	    $('body').removeClass("login");
-	    $('#content').html(_.template(ContentTpl));
+	
+	if ($('#sidebar').html() == "" ||
+	    (typeof $('#sidebar').html() === "undefined")) {
 	    $('#footer').before(_.template(SidebarTpl));
 	}
-	
+	$('#content').html('');	
 	var headerView = new HeaderView();
 	headerView.render(data);
     }
-
+    
     /**
      * render usage bar at footer
      *

@@ -26,15 +26,15 @@ a {text-decoration: none;}
 #header-top {background: #fff url('../images/cabecalho.png') no-repeat fixed center top; height: 106px; width: 1113px; margin: 0 auto }
 #header-top img { margin-top: 25px; margin-left: 70px}
 .posicoes {display: none}
-
+.home #header {background-image: url('../images/login-home-header.png'); background-repeat: no-repeat; background-size: 100% auto; height: 50%}
+.home #content  { height: 50%; background: url('../images/home-login-content.png') no-repeat; background-size: 100% auto; padding:0; width: 100%}
+.home #content .left {width:45%; float: left; height: 100%}
+.home #content .middle {width:15%; float: left; height: 100%; }
+.home #content .right {width:40%; float: left; height: 100%; font-size: 13px; }
+.home #footer {display: none}
 /*
  * login
  */
-.login #header {background-image: url('../images/login-home-header.png'); background-repeat: no-repeat; background-size: 100% auto; height: 50%}
-.login #content  { height: 50%; background: url('../images/home-login-content.png') no-repeat; background-size: 100% auto; padding:0; width: 100%}
-.login #content .left {width:45%; float: left; height: 100%}
-.login #content .middle {width:15%; float: left; height: 100%; }
-.login #content .right {width:40%; float: left; height: 100%; font-size: 13px; }
 .login #content .right #form_login .first-line div {float: left; }
 .login #content .right #form_login p,
 .login #content .right #form_login span,
@@ -48,7 +48,6 @@ a {text-decoration: none;}
 .login #content .right #form_login select {border: #81bc5f solid 1px; border-radius: 4px; font-size: 10px; width: 100px; margin: 5px }
 .login input.submit {width: 30px !important }
 .login #message-area {color: #f66 !important}
-.login #footer {display: none}
 
 /*
  * footer
@@ -64,13 +63,14 @@ a {text-decoration: none;}
 #usage-content .total {width: 100px; color: #385; padding-left: 6px; }
 
 /*
- * mucua
+ * sidebar
  */
 
+#user-profile {height: 50px}
 #sidebar #user-profile img {float: left; width: 45px; height: 45px}
 #sidebar #user-profile h4 {float: left; text-decoration: none; color: #D5C590; margin: 0 auto; padding-top: 12px; padding-left: 8px}
+#user-profile a.logout {font-size:11px; color:#D5C590; float: right}
 
-#user-profile {height: 50px}
 #place-profile {padding-top: 5px; text-align: center; color: #aac0ca }
 #place-profile a {text-decoration: none}
 #place-profile .link a {color: #005880; font-weight: bold}
@@ -97,9 +97,8 @@ a {text-decoration: none;}
 .media_box .format_type {padding: 6px; font-size: 12px}
 .media_box .origin {font-size: 10px; color: #aaa; padding-right: 10px }
 .media_box .license {color: #b96c;}
-.media_box a {color: #333}
-.media_box a:hover {color: #000}
-
+.media_box a {color: #2E7E36}
+.media_box a:hover {color: #005500}
 
 
 /*
