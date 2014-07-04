@@ -45,6 +45,7 @@ define([
 		.always(function(userData) {
 		    if (userData.error === true) {
 			$('#message-area').html(userData.errorMessage);
+			$("body").data("bbx").loginError = userData.errorMessage;
 		    } else {
 			$('#message-area').html('login bem sucedido!');
 			$("body").data("bbx").userData = userData;
@@ -62,8 +63,9 @@ define([
 	doLogin: function() {
 	    var userData,
 	    loginData = this.__prepareLoginData(),
-	    login = this.__checkLogin(loginData),
 	    urlRedirect = BBXBaseFunctions.getDefaultHome();
+
+	    this.__checkLogin(loginData);
 	    
 	    //timeout nessa parte de baixo
 	    var loginOK = setInterval(function() {
@@ -76,6 +78,10 @@ define([
 		    // redirect
 		    $('#content').html('');
 		    window.location.href = urlRedirect;
+		    clearInterval(loginOK);
+		} else if ($("body").data("bbx").loginError !== false) {
+		    console.log('login falhou');
+		    $("body").data("bbx").loginError = false;		    
 		    clearInterval(loginOK);
 		}
 	    }, 50);
