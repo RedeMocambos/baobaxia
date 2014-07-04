@@ -32,6 +32,12 @@ a {text-decoration: none;}
 .home #content .middle {width:15%; float: left; height: 100%; }
 .home #content .right {width:40%; float: left; height: 100%; font-size: 13px; }
 .home #footer {display: none}
+
+
+#menu {margin-left: 35%; margin-top: 50px}
+.menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
+.menu-itens li a {color: #fff; text-decoration: none; }
+
 /*
  * login
  */

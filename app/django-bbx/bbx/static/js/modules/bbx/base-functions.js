@@ -90,6 +90,7 @@ define([
 	    (typeof $('#sidebar').html() === "undefined")) {
 	    $('#footer').before(_.template(SidebarTpl));
 	}
+	
 	$('#content').html('');	
 	var headerView = new HeaderView();
 	headerView.render(data);
