@@ -73,7 +73,6 @@ roughlylackingcopies=1 or present
 \end{code}
 
 
-
 Essa configuração garante a disponibilidade dos conteúdos com 1 copia
 local, 2 copias em comunidades ``próximas'', além de 2 copias em
 equipamentos móveis, para circulação, e 1 copia online para acesso
@@ -104,10 +103,9 @@ processo exemplificado de polinização. Uma borboleta que espalha pólen
 nas flores aos redores (mucuas) numa intensidade decrescente ate
 acabar.
 
-Impostamos a cibernética de polinização digital como um processo
-estocástico a tempo determinado. Considerando o tamanho e os ritmos
-produtivos da RM, impostamos um tempo/distancia, $t=4$. O neurônio (mucua)
-$v$ ao tempo $t_{n}$ tem o impulso:
+Considerando o tamanho e os ritmos produtivos da RM, impostamos um
+tempo/distancia, $t=4$. A flor (mucua) $v$ ao tempo $t_{n}$ tem o
+impulso:
 
 $$
 x_0 = (git \ annex \ get \ \$media, ttl=4) 
@@ -127,7 +125,28 @@ $$
 A rotina cron de sync, assumimos, conseguir uma copia do media na
 mucua próxima, no tempo/distancia $t$ máxima, $ttl=4$.
 
-\section{Gestão de conflitos entre versões}
+
+\section{Simulação e teste do algoritmo}
+
+Em maio de 2014 recebemos a visita do Joey Hess desenvolvedor do
+git-annex e desenvolvedor da comunidades debian a muitos anos. Joey
+ajudou a pensar melhor as logicas de sincronização e a verificar o
+algoritmo proposto. Com um modelo criado por Joey em poucas horas foi
+simulado uma rede de 20 nós, online e offline, que trocam conteúdos
+com mais de 90\% de sucesso.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/Joey_Blog_Seeds.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Blog de Joey Hess, discutindo o algoritmo de routing]{Blog
+    de Joey Hess, discutindo o algoritmo de routing}
+  \label{fig:Joey_Blog_Seeds}
+\end{figure}
+
+
+
+\section{Evitar os conflitos}
 
 O impulso pode ser codificado como arquivo json com nome aleatório
 ($date\_UUID[:5]$) que cada mucua mantém numa pasta de solicitações
@@ -146,7 +165,9 @@ propagando o impulso.
 Os impulsos decaem e os arquivos são removidos quando as mucuas
 conseguem uma copia do media.  
 
-\section{Sincronização do git}
+
+
+\section{Sincronização dos repositórios}
 Os clones dos repositórios mantém as informações sincronizadas por
 meio do comando ``git annex sync''.
 
