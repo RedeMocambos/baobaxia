@@ -15,7 +15,7 @@ from django.template import Template, RequestContext
 from media.models import Media, generate_UUID
 from tag.models import Tag
 from media.serializers import MediaSerializer
-from media.models import get_type_choices, get_format_choices
+from media.models import getTypeChoices, getFormatChoices
 from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
 from mucua.models import Mucua
 from repository.models import Repository
@@ -60,8 +60,8 @@ def media_list(request, repository, mucua, args=None, format=None):
                                         '/' + mucua.description +
                                         '/bbx/search/')
 
-        # TODO LOW: futuramente, otimizar query de busca - elaborar query
-
+        # TODO LOW: futuramente, otimizar query de busca - elaborar quer
+        
         # listagem de conteudo filtrando por repositorio e mucua
         if mucua == 'rede':
             medias = Media.objects.filter(

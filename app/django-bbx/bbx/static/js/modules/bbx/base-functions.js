@@ -14,13 +14,15 @@ define([
     'backbone',
     'jquery_cookie',
     'views/common/HeaderView',
+    'views/common/BuscadorView',
     'modules/mucua/model',
     'modules/repository/model',
+    'modules/media/media-functions',
     'json!config.json',
     'text!templates/common/content.html',
     'text!templates/common/sidebar.html',
     'text!templates/common/usage-bar.html'
-], function($, _, Backbone, jQueryCookie, HeaderView, MucuaModel, RepositoryModel, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl){
+], function($, _, Backbone, jQueryCookie, HeaderView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl){
     
     var init = function() {
 	if (typeof $("body").data("bbx") === 'undefined') {
@@ -94,6 +96,16 @@ define([
 	$('#content').html('');	
 	var headerView = new HeaderView();
 	headerView.render(data);
+	
+	var buscadorView = new BuscadorView();
+	buscadorView.render({});
+	
+	// adiciona eventos comuns
+	$('#caixa_busca').keyup(function(e) {
+	    if (e.keyCode == 13) {
+		MediaFunctions.doSearch();
+	    } 
+	});
     }
     
     /**
@@ -120,6 +132,7 @@ define([
 	var compiledUsage = _.template(UsageBarTpl, data);
 	$('#footer').html(compiledUsage);
     }
+
     
     /**
      * get actual mucua

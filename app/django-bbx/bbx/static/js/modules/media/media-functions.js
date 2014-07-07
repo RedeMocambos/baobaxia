@@ -12,13 +12,15 @@ define([
     'jquery', 
     'underscore',
     'backbone',
+    'modules/bbx/base-functions',
     'modules/media/model',
     'modules/media/collection',
     'modules/mucua/model',
     'text!templates/media/MediaDestaquesMucua.html',
     'text!templates/media/MediaNovidades.html',
+    'text!templates/media/MediaResults.html',
     'text!templates/media/MediaGrid.html'
-], function($, _, Backbone, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucua, MediaNovidades, MediaGrid){
+], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaResultsTpl, MediaGridTpl){
     var init = function() {
     }
 
@@ -26,15 +28,13 @@ define([
 	return $("body").data("bbx").config;
     }
 
-    // TODO: fazer uma funcao generica de buscar media
-    // receber um callback para executar
     var getMedia = function(url, callback) {
 	var media = new MediaModel([], {url: url});
 	media.fetch({
 	    success: function() {
+		console.log(media);
 		var mediaData = {
-		    medias: media.attributes,
-		    emptyMessage: 'Nenhum conteúdo em destaque.'
+		    medias: media.attributes
 		};
 		// callback / altera
 		if (typeof callback == 'function') {
@@ -42,16 +42,16 @@ define([
 		    callback(mediaData);
 		}
 	    }
-	})
-    };		   
+	});
+    }		   
     
     var getMediaByMucua = function() {
 	var config = this.__getConfig(),
 	url = config.apiUrl + '/' + config.defaultRepository.name + '/' + config.myMucua + '/bbx/search';
 	
 	this.getMedia(url, function(data){
-	    $('#content').prepend(_.template(MediaDestaquesMucua))
-	    $('#destaques-mucua .media').html(_.template(MediaGrid, data));
+	    $('#content').prepend(_.template(MediaDestaquesMucuaTpl));
+	    $('#destaques-mucua .media').html(_.template(MediaGridTpl, data));
 	});
     };
 
@@ -60,13 +60,37 @@ define([
 	url = config.apiUrl + '/' + config.defaultRepository.name + '/' + config.myMucua + '/bbx/search' ;	
 	
 	this.getMedia(url, function(data){
-	    $('#content').append(_.template(MediaNovidades));
-	    $('#novidades .media').html(_.template(MediaGrid, data));
+	    $('#content').append(_.template(MediaNovidadesTpl));
+	    $('#novidades .media').html(_.template(MediaGridTpl, data));
 	});
     };
-
+    
+    
+    /**
+     * execute search
+     * 
+     */
+    var doSearch = function() {
+	console.log('doSearch');
+	var term = $('#caixa_busca')[0].value;
+	//exclude = exclude || '',
+	config = this.__getConfig(),
+	url = config.apiUrl + '/' + config.defaultRepository.name + '/' + config.myMucua + '/bbx/search/';
+	
+	// tratamento do term
+	url += term;
+	
+	this.getMedia(url, function(data) {
+	    $('#content').html(_.template(MediaResultsTpl));
+	    console.log(data);
+	    $('#media-results .media').html(_.template(MediaGridTpl, data));	    
+	});
+    };
+    
+	    
     return {
 	__getConfig: __getConfig,
+	doSearch: doSearch,
 	getMedia: getMedia,
 	getMediaByMucua: getMediaByMucua,
 	getMediaByNovidades: getMediaByNovidades

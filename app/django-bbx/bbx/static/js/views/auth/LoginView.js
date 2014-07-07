@@ -79,7 +79,7 @@ define([
 		    $('#content').html('');
 		    window.location.href = urlRedirect;
 		    clearInterval(loginOK);
-		} else if ($("body").data("bbx").loginError !== false) {
+		} else if ($("body").data("bbx").loginError) {
 		    console.log('login falhou');
 		    $("body").data("bbx").loginError = false;		    
 		    clearInterval(loginOK);

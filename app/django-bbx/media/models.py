@@ -53,12 +53,12 @@ def get_file_path(instance):
                         date)
 
 
-def get_type_choices():
+def getTypeChoices():
     """Retorna uma tupla com os tipos de media suportados"""
     return TYPE_CHOICES
 
 
-def get_format_choices():
+def getFormatChoices():
     """Retorna uma tupla com os tipos de arquivo suportado"""
     return FORMAT_CHOICES
 
@@ -104,12 +104,12 @@ class Media(models.Model):
     type = models.CharField(
         _('type'),
         help_text=_('Type of the media, like image, document, video, ...'),
-        max_length=14, choices=lazy(get_type_choices, tuple)(),
+        max_length=14, choices=lazy(getTypeChoices, tuple)(),
         default='arquivo', blank=True)
     format = models.CharField(
         _('format'),
         help_text=('Format of the media, like ogg, jpg, pdf, ...'),
-        max_length=14, choices=lazy(get_format_choices, tuple)(),
+        max_length=14, choices=lazy(getFormatChoices, tuple)(),
         default='ogg', blank=True)
     license = models.CharField(
         _('license'),
