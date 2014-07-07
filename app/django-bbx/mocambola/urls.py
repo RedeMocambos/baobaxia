@@ -3,10 +3,13 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = patterns(
     'mocambola.views',
-    url(r'^(?P<repository>\w+)/(?P<mucua>\w+)/mocambola/' +
-        '(?P<mocambola>[\w@\.]*)$', 'mocambola_detail'),
-    url(r'^(?P<repository>\w+)/(?P<mucua>\w+)/mocambola/list',
+    url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-\[\]]+)/mocambola/list',
         'mocambola_list'),
+    url(r'^\w+/[a-zA-Z0-9\-\[\]]+/mocambola/login',
+        'login'),
+    url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-\[\]]+)/mocambola/' +
+        '(?P<mocambola>[a-zA-Z0-9\-\.@]+)$', 'mocambola_detail'),
+
 )
 
 urlpatterns = format_suffix_patterns(urlpatterns)

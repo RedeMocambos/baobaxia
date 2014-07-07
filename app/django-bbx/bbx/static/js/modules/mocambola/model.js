@@ -4,7 +4,6 @@ define([
     'backbone'
 ], function($, _, Backbone) {
     var MocambolaModel = Backbone.Model.extend({
-	idAttribute: 'id'
     });
     
     return MocambolaModel;	

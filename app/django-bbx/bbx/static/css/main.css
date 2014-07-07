@@ -6,27 +6,122 @@
  * base
  */
 html { font-family: sans-serif}
-body {margin: 0; padding: 0}
-#container {width: 100%; height: 87px; margin: auto; background-color: #d5c590; height: 100%}
-#header {background: #fff url('../images/cabecalho-meio.png') repeat-x left top; }
-#cabecalho .esq {background-image: url('../images/cabecalho-esq.png'); width: 164px; height: 87px; float: left; }
-#cabecalho .dir {background-image: url('../images/cabecalho-dir.png'); width: 725px; height: 87px; float: right; } /*TODO: fix quando redimensiona para tela pequena (celular) */
-#content {min-height: 400px}
-#footer {clear: both; background: #ddd}
+body {margin: 0; padding: 0; background-color: #D5C590}
+html, body, #container {height: 100% }
+#container {margin: 0 auto;}
+#content {float: left; width: 60%; padding: 10px}
+#sidebar {float: left; width: 30%; height: 70%; max-width: 400px !important; margin-right: 5%; background-color: #fff; padding: 10px }
+#footer {clear: both; height: 40px; position: fixed; z-index: 10; background-color: #D5C590; width: 100%; bottom: -2px; border-top: #fff solid 2px; }
+a {text-decoration: none;}
 
+/*
+ * general
+ */
+.inline {float: left}
+.bold {font-weight: bold}
 /*
  * header
  */
-#cabecalho {height: 150px;}
-#cabecalho img { margin-top: 25px; margin-left: 100px; float: left}
-#title-mucua { color: #f4c00a; float: left; margin-top: 70px; margin-left: 20px; font-size: 14px}
-
+#header {width: 100%;height: 180px; background-color: #fff }
+#header-top {background: #fff url('../images/cabecalho.png') no-repeat fixed center top; height: 106px; width: 1113px; margin: 0 auto }
+#header-top img { margin-top: 25px; margin-left: 70px}
 .posicoes {display: none}
-h3 #nome_mucua { color: #e33; }
+.home #header {background-image: url('../images/login-home-header.png'); background-repeat: no-repeat; background-size: 100% auto; height: 50%}
+.home #content  { height: 50%; background: url('../images/home-login-content.png') no-repeat; background-size: 100% auto; padding:0; width: 100%}
+.home #content .left {width:45%; float: left; height: 100%}
+.home #content .middle {width:15%; float: left; height: 100%; }
+.home #content .right {width:40%; float: left; height: 100%; font-size: 13px; }
+.home #footer {display: none}
+
+
+#menu {margin-left: 35%; margin-top: 50px}
+.menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
+.menu-itens li a {color: #fff; text-decoration: none; }
 
 /*
- * media view, edit & publish
+ * login
  */
+.login #content .right #form_login .first-line div {float: left; }
+.login #content .right #form_login p,
+.login #content .right #form_login span,
+.login #content .right #form_login a {color: #2f7f37; font-weight: bold; margin: 6px; margin-bottom:0; text-decoration: none}
+.login #content .right #form_login .second-line p {color: #d1c188 }
+.login #content .right #form_login .second-line input {border: #d1c188 solid 1px }
+.login #content .right #form_login .second-line a {color: #a4945c }
+.login #content .right #form_login img {vertical-align: bottom; margin: 2px}
+.login #content .right #form_login .second-line div {clear: both; color: #2f7f37; font-weight: bold }
+.login #content .right #form_login input,
+.login #content .right #form_login select {border: #81bc5f solid 1px; border-radius: 4px; font-size: 10px; width: 100px; margin: 5px }
+.login input.submit {width: 30px !important }
+.login #message-area {color: #f66 !important}
+
+/*
+ * footer
+ */
+#usage-content {padding: 6px; width: 1000px; font-size: 10px; font-weight: bold }
+#usage-content .usage-bar,
+#usage-content .legend {width: 700px; height: 15px; padding-left: 6px }
+#usage-content .legend .used {color: #36a; width: 150px}
+#usage-content .legend .demanded {color: #c33; width: 150px}
+#usage-content .usage-bar .the-bar {border: 3px solid #fff; height: 9px; width: 700px}
+#usage-content .usage-bar .the-bar .used {background-color: #36a; height: 9px}
+#usage-content .usage-bar .the-bar .demanded {background-color: #c33; height: 9px}
+#usage-content .total {width: 100px; color: #385; padding-left: 6px; }
+
+/*
+ * sidebar
+ */
+
+#user-profile {height: 50px}
+#sidebar #user-profile img {float: left; width: 45px; height: 45px}
+#sidebar #user-profile h4 {float: left; text-decoration: none; color: #D5C590; margin: 0 auto; padding-top: 12px; padding-left: 8px}
+#user-profile a.logout {font-size:11px; color:#D5C590; float: right}
+
+#place-profile {padding-top: 5px; text-align: center; color: #aac0ca }
+#place-profile a {text-decoration: none}
+#place-profile .link a {color: #005880; font-weight: bold}
+#place-profile div {padding: 3px}
+#place-profile .more-info a {border-radius: 4px; border: 2px solid #aac0ca; color: #aac0ca; padding-left: 6px; padding-right: 6px; }
+#cloud {padding: 20px}
+#cloud div {display: inline}
+#cloud div a {color: #aac0ca; font-weight: bold}
+
+/*
+ * visualizacoes de media
+ */
+.destaques {clear: both}
+.destaques h3.title {color: #fff; font-size: 26px; margin: 4px}
+
+/*
+ * media grid
+  */
+.media_box { float: left; width: 192px; height: 170px; background: #f4efdd; margin: 5px; font-size: 12px; border-radius: 5px; padding: 10px; text-align: center}
+.media_box .result-thumb {width: 192px; height: 130px; background: #aa6}
+.media_box .title {font-size: 12px }
+.media_box .format_type { color: #aaa; text-transform: uppercase }
+.media_box .date {font-size: 10px }
+.media_box .format_type {padding: 6px; font-size: 12px}
+.media_box .origin {font-size: 10px; color: #aaa; padding-right: 10px }
+.media_box .license {color: #b96c;}
+.media_box a {color: #2E7E36}
+.media_box a:hover {color: #005500}
+
+
+/*
+ * functional tags
+ */
+.video .result-thumb { }
+.audio .result-thumb { }
+.imagem .result-thumb { } /*background: #f00*/
+.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
+.video .result-thumb .assist {background-image: url('../images/play.png'); background-repeat: no-repeat; width: 79px; height: 79px; float: left; margin: 26px; margin-left: 58px}
+.audio .result-thumb .assist {}
+
+
+/* COMMENTED EVERYTHING (old template)
+ * media view, edit & publish
+ * /
+
 #media_publish, #media_update, #media_view {font-size: 12px}
 #media_publish, #media_update, #media_view .title {font-size: 14px}
 h3.results-title { color: #fff; padding-left: 20px}
@@ -76,7 +171,7 @@ div.image_preview {height: 130px; background: url(../images/no-preview-video.png
 .modo-edicao {background-color: #a59560; padding: 4px; border-radius: 4px; border: 2px solid #958555; margin: 2px }
 .modo-edicao .title {font-size: 20px; font-weight: bold}
 
-/* media publish */
+/* media publish * /
 #media_publish {}
 #media_publish #uuid {color:#999 }
 #media_publish #arquivo_passo2, #media_publish #dia_hora, #media_publish #dados_gerais, #media_publish #tags_area, #media_publish #uuid_area {display: none}
@@ -87,14 +182,14 @@ div.image_preview {height: 130px; background: url(../images/no-preview-video.png
 #media_publish #tags_area, 
 #media_publish #uuid_area { float: left; width: 50% }
 
-/* form progress meter */
+/* form progress meter * /
 .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
 .bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
 .percent { position:absolute; display:inline-block; top:3px; left:48%; }
 
 /*
  * busca / resultados
- */
+ * /
 
 .caixa_busca { border: 2px solid #a59560; border-radius: 8px; }
 #busca-menu .button {float: right;  background-image: url('../images/search.png'); width: 27px; height: 27px; cursor: pointer }
@@ -103,9 +198,10 @@ div.image_preview {height: 130px; background: url(../images/no-preview-video.png
 .menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
 .menu-itens li a {color: #fff; text-decoration: none; }
 .caixa-resultado-busca {background-color: #eeffaa; padding: 2px; }
-.caixa-resultado-busca .nome-termo {margin: 12px; }
+.caixa-resultado-busca .nome-termo {margin: 12px; display:inline }
 .caixa-resultado-busca a {background-color: #cdde87; padding: 4px; text-decoration: none; font-weight: bold }
 .adicionar-termo {font-size: 16px; font-weight: bold; cursor: pointer}
 .remover-termo {font-size: 16px; font-weight: bold; cursor: pointer}
 #resultado-busca .caixa_busca {}
 #media-results-content h4.message {padding: 10px; color: #900}
+*/

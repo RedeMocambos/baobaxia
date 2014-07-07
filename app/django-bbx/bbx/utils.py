@@ -9,7 +9,7 @@ from bbx.settings import THUMBNAILS_ROOT, THUMBNAILS_URL
 
 import os
 import errno
-
+import math
 
 def check_if_path_exists_or_create(path):
     """Function to check or create a given path.
@@ -23,6 +23,18 @@ def check_if_path_exists_or_create(path):
         if exception.errno != errno.EEXIST:
             raise
 
+def convertToGB(size, unit):
+    allowed_units = ('MB', 'GB', 'TB')
+    if unit not in allowed_units:
+        return False
+    
+    if unit == 'MB':
+        size = float(size)/1000
+    if unit == 'GB':
+        size = size
+    if unit == 'TB':
+        size = float(size) * 1000
+    return str(size) + 'GB'
 
 def dumpclean(obj):
     """Function to print all field/dictionary of a given object.

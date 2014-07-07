@@ -1,0 +1,13 @@
+<div id="usage-content">
+  <div class="usage-bar inline">
+    <div class="legend">
+      <div class="used inline">espaço em uso: <%=usedPercent %>%</div>
+      <div class="demanded inline"><% if (demandedPercent > 0) { %>espaço solicitado: <%=demandedPercent %>%<% }%></div>
+    </div>
+    <div class="the-bar">
+      <div class="used inline" style="width: <%=usedPercent %>%">&nbsp;</div>
+      <% if (demandedPercent > 0) { %><div class="demanded inline" style="width: <%=demandedPercent %>%">&nbsp;</div><% }%>
+    </div>
+  </div>
+  <div class="total inline">total: <%=total%>GB</div>
+</div>

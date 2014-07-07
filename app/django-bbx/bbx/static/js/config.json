@@ -1,6 +1,6 @@
 {
-    "imagePath": "",
+    "imagePath": "/images",
     "apiUrl": "/api",
-    "interfaceUrl": "/baobaxia/#",
-    "defaultMucua": ""
+    "interfaceUrl": "/bbx/app/django-bbx/bbx/static/#",
+    "defaultMucua": "namaste-laptop"
 }

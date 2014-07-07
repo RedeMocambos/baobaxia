@@ -1,167 +1,207 @@
+/**
+ * Baobaxia
+ * 2014
+ * 
+ * bbx/base-functions.js
+ *
+ *  All functions of general use, intended to be accessed by modules of the interface; includes also some private functions. The list of public functions is declared at the end of the file.
+ *
+ */
+
 define([
     'jquery', 
     'underscore',
     'backbone',
-    'json!config.json',
-    'modules/repository/model', 
+    'jquery_cookie',
+    'views/common/HeaderView',
     'modules/mucua/model',
-    'text!templates/common/menu.html',
-    'text!templates/common/busca.html',
-    'modules/common/HeaderView',
-    'modules/common/FooterView',
-], function($, _, Backbone, DefaultConfig, RepositoryModel, MucuaModel, Menu, Busca, HeaderView, FooterView){
+    'modules/repository/model',
+    'json!config.json',
+    'text!templates/common/content.html',
+    'text!templates/common/sidebar.html',
+    'text!templates/common/usage-bar.html'
+], function($, _, Backbone, jQueryCookie, HeaderView, MucuaModel, RepositoryModel, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl){
+    
+    var init = function() {
+	if (typeof $("body").data("bbx") === 'undefined') {
+	    $("body").data("bbx", 
+			   {
+			       configLoaded: false
+			   });
+	}
+	
+	var configLoaded = $("body").data("bbx").configLoaded;
+	if (configLoaded === false) {
+	    __setConfig(DefaultConfig);
+	}
+    }
+    
+    /**
+     * checks if there's an opened session
+     * 
+     * @return {Bool} if there's a session opened
+     */
+    var isLogged = function() {
+	if ($.cookie('sessionBBX')) {
+	    // TODO: add some session check	   
+	    return true;
+	}
+	return false;
+    }
+    
+    /**
+     * return home page
+     *
+     * @return {String} a url
+     */
+    var getDefaultHome = function() {
+	// MAYBE, this should be a configurable field
+	var config = $("body").data("bbx").config,
+	url = '#' + config.defaultRepository.name + '/' + config.myMucua;
+	return url;
+    }
+    
+    /**
+     * get avatar
+     * 
+     * @return {String} a url
+     */
+    var getAvatar = function() {
+	var avatarUrl = "",
+	defaultAvatar = 'avatar-default.png';
+	
+	// TODO: implement avatar
+	
+	avatarUrl = "images/" + defaultAvatar;
+	return avatarUrl;
+    }
+    
+    /**
+     * render common for internal pages at baobaxia
+     *
+     * @return [jQuery modify #header]
+     */
+    var renderCommon = function(name) {
+	var data = {};
+	$('body').removeClass().addClass(name);
+	console.log('render common');
+	
+	if ($('#sidebar').html() == "" ||
+	    (typeof $('#sidebar').html() === "undefined")) {
+	    $('#footer').before(_.template(SidebarTpl));
+	}
+	
+	$('#content').html('');	
+	var headerView = new HeaderView();
+	headerView.render(data);
+    }
+    
+    /**
+     * render usage bar at footer
+     *
+     * @return [jquery modify #footer]
+     */
+    var renderUsage = function(data) {
+	var data = data || '',
+	reStripUnit = /^([0-9\.]+)([\w]*)/,
+	total = data.total.match(reStripUnit);
+	used = data.used.match(reStripUnit);
+	
+	// split values from regexp
+	data.total = total[1];
+	data.totalUnit = total[2];
+	data.used = used[1];
+	data.usedUnit = used[2];
+	
+	// calculate the percentages
+	data.usedPercent = Math.round(parseFloat(data.used) / parseFloat(data.total) * 100);
+	data.demandedPercent = Math.round(parseFloat(data.demanded) / parseFloat(data.total) * 100);
+	
+	var compiledUsage = _.template(UsageBarTpl, data);
+	$('#footer').html(compiledUsage);
+    }
+    
+    /**
+     * get actual mucua
+     *
+     * @config {Object} input Object with config data
+     * @return {None} don't return values
+     */
+    var __getMyMucua = function() {
+	var config = $("body").data("bbx").config;
+	var myMucua = new MucuaModel([], {url: config.apiUrl + '/mucua/'});
+	myMucua.fetch({
+	    success: function() {		    
+		config.myMucua = myMucua.attributes[0].description;
+	    }
+	});
+    }
+    
+    /**
+     * Get actual repository
+     *
+     * @config {Object} input Object with config data
+     * @return {None} don't return values (only by jQuery)
+     */
+    var __getDefaultRepository = function() {
+	var config = $("body").data("bbx").config;
+	
+	var defaultRepository = new RepositoryModel([], {url: config.apiUrl + '/repository/'});
+	defaultRepository.fetch({
+	    success: function() {
+		config.defaultRepository = defaultRepository.attributes[0]; 
+	    }
+	});
+    }    
+    
+    /**
+     * Get all available repositories
+     *
+     * @return {None} don't return values (only by jQuery)
+     */
+    var __getRepositories = function() {
+	var config = $("body").data("bbx").config;
+	
+	// TODO: puxar lista real de repositorios
+	//var listRepositories = new RepositoryModel([], {url: Config.apiUrl + '/repository/list'});
+	config.repositoriesList = [{name: 'mocambos'}];  // hardcoded enquanto nao esta funcional
+    }
+    
+    /**
+     * Set configurations for the whole interface
+     *
+     * @config {Object} input Object with config data
+     * @return {None} don't return values (only by jQuery)
+     */
+    var __setConfig = function(jsConfig) {
+	// configuracoes padrao: config.json
+	var jsConfig = jsConfig || '',
+	config = jsConfig;
+	$("body").data("bbx").config = jsConfig;
+	
+	__getMyMucua();
+	__getDefaultRepository();
+	__getRepositories();
+	
+	// so preenche quando todos tiverem carregado
+	var loadData = setInterval(function() {
+	    if (typeof config.myMucua !== 'undefined' &&
+		typeof config.defaultRepository !== 'undefined' &&
+		typeof config.repositoriesList !== 'undefined') {	
+		console.log('configs loaded!');
+		$("body").data("bbx").configLoaded = true;
+		clearInterval(loadData);
+	    }
+	}, 50);	    
+    }
+    
     return {
-	initialize: function() {
-	    console.log('inicializa functions bbx');
-	    this.setConfig();
-	},
-	
-	setConfig: function(config) {
-	    // configuracoes padrao: config.json
-	    config = config || '';
-	    
-	    if (typeof this.config === 'undefined') {
-		this.config = (config != '') ? config : DefaultConfig;
-		this.config['mucuaLocal'] = $.cookie('bbxMucuaLocal');
-		$("body").data("data").config = this.config;
-		
-		// busca informacoes da mucua default na api
-		var defaultMucua = new MucuaModel([], {url: this.config.apiUrl + '/mucua/'});
-		defaultMucua.fetch({
-		    success: function() {		    
-			$("body").data("data").config.defaultMucua = defaultMucua.attributes[0].description;
-			$("body").data("data").trigger("updatedConfig");
-		    }
-		});
-	    }
-	    $("body").data("data").on("updatedConfig", function() {
-		this.config = $("body").data("data").config;
-	    });
-	},
-	
-	getConfig: function() {
-	    if (typeof this.config === 'undefined') 
-		this.setConfig();
-
-	    return this.config;
-	},
-	
-	// get repository / mucua
-	setBaseData: function(repository, mucua) {
-	    repository = repository || '';
-	    mucua = mucua || '';
-	    
-	    this.setConfig();
-	    
-	    if (repository != '' && mucua != '') {
-		// get both by url
-		$("body").data("data").repository = repository;
-		$("body").data("data").mucua = mucua;
-		$("body").data("data").trigger("changedData");
-	    } else {
-		if (repository != '' & mucua == '') {
-		    // repository by url, mucua by API
-		    $("body").data("data").repository = repository;
-		    var defaultMucua = new MucuaModel([], {url: this.config.apiUrl + '/mucua/'});
-		    defaultMucua.fetch({
-			success: function() {
-			    $("body").data("data").mucua = defaultMucua.attributes[0].description;
-			    $("body").data("data").trigger("changedData");
-			}
-		    }); 
-		} else if (repository == '' & mucua != '') {
-		    // repository by API, mucua by url
-		    $("body").data("data").mucua = mucua;
-		    var defaultRepository = new RepositoryModel([], {url: this.config.apiUrl + '/repository/'});
-		    defaultRepository.fetch({
-			success: function() {
-			    $("body").data("data").repository = defaultRepository.attributes[0].name;
-			    $("body").data("data").trigger("changedData");
-			}
-		    });
-		} else {
-		    // get both from API
-		    var defaultRepository = new RepositoryModel([], {url: this.config.apiUrl + '/repository/'});
-		    
-		    // TODO: usar jquery defered objects 
-		    // $.when(blabla.fetch(), abcd.fetch())
-		    //   .done(
-		    //     do_stuff();
-		    //   );
-		    // http://stackoverflow.com/questions/19502719/backbone-multiple-collection-fetch
-		    // http://api.jquery.com/category/deferred-object/
-		    defaultRepository.fetch({
-			success: function() {
-			    $("body").data("data").repository = defaultRepository.attributes[0].name;
-			    this.config = $("body").data("data").config;
-			    var defaultMucua = new MucuaModel([], {url: this.config.apiUrl + '/mucua/'});
-			    defaultMucua.fetch({
-				success: function() {
-				    $("body").data("data").mucua = defaultMucua.attributes[0].description;
-				    $("body").data("data").trigger("changedData");
-				}
-			    });
-			}
-		    });
-		}
-	    }
-	},
-	
-	renderCommon: function(repository, mucua) {
-	    repository = repository || '';
-	    mucua = mucua || '';
-	    
-	    // carrega partes comuns; carrega dados basicos para todos
-	    this.setBaseData(repository, mucua);
-	    // debug
-	    // $("body").data("data").on("all", function(event) {console.log(event)});
-
-	    //// event catchers para os carregamentos de dados
-	    // atualizacao de repositorio e mucua
-
-	    /*
-	    $("body").data("data").on("changedData", function() {
-		$("body").data("data").changedData = true;
-		if ($("body").data("data").updatedConfig == true) {
-		    $("body").data("data").trigger("renderFinish");
-		    $("body").data("data").changedData = false;
-		    $("body").data("data").updatedConfig = false;
-		}
-	    });
-	    // atualizacao das configuracoes
-	    $("body").data("data").on("updatedConfig", function() {
-		$("body").data("data").updatedConfig = true;
-		if ($("body").data("data").changedData == true) {
-		    $("body").data("data").trigger("renderFinish");
-		    $("body").data("data").changedData = false;
-		    $("body").data("data").updatedConfig = false;
-		}
-	    });*/
-	    
-	    // renderiza quando todos os dados forem carregados
-	    //	    $("body").data("data").on("renderFinish", function() {
-	    if ($("body").data("data").repository != '' && $("body").data("data").mucua != '') {
-		repository = (repository != '') ? repository : $("body").data("data").repository;
-		mucua = (mucua != '') ? mucua : $("body").data("data").mucua;
-		mucuaLocal = $.cookie('bbxMucuaLocal'); 
-		data = {'repository': repository, 'mucuaLocal': mucuaLocal, 'config': $("body").data("data").config};
-		
-		if ($('#header').html() == '') {			
-		    var headerView = new HeaderView();
-		    headerView.render(data);
-		}
-		if ($('#footer').html() == '') {
-		    var footerView = new FooterView();
-		    footerView.render(data);
-		}		
-		if (typeof $('#busca-menu').html() === 'undefined') {
-		    $('#content-full').prepend(_.template(Menu, data));
-			$('#busca-menu').append(_.template(Busca, data));
-		}
-	    }
-	    //	});
-
-	    $("body").data("data").renderCommon = true;
-	}	
+	init: init,
+	isLogged: isLogged,
+	getDefaultHome: getDefaultHome,
+	getAvatar: getAvatar,
+	renderCommon: renderCommon,
+	renderUsage: renderUsage
     }
 });
+    
