@@ -73,7 +73,7 @@ def media_list(request, repository, mucua, args=None, format=None):
             ).filter(origin=mucua.id)
         # sanitizacao -> remove '/' do final
         args = args.rstrip('/')
-
+        
         # pega args da url se tiver
         if args:
             for arg in args.split('/'):
@@ -89,8 +89,10 @@ def media_list(request, repository, mucua, args=None, format=None):
                 else:
                     medias = medias.filter(
                         Q(tags__name__icontains=arg) |
-                        Q(name__icontains=arg) | Q(note__icontains=arg))
-
+                        Q(name__icontains=arg) | 
+                        Q(note__icontains=arg)
+                        ).distinct()
+        
         # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
         return Response(serializer.data)
