@@ -16,12 +16,19 @@ define([
 	el: "body",
 	
 	events: {
-	    "click .submit": "doLogin"
+	    "click .submit": "doLogin",
+	    "keyup #password": "__checkKeyPress"
 	    // TODO: get ENTER type on password field
 	},
 	
 	// problema: eventos duplicados atrapalham qdo carrega de novo!
 	//	    this.delegateEvents(".submit", "click", "doLogin");
+	
+	__checkKeyPress: function(e) {
+	    if (e.keyCode == 13) {
+		this.doLogin();
+	    } 
+	},
 	
 	__prepareLoginData: function() { 
 	    // TODO: add form checks
@@ -125,14 +132,14 @@ define([
 				repositoryList: config.repositoriesList
 			    }
 			    __parseTemplate(data);			    
-			    __getToken();
+			    __getToken();			    
 			}
 		    });
 		    
 		    clearInterval(loadedData);
 		}
 	    }, 50);
-
+	    
 	    var __getToken = function() {
 		var config = $("body").data("bbx").config;
 		// remove cookie if it exists

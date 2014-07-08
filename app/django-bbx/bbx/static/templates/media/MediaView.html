@@ -1,0 +1,31 @@
+<div id="media-view">
+  <div class="bloco-1">
+    <div class="media-image">
+      <img src=""/>
+    </div>
+    <p class="title"><%= media.name %></p>
+    
+    <p class="tags">
+      <% _.each(media.tags, function(tagName) { %>
+      <a href="<% print('/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
+      <% }); %>
+    </p>
+    <a id="mediafile-original" href='file:<%= media.media_file %>'><%= media.media_file %></a>
+    <p class=""><%= media.description %></p>
+    <p class="uuid">UUID<%= media.uuid %></p>
+  </div>
+  <div class="bloco-2">
+    <div>
+      <p class="autor"><span class="title">Por </span>: <a href='<% print('#/mocambola/' + media.author) %>'><%= media.author %></a></p>
+      <p class="date"><span class="title">Data</span> <%= media.date %></p>
+      <p class="origin"><span class="title">Mucua</span> <%= media.origin %></p>
+      <p class="format"><span class="title">Formato</span> <%= media.format %></p>
+      <p class="license"><span class="title">Licença</span>
+	<div class="license-<%= media.license %>"></div></p>
+      <hr/>
+      <p class="quem-tem"><span class="title">Quem tem esse arquivo?: </span></p>
+      <hr/>
+      <p class="quem-tem"><span class="title">Solicitar cópia local <img src=""> </span></p>
+    </div>
+</div>
+<!-- <a href="edit">editar</a>-->

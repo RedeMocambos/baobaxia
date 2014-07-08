@@ -64,8 +64,7 @@ define([
 	    $('#novidades .media').html(_.template(MediaGridTpl, data));
 	});
     };
-    
-    
+
     /**
      * execute search
      * 
@@ -80,7 +79,20 @@ define([
 	// tratamento do term
 	url += term;
 	
+	$('#imagem-busca').attr('src', config.imagePath + '/buscando.gif');
+	
 	this.getMedia(url, function(data) {
+	    var resultCount,
+	    messageString = "";
+	    if (!_.isEmpty(data.medias)) {
+		resultCount = _.size(data.medias);
+		messageString = (resultCount == 1) ? ' resultado' : ' resultados';
+		messageString = resultCount + messageString;
+	    } else {
+		messageString = "Nenhum resultado";
+	    }
+	    $('#result-string').html(messageString);
+	    $('#imagem-busca').attr('src', config.imagePath + '/buscar.png');
 	    $('#content').html(_.template(MediaResultsTpl));
 	    $('#media-results .media').html(_.template(MediaGridTpl, data));	    
 	});

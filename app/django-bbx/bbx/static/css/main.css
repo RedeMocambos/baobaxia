@@ -110,9 +110,10 @@ a {text-decoration: none;}
 /*
  * busca
  */
-#buscador {margin-left: 10px; margin-top: -15px; width: 300px}
+#buscador {margin-left: 10px; margin-top: -15px}
 #buscador .caixa_busca { border: 2px solid #fff; border-radius: 8px; padding-left: 8px }
-#buscador div {margin-top: 4px}
+#buscador div {margin-top: 4px; display: inline; padding-left: 6px}
+#result-string {font-size: 12px; font-weight: bold; color: #145B7A }
 
 /*
  * functional tags
@@ -124,6 +125,17 @@ a {text-decoration: none;}
 .video .result-thumb .assist {background-image: url('../images/play.png'); background-repeat: no-repeat; width: 79px; height: 79px; float: left; margin: 26px; margin-left: 58px}
 .audio .result-thumb .assist {}
 
+/*
+ * media view
+ */
+#media-view {}
+#media-view .bloco-1 {float: left; width: 550px}
+#media-view .bloco-2 {float: left; width: 300px}
+#media-view .bloco-2 div {background-color: #8cb689; border-radius: 8px; padding: 6px}
+#media-view p {color: #fff; font-size: 17px}
+#media-view hr {color: #fff}
+#media-view .media-image { border-radius: 8px; background-color: #f4efdd; width: 500px; height: 300px}
+#media-view .title {font-size:20px}
 
 /* COMMENTED EVERYTHING (old template)
  * media view, edit & publish

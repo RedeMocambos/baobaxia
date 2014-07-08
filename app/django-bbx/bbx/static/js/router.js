@@ -9,7 +9,8 @@ define([
     'views/auth/LogoutView',
     'views/common/IndexView',  
     'modules/mucua/router',
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter){
+    'modules/media/router',
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter, MediaRouter){
     var App = {};
     App.Router = Backbone.Router.extend({
 	Routers: {},

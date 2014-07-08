@@ -5,14 +5,22 @@ define([
     'modules/bbx/base-functions',
     'modules/media/model', 
     'modules/media/collection',
-], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MediaModel, MediaCollection){
+    'views/media/ViewMedia', 
+], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MediaModel, MediaCollection, ViewMediaView){
     var Router = Backbone.SubRoute.extend({
 	routes: {
+	    ':uuid': 'view'
 	},
 	
 	initialize: function() {
 	    console.log("module Media loaded");
 	},
+
+	view: function(uuid) {
+	    console.log("view media");
+	    mediaView = new ViewMediaView();
+	    mediaView.render(uuid);
+	}
     });
     
     return Router;

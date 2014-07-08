@@ -21,8 +21,10 @@ define([
     'json!config.json',
     'text!templates/common/content.html',
     'text!templates/common/sidebar.html',
-    'text!templates/common/usage-bar.html'
-], function($, _, Backbone, jQueryCookie, HeaderView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl){
+    'text!templates/common/usage-bar.html',
+    'text!templates/common/user-profile.html',
+    'text!templates/common/mucua-profile.html'
+], function($, _, Backbone, jQueryCookie, HeaderView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
     
     var init = function() {
 	if (typeof $("body").data("bbx") === 'undefined') {
@@ -133,6 +135,20 @@ define([
 	$('#footer').html(compiledUsage);
     }
 
+    /**
+     *
+     */
+    var renderSidebar = function(pageType) {
+	var page = page || '';
+	
+	if (this.isLogged() &&
+	    ((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() == "")) {
+	    var userProfile = $.parseJSON($.cookie('sessionBBX'));
+	    userProfile.mocambolaUrl = this.getDefaultHome() + '/mocambola/' + userProfile.username
+	    userProfile.avatar = this.getAvatar();
+	    $('#user-profile').html(_.template(UserProfileTpl, userProfile));
+	}
+    }
     
     /**
      * get actual mucua
@@ -214,7 +230,8 @@ define([
 	getDefaultHome: getDefaultHome,
 	getAvatar: getAvatar,
 	renderCommon: renderCommon,
-	renderUsage: renderUsage
+	renderUsage: renderUsage,
+	renderSidebar: renderSidebar
     }
 });
     
