@@ -56,6 +56,8 @@ a {text-decoration: none;}
 .login input.submit {width: 30px !important }
 .login #message-area {color: #f66 !important}
 
+.mucua #content { margin-bottom: 40px}
+
 /*
  * footer
  */
