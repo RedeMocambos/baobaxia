@@ -82,7 +82,6 @@ define([
 	
 	this.getMedia(url, function(data) {
 	    $('#content').html(_.template(MediaResultsTpl));
-	    console.log(data);
 	    $('#media-results .media').html(_.template(MediaGridTpl, data));	    
 	});
     };

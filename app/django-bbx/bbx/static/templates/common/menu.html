@@ -1,7 +1,7 @@
 <div id="menu">
   <p class="posicoes">Menu</p>
   <ul class="menu-itens">
-    <li><a href="#<%= repository %>/<%= mucua %>"><%= mucua %></a></li>
-    <li><a href="#<%= repository %>/rede/bbx/search/">REDE</a></li>
+    <li class="<% if (currentUrl == repository +'/' + mucua) {%>current<% } %>"><a href="#<%= repository %>/<%= mucua %>"><%= mucua %></a></li>
+    <li class="<% if (currentUrl == repository + '/rede') {%>current<% } %>"><a href="#<%= repository %>/rede/bbx/search/">REDE</a></li>
   </ul>
 </div>

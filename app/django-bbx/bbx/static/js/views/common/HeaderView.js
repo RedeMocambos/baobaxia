@@ -7,15 +7,17 @@ define([
 ], function($, _, Backbone, Header, MenuTpl){
     var HeaderView = Backbone.View.extend({
 	render: function(data) {
-	    var config = $("body").data("bbx").config;
+	    var data = data || {},
+	    config = $("body").data("bbx").config;
+	    
+	    data.currentUrl = Backbone.history.fragment;	    
 	    $('#header').html(_.template(Header, data));
-
+	    
 	    if ($('#menu').html() == "" ||
 		(typeof $('#menu').html() === "undefined")) {
-		var data = {
-		    repository: config.defaultRepository.name,
-		    mucua: config.myMucua
-		}
+		data.repository = config.defaultRepository.name;
+		data.mucua = config.myMucua;
+		
 		$('#header').append(_.template(MenuTpl, data));
 	    }
 	}

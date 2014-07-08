@@ -37,6 +37,7 @@ a {text-decoration: none;}
 #menu {margin-left: 35%; margin-top: 50px}
 .menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
 .menu-itens li a {color: #fff; text-decoration: none; }
+.menu-itens .current {background-color: #145B7A}
 
 /*
  * login
