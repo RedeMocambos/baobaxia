@@ -18,7 +18,7 @@ define([
 
 	view: function(uuid) {
 	    console.log("view media");
-	    mediaView = new ViewMediaView();
+	    var mediaView = new ViewMediaView();
 	    mediaView.render(uuid);
 	}
     });

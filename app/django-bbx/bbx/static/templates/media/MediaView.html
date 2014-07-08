@@ -1,13 +1,13 @@
 <div id="media-view">
   <div class="bloco-1">
     <div class="media-image">
-      <img src=""/>
+      <img src="images/imagem-exemplo.png" />
     </div>
     <p class="title"><%= media.name %></p>
     
     <p class="tags">
       <% _.each(media.tags, function(tagName) { %>
-      <a href="<% print('/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
+      <a href="<% print(baseUrl + '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
       <% }); %>
     </p>
     <a id="mediafile-original" href='file:<%= media.media_file %>'><%= media.media_file %></a>

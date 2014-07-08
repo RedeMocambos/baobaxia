@@ -133,10 +133,11 @@ a {text-decoration: none;}
 #media-view {}
 #media-view .bloco-1 {float: left; width: 550px}
 #media-view .bloco-2 {float: left; width: 300px}
-#media-view .bloco-2 div {background-color: #8cb689; border-radius: 8px; padding: 6px}
+#media-view .bloco-2 div {background-color: #8cb689; border-radius: 8px; padding: 10px}
 #media-view p {color: #fff; font-size: 17px}
 #media-view hr {color: #fff}
-#media-view .media-image { border-radius: 8px; background-color: #f4efdd; width: 500px; height: 300px}
+#media-view .media-image { border-radius: 8px; background-color: #f4efdd; padding: 10px; margin-right: 10px; width: 500px}
+#media-view .media-image img {background-color: #ccc; width: 500px; height: 300px}
 #media-view .title {font-size:20px}
 
 /* COMMENTED EVERYTHING (old template)

@@ -20,7 +20,9 @@ define([
 	    
 	    media = MediaFunctions.getMedia(url, function(data) {
 		data.media = data.medias;
-		console.log(data.medias);
+		data.config = config;
+		
+		data.baseUrl = BBXBaseFunctions.getDefaultHome();
 		$('#result-string').html("<a href='javascript: history.back(-1)'>voltar</a>");
 		$('#content').html(_.template(MediaViewTpl, data));
 	    });
