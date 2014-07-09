@@ -20,7 +20,6 @@ define([
 	    console.log("home mucua");
 	    BBXBaseFunctions.renderCommon('mucua');
 	    
-	    var data = {};
 	    var homeMucua = new HomeMucua(); 
 	    homeMucua.render();
 	},

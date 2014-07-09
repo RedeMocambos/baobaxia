@@ -76,26 +76,12 @@ define([
 	});
     };
     
-    
-    /**
-     * execute search
-     * 
-     */
-    var doSearch = function() {
-	console.log('doSearch');
-	var term = $('#caixa_busca')[0].value;
-	//exclude = exclude || '',
-	config = this.__getConfig(),
-	url = config.apiUrl + '/' + config.defaultRepository.name + '/' + config.myMucua + '/bbx/search/';
-	
-	// tratamento do term
-	url += term;
-	
-	$('#imagem-busca').attr('src', config.imagePath + '/buscando.gif');
-	
+    var getMediaSearch = function(url) {
 	this.getMedia(url, function(data) {
 	    var resultCount,
-	    messageString = "";
+	    messageString = "",
+	    config = $("body").data("bbx").config;
+	    
 	    if (!_.isEmpty(data.medias)) {
 		resultCount = _.size(data.medias);
 		messageString = (resultCount == 1) ? ' resultado' : ' resultados';
@@ -107,7 +93,32 @@ define([
 	    $('#imagem-busca').attr('src', config.imagePath + '/buscar.png');
 	    $('#content').html(_.template(MediaResultsTpl));
 	    $('#media-results .media').html(_.template(MediaGridTpl, data));	    
-	});
+	});	
+    };
+    
+    
+    /**
+     * execute search
+     * 
+     */
+    var doSearch = function() {
+	console.log('doSearch');
+	var term = $('#caixa_busca')[0].value;
+	//exclude = exclude || '',
+	config = this.__getConfig(),
+	url = '',
+	mucuaToSearch = '',
+	reMucuaSearch = /^\w+\/([a-zA-Z0-9\-]+)/,
+	tmpMucua = Backbone.history.fragment.match(reMucuaSearch);
+	mucuaToSearch = tmpMucua[1];
+	// TODO: debugar mais essa porcao
+	url = config.apiUrl + '/' + config.defaultRepository.name + '/' + mucuaToSearch + '/bbx/search/';
+	
+	// tratamento do term
+	url += term;
+	
+	$('#imagem-busca').attr('src', config.imagePath + '/buscando.gif');
+	this.getMediaSearch(url);
     };
     
 	    
@@ -117,6 +128,7 @@ define([
 	getMedia: getMedia,
 	getMediaByMucua: getMediaByMucua,
 	getMediaByNovidades: getMediaByNovidades,
+	getMediaSearch: getMediaSearch,
 	getMediaRelated: getMediaRelated
     }
 });

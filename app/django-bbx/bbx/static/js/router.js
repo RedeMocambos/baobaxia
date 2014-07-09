@@ -10,7 +10,8 @@ define([
     'views/common/IndexView',  
     'modules/mucua/router',
     'modules/media/router',
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter, MediaRouter){
+    'modules/bbx/router',
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter, MediaRouter, BBXRouter){
     var App = {};
     App.Router = Backbone.Router.extend({
 	Routers: {},
@@ -101,7 +102,7 @@ define([
 	// bbx
 	invokeBbxModule: function(repository, mucua, subroute) {
 	    console.log('bbx');
-	    this.Routers.BbxRouter = new BbxRouter(repository + "/" + mucua + "/" + "bbx/", subroute);
+	    this.Routers.BbxRouter = new BBXRouter(repository + "/" + mucua + "/" + "bbx/", subroute);
 	},
 
 	// mocambola

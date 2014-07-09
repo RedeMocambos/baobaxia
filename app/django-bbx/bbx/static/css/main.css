@@ -118,6 +118,7 @@ a {text-decoration: none;}
 #buscador .caixa_busca { border: 2px solid #fff; border-radius: 8px; padding-left: 8px }
 #buscador div {margin-top: 4px; display: inline; padding-left: 6px}
 #result-string {font-size: 12px; font-weight: bold; color: #145B7A }
+#result-string .back-to-results {color: #197299}
 
 /*
  * functional tags
@@ -148,7 +149,7 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 #media-view .media-image img {background-color: #ccc; width: 400px; height: 300px}
 #media-view .title {font-size: 16px; text-align: right}
 #media-view .title-bold {font-size: 18px; font-weight: bold}
-#media-view .author a {color: #fff}
+#media-view a {color: #fff}
 #media-view .solicit-copy .image {background-image: url('/images/solicitar.png'); width: 17px; height: 15px; display: block; float: right; margin-right: 50px; margin: 5px auto}
 #media-view .solicit-copy .image:hover {background-image: url('/images/solicitar-over.png'); cursor: pointer}
 
