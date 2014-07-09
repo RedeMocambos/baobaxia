@@ -19,6 +19,7 @@ define([
 	    BBXBaseFunctions.renderSidebar();
 	    
 	    media = MediaFunctions.getMedia(url, function(data) {
+		data.formatDate = BBXBaseFunctions.formatDate;
 		data.media = data.medias;
 		data.config = config;
 		data.baseUrl = BBXBaseFunctions.getDefaultHome();

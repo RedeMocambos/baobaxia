@@ -223,6 +223,14 @@ define([
 	    }
 	}, 50);	    
     }
+
+    // static format: day/month/year
+    var formatDate = function(date) {
+	var newDate = '',
+	re = /^(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)Z$/,
+	matches = date.match(re);
+	return matches[3] + '/' + matches[2] + '/' + matches[1];
+    }
     
     return {
 	init: init,
@@ -231,7 +239,8 @@ define([
 	getAvatar: getAvatar,
 	renderCommon: renderCommon,
 	renderUsage: renderUsage,
-	renderSidebar: renderSidebar
+	renderSidebar: renderSidebar,
+	formatDate: formatDate
     }
 });
     
