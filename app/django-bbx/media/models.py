@@ -81,7 +81,7 @@ class Media(models.Model):
     repository: relação com objeto repository
     tags: etiquetas do media
     is_local:  sinaliza que tem uma copia local do media
-    is_requestes: sinaliza que foi solicitada uma copia local 
+    is_requested: sinaliza que foi solicitada uma copia local 
                   do media
     request_code: identifica o pedido de copia local
     num_copies: numero de copias desse media no bbx

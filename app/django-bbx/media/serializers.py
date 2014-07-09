@@ -31,7 +31,7 @@ class MediaSerializer(serializers.ModelSerializer):
         model = Media
         fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
                   'format', 'license', 'media_file', 'origin',
-                  'repository', 'tags')
+                  'repository', 'tags', 'is_local', 'is_requested', 'request_code', 'num_copies')
         depth = 1
 
     def restore_fields(self, data, files):
@@ -99,6 +99,10 @@ class MediaSerializer(serializers.ModelSerializer):
                                                    instance.media_file))
             instance.tags = attrs.get('tags', instance.tags)
             instance.repository = attrs.get('repository', instance.repository)
+            instance.is_local = attrs.get('is_local', instance.is_local)
+            instance.is_requested = attrs.get('is_requested', instance.is_requested)
+            instance.request_code = attrs.get('request_code', instance.request_code)
+            instance.num_copies = attrs.get('num_copies', instance.num_copies)
             return instance
         # Create new instance
         return Media(**attrs)
