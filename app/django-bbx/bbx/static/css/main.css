@@ -56,7 +56,9 @@ a {text-decoration: none;}
 .login input.submit {width: 30px !important }
 .login #message-area {color: #f66 !important}
 
-.mucua #content { margin-bottom: 40px}
+.mucua #content,
+.media #content { margin-bottom: 40px}
+.rede #content { margin-bottom: 40px}
 
 /*
  * footer
@@ -124,7 +126,7 @@ a {text-decoration: none;}
 .audio .result-thumb { }
 .imagem .result-thumb { } /*background: #f00*/
 .arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
-.video .result-thumb .assist {background-image: url('../images/play.png'); background-repeat: no-repeat; width: 79px; height: 79px; float: left; margin: 26px; margin-left: 58px}
+.video .result-thumb .assist {background-image: url('/images/play.png'); background-repeat: no-repeat; width: 79px; height: 79px; float: left; margin: 26px; margin-left: 58px}
 .audio .result-thumb .assist {}
 
 /*
@@ -139,6 +141,8 @@ a {text-decoration: none;}
 #media-view .media-image { border-radius: 8px; background-color: #f4efdd; padding: 10px; margin-right: 10px; width: 400px}
 #media-view .media-image img {background-color: #ccc; width: 400px; height: 300px}
 #media-view .title {font-size:20px}
+#media-view .solicit-copy .image {background-image: url('/images/solicitar.png'); width: 17px; height: 15px; display: block; float: right; margin-right: 50px; margin: 5px auto}
+#media-view .solicit-copy .image:hover {background-image: url('/images/solicitar-over.png'); cursor: pointer}
 
 /* COMMENTED EVERYTHING (old template)
  * media view, edit & publish
