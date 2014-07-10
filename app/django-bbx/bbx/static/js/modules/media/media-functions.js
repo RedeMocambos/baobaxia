@@ -112,13 +112,11 @@ define([
 	tmpMucua = Backbone.history.fragment.match(reMucuaSearch);
 	mucuaToSearch = tmpMucua[1];
 	// TODO: debugar mais essa porcao
-	url = config.apiUrl + '/' + config.defaultRepository.name + '/' + mucuaToSearch + '/bbx/search/';
-	
-	// tratamento do term
-	url += term;
-	
+	apiUrl = config.apiUrl + '/' + config.defaultRepository.name + '/' + mucuaToSearch + '/bbx/search/' + term;
+	url = '#' + config.defaultRepository.name + '/' + mucuaToSearch + '/bbx/search/' + term;
+	window.location.href = url;
 	$('#imagem-busca').attr('src', config.imagePath + '/buscando.gif');
-	this.getMediaSearch(url);
+	this.getMediaSearch(apiUrl);
     };
     
 	    

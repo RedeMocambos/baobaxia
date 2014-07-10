@@ -1,7 +1,8 @@
 <div id="menu">
   <p class="posicoes">Menu</p>
   <ul class="menu-itens">
-    <li class="<% if (currentUrl == repository +'/' + mucua) {%>current<% } %>"><a href="#<%= repository %>/<%= mucua %>"><%= mucua %></a></li>
+    <li class="<% matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/); if (matches[1] == mucua) {%>current<% }
+ %>"><a href="#<%= repository %>/<%= mucua %>"><%= mucua %></a></li>
     <li class="<% if (currentUrl.match(/rede/)) {%>current<% } %>"><a href="#<%= repository %>/rede/bbx/search/">REDE</a></li>
   </ul>
 </div>
