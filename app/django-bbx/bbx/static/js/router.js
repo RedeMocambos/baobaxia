@@ -11,7 +11,8 @@ define([
     'modules/mucua/router',
     'modules/media/router',
     'modules/bbx/router',
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter, MediaRouter, BBXRouter){
+    'modules/network/router',
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter, MediaRouter, BBXRouter, NetworkRouter){
     var App = {};
     App.Router = Backbone.Router.extend({
 	Routers: {},
@@ -29,6 +30,7 @@ define([
 	    
 	    // module specific
 	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
+	    ':repository/rede/*subroute': 'invokeNetworkModule',
 	    ':repository/:mucua/media/*subroute': 'invokeMediaModule',   
 	    ':repository/:mucua/mucua/*subroute': 'invokeMucuaModule',
 	    ':repository/:mucua/*subroute': 'invokeMucuaModule',
@@ -50,7 +52,7 @@ define([
 	    window.location.href = urlRedirect;
 	},
 	
-	login: function(repository, mucua) {
+	login: function(repository='', mucua='') {
 	    console.log('login');
 	    var repository = repository || '',
 	    mucua = mucua || '';
@@ -67,7 +69,7 @@ define([
 	    }
 	},
 	
-	logout: function(repository, mucua) {
+	logout: function(repository='', mucua='') {
 	    console.log('logout');
 	    var repository = repository || '',
 	    mucua = mucua || '',
@@ -80,7 +82,7 @@ define([
 	    window.location.href = urlRedirect;
 	},
 
-	register: function(repository, mucua) {
+	register: function(repository='', mucua='') {
 	    console.log('register');
 	    var repository = repository || '',
 	    mucua = mucua || '';
@@ -89,32 +91,43 @@ define([
 	// media
 	invokeMediaModule: function(repository, mucua, subroute) {
 	    console.log('media');
-	    this.Routers.MediaRouter = new MediaRouter(repository + "/" + mucua + "/" + "media/", subroute);
+	    BBXBaseFunctions.setNavigationVars(repository, mucua, subroute);
+	    this.Routers.MediaRouter = new MediaRouter(repository + "/" + mucua + "/media/", subroute);
 	},
 
 	// mucua
 	invokeMucuaModule: function(repository, mucua, subroute) {
 	    var subroute = subroute || '';
 	    console.log('mucua');
-	    this.Routers.MucuaRouter = new MucuaRouter(repository + "/" + mucua + "/" + subroute);
+	    BBXBaseFunctions.setNavigationVars(repository, mucua, subroute);
+	    this.Routers.MucuaRouter = new MucuaRouter(repository + "/" + mucua + "/", subroute);
 	},
 	
 	// bbx
 	invokeBbxModule: function(repository, mucua, subroute) {
-	    console.log('bbx');
-	    this.Routers.BbxRouter = new BBXRouter(repository + "/" + mucua + "/" + "bbx/", subroute);
+	    console.log('bbx:::');
+	    console.log(repository);
+	    console.log(mucua);
+	    console.log(subroute);
+	    
+	    BBXBaseFunctions.setNavigationVars(repository, mucua, subroute);
+	    this.Routers.BbxRouter = new BBXRouter(repository + "/" + mucua + "/bbx/", subroute);
 	},
 
 	// mocambola
 	invokeMocambolaModule: function(repository, mucua, subroute) {
 	    console.log('mocambola');
-	    this.Routers.MocambolaRouter = new MocambolaRouter(repository + "/" + mucua + "/" + "mocambola/", subroute);
+	    BBXBaseFunctions.setNavigationVars(repository, mucua, subroute);
+	    this.Routers.MocambolaRouter = new MocambolaRouter(repository + "/" + mucua + "/mocambola/", subroute);
 	},
 
 	// rede
-	invokeRedeModule: function(repository, mucua, subroute) {
+	invokeNetworkModule: function(repository, subroute='') {
+	    var subroute = subroute || '';
 	    console.log('rede');
-	    this.Routers.MocambolaRouter = new MocambolaRouter(repository + "/" + mucua + "/" + "mocambola/", subroute);
+	    console.log(subroute);
+	    BBXBaseFunctions.setNavigationVars(repository, 'rede', subroute);
+	    this.Routers.NetworkRouter = new NetworkRouter(repository + "/rede/", subroute);
 	},
 
     });

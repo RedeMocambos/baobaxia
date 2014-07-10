@@ -8,7 +8,7 @@
     
     <p class="tags">
       <% _.each(media.tags, function(tagName) { %>
-      <a href="<% print(baseUrl + '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
+      <a href="<% print('#' + media.repository + '/' + media.origin +  '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
       <% }); %>
     </p>
     <a id="mediafile-original" href='file:<%= media.media_file %>'><%= media.media_file %></a>

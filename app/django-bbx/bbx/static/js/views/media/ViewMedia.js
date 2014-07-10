@@ -14,7 +14,7 @@ define([
 	    console.log("view media " + uuid);	    
 	    var config = $("body").data("bbx").config,
 	    media = '',
-	    url = config.apiUrl + '/' + config.defaultRepository.name + '/' + config.myMucua + '/media/' + uuid;
+	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid;
 	    console.log("usuário logado? " +  BBXBaseFunctions.isLogged());
 	    BBXBaseFunctions.renderSidebar();
 	    
@@ -23,7 +23,7 @@ define([
 		data.media = data.medias;
 		data.config = config;
 		data.baseUrl = BBXBaseFunctions.getDefaultHome();
-		$('#result-string').html("<a class='back-to-results' href='javascript: history.back(-1)'><img src='" + config.imagePath + "/voltar.png'> resultados</a>");
+		$('#result-string').html("<a class='back-to-results' href='javascript: history.back(-1)'><img src='" + config.imagePath + "/voltar.png'> voltar para a busca</a>");
 		$('#content').html(_.template(MediaViewTpl, data));
 		
 		// get image

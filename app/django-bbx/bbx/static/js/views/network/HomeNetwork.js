@@ -10,7 +10,7 @@ define([
 
 	render: function(subroute) {
 	    var config = $("body").data("bbx").config,
-	    url = config.apiUrl + '/' + config.defaultRepository.name + '/rede/bbx/search/' + subroute;
+	    url = config.apiUrl + '/' + config.repository + '/rede/bbx/search/' + subroute;
 	    console.log(url);
 	    MediaFunctions.getMediaSearch(url);
 	}

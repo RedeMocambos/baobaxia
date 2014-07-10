@@ -27,7 +27,7 @@ define([
 	
 	render: function() {
 	    var config = $("body").data("bbx").config,
-	    urlMucua = config.apiUrl +  '/mucua/' + config.myMucua;
+	    urlMucua = config.apiUrl +  '/mucua/' + config.MYMUCUA;
 	    // start mucua DOM field
 	    $("body").data("bbx").mucua = {};
 	    $("body").data("bbx").media = {};	    

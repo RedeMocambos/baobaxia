@@ -15,8 +15,7 @@ define([
 	    
 	    if ($('#menu').html() == "" ||
 		(typeof $('#menu').html() === "undefined")) {
-		data.repository = config.defaultRepository.name;
-		data.mucua = config.myMucua;
+		data.config = config;
 		
 		$('#header').append(_.template(MenuTpl, data));
 	    }

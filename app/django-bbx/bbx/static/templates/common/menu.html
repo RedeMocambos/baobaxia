@@ -1,8 +1,10 @@
 <div id="menu">
   <p class="posicoes">Menu</p>
   <ul class="menu-itens">
-    <li class="<% matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/); if (matches[1] == mucua) {%>current<% }
- %>"><a href="#<%= repository %>/<%= mucua %>"><%= mucua %></a></li>
-    <li class="<% if (currentUrl.match(/rede/)) {%>current<% } %>"><a href="#<%= repository %>/rede/bbx/search/">REDE</a></li>
+    <li class="<% matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/); if (matches[1] == config.MYMUCUA) {%>current<% }
+ %>"><a href="#<%= config.MYREPOSITORY %>/<%= config.MYMUCUA %>/<%= config.subroute %>"><%= config.MYMUCUA %></a></li>
+    <li class="<% matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/); 
+	       if (currentUrl.match(/rede/)  || matches[1] != config.MYMUCUA) {%>current<% }%>">
+      <a href="#<%= config.repository %>/rede/<%= config.subroute %>">REDE</a></li>
   </ul>
 </div>

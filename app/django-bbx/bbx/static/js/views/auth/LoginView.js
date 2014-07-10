@@ -63,7 +63,7 @@ define([
 	__getDefaultHome: function() {
 	    // MAYBE, this should be a configurable field
 	    var config = $("body").data("bbx"),
-	    url = '#' + config.defaultRepository.name + '/' + config.myMucua;
+	    url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA;
 	    return url;
 	},
 	
@@ -111,7 +111,7 @@ define([
 		// when all configs are loaded, load mucuas
 		if (configLoaded) {
 		    // get mucuas 
-		    var mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.defaultRepository.name + '/mucuas'});
+		    var mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.MYREPOSITORY + '/mucuas'});
 		    mucuas.fetch({
 			success: function() {
 			    var mucuasLength = mucuas.models.length,
@@ -126,9 +126,9 @@ define([
 			    // set mucua list
 			    $("body").data("bbx").config.mucuaList = mucuaList;
 			    var data = {
-				defaultRepository: config.defaultRepository,
+				defaultRepository: config.repository,
 				mucuaList: mucuaList,
-				myMucua: config.myMucua,
+				myMucua: config.MYMUCUA,
 				repositoryList: config.repositoriesList
 			    }
 			    __parseTemplate(data);			    
@@ -146,7 +146,7 @@ define([
 		if ($.cookie('csrftoken')) {
 		    $.removeCookie('csrftoken');
 		}
-		url = config.apiUrl + "/" + config.defaultRepository.name + "/" + config.myMucua + "/mocambola/login";
+		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/mocambola/login";
 		var mocambola = new MocambolaModel([], {url: url});
 		mocambola.fetch({});
 	    };

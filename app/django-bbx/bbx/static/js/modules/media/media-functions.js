@@ -20,8 +20,9 @@ define([
     'text!templates/media/MediaNovidades.html',
     'text!templates/media/MediaRelated.html',
     'text!templates/media/MediaResults.html',
-    'text!templates/media/MediaGrid.html'
-], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl){
+    'text!templates/media/MediaGrid.html',
+    'text!templates/common/results-message.html'
+], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, ResultsMessageTpl){
     var init = function() {
     }
 
@@ -29,11 +30,21 @@ define([
 	return $("body").data("bbx").config;
     }
 
+    var __parseResultsMessage = function(message, target = '') {
+	var target = target || '#result-string',
+	imageTag = '',
+	data = {
+	    config: __getConfig(),
+	    message: message
+	}
+	
+	$(target).html(_.template(ResultsMessageTpl, data));	
+    };    
+    
     var getMedia = function(url, callback) {
 	var media = new MediaModel([], {url: url});
 	media.fetch({
 	    success: function() {
-		console.log(media);
 		var mediaData = {
 		    medias: media.attributes
 		};
@@ -48,30 +59,33 @@ define([
     
     var getMediaByMucua = function() {
 	var config = this.__getConfig(),
-	url = config.apiUrl + '/' + config.defaultRepository.name + '/' + config.myMucua + '/bbx/search';
+	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search';
 	
 	this.getMedia(url, function(data){
 	    $('#content').prepend(_.template(MediaDestaquesMucuaTpl));
+	    data.emptyMessage = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
 	    $('#destaques-mucua .media').html(_.template(MediaGridTpl, data));
 	});
     };
 
     var getMediaByNovidades = function() {
 	var config = this.__getConfig(),
-	url = config.apiUrl + '/' + config.defaultRepository.name + '/' + config.myMucua + '/bbx/search' ;	
+	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search' ;	
 	
 	this.getMedia(url, function(data){
 	    $('#content').append(_.template(MediaNovidadesTpl));
+	    data.emptyMessage = 'Nenhuma novidade em ' + config.mucua + '.';
 	    $('#media-novidades .media').html(_.template(MediaGridTpl, data));
 	});
     };
 
     var getMediaRelated = function(uuid) {
 	var config = this.__getConfig(),
-	url = config.apiUrl + '/' + config.defaultRepository.name + '/' + config.myMucua + '/media/' + uuid + '/related';
+	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/related';
 	
 	this.getMedia(url, function(data){
 	    $('#content').append(_.template(MediaRelatedTpl));
+	    data.emptyMessage = 'Nenhuma media relacionada encontrada.';
 	    $('#media-related .media').html(_.template(MediaGridTpl, data));
 	});
     };
@@ -82,20 +96,21 @@ define([
 	    messageString = "",
 	    config = $("body").data("bbx").config;
 	    
+	    // parse result message
 	    if (!_.isEmpty(data.medias)) {
 		resultCount = _.size(data.medias);
 		messageString = (resultCount == 1) ? ' resultado' : ' resultados';
-		messageString = resultCount + messageString;
+		messageString = __parseResultsMessage(resultCount + messageString);
 	    } else {
-		messageString = "Nenhum resultado";
+		messageString = __parseResultsMessage("Nenhum resultado");
 	    }
-	    $('#result-string').html(messageString);
+	    
 	    $('#imagem-busca').attr('src', config.imagePath + '/buscar.png');
 	    $('#content').html(_.template(MediaResultsTpl));
+	    data.emptyMessage = 'Nenhuma media encontrada para essa busca';
 	    $('#media-results .media').html(_.template(MediaGridTpl, data));	    
 	});	
     };
-    
     
     /**
      * execute search
@@ -107,13 +122,9 @@ define([
 	//exclude = exclude || '',
 	config = this.__getConfig(),
 	url = '',
-	mucuaToSearch = '',
-	reMucuaSearch = /^\w+\/([a-zA-Z0-9\-]+)/,
-	tmpMucua = Backbone.history.fragment.match(reMucuaSearch);
-	mucuaToSearch = tmpMucua[1];
-	// TODO: debugar mais essa porcao
-	apiUrl = config.apiUrl + '/' + config.defaultRepository.name + '/' + mucuaToSearch + '/bbx/search/' + term;
-	url = '#' + config.defaultRepository.name + '/' + mucuaToSearch + '/bbx/search/' + term;
+	apiUrl = '';
+	apiUrl = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + term;
+	url = '#' + config.repository      + '/' + config.mucua + '/bbx/search/' + term;
 	window.location.href = url;
 	$('#imagem-busca').attr('src', config.imagePath + '/buscando.gif');
 	this.getMediaSearch(apiUrl);

@@ -61,7 +61,7 @@ define([
     var getDefaultHome = function() {
 	// MAYBE, this should be a configurable field
 	var config = $("body").data("bbx").config,
-	url = '#' + config.defaultRepository.name + '/' + config.myMucua;
+	url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA;
 	return url;
     }
     
@@ -88,8 +88,7 @@ define([
     var renderCommon = function(name) {
 	var data = {};
 	$('body').removeClass().addClass(name);
-	console.log('render common');
-	
+	console.log('render common: ' + name);
 	if ($('#sidebar').html() == "" ||
 	    (typeof $('#sidebar').html() === "undefined")) {
 	    $('#footer').before(_.template(SidebarTpl));
@@ -158,12 +157,15 @@ define([
      */
     var __getMyMucua = function() {
 	var config = $("body").data("bbx").config;
-	var myMucua = new MucuaModel([], {url: config.apiUrl + '/mucua/'});
-	myMucua.fetch({
-	    success: function() {		    
-		config.myMucua = myMucua.attributes[0].description;
-	    }
-	});
+	if (typeof config.MYMUCUA === 'undefined') {
+	    var myMucua = new MucuaModel([], {url: config.apiUrl + '/mucua/'});
+	    myMucua.fetch({
+		success: function() {		    
+		    config.MYMUCUA = myMucua.attributes[0].description;
+		}
+	    });
+	}
+	return config.MYMUCUA;
     }
     
     /**
@@ -174,13 +176,15 @@ define([
      */
     var __getDefaultRepository = function() {
 	var config = $("body").data("bbx").config;
-	
-	var defaultRepository = new RepositoryModel([], {url: config.apiUrl + '/repository/'});
-	defaultRepository.fetch({
-	    success: function() {
-		config.defaultRepository = defaultRepository.attributes[0]; 
-	    }
-	});
+	if (typeof config.MYREPOSITORY === 'undefined') {
+	    var defaultRepository = new RepositoryModel([], {url: config.apiUrl + '/repository/'});
+	    defaultRepository.fetch({
+		success: function() {
+		    config.MYREPOSITORY = defaultRepository.attributes[0]; 
+		}
+	    });
+	}
+	return config.MYREPOSITORY;
     }    
     
     /**
@@ -214,14 +218,43 @@ define([
 	
 	// so preenche quando todos tiverem carregado
 	var loadData = setInterval(function() {
-	    if (typeof config.myMucua !== 'undefined' &&
-		typeof config.defaultRepository !== 'undefined' &&
+	    if (typeof config.MYMUCUA !== 'undefined' &&
+		typeof config.MYREPOSITORY !== 'undefined' &&
 		typeof config.repositoriesList !== 'undefined') {	
 		console.log('configs loaded!');
 		$("body").data("bbx").configLoaded = true;
 		clearInterval(loadData);
 	    }
 	}, 50);	    
+    }
+
+    var setNavigationVars = function(repository, mucua, subroute='') {
+	var subroute = subroute || '',
+	reMedia = /media/,
+	reSearch = /search/,
+	matchMedia = '',
+	matchSearch = '',
+	config = $("body").data("bbx").config;	
+	config.repository = repository;
+	config.mucua = mucua;
+	
+	// re para testar se eh alguma rota que nao existe em rede <-> mucua
+	matchMedia = subroute.match(reMedia);
+	if (!_.isNull(matchMedia)) {
+	    // se for rota restrita, manda para outra url
+	    subroute = 'bbx/search';
+	}
+	// testa caso de busca
+	matchSearch = subroute.match(reSearch);
+	if (!_.isNull(matchSearch)) {
+	    if (!subroute.match(/bbx/)) {
+		console.log('match search');
+		subroute = 'bbx/' + subroute;
+	    }
+	}
+	
+	config.subroute = subroute;
+	$("body").data("bbx").config = config;
     }
 
     // static format: day/month/year
@@ -240,6 +273,7 @@ define([
 	renderCommon: renderCommon,
 	renderUsage: renderUsage,
 	renderSidebar: renderSidebar,
+	setNavigationVars: setNavigationVars,
 	formatDate: formatDate
     }
 });
