@@ -1,6 +1,10 @@
 <% _.each(medias, function(media) { %>
 <div class="media_box <%= media.type %> <% _.each(media.tags, function(tagName) { %><%= tagName %> <% }); %>">
-  <div class="result-thumb"><div class="assist"></div><img src="images/" /></div>
+  <div class="result-thumb">
+    <span class="type"><%= media.type %></span>
+    <div class="assist"></div>
+    <img src="images/" />
+  </div>
   <span class="title">
     <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
       <%= media.name %>

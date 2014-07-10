@@ -16,8 +16,20 @@ define([
 	    console.log("module Media loaded");
 	},
 
+	__getRepository: function() {
+	    return this.prefix.split('/')[0];
+	},
+	__getMucua: function() {
+	    return this.prefix.split('/')[1];
+	},
+
 	view: function(uuid) {
 	    console.log("view media");
+	    
+	    var repository = this.__getRepository(),
+	    mucua = this.__getMucua();
+
+	    BBXBaseFunctions.setNavigationVars(repository, mucua, uuid);
 	    BBXBaseFunctions.renderCommon('media');
 	    var mediaView = new ViewMediaView();
 	    mediaView.render(uuid);

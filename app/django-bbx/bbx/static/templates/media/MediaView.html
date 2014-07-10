@@ -2,7 +2,11 @@
 
   <div class="block-1">
     <div class="media-image">
+      <% if (media.type == 'image') { %>
+      <img src="<%= media.media_file.replace('/data/bbx/', 'images/') %>" />
+<% } else { %>
       <img src="images/imagem-exemplo.png" />
+      <% } %>
     </div>
     <p class="title-bold"><%= media.name %></p>
     
@@ -11,7 +15,6 @@
       <a href="<% print('#' + media.repository + '/' + media.origin +  '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
       <% }); %>
     </p>
-    <a id="mediafile-original" href='file:<%= media.media_file %>'><%= media.media_file %></a>
     <p class="uuid">UUID<%= media.uuid %></p>
   </div>
   

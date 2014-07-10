@@ -152,6 +152,9 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 #media-view a {color: #fff}
 #media-view .solicit-copy .image {background-image: url('/images/solicitar.png'); width: 17px; height: 15px; display: block; float: right; margin-right: 50px; margin: 5px auto}
 #media-view .solicit-copy .image:hover {background-image: url('/images/solicitar-over.png'); cursor: pointer}
+#media-view .tags a {color: #6AA367 }
+#media-view .uuid {color:#666; font-size: 10px }
+.result-thumb .type {font-size: 10px; background-color: #666; color: #fff; float: right}
 
 #license {font-size: 11px}
 .license-image {width: 88px; height: 31px; margin: 2px }

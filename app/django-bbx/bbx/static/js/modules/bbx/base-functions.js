@@ -230,30 +230,28 @@ define([
 
     var setNavigationVars = function(repository, mucua, subroute='') {
 	var subroute = subroute || '',
-	reMedia = /media/,
+	reMedia = /^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/,  // padrao de uuid
 	reSearch = /search/,
 	matchMedia = '',
 	matchSearch = '',
 	config = $("body").data("bbx").config;	
 	config.repository = repository;
 	config.mucua = mucua;
+	config.subroute = subroute;
 	
 	// re para testar se eh alguma rota que nao existe em rede <-> mucua
 	matchMedia = subroute.match(reMedia);
 	if (!_.isNull(matchMedia)) {
-	    // se for rota restrita, manda para outra url
-	    subroute = 'bbx/search';
-	}
+	    config.subroute = 'bbx/search';
+	} 
 	// testa caso de busca
 	matchSearch = subroute.match(reSearch);
 	if (!_.isNull(matchSearch)) {
 	    if (!subroute.match(/bbx/)) {
-		console.log('match search');
-		subroute = 'bbx/' + subroute;
+		config.subroute = 'bbx/' + subroute;
 	    }
 	}
 	
-	config.subroute = subroute;
 	$("body").data("bbx").config = config;
     }
 
