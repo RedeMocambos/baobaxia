@@ -105,10 +105,7 @@ define([
 	
 	// bbx
 	invokeBbxModule: function(repository, mucua, subroute) {
-	    console.log('bbx:::');
-	    console.log(repository);
-	    console.log(mucua);
-	    console.log(subroute);
+	    console.log('bbx');
 	    
 	    BBXBaseFunctions.setNavigationVars(repository, mucua, subroute);
 	    this.Routers.BbxRouter = new BBXRouter(repository + "/" + mucua + "/bbx/", subroute);
@@ -125,7 +122,6 @@ define([
 	invokeNetworkModule: function(repository, subroute='') {
 	    var subroute = subroute || '';
 	    console.log('rede');
-	    console.log(subroute);
 	    BBXBaseFunctions.setNavigationVars(repository, 'rede', subroute);
 	    this.Routers.NetworkRouter = new NetworkRouter(repository + "/rede/", subroute);
 	},
