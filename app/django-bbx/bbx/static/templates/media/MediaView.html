@@ -30,7 +30,7 @@
     <div class="block-fields">
       <p><a href='<% print('#/mocambola/' + media.author) %>'><%= media.author.substring(0, 17) + '...' %></a></p>
       <p><%= formatDate(media.date) %></p>
-      <p><%= media.origin %></p>
+      <p><a href='<% print("#" + media.repository + "/" + media.origin) %>'><%= media.origin %></a></p>
       <p><%= media.format %></p>
       <p>0GB</p>
       <p><div class="license-image license-<%= media.license %>"></div></p>      

@@ -4,7 +4,9 @@
     <li class="<% matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/); if (matches[1] == config.MYMUCUA) {%>current<% }
  %>"><a href="#<%= config.MYREPOSITORY %>/<%= config.MYMUCUA %>/<%= config.subroute %>"><%= config.MYMUCUA %></a></li>
     <li class="<% matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/); 
-	       if (currentUrl.match(/rede/)  || matches[1] != config.MYMUCUA) {%>current<% }%>">
+	       if (currentUrl.match(/rede/)) {%>current<% }%>">
       <a href="#<%= config.repository %>/rede/<%= config.subroute %>">REDE</a></li>
+    <% if (!currentUrl.match(/rede/) && config.mucua != config.MYMUCUA ) { %>
+    <li class="current"><a href="#<%= config.MYREPOSITORY %>/<%= config.mucua %>/<%= config.subroute %>"><%= config.mucua %></a></li>    <% } %>
   </ul>
 </div>
