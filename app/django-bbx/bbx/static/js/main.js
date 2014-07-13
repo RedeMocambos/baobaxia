@@ -10,30 +10,16 @@ require.config({
 	    deps: ['underscore', 'jquery'],
 	    exports: 'Backbone'
 	},
-	'textext.ajax': {
-	    deps: ['textext'],
-	    exports: ['textext.ajax']
-	},
-	'textext.arrow': {
-	    deps: ['textext']
-	},
-	'textext.autocomplete': {
-	    deps: ['textext']
+	'textext.core': {
+	    exports: ['textext']
 	},
 	'textext.clear': {
-	    deps: ['textext']
-	},
-	'textext.filter': {
-	    deps: ['textext']
-	},
-	'textext.focus': {
-	    deps: ['textext']
-	},
-	'textext.prompt': {
-	    deps: ['textext']
+	    deps: ['textext'],
+	    exports: ['textext.clear']
 	},
 	'textext.tags': {
-	    deps: ['textext']
+	    deps: ['textext'],
+	    exports: ['textext.tags']
 	},
     },
     paths: {
