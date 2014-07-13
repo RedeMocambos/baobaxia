@@ -142,7 +142,7 @@ define([
      */
     var renderSidebar = function(pageType) {
 	var page = page || '';
-	
+	console.log('render sidebar');
 	if (this.isLogged() &&
 	    ((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() == "")) {
 	    var userProfile = $.parseJSON($.cookie('sessionBBX'));

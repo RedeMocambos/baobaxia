@@ -79,7 +79,8 @@ a {text-decoration: none;}
 
 #user-profile {height: 50px}
 #sidebar #user-profile img {float: left; width: 45px; height: 45px}
-#sidebar #user-profile h4 {font-size: 15px; float: left; text-decoration: none; color: #D5C590; margin: 0 auto; padding-top: 12px; padding-left: 8px}
+#sidebar #user-profile h4 {font-size: 15px; float: left; text-decoration: none; color: #D5C590 !important; margin: 0 auto; padding-top: 12px; padding-left: 8px}
+#sidebar #link-login a {color: #D5C590; font-size: 15px; font-weight: bold}
 #user-profile a.logout {font-size:11px; color:#D5C590; float: right}
 
 #place-profile {padding-top: 5px; text-align: center; color: #aac0ca }
