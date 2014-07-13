@@ -86,14 +86,17 @@ define([
      * @return [jQuery modify #header]
      */
     var renderCommon = function(name) {
-	var data = {};
+	var data = {},
+	config = $("body").data("bbx").config;
+	
 	$('body').removeClass().addClass(name);
 	console.log('render common: ' + name);
 	if ($('#sidebar').html() == "" ||
 	    (typeof $('#sidebar').html() === "undefined")) {
-	    $('#footer').before(_.template(SidebarTpl));
+	    data.config = config;
+	    $('#footer').before(_.template(SidebarTpl, data));
 	}
-	
+	    
 	$('#content').html('');	
 	var headerView = new HeaderView();
 	headerView.render(data);
@@ -145,6 +148,9 @@ define([
 	    var userProfile = $.parseJSON($.cookie('sessionBBX'));
 	    userProfile.mocambolaUrl = this.getDefaultHome() + '/mocambola/' + userProfile.username
 	    userProfile.avatar = this.getAvatar();
+	    if ($('#link-login')) {
+		$('#link-login').remove();
+	    }
 	    $('#user-profile').html(_.template(UserProfileTpl, userProfile));
 	}
     }

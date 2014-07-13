@@ -57,6 +57,8 @@ define([
 	    var repository = repository || '',
 	    mucua = mucua || '';
 	    $('body').removeClass().addClass('home');
+	    $('#content').html('');
+	    $('#header').html('');
 	    if (!BBXBaseFunctions.isLogged()) {
 		// undelegate elements // TODO: achar uma solucao mais elegante
 		$('body').off();
