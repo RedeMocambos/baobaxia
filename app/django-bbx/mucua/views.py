@@ -55,6 +55,19 @@ def mucua_get_default(request):
 
 
 @api_view(['GET'])
+def mucua_get_by_name(request, name, repository=None):
+    try:     
+        mucua = Mucua.objects.get(description=name)
+    except:
+        print "not found: ", 
+        return Response("Mucua not found")
+    
+    serializer = MucuaSerializer(mucua, many=False)
+    
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def mucua_get_info(request, uuid, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
