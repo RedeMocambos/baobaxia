@@ -277,6 +277,40 @@ def media_last(request, repository, mucua, qtd=5):
 
 
 @api_view(['GET'])
+def media_by_mocambola(request, repository, mucua, username, qtd=5):
+    if mucua != 'all':
+        try:
+            mucua = Mucua.objects.get(description=mucua)
+        except Mucua.DoesNotExist:
+            mucua = Mucua.objects.get(description=DEFAULT_MUCUA)
+            redirect_page = True        
+    
+    try:
+        repository = Repository.objects.get(name=repository)
+    except Repository.DoesNotExist:
+        repository = Repository.objects.get(name=DEFAULT_REPOSITORY)
+    
+    try:
+        author = User.objects.get(username=username)
+    except User.DoesNotExist:
+        print 'user not exists'
+    
+    if mucua != 'all':
+        medias = Media.objects.filter(
+            repository=repository.id
+            ).filter(origin=mucua.id).filter(
+            author = author.id).order_by('-date')[:qtd]
+    else:
+        medias = Media.objects.filter(
+            repository=repository.id
+            ).filter(author = author.id).order_by('-date')[:qtd]
+
+    # serializa e da saida
+    serializer = MediaSerializer(medias, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def show_image(request, repository, mucua, uuid, width, height, format_type):
     
     try:
