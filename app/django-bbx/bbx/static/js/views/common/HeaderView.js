@@ -2,8 +2,8 @@ define([
     'jquery', 
     'underscore',
     'backbone',
-    'text!templates/common/header.html',
-    'text!templates/common/menu.html',
+    'text!templates/common/Header.html',
+    'text!templates/common/Menu.html',
 ], function($, _, Backbone, Header, MenuTpl){
     var HeaderView = Backbone.View.extend({
 	render: function(data) {

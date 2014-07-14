@@ -2,7 +2,7 @@ define([
     'jquery', 
     'underscore',
     'backbone',
-    'text!templates/common/buscador.html',
+    'text!templates/common/Buscador.html',
 ], function($, _, Backbone, BuscadorTpl){
     var BuscadorView = Backbone.View.extend({
 	render: function(data) {

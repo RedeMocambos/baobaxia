@@ -15,11 +15,22 @@ define([
 	initialize: function() {
 	    console.log("module mucua loaded");
 	},
+
+	__getRepository: function() {
+	    return this.prefix.split('/')[0];
+	},
+	__getMucua: function() {
+	    return this.prefix.split('/')[1];
+	},
 	
 	homeMucua: function() {	    
 	    console.log("home mucua");
-	    BBXBaseFunctions.renderCommon('mucua');
+
+	    var repository = this.__getRepository(),
+	    mucua = this.__getMucua();
 	    
+	    BBXBaseFunctions.renderCommon('mucua');
+	    BBXBaseFunctions.setNavigationVars(repository, mucua);
 	    var homeMucua = new HomeMucua(); 
 	    homeMucua.render();
 	},

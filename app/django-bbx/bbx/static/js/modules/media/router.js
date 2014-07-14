@@ -5,10 +5,12 @@ define([
     'modules/bbx/base-functions',
     'modules/media/model', 
     'modules/media/collection',
-    'views/media/ViewMedia', 
-], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MediaModel, MediaCollection, ViewMediaView){
+    'views/media/MediaView', 
+    'views/media/MediaPublish',
+], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MediaModel, MediaCollection, MediaViewView, MediaPublishView){
     var Router = Backbone.SubRoute.extend({
 	routes: {
+	    '': 'publish',
 	    ':uuid': 'view'
 	},
 	
@@ -24,16 +26,30 @@ define([
 	},
 
 	view: function(uuid) {
-	    console.log("view media");
+	    console.log("media view");
 	    
 	    var repository = this.__getRepository(),
 	    mucua = this.__getMucua();
-
+	    
 	    BBXBaseFunctions.setNavigationVars(repository, mucua, uuid);
 	    BBXBaseFunctions.renderCommon('media');
-	    var mediaView = new ViewMediaView();
-	    mediaView.render(uuid);
+	    var mediaViewView = new MediaViewView();
+	    mediaViewView.render(uuid);
+	},
+	
+	publish: function() {
+	    console.log("media publish");
+	    
+	    var repository = this.__getRepository(),
+	    mucua = this.__getMucua();
+	    
+	    BBXBaseFunctions.renderCommon(repository, mucua);
+	    BBXBaseFunctions.setNavigationVars(repository, mucua, uuid);
+	    BBXBaseFunctions.renderCommon('media');
+	    var mediaPublishView = new MediaPublishView();
+	    mediaPublishView.render();
 	}
+
     });
     
     return Router;

@@ -171,6 +171,15 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 .license-cc_sd {background: url('/images/license-cc_sd.png') no-repeat;}
 .license-cc_sd_nc {background: url('/images/license-cc_sd_nc.png') no-repeat;}
 
+/*
+ * mocambola && mucua
+ */
+#mocambola-home #mocambola-profile h3,
+#mucua-home #mucua-profile h3 {color: #145B7A; font-size 18px; float: left; padding-left: 8px}
+#mocambola-home #mocambola-profile img,
+#mucua-home #mucua-profile img {float: left; width: 45px; height: 45px}
+#mocambola-home .actions {clear: both}
+#mocambola-home .actions h4.link a {color: #5EA933; font-size 18px;}
 
 /* COMMENTED EVERYTHING (old template)
  * media view, edit & publish

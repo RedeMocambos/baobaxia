@@ -116,7 +116,9 @@ define([
 
 	// mocambola
 	invokeMocambolaModule: function(repository, mucua, subroute) {
-	    console.log('mocambola');
+	    console.log('mocambola:::::::::');
+	    console.log(subroute);
+	    
 	    BBXBaseFunctions.setNavigationVars(repository, mucua, subroute);
 	    this.Routers.MocambolaRouter = new MocambolaRouter(repository + "/" + mucua + "/mocambola/", subroute);
 	},

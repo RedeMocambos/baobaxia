@@ -7,6 +7,6 @@
 	       if (currentUrl.match(/rede/)) {%>current<% }%>">
       <a href="#<%= config.repository %>/rede/<%= config.subroute %>">REDE</a></li>
     <% if (!currentUrl.match(/rede/) && config.mucua != config.MYMUCUA && config.mucua != 'rede' ) { %>
-    <li class="current"><a href="#<%= config.MYREPOSITORY %>/<%= config.mucua %>/<%= config.subroute %>"><%= config.mucua %></a></li>    <% } %>
+    <li class="current"><a href="#<%= config.repository %>/<%= config.mucua %>/<%= config.subroute %>"><%= config.mucua %></a></li>    <% } %>
   </ul>
 </div>

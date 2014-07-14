@@ -22,7 +22,7 @@ define([
     'text!templates/media/MediaRelated.html',
     'text!templates/media/MediaResults.html',
     'text!templates/media/MediaGrid.html',
-    'text!templates/common/results-message.html'
+    'text!templates/common/ResultsMessage.html'
 ], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, ResultsMessageTpl){
     var init = function() {
     }
@@ -58,23 +58,23 @@ define([
 	});
     }		   
     
-    var getMediaByMucua = function() {
+    var getMediaByMucua = function(el) {
 	var config = this.__getConfig(),
 	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search';
 	
 	this.getMedia(url, function(data){
-	    $('#content').prepend(_.template(MediaDestaquesMucuaTpl));
+	    $(el).append(_.template(MediaDestaquesMucuaTpl));
 	    data.emptyMessage = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
 	    $('#destaques-mucua .media').html(_.template(MediaGridTpl, data));
 	});
     };
 
-    var getMediaByNovidades = function() {
+    var getMediaByNovidades = function(el) {
 	var config = this.__getConfig(),
 	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search' ;	
 	
 	this.getMedia(url, function(data){
-	    $('#content').append(_.template(MediaNovidadesTpl));
+	    $(el).append(_.template(MediaNovidadesTpl));
 	    data.emptyMessage = 'Nenhuma novidade em ' + config.mucua + '.';
 	    $('#media-novidades .media').html(_.template(MediaGridTpl, data));
 	});

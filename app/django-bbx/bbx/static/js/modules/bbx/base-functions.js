@@ -19,11 +19,11 @@ define([
     'modules/repository/model',
     'modules/media/media-functions',
     'json!config.json',
-    'text!templates/common/content.html',
-    'text!templates/common/sidebar.html',
-    'text!templates/common/usage-bar.html',
-    'text!templates/common/user-profile.html',
-    'text!templates/common/mucua-profile.html'
+    'text!templates/common/Content.html',
+    'text!templates/common/Sidebar.html',
+    'text!templates/common/UsageBar.html',
+    'text!templates/common/UserProfile.html',
+    'text!templates/common/MucuaProfile.html'
 ], function($, _, Backbone, jQueryCookie, HeaderView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
     
     var init = function() {
@@ -66,12 +66,13 @@ define([
     }
     
     /**
-     * get avatar
+     * get avatar TODO
      * 
      * @return {String} a url
      */
-    var getAvatar = function() {
-	var avatarUrl = "",
+    var getAvatar = function(username = '') {
+	var username = '',
+	avatarUrl = '',
 	defaultAvatar = 'avatar-default.png';
 	
 	// TODO: implement avatar
@@ -237,25 +238,37 @@ define([
     var setNavigationVars = function(repository, mucua, subroute='') {
 	var subroute = subroute || '',
 	reMedia = /^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/,  // padrao de uuid
+	reMocambola = /^[0-9a-zA-Z-_]*@[0-9a-zA-Z-_\.]*\.[a-zA-Z]{2,4}$/,
 	reSearch = /search/,
 	matchMedia = '',
 	matchSearch = '',
+	matchMocambola = '',
 	config = $("body").data("bbx").config;	
 	config.repository = repository;
 	config.mucua = mucua;
 	config.subroute = subroute;
 	
-	// re para testar se eh alguma rota que nao existe em rede <-> mucua
+	// ---------- /
+	// solve problems / restrictions at navigation menu / replace inexistant routes between rede <-> mucua	
+	// - rotas inexistentes
 	matchMedia = subroute.match(reMedia);
-	if (!_.isNull(matchMedia)) {
+	matchMocambola = subroute.match(reMocambola);
+	if (!_.isNull(matchMedia) ||
+	    !_.isNull(matchMocambola)) {
+	    console.log('menu: rewrite route');
 	    config.subroute = 'bbx/search';
-	} 
-	// testa caso de busca
+	}
+	// - rewrite url
 	matchSearch = subroute.match(reSearch);
 	if (!_.isNull(matchSearch)) {
 	    if (!subroute.match(/bbx/)) {
 		config.subroute = 'bbx/' + subroute;
 	    }
+	}
+	
+	// rede home
+	if (mucua == 'rede' || config.subroute == '') {
+	    config.subroute = 'bbx/search';
 	}
 	
 	$("body").data("bbx").config = config;
