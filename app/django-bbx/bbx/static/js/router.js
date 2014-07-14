@@ -12,7 +12,8 @@ define([
     'modules/media/router',
     'modules/bbx/router',
     'modules/network/router',
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter, MediaRouter, BBXRouter, NetworkRouter){
+    'modules/mocambola/router',
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter, MediaRouter, BBXRouter, NetworkRouter, MocambolaRouter){
     var App = {};
     App.Router = Backbone.Router.extend({
 	Routers: {},
@@ -29,13 +30,13 @@ define([
 	    'register': 'register',
 	    
 	    // module specific
+	    ':repository/:mucua/mocambola/*subroute': 'invokeMocambolaModule',
 	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
 	    ':repository/rede/*subroute': 'invokeNetworkModule',
 	    ':repository/:mucua/media/*subroute': 'invokeMediaModule',   
 	    ':repository/:mucua/mucua/*subroute': 'invokeMucuaModule',
 	    ':repository/:mucua/*subroute': 'invokeMucuaModule',
 	    ':repository/:mucua': 'invokeMucuaModule',
-	    ':repository/:mucua/mocambola/*subroute': 'invokeMocambolaModule',	    
 	},
 
 	

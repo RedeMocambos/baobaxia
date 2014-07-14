@@ -8,11 +8,10 @@ define([
     var NetworkView = Backbone.View.extend({
 	el: "body",    
 
-	render: function(subroute) {
-	    var config = $("body").data("bbx").config,
-	    url = config.apiUrl + '/rede/bbx/search/' + subroute;
-	    console.log(url);
-	    MediaFunctions.getMediaSearch(url);
+	render: function(username) {
+	    var config = $("body").data("bbx").config;
+	    
+	    MediaFunctions.getMediaByMocambola('all', username);
 	}
     });
 

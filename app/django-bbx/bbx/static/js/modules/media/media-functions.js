@@ -18,11 +18,12 @@ define([
     'modules/mucua/model',
     'text!templates/media/MediaDestaquesMucua.html',
     'text!templates/media/MediaNovidades.html',
+    'text!templates/media/MediaMocambola.html',
     'text!templates/media/MediaRelated.html',
     'text!templates/media/MediaResults.html',
     'text!templates/media/MediaGrid.html',
     'text!templates/common/results-message.html'
-], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, ResultsMessageTpl){
+], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, ResultsMessageTpl){
     var init = function() {
     }
 
@@ -89,6 +90,23 @@ define([
 	    $('#media-related .media').html(_.template(MediaGridTpl, data));
 	});
     };
+
+    var getMediaByMocambola = function(origin, username) {
+	var config = this.__getConfig(),
+	url = '';
+	
+	if (origin == 'all') {
+	    url = config.apiUrl + '/' + config.repository + '/all/mocambola/' + username + '/media';
+	} else {
+	    url = config.apiUrl + '/' + config.repository + config.origin + '/mocambola/' + username + '/media';
+	}
+	
+	this.getMedia(url, function(data){
+	    $('#content').append(_.template(MediaMocambolaTpl));
+	    data.emptyMessage = 'Mocambola ainda nao publicou nenhum conteudo.';
+	    $('#media-mocambola .media').html(_.template(MediaGridTpl, data));
+	});
+    };
     
     var getMediaSearch = function(url) {
 	this.getMedia(url, function(data) {
@@ -137,6 +155,7 @@ define([
 	getMedia: getMedia,
 	getMediaByMucua: getMediaByMucua,
 	getMediaByNovidades: getMediaByNovidades,
+	getMediaByMocambola: getMediaByMocambola,
 	getMediaSearch: getMediaSearch,
 	getMediaRelated: getMediaRelated
     }
