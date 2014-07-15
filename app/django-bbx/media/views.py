@@ -211,8 +211,8 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                       license=request.DATA['license'],
                       date=(request.DATA['date'] if request.DATA['date'] !=
                             '' else datetime.now()),
-                      mediafile=request.FILES['mediafile'],
-                      uuid=generateUUID()
+                      media_file=request.FILES['media_file'],
+                      uuid=generate_UUID()
                       )
 
         # Linha curl mista para testar upload E mandar data
