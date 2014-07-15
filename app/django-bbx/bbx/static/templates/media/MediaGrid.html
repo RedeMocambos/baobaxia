@@ -11,10 +11,15 @@
     </a>
   </span>
   <br/>
-  <span class="format_type"><%= media.format %></span>
-  <span class="license"><%= media.license %></span>
-  <span class="date"><%= media.date %></span><br/>
-  <span class="origin"><%= media.origin %></span>
+  <div style="float: left;">
+    <span class="format_type"><%= media.format %></span><br/>
+    <span class="origin"><%= media.origin %></span>
+  </div>
+  <div style="float: left;">
+    <span class="date"><%= formatDate(media.date) %></span><br/>
+    <span class="license"><%= media.license %></span>
+
+  </div>
 </div>
 <% }) %>
 <% if (_.isEmpty(medias)) { %>

@@ -25,12 +25,15 @@ define([
     'text!templates/common/ResultsMessage.html'
 ], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, ResultsMessageTpl){
     var init = function() {
+	this.functions = {};
+	this.functions.BBXBaseFunctions = BBXBaseFunctions;
+	console.log(this);
     }
 
     var __getConfig = function() {
 	return $("body").data("bbx").config;
     }
-
+    
     var __parseResultsMessage = function(message, target = '') {
 	var target = target || '#result-string',
 	imageTag = '',
@@ -42,12 +45,45 @@ define([
 	$(target).html(_.template(ResultsMessageTpl, data));	
     };    
     
+    var getMediaTypes = function() {
+	return {
+	    '': '',
+	    'audio': 'audio',
+	    'imagem': 'imagem',
+	    'video': 'video',
+	    'arquivo': 'arquivo'
+	}
+    };
+    
+    var getMediaLicenses = function() {
+	return {
+	    '': '',
+	    'gplv3': 'gpl v3 - gnu general public license',
+	    'gfdl': 'gfdl - gnu free documentation license',
+	    'lgplv3': 'lgpl v3 - gnu lesser public license',
+	    'agplv3': 'agpl v3 - gnu affero public license',
+	    'copyleft':  'copyleft',
+	    'cc': 'creative commons',
+	    'cc_nc': 'creative commons - não comercial',
+	    'cc_ci': 'creative commons -  compartilha igual',
+	    'cc_ci_nc': 'creative commons - compartilha igual - não comercial',
+	    'cc_sd': 'creative commons - sem derivação',
+	    'cc_sd_nc': 'creative commons - sem derivação - não comercial'
+	}
+    };
+
     var getMedia = function(url, callback) {
 	var media = new MediaModel([], {url: url});
 	media.fetch({
 	    success: function() {
 		var mediaData = {
-		    medias: media.attributes
+		    medias: media.attributes,
+		    formatDate: function(date) {
+			var newDate = '',
+			re = /^(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)[\.0-9]*Z$/,
+			matches = date.match(re);
+			return matches[3] + '/' + matches[2] + '/' + matches[1];	
+		    }
 		};
 		// callback / altera
 		if (typeof callback == 'function') {
@@ -121,7 +157,7 @@ define([
 		messageString = __parseResultsMessage(resultCount + messageString);
 	    } else {
 		messageString = __parseResultsMessage("Nenhum resultado");
-	    }
+	    }	    
 	    
 	    $('#imagem-busca').attr('src', config.imagePath + '/buscar.png');
 	    $('#content').html(_.template(MediaResultsTpl));
@@ -150,6 +186,7 @@ define([
     
 	    
     return {
+	init: init,
 	__getConfig: __getConfig,
 	doSearch: doSearch,
 	getMedia: getMedia,
@@ -157,6 +194,8 @@ define([
 	getMediaByNovidades: getMediaByNovidades,
 	getMediaByMocambola: getMediaByMocambola,
 	getMediaSearch: getMediaSearch,
-	getMediaRelated: getMediaRelated
+	getMediaRelated: getMediaRelated,
+	getMediaTypes: getMediaTypes,
+	getMediaLicenses: getMediaLicenses
     }
 });

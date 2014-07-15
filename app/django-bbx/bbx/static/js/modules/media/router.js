@@ -7,11 +7,14 @@ define([
     'modules/media/collection',
     'views/media/MediaView', 
     'views/media/MediaPublish',
-], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MediaModel, MediaCollection, MediaViewView, MediaPublishView){
+    'views/media/MediaUpdate',
+], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MediaModel, MediaCollection, MediaViewView, MediaPublishView, MediaUpdateView){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    '': 'publish',
-	    ':uuid': 'view'
+	    '*': 'publish',
+	    ':uuid': 'view',
+	    ':uuid/edit': 'update'
 	},
 	
 	initialize: function() {
@@ -44,11 +47,21 @@ define([
 	    mucua = this.__getMucua();
 	    
 	    BBXBaseFunctions.renderCommon(repository, mucua);
-	    BBXBaseFunctions.setNavigationVars(repository, mucua, uuid);
+	    BBXBaseFunctions.setNavigationVars(repository, mucua);
 	    BBXBaseFunctions.renderCommon('media');
 	    var mediaPublishView = new MediaPublishView();
 	    mediaPublishView.render();
-	}
+	},
+
+	update: function(uuid) {
+	    console.log("media edit/update");
+	    
+	    var repository = this.__getRepository(),
+	    mucua = this.__getMucua();
+	    BBXBaseFunctions.renderCommon('media');	    
+	    var mediaUpdateView = new MediaUpdateView();
+	    mediaUpdateView.render(uuid);	
+	},
 
     });
     

@@ -1,24 +1,12 @@
 <div id="media-view">
-
-  <div class="block-1">
-    <div class="media-image">
-      <% if (media.type == 'image') { %>
-      <img src="<%= media.media_file.replace('/data/bbx/', 'images/') %>" />
-<% } else { %>
-      <img src="images/imagem-exemplo.png" />
-      <% } %>
-    </div>
-    <p class="title-bold"><%= media.name %></p>
-    
-    <p class="tags">
-      <% _.each(media.tags, function(tagName) { %>
-      <a href="<% print('#' + media.repository + '/' + media.origin +  '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
-      <% }); %>
-    </p>
-    <p class="uuid">UUID<%= media.uuid %></p>
+  <div class="title">
+      <p class="title-bold"><%= media.name %></p>
   </div>
-  
+
   <div class="block-2">
+    <% if (config.userData.username) { %>
+    <div class="link-edit"><a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">Editar</a></div>
+    <% } %>
     <div class="block-title">
       <p>Por</p>
       <p>Data</p>
@@ -51,5 +39,24 @@
     </div>
     
   </div>
+  
+  <div class="block-1">   
+    <div class="media-image">
+      <% if (media.type == 'image') { %>
+      <img src="<%= media.media_file.replace('/data/bbx/', 'images/') %>" />
+<% } else { %>
+      <img src="images/imagem-exemplo.png" />
+      <% } %>
+    </div>    
+    <p class="tags">
+      <% _.each(media.tags, function(tagName) { %>
+      <a href="<% print('#' + media.repository + '/' + media.origin +  '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
+      <% }); %>
+    </p>
+    <p class="uuid">UUID<%= media.uuid %></p>
+  </div>
+  
+
+
 </div>
 <!-- <a href="edit">editar</a>-->

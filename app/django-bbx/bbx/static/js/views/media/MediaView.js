@@ -16,6 +16,8 @@ define([
 	    media = '',
 	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid;
 	    console.log("usuário logado? " +  BBXBaseFunctions.isLogged());
+	    
+	    config.userData = JSON.parse($.cookie('sessionBBX'));
 	    BBXBaseFunctions.renderSidebar();
 	    
 	    media = MediaFunctions.getMedia(url, function(data) {
@@ -23,7 +25,7 @@ define([
 		data.media = data.medias;
 		data.config = config;
 		data.baseUrl = BBXBaseFunctions.getDefaultHome();
-		console.log(data);
+		
 		$('#result-string').html("<a class='back-to-results' href='javascript: history.back(-1)'><img src='" + config.imagePath + "/voltar.png'> voltar para a busca</a>");
 		$('#content').html(_.template(MediaViewTpl, data));
 		

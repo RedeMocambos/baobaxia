@@ -30,9 +30,11 @@ define([
 	    'register': 'register',
 	    
 	    // module specific
+	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
 	    ':repository/:mucua/mocambola/*subroute': 'invokeMocambolaModule',
 	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
 	    ':repository/rede/*subroute': 'invokeNetworkModule',
+	    ':repository/:mucua/media': 'invokeMediaModule',   
 	    ':repository/:mucua/media/*subroute': 'invokeMediaModule',   
 	    ':repository/:mucua/mucua/*subroute': 'invokeMucuaModule',
 	    ':repository/:mucua/*subroute': 'invokeMucuaModule',

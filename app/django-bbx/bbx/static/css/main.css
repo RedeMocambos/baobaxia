@@ -33,6 +33,8 @@ a {text-decoration: none;}
 .home #content .right {width:40%; float: left; height: 100%; font-size: 13px; }
 .home #footer {display: none}
 
+#content {padding-left: 20px; margin: 20 auto; }
+#sidebar {margin-right: 20px;}
 
 #menu {margin-left: 35%; margin-top: 50px}
 .menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
@@ -56,8 +58,10 @@ a {text-decoration: none;}
 .login input.submit {width: 30px !important }
 .login #message-area {color: #f66 !important}
 
+.bbx #content,
+.mocambola #content,
 .mucua #content,
-.media #content { margin-bottom: 40px}
+.media #content,
 .rede #content { margin-bottom: 40px}
 
 /*
@@ -135,12 +139,13 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
  * media view
  */
 #media-view {}
-#media-view .block-1 {float: left; width: 430px}
+#media-view .block-1 {float: right; width: 430px}
 #media-view .block-1 .title {font-weight: bold; }
 
-#media-view .block-2 {float: left; width: 300px; background-color: #8cb689; border-radius: 8px; padding: 10px}
+#media-view .block-2 {float: right; width: 300px; background-color: #8cb689; border-radius: 8px; padding: 10px;}
+#media-view .block-2 p {margin: 0; padding-bottom: 5px}
 #media-view .block-2 .block-fields p {font-size: 17px; font-weight: bold}
-#media-view .block-2 .block-title {float: left; width: 25% }
+#media-view .block-2 .block-title {float: left; width: 25%; text-align: right; }
 #media-view .block-2 .block-fields {float: left; width: 70%; padding-left: 10px}
 #media-view .block-2 .blocks {float: left; width: 100%; border-top: 2px solid #fff }
 #media-view .block-2 .blocks .text {font-weight: normal; font-size: 12px; color: #296b7c}
@@ -148,7 +153,7 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 #media-view p {color: #fff; font-size: 17px}
 #media-view .media-image { border-radius: 8px; background-color: #f4efdd; padding: 10px; margin-right: 10px; width: 400px}
 #media-view .media-image img {background-color: #ccc; width: 400px; height: 300px}
-#media-view .title {font-size: 16px; text-align: right}
+#media-view .title {font-size: 16px; text-align: center}
 #media-view .title-bold {font-size: 18px; font-weight: bold}
 #media-view a {color: #fff}
 #media-view .solicit-copy .image {background-image: url('/images/solicitar.png'); width: 17px; height: 15px; display: block; float: right; margin-right: 50px; margin: 5px auto}
@@ -179,27 +184,40 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 #mocambola-home #mocambola-profile img,
 #mucua-home #mucua-profile img {float: left; width: 45px; height: 45px}
 #mocambola-home .actions {clear: both}
-#mocambola-home .actions h4.link a {color: #5EA933; font-size 18px;}
+#mocambola-home .actions h4.link a {color: #5EA933; font-size: 18px;}
 
-/* COMMENTED EVERYTHING (old template)
- * media view, edit & publish
- * /
+/* esquema de fundo de tela personalizado para mucua */
+body.mucua {}
 
-/* media publish * /
-#media_publish {}
-#media_publish #uuid {color:#999 }
-#media_publish #arquivo_passo2, #media_publish #dia_hora, #media_publish #dados_gerais, #media_publish #tags_area, #media_publish #uuid_area {display: none}
+/*
+ * media publish
+ */
+#media_publish {text-align: left}
+#media_publish .title {color: #145B7A; font-size: 18px}
+#media_publish .uuid {color:#666 }
+#media_publish .media_file {font-size: 10px}
 #media_publish h4 {margin-top: 10px; margin-bottom: 10px}
 #media_publish #dados_gerais,
 #media_publish #dia_hora, 
 #media_publish #dados_gerais, 
 #media_publish #tags_area, 
-#media_publish #uuid_area { float: left; width: 50% }
+#media_publish input,
+#media_publish textarea {width: 290px; border: 2px solid #fff; border-radius: 8px}
+#media_publish .bloco-1 .tags {display: none}
+#media_publish .button-nav, #media_update .button-nav {cursor: pointer; font-size: 16px; background-color: #B5A570; text-align: center; width: 150px; float: right; padding: 8px; border-radius: 4px; border: 2px solid #958555; margin: 2px }
+#media_publish #note {height: 120px}
+#media_publish .bloco-1 {float: left;}
+#media_publish .bloco-2 {float: left; padding-left: 10px}
+#media_publish .buttons {clear: both}
 
-/* form progress meter * /
+/* form progress meter */
 .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
 .bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
 .percent { position:absolute; display:inline-block; top:3px; left:48%; }
+
+
+/* COMMENTED EVERYTHING (old template)
+
 
 /*
  * busca / resultados

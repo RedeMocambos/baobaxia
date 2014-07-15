@@ -1,7 +1,7 @@
 {
     "imagePath": "/images",
     "apiUrl": "/api",
-    "interfaceUrl": "/bbx/app/django-bbx/bbx/static/#",
+    "interfaceUrl": "/#",
     "MYMUCUA": "bbxnamaste",
     "MYREPOSITORY": "mocambos"
 }
