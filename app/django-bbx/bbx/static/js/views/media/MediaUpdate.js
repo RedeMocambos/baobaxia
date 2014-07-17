@@ -73,6 +73,7 @@ define([
 	    var config = $("body").data("bbx").config,   
 	    urlApi = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid,
 	    urlMediaView = config.interfaceUrl + config.repository + '/' +  config.mucua + '/media/' + uuid;
+	    BBXBaseFunctions.renderSidebar();
 	    
 	    var media = new MediaModel([], {url: urlApi});
 	    media.fetch({

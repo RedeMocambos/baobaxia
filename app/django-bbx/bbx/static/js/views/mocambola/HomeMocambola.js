@@ -30,7 +30,8 @@ define([
 	    
 	    config.userData = JSON.parse($.cookie('sessionBBX'));
 	    data.config = config;
-	    
+	    BBXBaseFunctions.renderSidebar();
+
 	    // get mocambola data
 	    this.__getMocambola(username);
 	    var mocambolaDOM = '';

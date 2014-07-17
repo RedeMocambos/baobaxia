@@ -11,7 +11,8 @@ define([
 	render: function(subroute) {
 	    var config = $("body").data("bbx").config,
 	    url = config.apiUrl + '/rede/bbx/search/' + subroute;
-	    console.log(url);
+	    
+	    BBXBaseFunctions.renderSidebar();
 	    MediaFunctions.getMediaSearch(url);
 	}
     });
