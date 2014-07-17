@@ -1,0 +1,20 @@
+<ul id="terms-navigation">
+  <% var tagCount = _.size(searchTags),
+     tagId = 0;
+     %>
+  <% _.each(searchTags, function(tag) { %>
+  <% tagId += 1 %>
+  <li class="search-tag">
+    <a class="search-links" href="<% print(baseUrl + tag) %>"><%= tag %></a>
+    <a class="trash-term" id="term_<%=tagId%>"><img src="images/trash.png" /></a>
+    <span class="search-links">
+      <% if (tagId < tagCount) { %>+<% } %>
+    </span>
+  </li>
+  <% if (tagId == tagCount) { %>
+  <li>
+    <a class="add-term">++</a>
+  </li>
+  <% } %>
+  <% }); %>
+</ul>

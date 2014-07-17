@@ -97,7 +97,7 @@ define([
 		    
 		    // eventos		  
 		    $('#license').on('change', swapLicense);
-
+		    
 		    $('#submit').on('click', function() { updateMedia(); });
 		    $('#view-media').on('click', function() { 
 			window.location.href = urlMediaView;

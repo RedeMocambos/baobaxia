@@ -26,7 +26,7 @@ define([
 		data.config = config;
 		data.baseUrl = BBXBaseFunctions.getDefaultHome();
 		
-		$('#result-string').html("<a class='back-to-results' href='javascript: history.back(-1)'><img src='" + config.imagePath + "/voltar.png'> voltar para a busca</a>");
+		$('#back-to-results').html("<a class='back-to-results' href='javascript: history.back(-1)'><img src='" + config.imagePath + "/voltar.png'> voltar para a busca</a>");
 		$('#content').html(_.template(MediaViewTpl, data));
 		
 		// get image

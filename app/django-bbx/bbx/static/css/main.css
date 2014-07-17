@@ -15,9 +15,9 @@ html, body, #container {height: 100%; }
     min-width: 670px;
     margin: 20 auto; 
     margin-right: 1%;
-    margin-top: 70px; 
+    margin-top: 80px; 
     padding: 10px; 
-    padding-left: 20px; 
+    padding-left: 20px;
 }
 #sidebar {
     float: left;
@@ -39,7 +39,7 @@ a {text-decoration: none;}
 /*
  * header
  */
-#header {width: 100%;height: 180px; background-color: #fff }
+#header {width: 100%; height: 180px; background-color: #fff }
 #header-top {background: #fff url('../images/cabecalho.png') no-repeat fixed center top; height: 106px; width: 1024px; margin: 0 auto }
 #header-top img { margin-top: 25px; margin-left: 70px}
 .posicoes {display: none}
@@ -99,7 +99,7 @@ a {text-decoration: none;}
 
 #user-profile {height: 50px}
 #sidebar #user-profile img {float: left; width: 45px; height: 45px}
-#sidebar #user-profile h4 {font-size: 15px; float: left; text-decoration: none; color: #D5C590 !important; margin: 0 auto; padding-top: 12px; padding-left: 8px}
+#sidebar #user-profile h4 {font-size: 14px; float: left; text-decoration: none; color: #D5C590 !important; margin: 0 auto; padding-top: 12px; padding-left: 8px}
 #sidebar #link-login a {color: #D5C590; font-size: 15px; font-weight: bold}
 #user-profile a.logout {font-size:11px; color:#D5C590; float: right}
 
@@ -137,11 +137,18 @@ a {text-decoration: none;}
 /*
  * busca
  */
-#buscador {margin-left: 7%; margin-top: -15px;}
+#buscador {margin-left: 7%; margin-top: -15px}
 #buscador .caixa_busca { border: 2px solid #fff; border-radius: 8px; padding-left: 8px }
-#buscador div {margin-top: 4px; display: inline; padding-left: 6px}
-#result-string {font-size: 12px; font-weight: bold; color: #145B7A }
-#result-string .back-to-results {color: #197299}
+#buscador div {margin-top: 4px; display: inline-block; padding-left: 6px}
+#result-string {font-size: 12px; font-weight: bold;}
+#result-string ul { list-style-type: none; width: 60%; margin-left: 40px; }
+#result-string ul li {width: 100px; display: inline}
+#result-string ul li a {font-size: 18px; color: #fff; font-weight: bold}
+#result-string .back-to-results {color: #19729}
+.search-links {font-size: 16px; font-weight: bold; color: #fff}
+#result-string ul li a.add-term {color: #2E7E36; cursor: pointer}
+.trash-term {display: none}
+#terms-navigation li.search-tag:hover .trash-term {display: inline; cursor: pointer}
 
 /*
  * functional tags
