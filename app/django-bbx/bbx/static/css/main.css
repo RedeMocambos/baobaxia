@@ -7,10 +7,28 @@
  */
 html { font-family: sans-serif}
 body {margin: 0; padding: 0; background-color: #D5C590}
-html, body, #container {height: 100% }
-#container {margin: 0 auto;}
-#content {float: left; width: 70%; padding: 10px; margin-top: 70px; padding-left: 5px}
-#sidebar {float: right; width: 22%; height: 70%; max-width: 400px !important; margin-right: 2%; background-color: #fff; padding: 10px }
+html, body, #container {height: 100%; }
+#container {margin: 0 auto; }
+#content {
+    float: left;
+    width: 60%;
+    margin: 20 auto; 
+    margin-left: 7%;
+    margin-right: 2%;
+    margin-top: 70px; 
+    padding: 10px; 
+    padding-left: 20px; 
+    text-align: right;
+}
+#sidebar {
+    float: left ;
+    width: 22%;
+    height: 100%;
+    max-width: 400px !important;
+    margin-right: 2%; 
+    padding: 10px;    
+    background-color: #fff; 
+}
 #footer {clear: both; height: 40px; position: fixed; z-index: 10; background-color: #D5C590; width: 100%; bottom: -2px; border-top: #fff solid 2px; }
 a {text-decoration: none;}
 
@@ -32,9 +50,6 @@ a {text-decoration: none;}
 .home #content .middle {width:15%; float: left; height: 100%; }
 .home #content .right {width:40%; float: left; height: 100%; font-size: 13px; }
 .home #footer {display: none}
-
-#content {padding-left: 20px; margin: 20 auto; }
-#sidebar {margin-right: 20px;}
 
 #menu {margin-left: 35%; margin-top: 50px}
 .menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
@@ -102,10 +117,12 @@ a {text-decoration: none;}
 .destaques {clear: both}
 .destaques h3.title {color: #fff; font-size: 26px; margin: 4px}
 
+#content .media div {float: right;}
+
 /*
  * media grid
   */
-.media_box { float: left; width: 192px; height: 175px; background: #f4efdd; margin: 5px; font-size: 12px; border-radius: 5px; padding: 10px; text-align: center}
+.media_box {width: 192px; height: 175px; background: #f4efdd; margin: 5px; font-size: 12px; border-radius: 5px; padding: 10px; text-align: center}
 .media_box .result-thumb {width: 192px; height: 130px; background: #aa6}
 .media_box .title {font-size: 12px }
 .media_box .format_type { color: #aaa; text-transform: uppercase }
@@ -119,7 +136,7 @@ a {text-decoration: none;}
 /*
  * busca
  */
-#buscador {margin-left: 10px; margin-top: -15px}
+#buscador {margin-left: 7%; margin-top: -15px;}
 #buscador .caixa_busca { border: 2px solid #fff; border-radius: 8px; padding-left: 8px }
 #buscador div {margin-top: 4px; display: inline; padding-left: 6px}
 #result-string {font-size: 12px; font-weight: bold; color: #145B7A }
