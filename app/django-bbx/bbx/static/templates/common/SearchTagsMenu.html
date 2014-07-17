@@ -1,19 +1,20 @@
 <ul id="terms-navigation">
-  <% var tagCount = _.size(searchTags),
-     tagId = 0;
+  <% var termCount = _.size(terms),
+     termId = 0;
      %>
-  <% _.each(searchTags, function(tag) { %>
-  <% tagId += 1 %>
-  <li class="search-tag">
-    <a class="search-links" href="<% print(baseUrl + tag) %>"><%= tag %></a>
-    <a class="trash-term" id="term_<%=tagId%>"><img src="images/trash.png" /></a>
+  <% _.each(terms, function(term) { %>
+  <% termId += 1 %>
+  <li class="search-term">
+    <a class="search-links" href="<% print(baseUrl + term) %>"><%= term %></a>
+    <a class="trash-term" id="term_<%=termId%>"><img src="images/trash.png" /></a>
     <span class="search-links">
-      <% if (tagId < tagCount) { %>+<% } %>
+      <% if (termId < termCount) { %>+<% } %>
     </span>
   </li>
-  <% if (tagId == tagCount) { %>
-  <li>
-    <a class="add-term">++</a>
+  <% if (termId == termCount) { %>
+  <li class="add-term">
+    <a>++</a>
+    <span class="legend">Adicionar termo à essa busca</span>
   </li>
   <% } %>
   <% }); %>

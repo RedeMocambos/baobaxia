@@ -46,13 +46,12 @@ define([
 	$(target).html(_.template(ResultsMessageTpl, data));	
     };    
 
-    var __parseMenuSearch = function(searchTags, terms = '') {
+    var __parseMenuSearch = function(terms) {
 	var config = __getConfig(),
-	terms = terms || {}, // if any term is passed, do a cummulative search
 	data = {};
-	if (searchTags != '') {
-	    data.searchTags = searchTags;
-	    $("body").data("bbx").terms = searchTags;
+	if (terms != '') {
+	    data.terms = terms;
+	    $("body").data("bbx").terms = terms;
 	    data.baseUrl = '#' + config.repository + '/' + config.mucua + '/bbx/search/';
 	    $('#result-string').html(_.template(SearchTagsMenuTpl, data));
 	    
@@ -72,11 +71,19 @@ define([
 	currentUrl = Backbone.history.location.hash,
 	baseUrl = currentUrl.split('search/')[0],
 	termsUrl = currentUrl.split('search/')[1],
-	newUrl = baseUrl + 'search/' + termsUrl.split(tagRemoveName)[0];
+	newUrl = baseUrl + 'search/';
 	
+	// compose new Url
+	_.each(termsUrl.split(tagRemoveName), function(term) {
+	    if (term != '') {
+		// limpa '/' do inicio e do fim
+		term = (term.charAt(0) == '/') ? term.substring(1) : term;
+		term = (term.charAt(term.length -1) == '/') ? term.substring(0, term.length-1) : term;
+		newUrl += term;
+	    }
+	});
 	__parseMenuSearch(terms);
-	// remove last occurrence of '/'
-	window.location = newUrl.substring(0, newUrl.lastIndexOf('/'));
+	window.location = newUrl;
     }
     
     var addTagMenuSearch = function(event) {
@@ -235,7 +242,6 @@ define([
 	} else {
 	    terms = term;
 	}
-	console.log(terms);
 	url = '#' + config.repository      + '/' + config.mucua + '/bbx/search/' + terms;
 	window.location.href = url;
 	$('#imagem-busca').attr('src', config.imagePath + '/buscando.gif');
