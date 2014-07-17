@@ -33,7 +33,7 @@ define([
 	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
 	    ':repository/:mucua/mocambola/*subroute': 'invokeMocambolaModule',
 	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
-	    ':repository/rede/*subroute': 'invokeNetworkModule',
+	    // ':repository/rede/bbx/*subroute': 'invokeNetworkModule',
 	    ':repository/:mucua/media': 'invokeMediaModule',   
 	    ':repository/:mucua/media/*subroute': 'invokeMediaModule',   
 	    ':repository/:mucua/mucua/*subroute': 'invokeMucuaModule',
@@ -108,14 +108,6 @@ define([
 	    this.Routers.MucuaRouter = new MucuaRouter(repository + "/" + mucua + "/", subroute);
 	},
 	
-	// bbx
-	invokeBbxModule: function(repository, mucua, subroute) {
-	    console.log('bbx');
-	    
-	    BBXBaseFunctions.setNavigationVars(repository, mucua, subroute);
-	    this.Routers.BbxRouter = new BBXRouter(repository + "/" + mucua + "/bbx/", subroute);
-	},
-
 	// mocambola
 	invokeMocambolaModule: function(repository, mucua, subroute) {
 	    console.log('mocambola:::::::::');
@@ -124,15 +116,22 @@ define([
 	    BBXBaseFunctions.setNavigationVars(repository, mucua, subroute);
 	    this.Routers.MocambolaRouter = new MocambolaRouter(repository + "/" + mucua + "/mocambola/", subroute);
 	},
+	
+	// bbx
+	invokeBbxModule: function(repository, mucua, subroute) {
+	    console.log('bbx');
+	    
+	    BBXBaseFunctions.setNavigationVars(repository, mucua, subroute);
+	    this.Routers.BbxRouter = new BBXRouter(repository + "/" + mucua + "/bbx/", subroute);
+	},
 
 	// rede
 	invokeNetworkModule: function(repository, subroute='') {
 	    var subroute = subroute || '';
-	    console.log('rede');
+	    console.log('rede oi');
 	    BBXBaseFunctions.setNavigationVars(repository, 'rede', subroute);
-	    this.Routers.NetworkRouter = new NetworkRouter(repository + "/rede/", subroute);
+	    this.Routers.BbxRouter = new BBXRouter(repository + "/rede/", subroute);
 	},
-
     });
     
     var __loadConfig = function(callback) {

@@ -6,15 +6,14 @@
   <% termId += 1 %>
   <li class="search-term">
     <a class="search-links" href="<% print(baseUrl + term) %>"><%= term %></a>
-    <a class="trash-term" id="term_<%=termId%>"><img src="images/trash.png" /></a>
+    <div class="trash-term" id="term_<%=termId%>"></div>
     <span class="search-links">
       <% if (termId < termCount) { %>+<% } %>
     </span>
   </li>
   <% if (termId == termCount) { %>
   <li class="add-term">
-    <a>++</a>
-    <span class="legend">Adicionar termo à essa busca</span>
+    <a><span class="plus-search">+</span><span class="legend">Adicionar termo à essa busca</span></a>
   </li>
   <% } %>
   <% }); %>

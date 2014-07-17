@@ -5,7 +5,7 @@ define([
     'modules/bbx/base-functions',
     'modules/media/media-functions',
 ], function($, _, Backbone, BBXBaseFunctions, MediaFunctions) {
-    var NetworkView = Backbone.View.extend({
+    var SearchView = Backbone.View.extend({
 	el: "body",    
 
 	render: function(subroute) {
@@ -17,5 +17,5 @@ define([
 	}
     });
 
-    return NetworkView;
+    return SearchView;
 });

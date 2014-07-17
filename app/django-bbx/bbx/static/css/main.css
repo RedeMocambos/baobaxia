@@ -146,11 +146,12 @@ a {text-decoration: none;}
 #result-string ul li a {font-size: 18px; color: #fff; font-weight: bold}
 #result-string .back-to-results {color: #19729}
 .search-links {font-size: 16px; font-weight: bold; color: #fff}
-.trash-term {display: none}
+.trash-term {display: none; background: url("/images/trash.png") no-repeat;  padding: 8px; padding-top: 4px;}
 #terms-navigation li.search-term:hover .trash-term {display: inline; cursor: pointer}
 #terms-navigation li.add-term a {color: #2E7E36; cursor: pointer}
 #terms-navigation li.add-term .legend {display: none; color: #2E7E36}
 #terms-navigation li.add-term:hover .legend {display: inline}
+.plus-search {font-size: 24px}
 
 /*
  * functional tags

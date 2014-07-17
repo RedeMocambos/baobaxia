@@ -38,9 +38,9 @@ define([
 	    if (config.subroute.match(/search/)) {
 		completeSubroute = 'bbx/search/' + subroute;
 	    }
-	    
+	    console.log("completeSubroute: " + completeSubroute);
 	    BBXBaseFunctions.setNavigationVars(repository, mucua, completeSubroute);	    
-	    BBXBaseFunctions.renderCommon('bbx');
+	    BBXBaseFunctions.renderCommon('bbx ' + mucua);
 	    var search = new Search();
 	    search.render(subroute);
 	},

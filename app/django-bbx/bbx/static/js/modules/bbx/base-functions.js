@@ -248,6 +248,7 @@ var configLoaded = $("body").data("bbx").configLoaded;
 	config.mucua = mucua;
 	config.subroute = subroute;
 	
+	console.log('subroute: ' + config.subroute);
 	// ---------- /
 	// solve problems / restrictions at navigation menu / replace inexistant routes between rede <-> mucua	
 	// - rotas inexistentes
@@ -266,8 +267,8 @@ var configLoaded = $("body").data("bbx").configLoaded;
 	    }
 	}
 	
-	// rede home
-	if (mucua == 'rede' || config.subroute == '') {
+	// 
+	if (config.subroute == '') {
 	    config.subroute = 'bbx/search';
 	}
 	

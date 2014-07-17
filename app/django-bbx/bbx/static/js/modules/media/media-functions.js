@@ -65,29 +65,32 @@ define([
 
     var deleteTagMenuSearch = function(event) {
 	var target = event.target,
-	tagRemove = $(target).parents()[1],
+	tagRemove = $(target).parents()[0],
 	tagRemoveName = $(tagRemove.children[0]).html(),
 	terms = _.without($('body').data('bbx').terms, tagRemoveName),
 	currentUrl = Backbone.history.location.hash,
 	baseUrl = currentUrl.split('search/')[0],
 	termsUrl = currentUrl.split('search/')[1],
 	newUrl = baseUrl + 'search/';
-	
+	console.log(termsUrl);
+	console.log('newUrl: ' + newUrl);
 	// compose new Url
 	_.each(termsUrl.split(tagRemoveName), function(term) {
 	    if (term != '') {
 		// limpa '/' do inicio e do fim
 		term = (term.charAt(0) == '/') ? term.substring(1) : term;
 		term = (term.charAt(term.length -1) == '/') ? term.substring(0, term.length-1) : term;
-		newUrl += term;
+		newUrl += '/' + term;
 	    }
 	});
+	newUrl = newUrl.replace(/\/\//, '\/');
 	__parseMenuSearch(terms);
 	window.location = newUrl;
     }
     
     var addTagMenuSearch = function(event) {
 	console.log('addTag');
+	// TODO: on/off para essa funcao ou algo similar
 	$('#caixa_busca').off();
 	$('#caixa_busca').keyup(function(e) {
 	    if (e.keyCode == 13) {
@@ -95,7 +98,7 @@ define([
 		doSearch(terms);
 	    } 
 	});
-	
+	$('.plus-search').css({"border": "2px solid #339033", "padding-bottom": "2px"});
 	$('#caixa_busca').focus();
 	// manda foco para campo de busca
     }
