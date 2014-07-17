@@ -58,7 +58,10 @@ define([
 	    };
 	    //HACK para passar o objeto corretamente
 	    media.attributes =  _.clone(media.attributes[0]);
-	    Backbone.sync('update', media, options);		
+	    Backbone.sync('update', media, options).done(function(){
+		$('.buttons').prepend("<h3 class='message'>Conteúdo atualizado!</h3>");
+		setTimeout(function(){$('.buttons h3.message').fadeOut(800)}, 2000);
+	    });	    
 	},
 	
 	render: function(uuid){

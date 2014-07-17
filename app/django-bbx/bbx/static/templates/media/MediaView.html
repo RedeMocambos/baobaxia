@@ -1,9 +1,9 @@
 <div id="media-view">
-  <div class="title">
+  <div class="title content-div">
       <p class="title-bold"><%= media.name %></p>
   </div>
 
-  <div class="block-2">
+  <div class="block-2 content-div">
     <% if (config.userData.username) { %>
     <div class="link-edit"><a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">Editar</a></div>
     <% } %>
@@ -40,7 +40,7 @@
     
   </div>
   
-  <div class="block-1">   
+  <div class="block-1 content-div">   
     <div class="media-image">
       <% if (media.type == 'image') { %>
       <img src="<%= media.media_file.replace('/data/bbx/', 'images/') %>" />

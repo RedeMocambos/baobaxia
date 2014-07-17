@@ -12,20 +12,19 @@ html, body, #container {height: 100%; }
 #content {
     float: left;
     width: 60%;
+    min-width: 670px;
     margin: 20 auto; 
-    margin-left: 7%;
-    margin-right: 2%;
+    margin-right: 1%;
     margin-top: 70px; 
     padding: 10px; 
     padding-left: 20px; 
-    text-align: right;
 }
 #sidebar {
-    float: left ;
+    float: left;
     width: 22%;
     height: 100%;
-    max-width: 400px !important;
-    margin-right: 2%; 
+    max-width: 330px !important;
+    margin-right: 1%; 
     padding: 10px;    
     background-color: #fff; 
 }
@@ -79,6 +78,8 @@ a {text-decoration: none;}
 .media #content,
 .rede #content { margin-bottom: 40px}
 
+.content-div {width: 80%; max-width: 700px; min-width: 650px; float: right}
+
 /*
  * footer
  */
@@ -116,7 +117,7 @@ a {text-decoration: none;}
  */
 .destaques {clear: both}
 .destaques h3.title {color: #fff; font-size: 26px; margin: 4px}
-
+#content .media {clear: both}
 #content .media div {float: right;}
 
 /*
@@ -156,10 +157,13 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
  * media view
  */
 #media-view {}
-#media-view .block-1 {float: right; width: 430px}
+#media-view .content-title {font-size: 18px;}
+#media-view .title-bold {font-size: 18px; font-weight: bold}
+
+#media-view .block-1 {float: right; min-width: 420px; width: 50%; padding-right: 2px}
 #media-view .block-1 .title {font-weight: bold; }
 
-#media-view .block-2 {float: right; width: 300px; background-color: #8cb689; border-radius: 8px; padding: 10px;}
+#media-view .block-2 {float: right; width: 33%; min-width: 180px; max-width: 300px; background-color: #8cb689; border-radius: 8px; padding: 10px;}
 #media-view .block-2 p {margin: 0; padding-bottom: 5px}
 #media-view .block-2 .block-fields p {font-size: 17px; font-weight: bold}
 #media-view .block-2 .block-title {float: left; width: 25%; text-align: right; }
@@ -170,8 +174,7 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 #media-view p {color: #fff; font-size: 17px}
 #media-view .media-image { border-radius: 8px; background-color: #f4efdd; padding: 10px; margin-right: 10px; width: 400px}
 #media-view .media-image img {background-color: #ccc; width: 400px; height: 300px}
-#media-view .title {font-size: 16px; text-align: center}
-#media-view .title-bold {font-size: 18px; font-weight: bold}
+
 #media-view a {color: #fff}
 #media-view .solicit-copy .image {background-image: url('/images/solicitar.png'); width: 17px; height: 15px; display: block; float: right; margin-right: 50px; margin: 5px auto}
 #media-view .solicit-copy .image:hover {background-image: url('/images/solicitar-over.png'); cursor: pointer}
@@ -226,6 +229,7 @@ body.mucua {}
 #media_publish .bloco-1 {float: left;}
 #media_publish .bloco-2 {float: left; padding-left: 10px}
 #media_publish .buttons {clear: both}
+.media .buttons h3.message {color: #145B7A; text-align: right}
 
 /* form progress meter */
 .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }

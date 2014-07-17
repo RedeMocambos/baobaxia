@@ -33,8 +33,8 @@ define([
 			       configLoaded: false
 			   });
 	}
-	
-	var configLoaded = $("body").data("bbx").configLoaded;
+
+var configLoaded = $("body").data("bbx").configLoaded;
 	if (configLoaded === false) {
 	    __setConfig(DefaultConfig);
 	}
@@ -276,10 +276,15 @@ define([
 
     // static format: day/month/year
     var formatDate = function(date) {
-	var newDate = '',
-	re = /^(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)Z$/,
-	matches = date.match(re);
-	return matches[3] + '/' + matches[2] + '/' + matches[1];
+	console.log(date);
+	if (date != '') {
+	    var newDate = '',
+	    re = /^(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)[\.0-9]*Z$/,
+	    matches = date.match(re);
+	    return matches[3] + '/' + matches[2] + '/' + matches[1];
+	} else {
+	    return false;
+	}
     }
     
     return {
