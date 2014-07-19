@@ -72,8 +72,7 @@ define([
 	baseUrl = currentUrl.split('search/')[0],
 	termsUrl = currentUrl.split('search/')[1],
 	newUrl = baseUrl + 'search/';
-	console.log(termsUrl);
-	console.log('newUrl: ' + newUrl);
+	
 	// compose new Url
 	_.each(termsUrl.split(tagRemoveName), function(term) {
 	    if (term != '') {
@@ -84,6 +83,7 @@ define([
 	    }
 	});
 	newUrl = newUrl.replace(/\/\//, '\/');
+	
 	__parseMenuSearch(terms);
 	window.location = newUrl;
     }
@@ -94,8 +94,8 @@ define([
 	$('#caixa_busca').off();
 	$('#caixa_busca').keyup(function(e) {
 	    if (e.keyCode == 13) {
-		var terms = $('body').data('bbx').terms;
-		doSearch(terms);
+		var cummulative = true;
+		doSearch(cummulative);
 	    } 
 	});
 	$('.plus-search').css({"border": "2px solid #339033", "padding-bottom": "2px"});
@@ -231,21 +231,30 @@ define([
      * execute search
      * 
      */
-    var doSearch = function(terms = '') {
-	console.log('doSearch');
+    var doSearch = function(cummulative = false) {
+	console.log('doSearch(' + cummulative + ')');
 	var term = $('#caixa_busca')[0].value,
-	terms = terms || {},
+	cummulative = cummulative || false,
 	config = __getConfig(),
 	url = '',
 	apiUrl = '';
-	apiUrl = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + term;
-	if (_.isObject(terms) && _.size(terms) > 0) {
-	    terms.push(term);
-	    terms = terms.join('/');
+	
+	// if asked to do cummulative search, get terms
+	if (cummulative) {
+	    var terms = $('body').data('bbx').terms || {};
+	    if (_.isObject(terms) && _.size(terms) > 0) {
+		terms.push(term);
+		terms = terms.join('/');
+	    } else {
+		terms = term;
+	    }
 	} else {
 	    terms = term;
 	}
+	
 	url = '#' + config.repository      + '/' + config.mucua + '/bbx/search/' + terms;
+	apiUrl = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + terms;    
+	//TODO: dando alguma zica na busca, apagando um termo =/
 	window.location.href = url;
 	$('#imagem-busca').attr('src', config.imagePath + '/buscando.gif');
 	getMediaSearch(apiUrl);
