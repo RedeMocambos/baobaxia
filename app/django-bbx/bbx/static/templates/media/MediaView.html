@@ -24,6 +24,13 @@
       <p><div class="license-image license-<%= media.license %>"></div></p>      
     </div>
     <div class="blocks">
+      <p class="tags">
+	<% _.each(media.tags, function(tagName) { %>
+	<a href="<% print('#' + media.repository + '/' + media.origin +  '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
+	<% }); %>
+      </p>      
+    </div>
+    <div class="blocks">
       <p class="text"><%= media.note %></p>
     </div>
     <div class="blocks">
@@ -31,13 +38,6 @@
 	<span class="title-bold">quem tem esse arquivo?: </span>
       </p>
     </div>
-    <div class="blocks">
-      <p class="solicit-copy">
-	<span class="title-bold">solicitar cópia local</span>
-	<span class="image"></span>
-      </p>
-    </div>
-    
   </div>
   
   <div class="block-1 content-div">   
@@ -48,11 +48,18 @@
       <img src="images/imagem-exemplo.png" />
       <% } %>
     </div>    
-    <p class="tags">
-      <% _.each(media.tags, function(tagName) { %>
-      <a href="<% print('#' + media.repository + '/' + media.origin +  '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
-      <% }); %>
+    <% if (!media.is_local) { %>
+    <div class="blocks">
+      <p class="solicit-copy">
+	<span class="title-bold">solicitar cópia local</span>
+	<span class="image"></span>
+      </p>
+    </div>   
+    <% } else { %>
+    <p class="">
+      Conteúdo local
     </p>
+    <% } %>
     <p class="uuid">UUID<%= media.uuid %></p>
   </div>
   

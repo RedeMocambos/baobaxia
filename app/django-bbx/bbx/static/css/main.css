@@ -120,6 +120,15 @@ a {text-decoration: none;}
 #content .media {clear: both}
 #content .media div {float: right;}
 
+#content .media .media_line {display: block; float: none; border-top: 1px solid #ddd}
+#content .media .media_line a {color: #145B7A; font-align: left}
+
+.media-display-type div {margin-right: 15px; float: right}
+.media-display-type .grid {background: url(/images/grid-off.png); width: 36px; height: 36px; mouse: pointer}
+.media-display-type .list {background: url(/images/list-off.png); width: 36px; height: 36px; mouse: pointer}
+.media-display-type .grid:hover {background: url(/images/grid-on.png)}
+.media-display-type .list:hover {background: url(/images/list-on.png)}
+
 /*
  * media grid
   */
@@ -186,9 +195,9 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 #media-view .media-image img {background-color: #ccc; width: 400px; height: 300px}
 
 #media-view a {color: #fff}
-#media-view .solicit-copy .image {background-image: url('/images/solicitar.png'); width: 17px; height: 15px; display: block; float: right; margin-right: 50px; margin: 5px auto}
+#media-view .solicit-copy .image {background-image: url('/images/solicitar.png'); width: 17px; height: 15px; display: inline-block; }
 #media-view .solicit-copy .image:hover {background-image: url('/images/solicitar-over.png'); cursor: pointer}
-#media-view .tags a {color: #6AA367 }
+#media-view .tags a {color: #fff; font-weight: bold }
 #media-view .uuid {color:#666; font-size: 10px }
 .result-thumb .type {font-size: 10px; background-color: #666; color: #fff; float: right}
 
