@@ -80,7 +80,7 @@ a {text-decoration: none;}
 .mocambola #content,
 .mucua #content,
 .media #content,
-.rede #content { margin-bottom: 40px}
+.rede #content { margin-bottom: 40px; margin-top: 60px}
 
 .content-div {width: 80%; max-width: 700px; min-width: 650px; float: right}
 

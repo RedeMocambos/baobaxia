@@ -72,7 +72,7 @@ define([
 	    var userData,
 	    loginData = this.__prepareLoginData(),
 	    urlRedirect = BBXBaseFunctions.getDefaultHome();
-
+	    
 	    this.__checkLogin(loginData);
 	    
 	    //timeout nessa parte de baixo
@@ -97,8 +97,6 @@ define([
 	
 	render: function(){
 	    var __parseTemplate = function(data) {
-		// undelegate elements // TODO: achar uma solucao mais elegante
-		$('body').off();
 		$('#header').html(_.template(HeaderHomeTpl));
 		
 		// parse header
