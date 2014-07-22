@@ -1,0 +1,15 @@
+<% _.each(medias, function(media) { %>
+<div class="media_line">
+    <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+      <span><%= media.name %></span>
+    </a>
+    <span class="format_type"><%= media.format %></span>&nbsp;
+    <span class="origin"><%= media.origin %></span>&nbsp;
+    <span class="date"><%= formatDate(media.date) %></span>&nbsp;
+    <span class="license"><%= media.license %></span>&nbsp;
+    <span class="type"><%= media.type %></span>&nbsp;
+</div>
+<% }) %>
+<% if (_.isEmpty(medias)) { %>
+<h4 class="message"><%= message %></h4>
+<% } %>

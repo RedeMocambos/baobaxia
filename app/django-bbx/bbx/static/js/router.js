@@ -58,13 +58,8 @@ define([
 	login: function(repository='', mucua='') {
 	    console.log('login');
 	    var repository = repository || '',
-	    mucua = mucua || '';
-	    $('body').removeClass().addClass('home');
-	    $('#content').html('');
-	    $('#header').html('');
+	    mucua = mucua || '';	    
 	    if (!BBXBaseFunctions.isLogged()) {
-		// undelegate elements // TODO: achar uma solucao mais elegante
-		$('body').off();
 		var loginView = new LoginView();
 		loginView.render();
 	    } else {

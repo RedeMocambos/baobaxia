@@ -11,7 +11,8 @@ define([
     'modules/mocambola/model',
     'json!config.json',
     'text!templates/auth/LoginTemplate.html',
-], function($, _, Backbone, jQueryCookie, jQueryJson, BBXBaseFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, Config, LoginTemplate){
+    'text!templates/common/HeaderHome.html',
+], function($, _, Backbone, jQueryCookie, jQueryJson, BBXBaseFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, Config, LoginTemplate, HeaderHomeTpl){
     var LoginView = Backbone.View.extend({
 	el: "body",
 	
@@ -96,6 +97,10 @@ define([
 	
 	render: function(){
 	    var __parseTemplate = function(data) {
+		// undelegate elements // TODO: achar uma solucao mais elegante
+		$('body').off();
+		$('#header').html(_.template(HeaderHomeTpl));
+		
 		// parse header
 		$('body').removeClass("").addClass("login");
 		

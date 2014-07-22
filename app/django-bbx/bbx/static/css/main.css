@@ -13,11 +13,7 @@ html, body, #container {height: 100%; }
     float: left;
     width: 60%;
     min-width: 670px;
-    margin: 20 auto; 
-    margin-right: 1%;
-    margin-top: 80px; 
-    padding: 10px; 
-    padding-left: 20px;
+    padding-top: 2px;
 }
 #sidebar {
     float: left;
@@ -43,11 +39,19 @@ a {text-decoration: none;}
 #header-top {background: #fff url('../images/cabecalho.png') no-repeat fixed center top; height: 106px; width: 1024px; margin: 0 auto }
 #header-top img { margin-top: 25px; margin-left: 70px}
 .posicoes {display: none}
-.home #header {background-image: url('../images/login-home-header.png'); background-repeat: no-repeat; background-size: 100% auto; height: 50%}
-.home #content  { height: 50%; background: url('../images/home-login-content.png') no-repeat; background-size: 100% auto; padding:0; width: 100%; margin-top: 0}
-.home #content .left {width:45%; float: left; height: 100%}
-.home #content .middle {width:15%; float: left; height: 100%; }
-.home #content .right {width:40%; float: left; height: 100%; font-size: 13px; }
+.home #header,
+.login #header {height: 295px; background: url('../images/home-header-repeat.png') repeat-x; }
+
+.home #header #header-top,
+.login #header #header-top {background: url('../images/login-home-header.png') no-repeat scroll; width: 1137px; height: 295px; margin: 0 auto}
+
+.home #content,
+.login #content {background: url('../images/home-content-repeat.png'); width: 100%; height: 90%}
+.home #content-top,
+.login #content-top { height: 100%; background: url("../images/home-login-content.png") no-repeat scroll 0 0; padding:0; margin-top: 0}
+.home #content .left {width:35%; float: left; height: 100%; }
+.home #content .middle {width:15%; float: left; height: 100%; margin-top: 20px}
+.home #content .right {width:50%; float: left; height: 100%; font-size: 13px; margin-top: 20px}
 .home #footer {display: none}
 
 #menu {margin-left: 35%; margin-top: 50px}
@@ -121,7 +125,7 @@ a {text-decoration: none;}
 #content .media div {float: right;}
 
 #content .media .media_line {display: block; float: none; border-top: 1px solid #ddd}
-#content .media .media_line a {color: #145B7A; font-align: left}
+#content .media .media_line a {color: #145B7A; text-align: left}
 
 .media-display-type div {margin-right: 15px; float: right;}
 .media-display-type .grid {background: url(/images/grid-off.png); width: 36px; height: 36px; cursor: pointer}
@@ -139,7 +143,7 @@ a {text-decoration: none;}
 .media_box .date {font-size: 10px }
 .media_box .format_type {padding: 6px; font-size: 12px}
 .media_box .origin {font-size: 10px; color: #aaa; padding-right: 10px }
-.media_box .license {color: #b96c;}
+.media_box .license {color: #b96}
 .media_box a {color: #2E7E36}
 .media_box a:hover {color: #005500}
 
@@ -153,7 +157,7 @@ a {text-decoration: none;}
 #result-string ul { list-style-type: none; width: 60%; margin-left: 40px; }
 #result-string ul li {width: 100px; display: inline}
 #result-string ul li a {font-size: 18px; color: #fff; font-weight: bold}
-#result-string .back-to-results {color: #19729}
+#result-string .back-to-results {color: #197290}
 .search-links {font-size: 16px; font-weight: bold; color: #fff}
 .trash-term {display: none; background: url("/images/trash.png") no-repeat;  padding: 8px; padding-top: 4px;}
 #terms-navigation li.search-term:hover .trash-term {display: inline; cursor: pointer}
@@ -219,7 +223,7 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
  * mocambola && mucua
  */
 #mocambola-home #mocambola-profile h3,
-#mucua-home #mucua-profile h3 {color: #145B7A; font-size 18px; float: left; padding-left: 8px}
+#mucua-home #mucua-profile h3 {color: #145B7A; font-size: 18px; float: left; padding-left: 8px}
 #mocambola-home #mocambola-profile img,
 #mucua-home #mucua-profile img {float: left; width: 45px; height: 45px}
 #mocambola-home .actions {clear: both}
