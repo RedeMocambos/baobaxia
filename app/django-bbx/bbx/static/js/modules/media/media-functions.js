@@ -22,9 +22,10 @@ define([
     'text!templates/media/MediaRelated.html',
     'text!templates/media/MediaResults.html',
     'text!templates/media/MediaGrid.html',
+    'text!templates/media/MediaList.html',
     'text!templates/common/ResultsMessage.html',
     'text!templates/common/SearchTagsMenu.html'
-], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, ResultsMessageTpl, SearchTagsMenuTpl){
+], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, ResultsMessageTpl, SearchTagsMenuTpl){
     var init = function() {
 	this.functions = {};
 	this.functions.BBXBaseFunctions = BBXBaseFunctions;
@@ -102,6 +103,21 @@ define([
 	$('#caixa_busca').focus();
 	// manda foco para campo de busca
     }
+
+    var showByList = function(target = '') {
+	var target = target || '';
+	var data = $('body').data('bbx').data;
+	$('#media-results .media').html(_.template(MediaListTpl, data));
+	$('.media-display-type .grid').css("background", "url(/images/grid-off.png)");
+	$('.media-display-type .list').css("background", "url(/images/list-on.png)");
+    }
+
+    var showByGrid = function() {
+	data = $('body').data('bbx').data;
+	$('#media-results .media').html(_.template(MediaGridTpl, data));
+	$('.media-display-type .grid').css("background", "url(/images/grid-on.png)");
+	$('.media-display-type .list').css("background", "url(/images/list-off.png)");
+    }
     
     var getMediaTypes = function() {
 	return {
@@ -159,6 +175,7 @@ define([
 	getMedia(url, function(data){
 	    $(el).append(_.template(MediaDestaquesMucuaTpl));
 	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
+	    $('body').data('bbx').data = data;
 	    $('#destaques-mucua .media').html(_.template(MediaGridTpl, data));
 	});
     };
@@ -181,6 +198,7 @@ define([
 	getMedia(url, function(data){
 	    $('#content').append(_.template(MediaRelatedTpl));
 	    data.message = 'Nenhuma media relacionada encontrada.';
+	    $('body').data('bbx').data = data;
 	    $('#media-related .media').html(_.template(MediaGridTpl, data));
 	});
     };
@@ -198,6 +216,8 @@ define([
 	getMedia(url, function(data){
 	    $('#content').append(_.template(MediaMocambolaTpl));
 	    data.message = 'Mocambola ainda nao publicou nenhum conteudo.';
+	    $('body').data('bbx').data = data;
+	    console.log(data);
 	    $('#media-mocambola .media').html(_.template(MediaGridTpl, data));
 	});
     };
@@ -219,11 +239,14 @@ define([
 		messageString = "Nenhum resultado";
 	    }	    
 	    __parseMenuSearch(terms);
-	    
 	    $('#imagem-busca').attr('src', config.imagePath + '/buscar.png');
 	    $('#content').html(_.template(MediaResultsTpl));
 	    data.message = 'Nenhuma media encontrada para essa busca';
-	    $('#media-results .media').html(_.template(MediaGridTpl, data));	    
+	    $('body').data('bbx').data = data;
+	    showByGrid('#media-results .media');
+	    //$('#media-results .media').html(_.template(MediaGridTpl, data));	    
+	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
+	    $('.media-display-type .list').on('click', function(){ showByList()});	    
 	});	
     };
     
@@ -266,6 +289,8 @@ define([
 	__getConfig: __getConfig,
 	addTagMenuSearch: addTagMenuSearch,
 	deleteTagMenuSearch: deleteTagMenuSearch,
+	showByGrid: showByGrid,
+	showByList: showByList,
 	doSearch: doSearch,
 	getMedia: getMedia,
 	getMediaByMucua: getMediaByMucua,
