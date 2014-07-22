@@ -60,6 +60,8 @@ define([
 	    var repository = repository || '',
 	    mucua = mucua || '';	    
 	    if (!BBXBaseFunctions.isLogged()) {
+		// undelegate elements // TODO: achar uma solucao mais elegante
+		$('body').off();
 		var loginView = new LoginView();
 		loginView.render();
 	    } else {
