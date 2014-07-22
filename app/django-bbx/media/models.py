@@ -45,20 +45,24 @@ def get_file_path(instance):
     if instance.date == '':
         t = datetime.now
         date = t.strftime("%y/%m/%d/")
-    else:
-        date = instance.date.strftime("%y/%m/%d/")
+    else:        
+        date = datetime(year = int(instance.date[:4]),
+                        month = int(instance.date[5:7]),
+                        day = int(instance.date[8:10]))
+        """        date = datetime(instance.date)"""
+        date = date.strftime("%y/%m/%d/")
 
     return os.path.join(REPOSITORY_DIR, instance.get_repository(),
                         instance.get_mucua(), instance.get_type(),
                         date)
 
 
-def get_type_choices():
+def getTypeChoices():
     """Retorna uma tupla com os tipos de media suportados"""
     return TYPE_CHOICES
 
 
-def get_format_choices():
+def getFormatChoices():
     """Retorna uma tupla com os tipos de arquivo suportado"""
     return FORMAT_CHOICES
 
@@ -81,7 +85,7 @@ class Media(models.Model):
     repository: relação com objeto repository
     tags: etiquetas do media
     is_local:  sinaliza que tem uma copia local do media
-    is_requestes: sinaliza que foi solicitada uma copia local 
+    is_requested: sinaliza que foi solicitada uma copia local 
                   do media
     request_code: identifica o pedido de copia local
     num_copies: numero de copias desse media no bbx
@@ -104,12 +108,12 @@ class Media(models.Model):
     type = models.CharField(
         _('type'),
         help_text=_('Type of the media, like image, document, video, ...'),
-        max_length=14, choices=lazy(get_type_choices, tuple)(),
+        max_length=14, choices=lazy(getTypeChoices, tuple)(),
         default='arquivo', blank=True)
     format = models.CharField(
         _('format'),
         help_text=('Format of the media, like ogg, jpg, pdf, ...'),
-        max_length=14, choices=lazy(get_format_choices, tuple)(),
+        max_length=14, choices=lazy(getFormatChoices, tuple)(),
         default='ogg', blank=True)
     license = models.CharField(
         _('license'),

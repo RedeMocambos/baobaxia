@@ -1,6 +1,7 @@
 {
-    "imagePath": "",
+    "imagePath": "/images",
     "apiUrl": "/api",
-    "interfaceUrl": "/baobaxia/#",
-    "defaultMucua": ""
+    "interfaceUrl": "/#",
+    "MYMUCUA": "bbxnamaste",
+    "MYREPOSITORY": "mocambos"
 }

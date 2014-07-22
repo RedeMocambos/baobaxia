@@ -1,0 +1,27 @@
+<% _.each(medias, function(media) { %>
+<div class="media_box <%= media.type %> <% _.each(media.tags, function(tagName) { %><%= tagName %> <% }); %>">
+  <div class="result-thumb">
+    <span class="type"><%= media.type %></span>
+    <div class="assist"></div>
+    <img src="images/" />
+  </div>
+  <span class="title">
+    <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+      <%= media.name %>
+    </a>
+  </span>
+  <br/>
+  <div style="float: left;">
+    <span class="format_type"><%= media.format %></span><br/>
+    <span class="origin"><%= media.origin %></span>
+  </div>
+  <div style="float: left;">
+    <span class="date"><%= formatDate(media.date) %></span><br/>
+    <span class="license"><%= media.license %></span>
+
+  </div>
+</div>
+<% }) %>
+<% if (_.isEmpty(medias)) { %>
+<h4 class="message"><%= message %></h4>
+<% } %>

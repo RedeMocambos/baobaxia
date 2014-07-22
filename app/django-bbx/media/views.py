@@ -15,7 +15,7 @@ from django.template import Template, RequestContext
 from media.models import Media, generate_UUID
 from tag.models import Tag
 from media.serializers import MediaSerializer
-from media.models import get_type_choices, get_format_choices
+from media.models import getTypeChoices, getFormatChoices
 from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
 from mucua.models import Mucua
 from repository.models import Repository
@@ -60,8 +60,8 @@ def media_list(request, repository, mucua, args=None, format=None):
                                         '/' + mucua.description +
                                         '/bbx/search/')
 
-        # TODO LOW: futuramente, otimizar query de busca - elaborar query
-
+        # TODO LOW: futuramente, otimizar query de busca - elaborar quer
+        
         # listagem de conteudo filtrando por repositorio e mucua
         if mucua == 'rede':
             medias = Media.objects.filter(
@@ -73,7 +73,7 @@ def media_list(request, repository, mucua, args=None, format=None):
             ).filter(origin=mucua.id)
         # sanitizacao -> remove '/' do final
         args = args.rstrip('/')
-
+        
         # pega args da url se tiver
         if args:
             for arg in args.split('/'):
@@ -89,8 +89,10 @@ def media_list(request, repository, mucua, args=None, format=None):
                 else:
                     medias = medias.filter(
                         Q(tags__name__icontains=arg) |
-                        Q(name__icontains=arg) | Q(note__icontains=arg))
-
+                        Q(name__icontains=arg) | 
+                        Q(note__icontains=arg)
+                        ).distinct()
+        
         # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
         return Response(serializer.data)
@@ -209,8 +211,8 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                       license=request.DATA['license'],
                       date=(request.DATA['date'] if request.DATA['date'] !=
                             '' else datetime.now()),
-                      mediafile=request.FILES['mediafile'],
-                      uuid=generateUUID()
+                      media_file=request.FILES['media_file'],
+                      uuid=generate_UUID()
                       )
 
         # Linha curl mista para testar upload E mandar data
@@ -275,15 +277,49 @@ def media_last(request, repository, mucua, qtd=5):
 
 
 @api_view(['GET'])
-def show_image(request, uuid, width, height, format_type):
+def media_by_mocambola(request, repository, mucua, username, qtd=5):
+    if mucua != 'all':
+        try:
+            mucua = Mucua.objects.get(description=mucua)
+        except Mucua.DoesNotExist:
+            mucua = Mucua.objects.get(description=DEFAULT_MUCUA)
+            redirect_page = True        
+    
+    try:
+        repository = Repository.objects.get(name=repository)
+    except Repository.DoesNotExist:
+        repository = Repository.objects.get(name=DEFAULT_REPOSITORY)
+    
+    try:
+        author = User.objects.get(username=username)
+    except User.DoesNotExist:
+        print 'user not exists'
+    
+    if mucua != 'all':
+        medias = Media.objects.filter(
+            repository=repository.id
+            ).filter(origin=mucua.id).filter(
+            author = author.id).order_by('-date')[:qtd]
+    else:
+        medias = Media.objects.filter(
+            repository=repository.id
+            ).filter(author = author.id).order_by('-date')[:qtd]
 
+    # serializa e da saida
+    serializer = MediaSerializer(medias, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def show_image(request, repository, mucua, uuid, width, height, format_type):
+    
     try:
         media = Media.objects.get(uuid=uuid)
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    print media.mediafile
-    image = get_thumbnail(media.mediafile, str(width) + 'x' + str(height),
+    print media.media_file
+    image = get_thumbnail(media.media_file, str(width) + 'x' + str(height),
                           crop='center', quality=99)
 
     print path.join(image.url)

@@ -5,16 +5,14 @@ define([
     'modules/bbx/base-functions',
     'modules/media/model', 
     'modules/media/collection',
-    'modules/media/MediaView',
-    'modules/media/MediaLast',
-    'modules/media/MediaPublish',
-    'modules/media/MediaUpdate'
-], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MediaModel, MediaCollection, MediaView, MediaLast, MediaPublish, MediaUpdate){
+    'views/media/MediaView', 
+    'views/media/MediaPublish',
+    'views/media/MediaUpdate',
+], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MediaModel, MediaCollection, MediaViewView, MediaPublishView, MediaUpdateView){
     var Router = Backbone.SubRoute.extend({
 	routes: {
-	    // media
 	    '': 'publish',
-	    'last/:qtd': 'last',
+	    '*': 'publish',
 	    ':uuid': 'view',
 	    ':uuid/edit': 'update'
 	},
@@ -22,54 +20,49 @@ define([
 	initialize: function() {
 	    console.log("module Media loaded");
 	},
-	_getRepository: function() {
+
+	__getRepository: function() {
 	    return this.prefix.split('/')[0];
 	},
-	_getMucua: function() {
+	__getMucua: function() {
 	    return this.prefix.split('/')[1];
 	},
 
-	publish: function() {
-	    repository = $('body').data('data').repository;
-	    mucua = $('body').data('data').mucua;
-	    console.log("adicionar media");
-	    console.log("/" + repository + "/" + mucua + "/media");
-	    
-	    BBXBaseFunctions.renderCommon(repository, mucua);
-	    var mediaPublish = new MediaPublish();
-	    mediaPublish.render();
-	},
-	
-	update: function(uuid) {
-	    repository = $('body').data('data').repository;
-	    mucua = $('body').data('data').mucua;
-	    console.log("update media");
-	    console.log("/" + repository + "/" + mucua + "/media/" + uuid + "/edit");
-	    
-	    BBXBaseFunctions.renderCommon(repository, mucua);
-	    var mediaUpdate = new MediaUpdate();
-	    mediaUpdate.render(uuid);
-	},
-	
-	last: function(qdt) {
-	    console.log("baixa ultimas medias");
-	    repository = $("body").data("data").repository;
-	    mucua = $("body").data("data").mucua;
-	    BBXBaseFunctions.renderCommon(repository, mucua);
-	    
-	    var mediaLast = new MediaLast();
-	    mediaLast.render(uuid);
-	},
-	
 	view: function(uuid) {
-	    console.log("visualiza media");
-	    repository = this._getRepository();
-	    mucua = this._getMucua();
-	    BBXBaseFunctions.renderCommon(repository, mucua);
+	    console.log("media view");
 	    
-	    var mediaView = new MediaView();
-	    mediaView.render(uuid);
-	},    
+	    var repository = this.__getRepository(),
+	    mucua = this.__getMucua();
+	    
+	    BBXBaseFunctions.setNavigationVars(repository, mucua, uuid);
+	    BBXBaseFunctions.renderCommon('media');
+	    var mediaViewView = new MediaViewView();
+	    mediaViewView.render(uuid);
+	},
+	
+	publish: function() {
+	    console.log("media publish");
+	    
+	    var repository = this.__getRepository(),
+	    mucua = this.__getMucua();
+	    
+	    BBXBaseFunctions.renderCommon(repository, mucua);
+	    BBXBaseFunctions.setNavigationVars(repository, mucua);
+	    BBXBaseFunctions.renderCommon('media');
+	    var mediaPublishView = new MediaPublishView();
+	    mediaPublishView.render();
+	},
+
+	update: function(uuid) {
+	    console.log("media edit/update");
+	    
+	    var repository = this.__getRepository(),
+	    mucua = this.__getMucua();
+	    BBXBaseFunctions.renderCommon('media');	    
+	    var mediaUpdateView = new MediaUpdateView();
+	    mediaUpdateView.render(uuid);	
+	},
+
     });
     
     return Router;

@@ -1,25 +1,7 @@
-<div id="media-results-content">
-<h3 class="results-title"></h3>
-<h4 class="breadcrumb"></h4>
-<div id="medias">
-  <% _.each(medias, function(media){ %>
-  <div class="media_box <%= media.get("type") %> <% _.each(media.get("tags"), function(tagName) { %><%= tagName %> <% }); %>">
-    <div class="result-thumb"><div class="assist"></div><img src="images/" /></div>
-    <span class="origin"><%= media.get("origin") %></span>
-    <a href="#<%= media.get("repository") %>/<%= media.get("origin") %>/media/<%= media.get("uuid") %>">
-      <span class="title"><%= media.get("name") %></span>
-    </a>
-    <br/>
-    <span class="date"><%= media.get("date") %></span>
-    <span class="format_type"><%= media.get("format") %></span>
-    <div class="license-<%= media.get("license") %>"></div>
-<!--    <% _.each(media.get("tags"), function(tagName) { %>
-    <a href="#"><%= tagName %></a>&nbsp;
-    <% }); %> -->
+<div id="media-results" class="results">
+  <div class="media-display-type">
+    <div class="grid"></div>
+    <div class="list"></div>
   </div>
-  <% }); %>
-  <% if (_.isEmpty(medias)) { %>
-  <h4 class="message"><%= emptyMessage %></h4>
-  <% } %>
-</div>
+  <div class="media"></div>
 </div>

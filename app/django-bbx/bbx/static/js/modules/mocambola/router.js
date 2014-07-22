@@ -3,36 +3,24 @@ define([
     'backbone',
     'backbone_subroute',
     'modules/bbx/base-functions',
-    'modules/mocambola/model', 
-    'modules/mocambola/MocambolaView',
-], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MocambolaModel, MocambolaView){
+    'modules/mocambola/model',
+    'views/mocambola/HomeMocambola',
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, MocambolaModel, HomeMocambola){
     var Router = Backbone.SubRoute.extend({
 	routes: {
-	    // mucua
-	    'list': 'list',
-	    ':mocambola': 'view',
-	},
-	
-	_getRepository: function() {
-	    return this.prefix.split('/')[0];
-	},
-	
-	_getMucua: function() {
-	    return this.prefix.split('/')[1];
+	    ':username' : 'homeMocambola',
 	},
 
-	list: function() {
+	initialize: function() {
+	    console.log("module mocambola loaded");
 	},
 	
-	view: function(mocambola) {
-	    console.log('get dados do mocambola ' + mocambola);
+	homeMocambola: function(username) {	    
+	    console.log("home mocambola");
+	    BBXBaseFunctions.renderCommon('mocambola');
 	    
-	    repository = this._getRepository();
-	    mucua = this._getMucua();
-	    BBXBaseFunctions.renderCommon(repository, mucua);
-	    
-	    var mocambolaView = new MocambolaView();
-	    mocambolaView.render(mocambola);
+	    var homeMocambola = new HomeMocambola(); 
+	    homeMocambola.render(username);
 	}
     });
     

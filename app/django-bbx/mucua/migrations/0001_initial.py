@@ -90,7 +90,7 @@ class Migration(SchemaMigration):
         },
         u'repository.repository': {
             'Meta': {'ordering': "('name',)", 'object_name': 'Repository'},
-            'enableSync': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'enable_sync': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
             'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'})

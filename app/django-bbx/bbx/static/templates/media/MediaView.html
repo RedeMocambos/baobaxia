@@ -1,25 +1,69 @@
 <div id="media-view">
-  <div class="bloco-1">
-    <p class="title"><%= media.get("name") %></p>
-    <p class="tags">
-      <% _.each(media.get("tags"), function(tagName) { %>
-      <a href="<% print(baseurl + '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
-      <% }); %>
-    </p>
-    <a id="mediafile-original" href='file:<%= media.get('mediafile') %>'><%= media.get('mediafile') %></a>
-    <p class=""><%= media.get("description") %></p>
-    <p class="uuid">UUID<%= media.get("uuid") %></p>
+  <div class="title content-div">
+      <p class="title-bold"><%= media.name %></p>
   </div>
-  <div class="bloco-2">
-    <p class="autor"><span class="title">Autoria</span>: <a href='<% print(baseurl + '/mocambola/' + media.get("author")) %>'><%= media.get("author") %></a></p>
-    <p class="date"><span class="title">Data:</span> <%= media.get("date") %></p>
-    <p class="origin"><span class="title">Origem:</span> <%= media.get("origin") %></p>
-    <p class="format"><span class="title">Formato:</span> <%= media.get("format") %></p>
-    <p class="license"><span class="title">Licença:</span>
-    <div class="license-<%= media.get("license") %>"></div></p>
-    <p class="quem-tem"><span class="title">Quem tem esse arquivo?: </span></p>
-    <br/>
-  </div>
-  <a href="<%= urlMediaView %>/edit">editar</a>
-</div>
 
+  <div class="block-2 content-div">
+    <% if (config.userData.username) { %>
+    <div class="link-edit"><a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">Editar</a></div>
+    <% } %>
+    <div class="block-title">
+      <p>Por</p>
+      <p>Data</p>
+      <p>Mucua</p>
+      <p>Formato</p>
+      <p>Tamanho</p>
+      <p>Licença</p>
+    </div>
+    <div class="block-fields">
+      <p><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>"><%= media.author.substring(0, 17) + '...' %></a></p>
+      <p><%= formatDate(media.date) %></p>
+      <p><a href="<% print('#' + media.repository + '/' + media.origin) %>"><%= media.origin %></a></p>
+      <p><%= media.format %></p>
+      <p>0GB</p>
+      <p><div class="license-image license-<%= media.license %>"></div></p>      
+    </div>
+    <div class="blocks">
+      <p class="tags">
+	<% _.each(media.tags, function(tagName) { %>
+	<a href="<% print('#' + media.repository + '/' + media.origin +  '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
+	<% }); %>
+      </p>      
+    </div>
+    <div class="blocks">
+      <p class="text"><%= media.note %></p>
+    </div>
+    <div class="blocks">
+      <p class="quem-tem">
+	<span class="title-bold">quem tem esse arquivo?: </span>
+      </p>
+    </div>
+  </div>
+  
+  <div class="block-1 content-div">   
+    <div class="media-image">
+      <% if (media.type == 'image') { %>
+      <img src="<%= media.media_file.replace('/data/bbx/', 'images/') %>" />
+<% } else { %>
+      <img src="images/imagem-exemplo.png" />
+      <% } %>
+    </div>    
+    <% if (!media.is_local) { %>
+    <div class="blocks">
+      <p class="solicit-copy">
+	<span class="title-bold">solicitar cópia local</span>
+	<span class="image"></span>
+      </p>
+    </div>   
+    <% } else { %>
+    <p class="">
+      Conteúdo local
+    </p>
+    <% } %>
+    <p class="uuid">UUID<%= media.uuid %></p>
+  </div>
+  
+
+
+</div>
+<!-- <a href="edit">editar</a>-->
