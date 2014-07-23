@@ -46,12 +46,15 @@ def get_file_path(instance):
         t = datetime.now
         date = t.strftime("%y/%m/%d/")
     else:        
-        date = datetime(year = int(instance.date[:4]),
-                        month = int(instance.date[5:7]),
-                        day = int(instance.date[8:10]))
-        """        date = datetime(instance.date)"""
-        date = date.strftime("%y/%m/%d/")
-
+        if isinstance(instance.date, unicode):
+            date = datetime(year = int(instance.date[:4]),
+                            month = int(instance.date[5:7]),
+                            day = int(instance.date[8:10]))
+            date = date.strftime("%y/%m/%d/")
+            """        date = datetime(instance.date)"""
+        else:
+            date = instance.date.strftime("%y/%m/%d/")
+    
     return os.path.join(REPOSITORY_DIR, instance.get_repository(),
                         instance.get_mucua(), instance.get_type(),
                         date)
