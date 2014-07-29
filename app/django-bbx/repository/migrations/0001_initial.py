@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+from south.utils import datetime_utils as datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
@@ -13,7 +13,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=60)),
             ('note', self.gf('django.db.models.fields.TextField')(max_length=300, blank=True)),
-            ('enable_sync', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('enable_sync', self.gf('django.db.models.fields.BooleanField')()),
         ))
         db.send_create_signal(u'repository', ['Repository'])
 
@@ -26,7 +26,7 @@ class Migration(SchemaMigration):
     models = {
         u'repository.repository': {
             'Meta': {'ordering': "('name',)", 'object_name': 'Repository'},
-            'enable_sync': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'enable_sync': ('django.db.models.fields.BooleanField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
             'note': ('django.db.models.fields.TextField', [], {'max_length': '300', 'blank': 'True'})

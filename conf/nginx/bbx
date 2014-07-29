@@ -20,7 +20,7 @@ server {
 		}	
 
        location /media/ {
-       		alias /data/_domain_/media/;
+       		alias /data/_domain_/repositories/;
        		}	
  
        location /api/ {

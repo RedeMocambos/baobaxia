@@ -42,6 +42,9 @@ def generate_UUID():
 
 def get_file_path(instance):
     """Retorna o caminho do media"""
+    return os.path.join(REPOSITORY_DIR, get_media_path(instance))
+
+def get_media_path(instance):
     if instance.date == '':
         t = datetime.now
         date = t.strftime("%y/%m/%d/")
@@ -55,10 +58,8 @@ def get_file_path(instance):
         else:
             date = instance.date.strftime("%y/%m/%d/")
     
-    return os.path.join(REPOSITORY_DIR, instance.get_repository(),
-                        instance.get_mucua(), instance.get_type(),
-                        date)
-
+    return os.path.join(instance.get_repository(), instance.get_mucua(), 
+                        instance.get_type(), date)
 
 def getTypeChoices():
     """Retorna uma tupla com os tipos de media suportados"""
@@ -147,6 +148,9 @@ class Media(models.Model):
 
     def get_name(self):
         return self.name
+
+    def get_url(self):
+        return '/media/' + get_media_path(self) + self.get_file_name()
 
     def get_file_name(self):
         return (slugify(self.get_name()) + '-' + str(self.uuid[:5]) + '.' +

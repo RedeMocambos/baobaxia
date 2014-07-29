@@ -324,3 +324,14 @@ def show_image(request, repository, mucua, uuid, width, height, format_type):
 
     print path.join(image.url)
     return Response(True)
+
+
+@api_view(['GET'])
+def media_url(request, repository, mucua, uuid):
+    
+    try:
+        media = Media.objects.get(uuid=uuid)
+    except Media.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    return Response(media.get_url())
