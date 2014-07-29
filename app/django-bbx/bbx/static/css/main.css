@@ -162,6 +162,8 @@ a {text-decoration: none;}
 .media-box .license {color: #b96}
 .media-box a {color: #2E7E36}
 .media-box a:hover {color: #005500}
+.media-box .image {float: left}
+.media-box .image img {width: 192px; height: 130px; }
 
 /*
  * busca

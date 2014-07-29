@@ -51,7 +51,7 @@ define([
 	    
 	    var updateMedia = function(media) {
 		var config = $("body").data("bbx").config,
-		url = config.interfaceUrl + config.repository + "/" + config.origin + "/media/" + media.uuid + '/edit';
+		url = config.interfaceUrl + config.repository + "/" + config.mucua + "/media/" + media.uuid + '/edit';
 		document.location.href = url;
 	    }
 
