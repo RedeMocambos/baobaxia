@@ -10,9 +10,8 @@
       <video controls src="<%= media.url %>" />
       <% } else if (media.type == 'audio') { %>
       <audio controls src="<%= media.url %>" />
-      <% } else { %>
-      <%= media.type %>
-      <img src="images/imagem-exemplo.png" />
+      <% } else if (media.type ='arquivo') { %>
+      <a href="<%= media.url %> ">download</a>
       <% } %>
       <% } %>
     </div>
