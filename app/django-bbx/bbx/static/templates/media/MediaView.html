@@ -44,7 +44,12 @@
     <div class="media-image">
       <% if (media.type == 'imagem') { %>
       <img src="<%= media.url %>" />
-<% } else { %>
+      <% } else if (media.type == 'video') { %>
+      <video controls src="<%= media.url %>" />
+      <% } else if (media.type == 'audio') { %>
+      <audio controls src="<%= media.url %>" />
+      <% } else { %>
+<%= media.type %>
       <img src="images/imagem-exemplo.png" />
       <% } %>
     </div>    

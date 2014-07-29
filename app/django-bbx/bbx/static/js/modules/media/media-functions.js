@@ -136,8 +136,12 @@ define([
     var getTypeByMime = function(mime) {	
 	var valid_mimetypes = {
 	    'audio/ogg': 'audio',
+	    'audio/mpeg': 'audio',
 	    'image/jpeg': 'imagem',
 	    'video/ogg': 'video',
+	    'video/ogv': 'video',
+	    'video/avi': 'video',
+	    'video/mp4': 'video',
 	    'application/pdf': 'arquivo'
 	},
 	type = 'arquivo';

@@ -163,7 +163,7 @@ a {text-decoration: none;}
 .media-box a {color: #2E7E36}
 .media-box a:hover {color: #005500}
 .media-box .image {float: left}
-.media-box .image img {width: 192px; height: 130px; }
+.media-box .image img {width: 192px; height: 130px;} 
 
 /*
  * busca
@@ -215,7 +215,8 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 
 #media-view p {color: #fff; font-size: 17px}
 #media-view .media-image { border-radius: 8px; background-color: #f4efdd; padding: 10px; margin-right: 10px; width: 400px}
-#media-view .media-image img {background-color: #ccc; width: 400px; height: 300px}
+#media-view .media-image img,
+#media-view .media-image video {background-color: #000; width: 400px; height: 300px}
 
 #media-view a {color: #fff}
 #media-view .solicit-copy .image {background-image: url('/images/solicitar.png'); width: 17px; height: 15px; display: inline-block; }
