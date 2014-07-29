@@ -132,6 +132,22 @@ define([
 	    'arquivo': 'arquivo'
 	}
     };
+
+    var getTypeByMime = function(mime) {	
+	var valid_mimetypes = {
+	    'audio/ogg': 'audio',
+	    'image/jpeg': 'imagem',
+	    'video/ogg': 'video',
+	    'application/pdf': 'arquivo'
+	},
+	type = 'arquivo';
+	
+	if (valid_mimetypes.hasOwnProperty(mime)) {
+	    type = valid_mimetypes[mime];
+	}
+	
+	return type;
+    };
     
     var getMediaLicenses = function() {
 	return {
@@ -303,6 +319,7 @@ define([
 	getMediaSearch: getMediaSearch,
 	getMediaRelated: getMediaRelated,
 	getMediaTypes: getMediaTypes,
-	getMediaLicenses: getMediaLicenses
+	getMediaLicenses: getMediaLicenses,
+	getTypeByMime: getTypeByMime
     }
 });

@@ -122,6 +122,13 @@ define([
 	    $('#submit').on('click', function() {
 		$('#form_media_publish').submit();
 	    });
+	    $('#media_file').on('change', function(el) {
+		var mime = document.getElementById('media_file').files[0].type,
+		type = MediaFunctions.getTypeByMime(mime),
+		format = mime.split('/')[1];
+		$('#format').attr('value', format);
+		$('#type').val(type);
+	    });
 	},
     });
     
