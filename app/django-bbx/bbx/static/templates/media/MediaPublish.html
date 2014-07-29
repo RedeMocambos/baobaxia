@@ -10,11 +10,11 @@
 	<p class="name"><span class="title">Título:</span><br/>
 	  <input type="text" name="name" id="name" value="<%= media.name %>"></p>
 	<p class="tags"><span class="title">Tags:</span> <br/>
-	  <input type="text" name="tags" id="tags" value="<% _.each(media.tags, function(tagName) { %><%= tagName %><% }); %>">
+	  <input type="text" name="tags" id="tags" value="<% _.each(media.tags, function(tagName) { %><%= tagName %>,<% }); %>">
 	</p>
 	
 	<p class="type"><span class="title">Tipo de arquivo</span><br/>
-	  <select name="type" id="type">
+	  <select name="type" id="type" <% if (page == 'MediaUpdate') { %>disabled<% } %>>
 	    <% _.each(types, function(value, key) { %>
 	    <option value="<%= key %>" <% if (media.type == key) { %>selected<% } %>><%= value %></option>
 	    <% }) %>

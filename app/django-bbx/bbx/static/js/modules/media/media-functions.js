@@ -107,14 +107,18 @@ define([
     var showByList = function(target = '') {
 	var target = target || '';
 	var data = $('body').data('bbx').data;
+	// TODO: adicionar ao cookie como prefencia
 	$('#media-results .media').html(_.template(MediaListTpl, data));
+	$('#media-results .media').remove('media-grid').addClass('media-list');
 	$('.media-display-type .grid').css("background", "url(/images/grid-off.png)");
 	$('.media-display-type .list').css("background", "url(/images/list-on.png)");
     }
 
     var showByGrid = function() {
-	data = $('body').data('bbx').data;
+	var data = $('body').data('bbx').data;
+	// TODO: adicionar ao cookie como prefencia
 	$('#media-results .media').html(_.template(MediaGridTpl, data));
+	$('#media-results .media').remove('media-list').addClass('media-grid');
 	$('.media-display-type .grid').css("background", "url(/images/grid-on.png)");
 	$('.media-display-type .list').css("background", "url(/images/list-off.png)");
     }

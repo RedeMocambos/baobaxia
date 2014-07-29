@@ -11,16 +11,17 @@ html, body, #container {height: 100%; }
 #container {margin: 0 auto; }
 #content {
     float: left;
-    width: 60%;
-    min-width: 670px;
+    width: 70%;
     padding-top: 2px;
+    margin-right: 5px;
 }
 #sidebar {
     float: left;
-    width: 22%;
+    width: 20%;
     height: 100%;
-    max-width: 330px !important;
-    margin-right: 1%; 
+    max-width: 300px !important;
+    margin-right: 2px; 
+    min-width: 200px;
     padding: 10px;    
     background-color: #fff; 
 }
@@ -36,7 +37,7 @@ a {text-decoration: none;}
  * header
  */
 #header {width: 100%; height: 180px; background-color: #fff }
-#header-top {background: #fff url('../images/cabecalho.png') no-repeat fixed center top; height: 106px; width: 1024px; margin: 0 auto }
+#header-top {background: #fff url('../images/cabecalho.png') no-repeat fixed center top; margin: 0 auto }
 #header-top img { margin-top: 25px; margin-left: 70px}
 .posicoes {display: none}
 .home #header,
@@ -50,11 +51,11 @@ a {text-decoration: none;}
 .home #content-top,
 .login #content-top { height: 100%; background: url("../images/home-login-content.png") no-repeat scroll 0 0; padding:0; margin-top: 0}
 .home #content .left {width:35%; float: left; height: 100%; }
-.home #content .middle {width:15%; float: left; height: 100%; margin-top: 20px}
+.home #content .middle {width:150px; float: left; height: 100%; margin-top: 20px}
 .home #content .right {width:50%; float: left; height: 100%; font-size: 13px; margin-top: 20px}
 .home #footer {display: none}
 
-#menu {margin-left: 35%; margin-top: 50px}
+#menu {margin-left: 35%; margin-top: -20px}
 .menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
 .menu-itens li a {color: #fff; text-decoration: none; }
 .menu-itens .current {background-color: #145B7A}
@@ -80,7 +81,7 @@ a {text-decoration: none;}
 .mocambola #content,
 .mucua #content,
 .media #content,
-.rede #content { margin-bottom: 40px; margin-top: 60px}
+.rede #content { margin-bottom: 40px; margin-top: 60px; margin-left: 10px}
 
 .content-div {width: 80%; max-width: 700px; min-width: 650px; float: right}
 
@@ -103,9 +104,9 @@ a {text-decoration: none;}
 
 #user-profile {height: 50px}
 #sidebar #user-profile img {float: left; width: 45px; height: 45px}
-#sidebar #user-profile h4 {font-size: 14px; float: left; text-decoration: none; color: #D5C590 !important; margin: 0 auto; padding-top: 12px; padding-left: 8px}
-#sidebar #link-login a {color: #D5C590; font-size: 15px; font-weight: bold}
-#user-profile a.logout {font-size:11px; color:#D5C590; float: right}
+#sidebar #user-profile h4 {font-size: 12px; float: left; text-decoration: none; color: #D5C590 !important; margin: 0 auto; padding-top: 12px; padding-left: 8px}
+#sidebar #link-login a {color: #D5C590; font-size: 12px; font-weight: bold}
+#user-profile a.logout {font-size:11px; color:#D5C590; float: right; background-image: url(/images/logout.png); width: 37px; height: 18px}
 
 #place-profile {padding-top: 5px; text-align: center; color: #aac0ca }
 #place-profile a {text-decoration: none}
@@ -124,28 +125,43 @@ a {text-decoration: none;}
 #content .media {clear: both}
 #content .media div {float: right;}
 
-#content .media .media_line {display: block; float: none; border-top: 1px solid #ddd}
-#content .media .media_line a {color: #145B7A; text-align: left}
-
 .media-display-type div {margin-right: 15px; float: right;}
-.media-display-type .grid {background: url(/images/grid-off.png); width: 36px; height: 36px; cursor: pointer}
-.media-display-type .list {background: url(/images/list-off.png); width: 36px; height: 36px; cursor: pointer}
+.media-display-type .grid {background: url(/images/grid-off.png); width: 17px; height: 17px; cursor: pointer}
+.media-display-type .list {background: url(/images/list-off.png); width: 17px; height: 17px; cursor: pointer}
 .media-display-type .grid:hover {background: url(/images/grid-on.png)}
 .media-display-type .list:hover {background: url(/images/list-on.png)}
+.icon-imagem {background: url(/images/icon-image.png) no-repeat}
+.icon-arquivo {background: url(/images/icon-file.png) no-repeat}
+.icon-video {background: url(/images/icon-video.png) no-repeat}
+.icon-audio {background: url(/images/icon-audio.png) no-repeat}
+
+/*
+ * media list
+ */
+#media-results div.media-list {padding-top: 30px}
+#content .media-list table {width: 100%}
+#content .media-list td.title {width: 35%}
+#content .media-list tbody td.origin,
+#content .media-list tbody td.format_type,
+#content .media-list tbody td.date,
+#content .media-list tbody td.format,
+#content .media-list tbody td.license {width: 13%; font-size: 12px}
+#content .media .media-line a {color: #145B7A; text-align: left}
+.media-line td .icon-type {width: 21px; height: 21px; float: none !important}
 
 /*
  * media grid
   */
-.media_box {width: 192px; height: 175px; background: #f4efdd; margin: 5px; font-size: 12px; border-radius: 5px; padding: 10px; text-align: center}
-.media_box .result-thumb {width: 192px; height: 130px; background: #aa6}
-.media_box .title {font-size: 12px }
-.media_box .format_type { color: #aaa; text-transform: uppercase }
-.media_box .date {font-size: 10px }
-.media_box .format_type {padding: 6px; font-size: 12px}
-.media_box .origin {font-size: 10px; color: #aaa; padding-right: 10px }
-.media_box .license {color: #b96}
-.media_box a {color: #2E7E36}
-.media_box a:hover {color: #005500}
+.media-box {width: 192px; height: 175px; background: #f4efdd; margin: 3px; font-size: 11px; border-radius: 5px; padding: 6px; text-align: center}
+.media-box .result-thumb {width: 192px; height: 130px; background: #aa6}
+.media-box .title {font-size: 11px }
+.media-box .format_type { color: #aaa; text-transform: uppercase }
+.media-box .date {font-size: 10px }
+.media-box .format_type {padding: 6px; font-size: 10px}
+.media-box .origin {font-size: 10px; color: #aaa; padding-right: 10px }
+.media-box .license {color: #b96}
+.media-box a {color: #2E7E36}
+.media-box a:hover {color: #005500}
 
 /*
  * busca
@@ -169,17 +185,18 @@ a {text-decoration: none;}
 /*
  * functional tags
  */
-.video .result-thumb { }
+.video .result-thumb { background-color: #88a7b5 }
 .audio .result-thumb { }
 .imagem .result-thumb { } /*background: #f00*/
 n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
-.video .result-thumb .assist {background-image: url('/images/play.png'); background-repeat: no-repeat; width: 79px; height: 79px; float: left; margin: 26px; margin-left: 58px}
+.video .result-thumb .assist {background-image: url('/images/play.png'); background-repeat: no-repeat; width: 56px; height: 37px; float: left; margin: 35px; margin-top: 45px}
 .audio .result-thumb .assist {}
 
 /*
  * media view
  */
 #media-view {}
+.media #content {width: 60%}
 #media-view .content-title {font-size: 18px;}
 #media-view .title-bold {font-size: 18px; font-weight: bold}
 
@@ -246,7 +263,7 @@ body.mucua {}
 #media_publish #tags_area, 
 #media_publish input,
 #media_publish textarea {width: 290px; border: 2px solid #fff; border-radius: 8px}
-#media_publish .bloco-1 .tags {display: none}
+.MediaPublish .bloco-1 .tags {display: none}
 #media_publish .button-nav, #media_update .button-nav {cursor: pointer; font-size: 16px; background-color: #B5A570; text-align: center; width: 150px; float: right; padding: 8px; border-radius: 4px; border: 2px solid #958555; margin: 2px }
 #media_publish #note {height: 120px}
 #media_publish .bloco-1 {float: left;}
@@ -258,26 +275,3 @@ body.mucua {}
 .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
 .bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
 .percent { position:absolute; display:inline-block; top:3px; left:48%; }
-
-
-/* COMMENTED EVERYTHING (old template)
-
-
-/*
- * busca / resultados
- * /
-
-.caixa_busca { border: 2px solid #a59560; border-radius: 8px; }
-#busca-menu .button {float: right;  background-image: url('../images/search.png'); width: 27px; height: 27px; cursor: pointer }
-
-#menu {margin-left: 175px; margin-top: -35px;}
-.menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
-.menu-itens li a {color: #fff; text-decoration: none; }
-.caixa-resultado-busca {background-color: #eeffaa; padding: 2px; }
-.caixa-resultado-busca .nome-termo {margin: 12px; display:inline }
-.caixa-resultado-busca a {background-color: #cdde87; padding: 4px; text-decoration: none; font-weight: bold }
-.adicionar-termo {font-size: 16px; font-weight: bold; cursor: pointer}
-.remover-termo {font-size: 16px; font-weight: bold; cursor: pointer}
-#resultado-busca .caixa_busca {}
-#media-results-content h4.message {padding: 10px; color: #900}
-*/
