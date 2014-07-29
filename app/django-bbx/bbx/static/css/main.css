@@ -153,7 +153,7 @@ a {text-decoration: none;}
  * media grid
   */
 .media-box {width: 192px; height: 175px; background: #f4efdd; margin: 3px; font-size: 11px; border-radius: 5px; padding: 6px; text-align: center}
-.media-box .result-thumb {width: 192px; height: 130px; background: #aa6}
+.media-box .result-thumb {width: 192px; height: 130px; background: #000}
 .media-box .title {font-size: 11px }
 .media-box .format_type { color: #aaa; text-transform: uppercase }
 .media-box .date {font-size: 10px }
@@ -163,7 +163,9 @@ a {text-decoration: none;}
 .media-box a {color: #2E7E36}
 .media-box a:hover {color: #005500}
 .media-box .image {float: left}
-.media-box .image img {width: 192px; height: 130px;} 
+.media-box .image img,
+.media-box .image audio,
+.media-box .image video {width: 192px; height: 130px;} 
 
 /*
  * busca
