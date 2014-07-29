@@ -138,7 +138,7 @@ def create_objects_from_files(repository=get_default_repository().name):
             media = Media.objects.filter(uuid=data["uuid"])
 
             if not media:
-                dumpclean(data)
+                #dumpclean(data)
                 serializer = MediaSerializer(data=data)
                 print serializer.is_valid()
                 print serializer.errors

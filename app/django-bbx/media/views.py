@@ -208,6 +208,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                       name=request.DATA['name'],
                       note=request.DATA['note'],
                       type=request.DATA['type'],
+                      format=request.DATA['format'],
                       license=request.DATA['license'],
                       date=(request.DATA['date'] if request.DATA['date'] !=
                             '' else datetime.now()),
