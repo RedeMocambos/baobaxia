@@ -1,15 +1,41 @@
-<% _.each(medias, function(media) { %>
-<div class="media_line">
-    <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
-      <span><%= media.name %></span>
-    </a>
-    <span class="format_type"><%= media.format %></span>&nbsp;
-    <span class="origin"><%= media.origin %></span>&nbsp;
-    <span class="date"><%= formatDate(media.date) %></span>&nbsp;
-    <span class="license"><%= media.license %></span>&nbsp;
-    <span class="type"><%= media.type %></span>&nbsp;
-</div>
-<% }) %>
+<table>
+  <thead>
+    <tr>
+      <td class="title">nome</td>
+      <td class="format_type">formato</td>
+      <td class="origin">origem</td>
+      <td class="date">data</td>
+      <td class="license">licença</td>
+      <td class="type">tipo</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% _.each(medias, function(media) { %>
+    <tr class="media-line">
+      <td class="title">
+	<a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+	  <span><%= media.name %></span>
+	</a>
+      </td>
+      <td class="format_type">
+	<span><%= media.format %></span>
+      </td>
+      <td class="origin">
+	<span><%= media.origin %></span>
+      </td>
+      <td class="date">
+	<span><%= formatDate(media.date) %></span>
+      </td>
+      <td class="license">
+	<span><%= media.license %></span>
+      </td>
+      <td class="type">
+	<div class="icon-type icon-<%= media.type %>"></div>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
 <% if (_.isEmpty(medias)) { %>
 <h4 class="message"><%= message %></h4>
 <% } %>
