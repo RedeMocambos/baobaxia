@@ -4,15 +4,14 @@ echo "----------------------"
 echo "removendo arquivos de migracao e banco ..."
 echo "----------------------"
 
-if [ -f bbx/.database.sqlite ]
+if [ -f /data/bbx/db/database.sqlite ]
 then 
-    rm bbx/.database.sqlite
+    rm /data/bbx/db/database.sqlite
 fi
     
-find . -name '000*.py' -exec rm '{}' \; && echo "OK!"
+find /srv/bbx/baobaxia/app/django-bbx/ -name '000*.py' -exec rm '{}' \; && echo "OK!"
 
-source ~/bbxenv/bin/activate
-
+. /srv/bbx/envs/bbx/bin/activate
 
 echo "----------------------"
 echo "criando banco novo..."
@@ -31,11 +30,5 @@ python manage.py schemamigration --initial --traceback tag
 python manage.py schemamigration --initial --traceback media
 python manage.py schemamigration --initial --traceback repository
 
-
-
 python manage.py migrate --all
 
-
-echo "usuário do login número 1:"
-echo "zumbi@dandara.mocambos.net"
-echo "livre"

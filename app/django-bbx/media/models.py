@@ -103,7 +103,7 @@ class Media(models.Model):
                             help_text=_('Media name'),
                             max_length=100, default=_('No title'))
     media_file = models.FileField(upload_to=media_file_name, blank=True)
-    url = models.URLField(_('URL'), editable=False),
+    url = models.URLField(_('URL'), editable=False)
     date = models.DateTimeField(_('date'),
                                 help_text=_('Media criation date'))
     note = models.TextField(_('note'),

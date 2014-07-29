@@ -35,7 +35,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(MEDIA_ROOT, 'db/.database.sqlite'),
+        'NAME': os.path.join(MEDIA_ROOT, 'db/database.sqlite'),
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',

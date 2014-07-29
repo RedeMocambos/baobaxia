@@ -14,6 +14,7 @@ class Migration(SchemaMigration):
             ('uuid', self.gf('django.db.models.fields.CharField')(default=u'No UUID', max_length=36)),
             ('name', self.gf('django.db.models.fields.CharField')(default=u'No title', max_length=100)),
             ('media_file', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
             ('date', self.gf('django.db.models.fields.DateTimeField')()),
             ('note', self.gf('django.db.models.fields.TextField')(max_length=300, blank=True)),
             ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
@@ -102,6 +103,7 @@ class Migration(SchemaMigration):
             'request_code': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'tags': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['tag.Tag']", 'symmetrical': 'False'}),
             'type': ('django.db.models.fields.CharField', [], {'default': "'arquivo'", 'max_length': '14', 'blank': 'True'}),
+            'url': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
             'uuid': ('django.db.models.fields.CharField', [], {'default': "u'No UUID'", 'max_length': '36'})
         },
         u'mocambola.mocambola': {
