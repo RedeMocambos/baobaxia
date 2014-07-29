@@ -144,7 +144,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
         if pk != '':
             serializer = MediaSerializer(media)
             return Response(serializer.data)
-
+        
     elif request.method == 'PUT':
         if pk == '':
             return HttpResponseRedirect(

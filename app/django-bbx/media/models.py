@@ -79,6 +79,7 @@ class Media(models.Model):
     uuid: identificador univoco do media
     name: nome do media
     media_file: relação com arquivo
+    url: url do arquivo
     date: data do media
     note: anotações livres
     author: relação com objeto user
@@ -102,6 +103,7 @@ class Media(models.Model):
                             help_text=_('Media name'),
                             max_length=100, default=_('No title'))
     media_file = models.FileField(upload_to=media_file_name, blank=True)
+    url = models.URLField(_('URL'), editable=False),
     date = models.DateTimeField(_('date'),
                                 help_text=_('Media criation date'))
     note = models.TextField(_('note'),
@@ -179,6 +181,7 @@ class Media(models.Model):
 
     def save(self, *args, **kwargs):
         self._set_is_local()
+        self.url = self.get_url()
         super(Media, self).save(*args, **kwargs)
 
     class Meta:

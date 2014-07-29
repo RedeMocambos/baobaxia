@@ -26,14 +26,14 @@ class MediaSerializer(serializers.ModelSerializer):
     origin = serializers.SlugRelatedField(many=False, slug_field='description')
     repository = serializers.SlugRelatedField(many=False, slug_field='name')
     author = serializers.SlugRelatedField(many=False, slug_field='username')
-
+    
     class Meta:
         model = Media
         fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
-                  'format', 'license', 'media_file', 'origin',
+                  'format', 'license', 'media_file', 'url', 'origin',
                   'repository', 'tags', 'is_local', 'is_requested', 'request_code', 'num_copies')
         depth = 1
-
+    
     def restore_fields(self, data, files):
         u"""Converte um dicionário de dados em um dicionário de campos
         deserializados.
@@ -97,6 +97,7 @@ class MediaSerializer(serializers.ModelSerializer):
             instance.license = attrs.get('license', instance.license)
             instance.media_file(upload_to=attrs.get('media_file',
                                                    instance.media_file))
+            instance.url(upload_to=attrs.get('url',instance.url))
             instance.tags = attrs.get('tags', instance.tags)
             instance.repository = attrs.get('repository', instance.repository)
             instance.is_local = attrs.get('is_local', instance.is_local)
