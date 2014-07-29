@@ -97,7 +97,7 @@ class MediaSerializer(serializers.ModelSerializer):
             instance.license = attrs.get('license', instance.license)
             instance.media_file(upload_to=attrs.get('media_file',
                                                    instance.media_file))
-            instance.url(upload_to=attrs.get('url',instance.url))
+            instance.url('url',instance.url)
             instance.tags = attrs.get('tags', instance.tags)
             instance.repository = attrs.get('repository', instance.repository)
             instance.is_local = attrs.get('is_local', instance.is_local)

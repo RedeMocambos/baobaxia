@@ -43,7 +43,7 @@
   <div class="block-1 content-div">   
     <div class="media-image">
       <% if (media.type == 'imagem') { %>
-      <img src="<%= media.media_file.replace('/data/bbx/', 'images/') %>" />
+      <img src="<%media.url %>" />
 <% } else { %>
       <img src="images/imagem-exemplo.png" />
       <% } %>
