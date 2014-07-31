@@ -218,6 +218,11 @@ sed -i "s:^\(REPOSITORY_DIR_NAME\s*=\s*\).*$:\1\"${DEFAULT_REPOSITORY_DIR_NAME}\
 sed -i "s:^\(DEFAULT_REPOSITORY\s*=\s*\).*$:\1\"${DEFAULT_REPOSITORY_NAME}\":" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
 sed -i "s:^\(STATIC_ROOT\s*=\s*\).*$:\1\"${INSTALL_DIR}\/static\":" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/settings.py
 
+echo ""
+echo "Configurando interface web ..."
+cp $INSTALL_DIR/baobaxia/app/django-bbx/bbx/static/js/config.json.example $INSTALL_DIR/baobaxia/app/django-bbx/bbx/static/js/config.json
+sed -i "s/bbxnamaste/${MUCUA}/" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/static/js/config.json
+
 
 ### instalacao do baobaxia
 echo ""
@@ -237,16 +242,26 @@ virtualenv $INSTALL_DIR/envs/bbx ;
 pip install --upgrade setuptools ;
 cd $INSTALL_DIR;
 tar xjvf pip_wheel_20140606.tbz ;
-pip install --use-wheel --no-index --find-links=local/wheel local/wheel/argparse-1.2.1-py2-none-any.whl;
-pip install --use-wheel --no-index --find-links=local/wheel local/wheel/Django-1.6.5-py2.py3-none-any.whl;
-pip install --use-wheel --no-index --find-links=local/wheel local/wheel/django_extensions-1.1.1-py2-none-any.whl;
-pip install --use-wheel --no-index --find-links=local/wheel local/wheel/djangorestframework-2.3.6-py2-none-any.whl;
-pip install --use-wheel --no-index --find-links=local/wheel local/wheel/gunicorn-18.0-py2-none-any.whl;
-pip install --use-wheel --no-index --find-links=local/wheel local/wheel/six-1.3.0-py2-none-any.whl;
-pip install --use-wheel --no-index --find-links=local/wheel local/wheel/sorl_thumbnail-11.12.1b-py27-none-any.whl;
-pip install --use-wheel --no-index --find-links=local/wheel local/wheel/South-0.8.4-py2.py3-none-any.whl;
-pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wheel-0.23.0-py2.py3-none-any.whl;
-pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wsgiref-0.1.2-py2-none-any.whl;
+# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/argparse-1.2.1-py2-none-any.whl;
+# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/Django-1.6.5-py2.py3-none-any.whl;
+# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/django_extensions-1.1.1-py2-none-any.whl;
+# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/djangorestframework-2.3.6-py2-none-any.whl;
+# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/gunicorn-18.0-py2-none-any.whl;
+# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/six-1.3.0-py2-none-any.whl;
+# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/sorl_thumbnail-11.12.1b-py27-none-any.whl;
+# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/South-0.8.4-py2.py3-none-any.whl;
+# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wheel-0.23.0-py2.py3-none-any.whl;
+# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wsgiref-0.1.2-py2-none-any.whl;
+pip install argparse;
+pip install django;
+pip install django-extensions;
+pip install djangorestframework;
+pip install gunicorn;
+pip install six;
+pip install sorl-thumbnail;
+pip install south;
+pip install wheel;
+pip install wsgiref;
 pip install longerusername
 "
 
