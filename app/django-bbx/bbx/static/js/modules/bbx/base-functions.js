@@ -91,6 +91,10 @@ var configLoaded = $("body").data("bbx").configLoaded;
 	config = $("body").data("bbx").config;
 	
 	$('body').removeClass().addClass(name);
+	if (config.mucua == config.MYMUCUA) {
+	    $('body').addClass('mucua');
+	}
+	
 	console.log('render common: ' + name);
 	if ($('#sidebar').html() == "" ||
 	    (typeof $('#sidebar').html() === "undefined")) {

@@ -28,8 +28,12 @@ define([
 
 	    var repository = this.__getRepository(),
 	    mucua = this.__getMucua();
-	    
-	    BBXBaseFunctions.renderCommon('mucua');
+	    // TODO: verificar se mantem isso ou se cria view especifica para Network
+	    if (mucua == 'rede') {
+		BBXBaseFunctions.renderCommon('rede');
+	    } else {
+		BBXBaseFunctions.renderCommon('mucua');
+	    }
 	    BBXBaseFunctions.setNavigationVars(repository, mucua);
 	    var homeMucua = new HomeMucua(); 
 	    homeMucua.render();

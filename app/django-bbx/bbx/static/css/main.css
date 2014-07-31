@@ -6,7 +6,7 @@
  * base
  */
 html { font-family: sans-serif}
-body {margin: 0; padding: 0; background-color: #D5C590}
+body {margin: 0; padding: 0; background-color: #E1D2A0}
 html, body, #container {height: 100%; }
 #container {margin: 0 auto; }
 #content {
@@ -21,11 +21,19 @@ html, body, #container {height: 100%; }
     height: 100%;
     max-width: 300px !important;
     margin-right: 2px; 
+    margin-top: 150px;
     min-width: 200px;
     padding: 10px;    
     background-color: #fff; 
+    border-radius: 8px;
 }
-#footer {clear: both; height: 40px; position: fixed; z-index: 10; background-color: #D5C590; width: 100%; bottom: -2px; border-top: #fff solid 2px; }
+#footer {clear: both; height: 40px; position: fixed; z-index: 10; background-color: #E1D2A0; width: 100%; bottom: -2px; border-top: #fff solid 2px; }
+.bbx #content,
+.mocambola #content,
+.mucua #content,
+.media #content,
+.rede #content { margin-bottom: 40px; margin-top: 150px; margin-left: 10px}
+
 a {text-decoration: none;}
 
 /*
@@ -36,9 +44,9 @@ a {text-decoration: none;}
 /*
  * header
  */
-#header {width: 100%; height: 180px; background-color: #fff }
-#header-top {background: #fff url('../images/cabecalho.png') no-repeat fixed center top; margin: 0 auto }
-#header-top img { margin-top: 25px; margin-left: 70px}
+#header {width: 100%; height: 150px; background-color: #fff; position: fixed }
+#header-top {background-image: url('../images/faixabanner.png'); background-repeat: repeat-x; height: 80px }
+#header-image {background-image: url('../images/cabecalho.png'); background-repeat: no-repeat; margin: 0 auto; height: 80px }
 .posicoes {display: none}
 .home #header,
 .login #header {height: 295px; background: url('../images/home-header-repeat.png') repeat-x; }
@@ -47,15 +55,15 @@ a {text-decoration: none;}
 .login #header #header-top {background: url('../images/login-home-header.png') no-repeat scroll; width: 1137px; height: 295px; margin: 0 auto}
 
 .home #content,
-.login #content {background: url('../images/home-content-repeat.png'); width: 100%; height: 90%}
+.login #content {background: url('../images/home-content-repeat.png'); width: 100%; height: 90%; margin-top: 290px;}
 .home #content-top,
 .login #content-top { height: 100%; background: url("../images/home-login-content.png") no-repeat scroll 0 0; padding:0; margin-top: 0}
 .home #content .left {width:35%; float: left; height: 100%; }
-.home #content .middle {width:150px; float: left; height: 100%; margin-top: 20px}
+.home #content .middle {width:150px; float: left; height: 100%; margin-top: 20px;}
 .home #content .right {width:50%; float: left; height: 100%; font-size: 13px; margin-top: 20px}
 .home #footer {display: none}
 
-#menu {margin-left: 35%; margin-top: -20px}
+#menu {margin-left: 35%; margin-top: -40px}
 .menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
 .menu-itens li a {color: #fff; text-decoration: none; }
 .menu-itens .current {background-color: #145B7A}
@@ -76,12 +84,6 @@ a {text-decoration: none;}
 .login #content .right #form_login select {border: #81bc5f solid 1px; border-radius: 4px; font-size: 10px; width: 100px; margin: 5px }
 .login input.submit {width: 30px !important }
 .login #message-area {color: #f66 !important}
-
-.bbx #content,
-.mocambola #content,
-.mucua #content,
-.media #content,
-.rede #content { margin-bottom: 40px; margin-top: 60px; margin-left: 10px}
 
 .content-div {width: 80%; max-width: 700px; min-width: 650px; float: right}
 
@@ -125,11 +127,11 @@ a {text-decoration: none;}
 #content .media {clear: both}
 #content .media div {float: right;}
 
-.media-display-type div {margin-right: 15px; float: right;}
-.media-display-type .grid {background: url(/images/grid-off.png); width: 17px; height: 17px; cursor: pointer}
-.media-display-type .list {background: url(/images/list-off.png); width: 17px; height: 17px; cursor: pointer}
-.media-display-type .grid:hover {background: url(/images/grid-on.png)}
-.media-display-type .list:hover {background: url(/images/list-on.png)}
+#header .media-display-type div {margin: 0; padding: 0; margin-right: 15px; float: right; }
+#header .media-display-type .grid {background: url(/images/grid-off.png); width: 17px; height: 17px; cursor: pointer}
+#header .media-display-type .list {background: url(/images/list-off.png); width: 17px; height: 17px; cursor: pointer}
+#header .media-display-type .grid:hover {background: url(/images/grid-on.png)}
+#header .media-display-type .list:hover {background: url(/images/list-on.png)}
 .icon-imagem {background: url(/images/icon-image.png) no-repeat}
 .icon-arquivo {background: url(/images/icon-file.png) no-repeat}
 .icon-video {background: url(/images/icon-video.png) no-repeat}
@@ -138,7 +140,7 @@ a {text-decoration: none;}
 /*
  * media list
  */
-#media-results div.media-list {padding-top: 30px}
+#media-results div.media-list {}
 #content .media-list table {width: 100%}
 #content .media-list td.title {width: 35%}
 #content .media-list tbody td.origin,
@@ -170,8 +172,8 @@ a {text-decoration: none;}
 /*
  * busca
  */
-#buscador {margin-left: 7%; margin-top: -15px}
-#buscador .caixa_busca { border: 2px solid #fff; border-radius: 8px; padding-left: 8px }
+#buscador {margin-left: 4%; margin-top: -15px;}
+#buscador .caixa_busca { border: 2px solid #fff; border-radius: 8px; padding-left: 8px; font-size: 15px; height: 24px; }
 #buscador div {margin-top: 4px; display: inline-block; padding-left: 6px}
 #result-string {font-size: 12px; font-weight: bold;}
 #result-string ul { list-style-type: none; width: 60%; margin-left: 40px; }
@@ -200,14 +202,19 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
  * media view
  */
 #media-view {}
-.media #content {width: 60%}
+.media #content {width: 70%}
 #media-view .content-title {font-size: 18px;}
 #media-view .title-bold {font-size: 18px; font-weight: bold}
 
-#media-view .block-1 {float: right; min-width: 420px; width: 50%; padding-right: 2px}
+#media-view #link-edit {background-image: url(../images/edit-media.png); width: 51px; height: 21px; float:right; margin-right: 30px}
+#media-view #media-title {margin-left: 20px;}
+#media-view #media-title h3 { color:#197299; font-size: 20px}
+
+#media-view #inner-content {margin-right: 30px }
+#media-view .block-1 {display: inline; width: 60%; min-width: 420px; padding-right: 2px}
 #media-view .block-1 .title {font-weight: bold; }
 
-#media-view .block-2 {float: right; width: 33%; min-width: 180px; max-width: 300px; background-color: #8cb689; border-radius: 8px; padding: 10px;}
+#media-view .block-2 {display: inline; width:30%; min-width: 180px; max-width: 300px; background-color: #8cb689; border-radius: 8px; padding: 10px;}
 #media-view .block-2 p {margin: 0; padding-bottom: 5px}
 #media-view .block-2 .block-fields p {font-size: 17px; font-weight: bold}
 #media-view .block-2 .block-title {float: left; width: 25%; text-align: right; }
@@ -252,7 +259,10 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 #mocambola-home .actions h4.link a {color: #5EA933; font-size: 18px;}
 
 /* esquema de fundo de tela personalizado para mucua */
-body.mucua {}
+.mucua #header,
+body.mucua {background: url('/images/bg-mucua.png') repeat;}
+.rede #header,
+body.rede {background-color: #DECF9D;}
 
 /*
  * media publish

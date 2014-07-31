@@ -1,74 +1,87 @@
 <div id="media-view">
-  <div class="title content-div">
-      <p class="title-bold"><%= media.name %></p>
+  <% if (config.userData.username) { %>
+  <div id="link-edit"><a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit"></a></div>
+  <% } %>
+
+  <div id="media-title">
+      <h3><%= media.name %></h3>
   </div>
 
-  <div class="block-2 content-div">
-    <% if (config.userData.username) { %>
-    <div class="link-edit"><a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">Editar</a></div>
-    <% } %>
-    <div class="block-title">
-      <p>Por</p>
-      <p>Data</p>
-      <p>Mucua</p>
-      <p>Formato</p>
-      <p>Tamanho</p>
-      <p>Licença</p>
-    </div>
-    <div class="block-fields">
-      <p><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>"><%= media.author.substring(0, 17) + '...' %></a></p>
-      <p><%= formatDate(media.date) %></p>
-      <p><a href="<% print('#' + media.repository + '/' + media.origin) %>"><%= media.origin %></a></p>
-      <p><%= media.format %></p>
-      <p>0GB</p>
-      <p><div class="license-image license-<%= media.license %>"></div></p>      
-    </div>
-    <div class="blocks">
-      <p class="tags">
-	<% _.each(media.tags, function(tagName) { %>
-	<a href="<% print('#' + media.repository + '/' + media.origin +  '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
-	<% }); %>
-      </p>      
-    </div>
-    <div class="blocks">
-      <p class="text"><%= media.note %></p>
-    </div>
-    <div class="blocks">
-      <p class="quem-tem">
-	<span class="title-bold">quem tem esse arquivo?: </span>
-      </p>
-    </div>
-  </div>
-  
-  <div class="block-1 content-div">   
-    <div class="media-image">
-      <% if (media.type == 'imagem') { %>
-      <img src="<%= media.url %>" />
-      <% } else if (media.type == 'video') { %>
-      <video controls src="<%= media.url %>" />
-      <% } else if (media.type == 'audio') { %>
-      <audio controls src="<%= media.url %>" />
-      <% } else { %>
-<%= media.type %>
-      <img src="images/imagem-exemplo.png" />
+  <!-- inicio inner content -->
+  <div id="inner-content">
+    
+    <!-- inner sidebar -->
+    <div class="block-2 content-div">
+      <div class="block-title">
+	<p>Por</p>
+	<p>Data</p>
+	<p>Mucua</p>
+	<p>Formato</p>
+	<p>Tamanho</p>
+	<p>Licença</p>
+      </div>
+      <div class="block-fields">
+	<p><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>"><%= media.author.split('@')[0] %></a></p>
+	<p><%= formatDate(media.date) %></p>
+	<p><a href="<% print('#' + media.repository + '/' + media.origin) %>"><%= media.origin %></a></p>
+	<p><%= media.format %></p>
+	<p>0GB</p>
+	<p><div class="license-image license-<%= media.license %>"></div></p>      
+      </div>
+      <% if (media.tags != '') { %>
+      <div class="blocks">
+	<p class="tags">
+	  <% _.each(media.tags, function(tagName) { %>
+	  <a href="<% print('#' + media.repository + '/' + media.origin +  '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
+	  <% }); %>
+	</p>      
+      </div>
       <% } %>
-    </div>    
-    <% if (!media.is_local) { %>
-    <div class="blocks">
-      <p class="solicit-copy">
-	<span class="title-bold">solicitar cópia local</span>
-	<span class="image"></span>
+      <% if (media.note != '') { %>
+      <div class="blocks">
+	<p class="text"><%= media.note %></p>
+      </div>
+      <% } %>
+      <div class="blocks">
+	<p class="quem-tem">
+	  <span class="title-bold">quem tem esse arquivo?</span>
+	  <span><a href="">dpadua</a>, <a href="">dandara</a></span>
+	</p>
+      </div>
+    </div>
+    <!-- fim de inner sidebar -->
+
+    <!-- bloco multimedia -->    
+    <div class="block-1 content-div">   
+      <div class="media-image">
+	<% if (media.type == 'imagem') { %>
+	<img src="<%= media.url %>" />
+	<% } else if (media.type == 'video') { %>
+	<video controls src="<%= media.url %>" />
+	<% } else if (media.type == 'audio') { %>
+	<audio controls src="<%= media.url %>" />
+	<% } else if (media.type ='arquivo') { %>
+	<a href="<%= media.url %> ">download</a>
+	<% } %>
+      </div>    
+      <% if (!media.is_local) { %>
+      <div class="blocks">
+	<p class="solicit-copy">
+	  <span class="title-bold">solicitar cópia local</span>
+	  <span class="image"></span>
+	</p>
+      </div>   
+      <% } else { %>
+      <p class="">
+	Conteúdo local
       </p>
-    </div>   
-    <% } else { %>
-    <p class="">
-      Conteúdo local
-    </p>
-    <% } %>
-    <p class="uuid">UUID<%= media.uuid %></p>
+      <% } %>
+      <p class="uuid">UUID<%= media.uuid %></p>
+    </div>
+    <!-- bloco multimedia -->    
   </div>
+  <!-- fim do inner-content -->
+</div>
   
 
-
-</div>
 <!-- <a href="edit">editar</a>-->

@@ -105,20 +105,23 @@ define([
     }
 
     var showByList = function(target = '') {
-	var target = target || '';
-	var data = $('body').data('bbx').data;
+	var target = target || '#media-results .media',
+	data = $('body').data('bbx').data;
+	
 	// TODO: adicionar ao cookie como prefencia
-	$('#media-results .media').html(_.template(MediaListTpl, data));
-	$('#media-results .media').remove('media-grid').addClass('media-list');
+	$(target).html(_.template(MediaListTpl, data));
+	$(target).remove('media-grid').addClass('media-list');
 	$('.media-display-type .grid').css("background", "url(/images/grid-off.png)");
 	$('.media-display-type .list').css("background", "url(/images/list-on.png)");
     }
 
-    var showByGrid = function() {
-	var data = $('body').data('bbx').data;
+    var showByGrid = function(target = '') {
+	var target = target || '#media-results .media',
+	data = $('body').data('bbx').data;
+	
 	// TODO: adicionar ao cookie como prefencia
-	$('#media-results .media').html(_.template(MediaGridTpl, data));
-	$('#media-results .media').remove('media-list').addClass('media-grid');
+	$(target).html(_.template(MediaGridTpl, data));
+	$(target).remove('media-list').addClass('media-grid');
 	$('.media-display-type .grid').css("background", "url(/images/grid-on.png)");
 	$('.media-display-type .list').css("background", "url(/images/list-off.png)");
     }
@@ -199,8 +202,9 @@ define([
 	getMedia(url, function(data){
 	    $(el).append(_.template(MediaDestaquesMucuaTpl));
 	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
+	    
 	    $('body').data('bbx').data = data;
-	    $('#destaques-mucua .media').html(_.template(MediaGridTpl, data));
+	    showByGrid('#destaques-mucua .media');
 	});
     };
 
@@ -211,7 +215,12 @@ define([
 	getMedia(url, function(data){
 	    $(el).append(_.template(MediaNovidadesTpl));
 	    data.message = 'Nenhuma novidade em ' + config.mucua + '.';
-	    $('#media-novidades .media').html(_.template(MediaGridTpl, data));
+
+	    // TODO: quando tem mais de um bloco de dados (ex: ultimas novidades E conteudo destacado), pensar em como guardar duas ou mais listas de media
+	    $('body').data('bbx').data = data;
+	    showByGrid('#media-novidades .media');
+	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
+	    $('.media-display-type .list').on('click', function(){ showByList()});	    
 	});
     };
 
@@ -222,8 +231,11 @@ define([
 	getMedia(url, function(data){
 	    $('#content').append(_.template(MediaRelatedTpl));
 	    data.message = 'Nenhuma media relacionada encontrada.';
+
 	    $('body').data('bbx').data = data;
-	    $('#media-related .media').html(_.template(MediaGridTpl, data));
+	    showByGrid('#media-related .media');
+	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
+	    $('.media-display-type .list').on('click', function(){ showByList()});	    
 	});
     };
 
@@ -240,9 +252,11 @@ define([
 	getMedia(url, function(data){
 	    $('#content').append(_.template(MediaMocambolaTpl));
 	    data.message = 'Mocambola ainda nao publicou nenhum conteudo.';
+
 	    $('body').data('bbx').data = data;
-	    console.log(data);
-	    $('#media-mocambola .media').html(_.template(MediaGridTpl, data));
+	    showByGrid('#media-mocambola .media');
+	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
+	    $('.media-display-type .list').on('click', function(){ showByList()});	    
 	});
     };
     
@@ -266,9 +280,9 @@ define([
 	    $('#imagem-busca').attr('src', config.imagePath + '/buscar.png');
 	    $('#content').html(_.template(MediaResultsTpl));
 	    data.message = 'Nenhuma media encontrada para essa busca';
+
 	    $('body').data('bbx').data = data;
 	    showByGrid('#media-results .media');
-	    //$('#media-results .media').html(_.template(MediaGridTpl, data));	    
 	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
 	    $('.media-display-type .list').on('click', function(){ showByList()});	    
 	});	

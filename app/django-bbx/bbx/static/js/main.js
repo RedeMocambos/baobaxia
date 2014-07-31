@@ -10,6 +10,31 @@ require.config({
 	    deps: ['underscore', 'jquery'],
 	    exports: 'Backbone'
 	},
+	'textext.ajax': {
+	    deps: ['textext'],
+	    exports: ['textext.ajax']
+	},
+	'textext.arrow': {
+	    deps: ['textext']
+	},
+	'textext.autocomplete': {
+	    deps: ['textext']
+	},
+	'textext.clear': {
+	    deps: ['textext']
+	},
+	'textext.filter': {
+	    deps: ['textext']
+	},
+	'textext.focus': {
+	    deps: ['textext']
+	},
+	'textext.prompt': {
+	    deps: ['textext']
+	},
+	'textext.tags': {
+	    deps: ['textext']
+	},
     },
     paths: {
 	jquery: 'lib/jquery-min',
@@ -22,6 +47,15 @@ require.config({
 	templates: '../templates',
 	backbone_subroute: 'lib/backbone.subroute.min',
 	tagcloud: 'lib/jquery.tagcloud',
+	textext: 'lib/textext/textext.core',
+	textext_ajax: 'lib/textext/textext.plugin.ajax',
+	textext_arrow: 'lib/textext/textext.plugin.arrow',
+	textext_autocomplete: 'lib/textext/textext.plugin.autocomplete',
+	textext_clear: 'lib/textext/textext.plugin.clear',
+	textext_focus: 'lib/textext/textext.plugin.focus',
+	textext_filter: 'lib/textext/textext.plugin.filter',
+	textext_prompt: 'lib/textext/textext.plugin.prompt',
+	textext_tags: 'lib/textext/textext.plugin.tags',
         json: 'lib/require/json',
         text: 'lib/require/text',	
     },
