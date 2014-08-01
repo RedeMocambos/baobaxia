@@ -26,7 +26,7 @@ define([
     'text!templates/common/MucuaProfile.html'
 ], function($, _, Backbone, jQueryCookie, HeaderView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
     
-    var init = function() {
+    var init = function() {	
 	if (typeof $("body").data("bbx") === 'undefined') {
 	    $("body").data("bbx", 
 			   {
@@ -34,7 +34,7 @@ define([
 			   });
 	}
 
-var configLoaded = $("body").data("bbx").configLoaded;
+	var configLoaded = $("body").data("bbx").configLoaded;
 	if (configLoaded === false) {
 	    __setConfig(DefaultConfig);
 	}
@@ -46,11 +46,60 @@ var configLoaded = $("body").data("bbx").configLoaded;
      * @return {Bool} if there's a session opened
      */
     var isLogged = function() {
-	if ($.cookie('sessionBBX')) {
+	console.log('isLogged()');
+	if (this.getFromCookie('userData')) {
 	    // TODO: add some session check	   
 	    return true;
+	} else { 
+	    return false;
 	}
-	return false;
+    }
+
+    /**
+     * adds value to cookie
+     *
+     * @data {Object} input Object with data to be added (with the structure: {'name': 'nameOfProperty', 'values': {Object})
+     * @return {Obj} return the complete new object
+     */
+    var addToCookie = function(data) {
+	var cookieData = {};
+	console.log('addToCookie()');
+	if ($.cookie('sessionBBX')) {
+	    cookieData = $.parseJSON($.cookie('sessionBBX'));	    
+	}
+	cookieData[data.name] = data.values;
+	serializedCookie = $.toJSON(cookieData);
+	
+	$.cookie('sessionBBX', null);
+	$.cookie('sessionBBX', serializedCookie, { expires: 1});
+	var cookie = $.parseJSON($.cookie('sessionBBX'));
+	return cookieData;
+    }
+
+    /**
+     * get value from a cookie or the whole cookie
+     *
+     * @data {String} input String with the key or wildchar
+     * @return {Obj} return the selected value from the cookie
+     */
+    var getFromCookie = function(key = '*') {
+	var key = key || '*';
+	if ($.cookie('sessionBBX')) {
+	    var cookieData = $.parseJSON($.cookie('sessionBBX'));
+	    if (key == '*') {
+		return cookieData;
+	    } else { 
+		if (_.has(cookieData, key)) {
+		    return cookieData[key];
+		} else {
+		    // key don't exists
+		    return false;
+		}
+	    }
+	} else {
+	    // error / not logged in
+	    return false;
+	}
     }
     
     /**
@@ -150,13 +199,13 @@ var configLoaded = $("body").data("bbx").configLoaded;
 	console.log('render sidebar');
 	if (this.isLogged() &&
 	    ((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() == "")) {
-	    var userProfile = $.parseJSON($.cookie('sessionBBX'));
-	    userProfile.mocambolaUrl = this.getDefaultHome() + '/mocambola/' + userProfile.username
-	    userProfile.avatar = this.getAvatar();
+	    var userData = this.getFromCookie('userData');
+	    userData.mocambolaUrl = this.getDefaultHome() + '/mocambola/' + userData.username
+	    userData.avatar = this.getAvatar();
 	    if ($('#link-login')) {
 		$('#link-login').remove();
 	    }
-	    $('#user-profile').html(_.template(UserProfileTpl, userProfile));
+	    $('#user-profile').html(_.template(UserProfileTpl, userData));
 	}
     }
     
@@ -281,7 +330,6 @@ var configLoaded = $("body").data("bbx").configLoaded;
 
     // static format: day/month/year
     var formatDate = function(date) {
-	console.log(date);
 	if (date != '') {
 	    var newDate = '',
 	    re = /^(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)[\.0-9]*Z$/,
@@ -295,6 +343,8 @@ var configLoaded = $("body").data("bbx").configLoaded;
     return {
 	init: init,
 	isLogged: isLogged,
+	getFromCookie: getFromCookie,
+	addToCookie: addToCookie,
 	getDefaultHome: getDefaultHome,
 	getAvatar: getAvatar,
 	renderCommon: renderCommon,

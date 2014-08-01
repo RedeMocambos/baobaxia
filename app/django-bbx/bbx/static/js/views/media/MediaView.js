@@ -17,8 +17,9 @@ define([
 	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid;
 	    console.log("usuário logado? " +  BBXBaseFunctions.isLogged());
 	    
-	    if (typeof $.cookie('sessionBBX') !== 'undefined') {
-		config.userData = JSON.parse($.cookie('sessionBBX'));
+	    var userData = BBXBaseFunctions.getFromCookie('userData');
+	    if (userData) {
+		config.userData = userData;
 	    } else {
 		config.userData = {};
 	    }

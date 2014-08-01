@@ -26,10 +26,11 @@ define([
     'text!templates/common/ResultsMessage.html',
     'text!templates/common/SearchTagsMenu.html'
 ], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, ResultsMessageTpl, SearchTagsMenuTpl){
+    this.BBXBaseFunctions = BBXBaseFunctions;
+    
     var init = function() {
 	this.functions = {};
 	this.functions.BBXBaseFunctions = BBXBaseFunctions;
-	console.log(this);
     }
 
     var __getConfig = function() {
@@ -103,28 +104,65 @@ define([
 	$('#caixa_busca').focus();
 	// manda foco para campo de busca
     }
-
-    var showByList = function(target = '') {
-	var target = target || '#media-results .media',
-	data = $('body').data('bbx').data;
-	
-	// TODO: adicionar ao cookie como prefencia
-	$(target).html(_.template(MediaListTpl, data));
-	$(target).remove('media-grid').addClass('media-list');
-	$('.media-display-type .grid').css("background", "url(/images/grid-off.png)");
-	$('.media-display-type .list').css("background", "url(/images/list-on.png)");
+    
+    var setUserPrefs = function() {
+	var userPrefs = {'name': 'userPrefs',
+			 'values': {}
+			}
+	// default
+	userPrefs.values.media_listing_type = 'grid' ;
+	return userPrefs;
     }
 
-    var showByGrid = function(target = '') {
+    /**
+     * change media results view
+     *
+     * @type {String} string of type, of a predefined list of types
+     * @target {String} string of DOM class/id mapping
+     */
+    var showMediaBy = function(type = '', target = '') {
 	var target = target || '#media-results .media',
-	data = $('body').data('bbx').data;
+	type = type || '',
+	data = $('body').data('bbx').data,
+	valid_types = ['list', 'grid'];
 	
-	// TODO: adicionar ao cookie como prefencia
-	$(target).html(_.template(MediaGridTpl, data));
-	$(target).remove('media-list').addClass('media-grid');
-	$('.media-display-type .grid').css("background", "url(/images/grid-on.png)");
-	$('.media-display-type .list').css("background", "url(/images/list-off.png)");
+	if (typeof BBXBaseFunctions === 'undefined') {
+	    var BBXBaseFunctions = window.BBXBaseFunctions;
+	}
+	var userPrefs = BBXBaseFunctions.getFromCookie('userPrefs');
+	if (_.isEmpty(userPrefs)) {
+	    userPrefs = setUserPrefs();
+	}
+
+	// se vazio, pega default
+	type = (type == '') ? userPrefs.media_listing_type : type;
+	// se invalido, cai fora
+	if (!_.contains(valid_types, type)) {
+	    console.log('false type');
+	}
+	
+	// seta novo media-listing-type
+	userPrefs.media_listing_type = type;
+	BBXBaseFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
+	
+	switch(type) {
+	case 'grid':
+	    $(target).html(_.template(MediaGridTpl, data));
+	    break;
+	case 'list':
+	    $(target).html(_.template(MediaListTpl, data));
+	    break;
+	}
+	_.each(valid_types, function (type_name) {
+	    if (type_name == type) {
+		$(target).removeClass().addClass('media media-' + type_name);
+		$('.media-display-type .' + type_name).css("background", "url(/images/" + type_name + "-on.png)");
+	    } else {
+		$('.media-display-type .' + type_name).css("background", "url(/images/" + type_name + "-off.png)");
+	    }	    
+	});
     }
+
     
     var getMediaTypes = function() {
 	return {
@@ -204,7 +242,7 @@ define([
 	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
 	    
 	    $('body').data('bbx').data = data;
-	    showByGrid('#destaques-mucua .media');
+	    showMediaBy('', '#destaques-mucua .media');
 	});
     };
 
@@ -218,7 +256,7 @@ define([
 
 	    // TODO: quando tem mais de um bloco de dados (ex: ultimas novidades E conteudo destacado), pensar em como guardar duas ou mais listas de media
 	    $('body').data('bbx').data = data;
-	    showByGrid('#media-novidades .media');
+	    showMediaBy('', '#media-novidades .media');
 	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
 	    $('.media-display-type .list').on('click', function(){ showByList()});	    
 	});
@@ -233,7 +271,7 @@ define([
 	    data.message = 'Nenhuma media relacionada encontrada.';
 
 	    $('body').data('bbx').data = data;
-	    showByGrid('#media-related .media');
+	    showMediaBy('', '#media-related .media');
 	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
 	    $('.media-display-type .list').on('click', function(){ showByList()});	    
 	});
@@ -254,9 +292,9 @@ define([
 	    data.message = 'Mocambola ainda nao publicou nenhum conteudo.';
 
 	    $('body').data('bbx').data = data;
-	    showByGrid('#media-mocambola .media');
-	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
-	    $('.media-display-type .list').on('click', function(){ showByList()});	    
+	    showMediaGrid('', '#media-mocambola .media');
+	    $('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
+	    $('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
 	});
     };
     
@@ -280,11 +318,11 @@ define([
 	    $('#imagem-busca').attr('src', config.imagePath + '/buscar.png');
 	    $('#content').html(_.template(MediaResultsTpl));
 	    data.message = 'Nenhuma media encontrada para essa busca';
-
+	    
 	    $('body').data('bbx').data = data;
-	    showByGrid('#media-results .media');
-	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
-	    $('.media-display-type .list').on('click', function(){ showByList()});	    
+	    showMediaBy('', '#media-results .media');
+	    $('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
+	    $('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
 	});	
     };
     
@@ -327,8 +365,7 @@ define([
 	__getConfig: __getConfig,
 	addTagMenuSearch: addTagMenuSearch,
 	deleteTagMenuSearch: deleteTagMenuSearch,
-	showByGrid: showByGrid,
-	showByList: showByList,
+	showMediaBy: showMediaBy,
 	doSearch: doSearch,
 	getMedia: getMedia,
 	getMediaByMucua: getMediaByMucua,

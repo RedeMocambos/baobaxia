@@ -61,7 +61,7 @@ define([
 	    mediaToken = null;
 	    
 	    // session user data
-	    config.userData = JSON.parse($.cookie('sessionBBX'));
+	    config.userData = BBXBaseFunctions.getFromCookie('userData');
 	    
 	    // set data
 	    data.types = MediaFunctions.getMediaTypes(),

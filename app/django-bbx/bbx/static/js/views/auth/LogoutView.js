@@ -8,7 +8,7 @@ define([
     var LogoutView = Backbone.View.extend({
 	doLogout: function() {
 	    console.log('logout');
-	    
+
 	    if ($.cookie('sessionBBX')) {
 		$.removeCookie('sessionBBX');
 	    }

@@ -77,10 +77,13 @@ define([
 	    
 	    //timeout nessa parte de baixo
 	    var loginOK = setInterval(function() {
-		userData = $.toJSON($("body").data("bbx").userData);
-		if (typeof userData !== 'undefined') {
+		var userData = {'name': 'userData',
+				'values': $("body").data("bbx").userData
+			       }
+		
+		if (typeof userData.values !== 'undefined') {
 		    // set cookie that expires in one day
-		    $.cookie('sessionBBX', userData, { expires: 1});
+		    BBXBaseFunctions.addToCookie(userData);
 		    $('body').data('bbx').userData = '';
 		    
 		    // redirect

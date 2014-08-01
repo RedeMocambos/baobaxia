@@ -28,7 +28,7 @@ define([
 	    var config = $("body").data("bbx").config,
 	    data = {};
 	    
-	    config.userData = JSON.parse($.cookie('sessionBBX'));
+	    config.userData = BBXBaseFunctions.getFromCookie('userData');
 	    data.config = config;
 	    BBXBaseFunctions.renderSidebar();
 
