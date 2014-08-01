@@ -38,6 +38,8 @@ define([
 	if (configLoaded === false) {
 	    __setConfig(DefaultConfig);
 	}
+	
+	BBXBaseFunctions = this;
     }
     
     /**
