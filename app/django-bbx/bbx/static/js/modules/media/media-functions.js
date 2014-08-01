@@ -121,7 +121,7 @@ define([
      * @target {String} string of DOM class/id mapping
      */
     var showMediaBy = function(type = '', target = '') {
-	var target = target || '#media-results .media',
+	var target = target || '.media-results .media',
 	type = type || '',
 	data = $('body').data('bbx').data,
 	valid_types = ['list', 'grid'];
@@ -135,14 +135,15 @@ define([
 	}
 
 	// se vazio, pega default
-	type = (type == '') ? userPrefs.media_listing_type : type;
+	type = (type == '') ? userPrefs.values.media_listing_type : type;
 	// se invalido, cai fora
+	
 	if (!_.contains(valid_types, type)) {
 	    console.log('false type');
 	}
 	
 	// seta novo media-listing-type
-	userPrefs.media_listing_type = type;
+	userPrefs.values.media_listing_type = type;
 	BBXBaseFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
 	
 	switch(type) {
@@ -257,8 +258,8 @@ define([
 	    // TODO: quando tem mais de um bloco de dados (ex: ultimas novidades E conteudo destacado), pensar em como guardar duas ou mais listas de media
 	    $('body').data('bbx').data = data;
 	    showMediaBy('', '#media-novidades .media');
-	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
-	    $('.media-display-type .list').on('click', function(){ showByList()});	    
+	    $('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
+	    $('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
 	});
     };
 
@@ -292,7 +293,7 @@ define([
 	    data.message = 'Mocambola ainda nao publicou nenhum conteudo.';
 
 	    $('body').data('bbx').data = data;
-	    showMediaGrid('', '#media-mocambola .media');
+	    showMediaBy('', '#media-mocambola .media');
 	    $('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
 	    $('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
 	});

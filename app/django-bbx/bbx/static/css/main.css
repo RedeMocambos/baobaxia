@@ -126,6 +126,7 @@ a {text-decoration: none;}
 .destaques h3.title {color: #fff; font-size: 26px; margin: 4px}
 #content .media {clear: both}
 #content .media div {float: right;}
+.media #buscador .media-display-type {display: none}
 
 #header .media-display-type div {margin: 0; padding: 0; margin-right: 15px; float: right; }
 #header .media-display-type .grid {background: url(/images/grid-off.png); width: 17px; height: 17px; cursor: pointer}
