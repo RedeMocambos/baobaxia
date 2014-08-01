@@ -104,7 +104,7 @@ def get_available_mucuas(uuid=None, repository=None):
                        for mucua 
                        in json_repository_status['trusted repositories']])
  
-    mucuas =  [(m[0], rpr(m[1])) for m in mucuas]
+    mucuas =  [(m[0], rpr(m[1].replace('[','').replace(']',''))) for m in mucuas]
     return mucuas
 
 def get_mucua_info(uuid, repository=None):

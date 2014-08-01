@@ -43,6 +43,9 @@ def create_user_from_files(repository):
                     str(mucua[1]),
                     MOCAMBOLA_DIR)
 
+                if not os.path.exists(mocambola_path):
+                    os.makedirs(mocambola_path)
+
                 for jmocambola in os.listdir(mocambola_path):
                     mocambola_json_file = open(os.path.join(mocambola_path,
                                                             jmocambola))
