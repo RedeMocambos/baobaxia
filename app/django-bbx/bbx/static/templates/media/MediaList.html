@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <td class="title">nome</td>
+      <td class="author">autor</td>
       <td class="format_type">formato</td>
       <td class="origin">origem</td>
       <td class="date">data</td>
@@ -17,11 +18,14 @@
 	  <span><%= media.name %></span>
 	</a>
       </td>
+      <td class="author">
+	<span><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>"><%= media.author.split('@')[0] %></a></span>
+      </td>
       <td class="format_type">
 	<span><%= media.format %></span>
       </td>
       <td class="origin">
-	<span><%= media.origin %></span>
+	<span><a href="<% print('#' + media.repository + '/' + media.origin) %>"><%= media.origin %></a></span>
       </td>
       <td class="date">
 	<span><%= formatDate(media.date) %></span>
@@ -31,6 +35,13 @@
       </td>
       <td class="type">
 	<div class="icon-type icon-<%= media.type %>"></div>
+      </td>
+      <td class="is_requested">
+	<span>
+	  <% if(media.is_requested) { %>
+	  requested
+	  <% } %>
+	</span>
       </td>
     </tr>
     <% }) %>
