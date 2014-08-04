@@ -805,22 +805,22 @@ equipes de trabalho quanto nas soluções tecnológicas que utilizará.  }
 
 \chapter{Mucua Madiba}
 
-No começo do ano retomamos o processo de compra de um
+No começo do ano retomamos o processo de adquisição de um
 computador/server de alto desempenho para serviços que necessitam de
 alta disponibilidade. No especifico o projeto Baobáxia prevê um
-infraestrutura de comunicação hospedada em datacenter com
-conectividade garantida para gerenciar os pedidos de sincronização das
+infraestrutura de comunicação hospedada em datacenter, com
+conectividade garantida, para gerenciar os pedidos de sincronização das
 mucuas hospedadas nas infraestruturas comunitárias da Rede.
 
 Apos inumeras dificuldades conseguimos finalizar a compra de um
-computador HP DL 380P que atualmente esta hospedado no estudio de
-gravação da Casa de Cultura Tainã.
+computador HP DL 380P, batizado como Mucua Madiba, e atualmente esta
+hospedado no estudio de gravação da Casa de Cultura Tainã.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\textwidth]{./Fig/DL380P_1.pdf}
   \rule{35em}{0.5pt}
-  \caption[Foto da Mucua Madiba (HP DL380p)]{Foto da Mucua Madiba (HP DL380p)}
+  \caption[Foto da Mutua Madiba (HP DL380p)]{Foto da Mucua Madiba (HP DL380p)}
   \label{fig:MucuaMadiba1}
 \end{figure}
 
@@ -832,15 +832,416 @@ gravação da Casa de Cultura Tainã.
   \label{fig:MucuaMadiba2}
 \end{figure}
 
+\section{Virtualização}
+A Madiba foi configurada para hospedar maquinas virtuais, aproveitando
+os 2 processadores (8 cores cada) vai hospedar varias mucuas virtuais. 
+
+Para virtualização foi instalado o software de virtualização
+xen\footnote{http://www.xenproject.org/} em um sistema
+debian\footnote{http://debian.org/} wheezy com particionamento
+lvm\footnote{http://pt.wikipedia.org/wiki/LVM}.
+
+\section{Rádio}
+Para criar a estrutura de suporte para rádios web das comunidades
+criamos a mucua virtual, Asoro, com 2GB de RAM e um core/cpu dedicado.
+
+\subsection{Streaming}
+O software de streaming livre e amplamente usado e consolidado é
+Icecast 2. Icecast oferece ``pontos de montagens'' onde é possível
+conectar as rádios das comunidades para serem transmitidas online.
+
+Além do áudio, icecast permite o streaming de video ogg/theora. 
+
+No caso do streaming, a banda da conexão internet é fundamental e
+estamos aguardando melhorar a infraestrutura na Casa de Cultura Tainã,
+no entanto retomamos contatos com alguns parceiros institucionais para
+procurar uma hospedagem em datacenter.
+
+
+\subsection{Gestão colaborativa}
+O icecast prove a infraestrutura para transmitir via streaming. A
+proposta da RM é oferecer uma plataforma completa para poder gerenciar
+coletivamente e de forma colaborativa diferentes rádios agregando-as
+numa rádio web comum. Nesse intento instalamos e estamos testando o
+software livre ``Airtime''. O Airtime permite criar e gerenciar
+através de um navegador um calendário com programas rádios gravados e
+ao vivo, com possibilidade de retransmitir streams de diferentes
+rádios da RM.
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./Fig/Airtime.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Histórico de programas do Airtime]{Histórico de programas do Airtime}
+  \label{fig:Airtime}
+\end{figure}
 
 
 \part{Março/Abril} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Pajelanças e formação}
+
+As atividades de desenvolvimento são acompanhadas nesses meses pelos
+encontros de formação e troca de saberes, as Pajelanças Quilombolicas.
+O conceito de acervo de memorias digitais é discutido em diferentes
+núcleos da RM. Manter vivo a Rota dos Baobás com encontros presenciais
+não é somente fundamental para a formação, mas é também um confronto
+continuo entre o modelo teórico de desenvolvimento e as praticas e
+necessidades reais. 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./Fig/Formacao_RS_1_2014.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Pajelança na Morada da Paz]{Pajelança na Morada da Paz}
+  \label{fig:PajMoradaRS2014}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./Fig/Formacao_Taina_1_2014.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Pajelança na Casa de Cultura Tainã]{Divulgação Rota dos
+    Baobá, Trecho Bahia}
+  \label{fig:PajTainaSP2014}
+\end{figure}
+
+\section{Encontro sobre o projeto Multimédia, Educação e Resistências na Tainã}
+TC – apresentou a questão dos servidores em rede que irão abranger as
+comunidades, quilombos e assentamentos de várias regiões; já existem
+vários, sendo um central. Além dos servidores também já existem
+antenas para implantar a rede. Falou sobre os Núcleos de Formação
+Continuada, da importância de compartilhar conteúdos e do problema de
+desenvolvimento do projeto relacionado aos servidores, já que pouca
+gente domina essa tecnologia. Também disse que os servidores estão a
+disposição dos movimentos.
+
+Hugo – falou sobre a experiência do grupo Saravá, que hospeda vários
+movimentos sociais.
+
+TC – preocupação com a circulação dos conteúdos na internet e a
+questão da autonomia
+
+Hugo – falou sobre o projeto de multiplicação dos servidores livres e
+sobre o projeto “Guarda-Chuva”.
+
+Falou-se sobre a experiência da Casa de Cultura Digital, em São Paulo.
+
+TC – Relação entre a noção de território e a conexão em rede. Se esta
+conexão é passiva, caso em que a internet nos impõe o conteúdo, a
+apropriação do espaço da rede e do espaço real se enfraquece. Por isso
+a importância da apropriação do conteúdo e da circulação de informação
+pelas pessoas que estão numa região, num território. Falou sobre a
+ampliação dos territórios livres e a preocupação específica com as
+comunidades quilombolas. A internet como ferramenta importante para a
+comunicação nos territórios e para fora deles. Casos de luta e
+resistência de diversas comunidades indígenas e quilombolas do norte
+do país, precisam ser externalizadas por elas próprias.
+
+Hugo e TC – comentaram sobre a possibilidade de utilização de ondas
+curtas, utilizadas nas transmissões de rádio, como tecnologia para
+uso/armazenamento de dados.
+
+TC – importância da produção de conteúdo e armazenamento de arquivos
+que representam a memória das comunidades.
+
+Kellen – apresentação do projeto “Multimídia, Educação e Resistências
+em uma plataforma virtual” da Unicamp. Um dos motivos da reunião é
+conhecer a experiência da Rede Mocambos e a socialização da produção
+de conteúdos.
+
+TC – a Rede existe muito por causa da cooperação das pessoas.
+
+Luciana Henrique – perguntou sobre a história da Rede Mocambos, sobre
+o surgimento, a forma de se organizar.
+
+TC – a história da Rede está muito ligada à luta do movimento negro e
+das comunidades quilombolas. Incentivo do Programa Cultura Viva, do
+governo Lula. Tinham e têm como objetivo capacitar cada
+comunidade/território para que possam comunicar o que estão vivendo e,
+além disso, a preservação da memória.
+
+Kellen – levantou a preocupação sobre a questão da linguagem e da
+acessibilidade ao se pensar uma plataforma.
+
+Luciana Henrique – a mobilização das pessoas em relação à comunicação
+via internet e em relação a formação direcionada para a linguagem
+virtual é uma questão de necessidade. As novas gerações não ficam mais
+sem acesso à rede. No caso do assentamento Milton Santos isso está
+claro, da mesma forma que está clara a dificuldade de acessibilidade
+relacionada ao problema da falta de alfabetização de muitos
+assentados.
+
+Fuluke – os jovens já dominam a tecnologia, mas precisam direcionar
+esse conhecimento. A comunicação tem relação com o entendimento do por
+quê utilizar essas ferramentas. Essa responsabilidade já está nas mãos
+da juventude.
+
+Batata – é possível trabalhar a alfabetização junto com a formação
+digital.
+
+TC – importância de se relacionar momentos de vivência e formação,
+afinal a formação é um espaço de vivência, a questão é como incluir o
+que importa nas nossas vidas. O computador não é o centro, mas é uma
+ferramenta importante que precisamos dominar.
+
+Quando cada um se reconhecer como o “Deus” que fomos feitos e
+compreendermos o sentido na nossa própria existência, faremos a
+diferença.  (TC cantou uma música de sua autoria Tempo de
+Sonhar...''... vem, viver é fácil como poder 'avoar', voar até além de
+onde vai a luz, no fundo escuro de nós')
+
+Felipe – falou sobre a experiência em dois bairros na região do Campo
+Belo, onde centenas de famílias estão ameaçadas de despejo e do papel
+da comunicação nesse processo. Também sobre a dificuldade de finalizar
+uma primeira fase do processo relacionado a comunicação de forma que
+os moradores envolvidos sejam os interlocutores da própria
+comunidade. Importância do empoderamento das pessoas nesse sentido.
+
+TC – é preciso trabalhar a comunicação e as formações sob dois
+paradigmas, o da circunstância e o da ação estruturante.
+
+Batata - Sugeriu que os grupos urbanos façam vivências nos
+assentamentos, como estudantes de graduação têm feito.
+
+Biula – falou sobre a organização das comunidades que ficam na região
+da rod. Santos Dumont, entre elas Parque Oziel, Itatinga, Jd. Monte
+Cristo, e da mobilização da juventude dessa região para se aproximar
+da juventude dos assentamentos. Já estão procurando fazer esta
+vivência, os jovens da cidade não sabem da onde vêm os
+alimentos. Organização para um encontro entre a juventude da periferia
+e a juventude assentada no Milton Santos, com o sentido de formação e
+vivência. Também contou sobre a organização de mutirões para construir
+um centro de vivência do quilombo urbano, em adobe.
+
+
+
 
 %\input{./Capitoli/Capitolo2} % Reti Federate  
 
 \part{Maio/Junho} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{./Cap/Relatorio_BBX_Cap4.tex} % Sincronização
+
+\chapter{Rota dos Baobás, Bahia}
+
+A Casa de Cultura Tainã junto com a RM organizou no mês de maio uma
+Rota dos Baobás na Bahia, unindo diferentes encontros.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./Fig/RotaBahia.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Divulgação Rota dos Baobá, Trecho Bahia 2014]{Divulgação Rota dos Baobá, Trecho Bahia 2014}
+  \label{fig:RotaBahia}
+\end{figure}
+
+
+\section{I Festival Internacional de Tecnoxamanismo, Arraial d'Ajuda}
+\begin{quote}
+A ideia de fazer o Festival de Tecnoxamanismo parte da necessidade de
+se criar respostas/perguntas para o nosso tempo, regido pelo período
+antropoceno, nome que se dá para a atual idade da Terra, onde a
+tecnologia, industrialização e meios de produção dos humanos acabaram
+por transformar a superfície da Terra em um espelho de si mesmo, tendo
+como consequência o fim das florestas, o extermínio constante dos
+modos de existência indígena, a deterioração dos rios e dos oceanos, o
+declínio da biodiversidade e nossa infelicidade geral. Se faz
+necessário criar novos formatos de desenvolvimento a partir de uma
+nova ontologia, onde a Terra seja vista como agente político e os
+fazeres humanos convirjam com os desejos de GAIA.
+
+Quais táticas possíveis podemos produzir para promover uma melhor
+negociação entre tecnologia e natureza? Como lidar com os
+conhecimentos ancestrais? Quais relações podemos estabelecer com as
+aldeias? Que rituais nos ajudam a ampliar nossa percepção sobre a
+inteligencia e a sensibilidade da natureza? O que o xamanismo tem a
+nos ensinar? Como aproximar a tecnologia e o xamanismo?
+
+Nesse festival acolheremos propostas que ajudem a construir novas
+respostas para a atual crise ambiental e a decadência do
+humano. Atuaremos no sentido de criar e manter coletivamente uma rede
+de colaboração entre projetos, nacionais e internacionais, que atuem
+no sentido da transformação de práticas e pensamentos, modos de vida e
+condição humana.
+\begin{flushright}                                                                                                Fonte: http://tecnoxamanismo.metareciclagem.org 
+\end{flushright}
+\end{quote}
+
+\subsection{Novo desenvolvedor da Dinamarca}
+Durante o festival foi apresentado o projeto Baobáxia na Rota dos
+Baobás. O projeto ganhou muito interesse e o desenvolvedor e físico
+Carsten Agger da Dinamarca, se juntou a equipe de desenvolvimento
+durante o encontro e continua desde então colaborando ativamente.
+
+\section{Pajelança Quilombólica na Casa do Boneco, Itacaré}
+
+\subsection{28, 29 Abril}
+Umas das ações da Pajelança na Casa do Boneco de Itacaré foi a
+adequação do espaço, para receber máquinas trazidas pelo coletivo do
+Núcleo de Pesquisa e Desenvolvimento Digital da Rede Mocambos, Núcleo
+D`Pádua Mercado Sul, as pessoas presentes contribuíram para deixar o
+espaço preparado para as máquinas e para as oficinas.
+
+Na noite do dia 29 de Abril, houve a roda de abertura da Pajelança com
+Toque de Tambores e apresentação de cada pessoa presente.  A fala dos
+mestres iniciaram a roda enfatizando a responsabilidade das pessoas
+mais jovens sobre a garantia e a manutenção da nossa luta por
+territórios, entre eles o digital que pode nos conectar como o tambor,
+e ampliar a dimensão de territorialidade. As falas foram orientadas
+em um sentido de posicionamento ético em relação à contribuição de
+matriz africana na dimensão identitária e de ação, a partir da cosmo
+visão africana, que possibilita agir na continuidade da contribuição
+de nossos ancestrais para as gerações futuras, principalmente.
+
+Contribuições essas como a tecnologia do tambor, com código binário,
+assim como o código do computador, a relação com a natureza, com a
+floresta, com as árvores, de coexistência e tecnologias que garantiram
+que ainda haja florestas preservadas, como aqui mesmo no Brasil, a
+exemplo das comunidades quilombolas rurais.
+
+\subsection{30 Abril}
+Pela manhã a oficina de áudio teve início com a transmissão de um
+programa na rádio da Casa do Boneco de Itacaré, a Indaka Oba, rádio
+analógica, 88,5 FM. Enquanto tocava a programação da rádio, as
+informações sobre gravação e transmissão eram dadas por Ronaldo Eli.
+A oficina/programa teve duração de 4h.
+
+Os conteúdos foram os seguintes:
+\begin{itemize}
+\item Organização de um programa ao vivo;
+\item Como funciona a transmissão de rádio;
+\item Diferenças entre rádio analógica e web rádio;
+\item Como inserir vinhetas já gravadas;
+\item Uso do microfone e da mesa de som.
+\end{itemize}
+
+Simultaneamente, aconteceu o início da oficina de apropriação
+tecnológica, com a instalação elétrica do telecentro e conversas sobre
+o desenvolvimento da rede de comunicação entre servidores locais
+eventualmente conectados, \emph{Baobáxia}.
+
+O programa de rádio teve como tema a Musicalidade e
+Ancestralidade. Mestre Jorge Rasta inicia o programa perguntando sobre
+a situação atual de algumas comunidades presentes. Matheus, da
+comunidade Serra de Água fala sobre a organização da nova diretoria da
+associação quilombola e Joabe fala sobre a experiência com a
+construção de tambor em sua comunidade, que já havia perdido o tambor,
+porém em uma oficina na Casa do Boneco ele e uma outra liderança da
+comunidade aprenderam a fazer um tambor, hoje tem construído alguns em
+sua comunidade. Durante o programa mestre Jorge Rasta e mestre TC
+Silva falaram sobre a necessidade do aprimoramento da comunicação
+comunitária, do registro das práticas quilombolas, tradicionais e
+comunitária e da organização dos acervos afro comunitários. Muita
+música tocou no programa, entre elas o Rap do Quilombo do Campinho
+(Paraty - RJ), Orquestra Tambores de Aço (Campinas - SP) e o MC Bruno
+(Salvador – BA) improvisou um rap ao vivo.
+
+Ainda no dia 30 a oficina de áudio teve continuidade com uma discussão
+sobre como a comunicação exerce um poder na vida das comunidades e que
+estabelece um controle através da homogeneização da sociedade como um
+todo. Foi destacado também que a autonomia se dá com a produção de
+comunicação independente desses meios, para difundir o que é
+importante para a comunidade.  Depois da conversa as pessoas foram
+organizadas em grupos para a criação de vinhetas.
+
+\subsection{1 Maio}
+A oficina de áudio teve continuidade pela manhã, com a gravação das
+vinhetas criadas pelos grupos. Após a gravação houve a oficina de
+edição de áudio no software livre Audacity. 
+
+Conteúdo da oficina:
+\begin{itemize}
+\item Como gravar um áudio no celular;
+\item Como importar um áudio;
+\item Como editar um áudio.
+\end{itemize}
+Duração: 4 h
+
+No período da tarde teve continuidade a oficina de apropriação
+tecnológica com a instalação do telecentro da Casa do Boneco de
+Itacaré.  
+
+Conteúdo da oficina:
+\begin{itemize}
+\item Hardware - Como montar um computador;
+\item Software - Como instalar um sistema operacional (debian);
+\item Software - Como instalar programas; 
+\item Hardware - Como fazer os cabos para conexão de internet.
+\end{itemize}
+Duração: 4 h
+
+
+\section{Immersão Baobáxia no Terra Vista}
+O NPDD organizou uma immersão sobre tecnologias comunitárias e o
+baobáxia no assentamento Terra Vista em Arataca no sul da Bahia.  O
+Terra Vista é uma referencia na pratica e pesquisa agroecológica,
+sendo pioneiros no Brasil. Em cerca 17 anos de existência o Terra
+Vista alcançou uma produção orgânica de cacau de primeira qualidade
+além de criar uma infraestrutura de formação, pesquisa e
+desenvolvimento comunitário.
+
+No assentamento existe uma escola estadual com cursos de informática e
+agroecologia e o centro comunitário Florestal Fernandes onde aconteceu
+a immersão.
+
+\subsection{Mapeamento tecnológico}
+Participaram os mais jovens do assentamento, o prof. Scott, docente de
+informática na escola, algumas lideranças e outros integrantes da RM.
+
+A dinâmica escolhida se baseia no mapeamento das necessidades
+tecnológicas da comunidade e do território. Desenhamos em papel o
+território e foram levantadas e mapeadas as seguintes tecnologias:
+\begin{itemize}
+\item telefone;
+\item rádio;
+\item rádio poste;
+\item irrigação;
+\item minihidroeletrica;
+\item gerador mecânico;
+\item internet;
+\item automação: luzes, umidade, barcaças, \ldots;
+\item controle remoto (manual e automático);
+\item segurança: movimento, video, barreiras laser.
+\end{itemize}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./Fig/TerravistaCollage.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Mapeamento tecnológico no Terra Vista]{Mapeamento tecnológico no Terra Vista}
+  \label{fig:MapTechTerraVista}
+\end{figure}
+
+O mapeamento gerou já uma ampla discussão sobre tecnologias. Pela
+formato escolhido, um grande papel craft, o mapa já ficou mais
+acessível as demais pessoas do assentamento que passando iam se
+envolvendo na discussão. A partir dessa discussão foram definidas as
+próximas prioridades e como estrutura a primeira infraestrutura, onde
+também será hospedada a mucua.
+
+A immersão continou com a criação de um script para automatizar a
+instalação do BBX. Uma mucua foi instalada e será parte da primeira
+rede de incubação do Baobáxia. A immersão também pode contar com a
+participação do desenvolvedor debian Joey Hess, convidado pelo projeto
+por ser o desenvolvedor do git-annex, principal software na base do
+Baobáxia.
+
+\section{Placas de identificação}
+A Tainã propus como contrapartida do projeto a criação de placas de
+identificação. O design se inspirou nas placas de transito para
+colocação em espaço aberto. 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./Fig/PlacaBBX.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Placa de identificação]{Placa de identificação}
+  \label{fig:Placa}
+\end{figure}
+ 
+
 
 %\input{./Capitoli/Capitolo2} % Reti Federate  
 
@@ -850,7 +1251,7 @@ gravação da Casa de Cultura Tainã.
 
 %% ----------------------------------------------------------------
 % The "Funny Quote Page"
-\pagestyle{empty}  % No headers or footers for the following pages
+\pagestyle{empty} % No headers or footers for the following pages
 
 \null\vfill
 % Now comes the "Funny Quote", written in italics
@@ -880,9 +1281,9 @@ TC
 
 \addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
 
-\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
+%\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
 
-\input{./Apen/Relatorio_BBX_ApenA.tex}	% Appendice codice sorgente
+%\input{./Apen/Relatorio_BBX_ApenA.tex}	% Appendice codice sorgente
 
 %\input{./Appendices/AppendixB} % Appendix Title
 

@@ -2,6 +2,9 @@ filename=Relatorio_BBX_sem_2
 
 all: pdf read
 
+edit:
+	emacs ${filename}.tex
+
 pdf: 
 	pdflatex ${filename}.tex
 
