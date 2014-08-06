@@ -10,6 +10,10 @@ from bbx.settings import THUMBNAILS_ROOT, THUMBNAILS_URL
 import os
 import errno
 import math
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def check_if_path_exists_or_create(path):
     """Function to check or create a given path.

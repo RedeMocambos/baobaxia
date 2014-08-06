@@ -150,7 +150,7 @@ TEMPLATE_DIRS = (
     # "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    PROJECT_ROOT + 'bbx/static/templates',
+    PROJECT_ROOT + 'bbx/templates',
 )
 
 INSTALLED_APPS = (
@@ -161,12 +161,12 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bbx',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'rest_framework',
-    'bbx',
     'media',
     'mucua',
     'tag',
@@ -195,7 +195,7 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
             },
         'console': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'stream': sys.stdout
         }
@@ -211,9 +211,9 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
-        'bbx.auth': {
+        'bbx.utils': {
             'handlers': ['console'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             'propagate': True,
         },
     }

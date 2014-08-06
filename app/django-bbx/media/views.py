@@ -17,6 +17,7 @@ from tag.models import Tag
 from media.serializers import MediaSerializer
 from media.models import getTypeChoices, getFormatChoices
 from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
+from bbx.utils import logger
 from mucua.models import Mucua
 from repository.models import Repository
 
@@ -201,7 +202,8 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             #print ("media.author: " + media.author + " / default_user" +
             #       default_user)
             author = User.objects.get(username=default_user)
-
+            
+            logger.debug(request.FILES['media_file'].name)
         media = Media(repository=repository,
                       origin=mucua,  # request.DATA['origin'],
                       author=author,

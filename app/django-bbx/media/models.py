@@ -2,7 +2,6 @@
 
 import os
 import uuid
-import logging
 from datetime import datetime
 import exceptions
 from importlib import import_module
@@ -17,6 +16,7 @@ from django.utils.functional import lazy
 
 from tag.models import Tag
 from bbx.settings import REPOSITORY_DIR
+from bbx.utils import logger
 
 try:
     from django.utils.encoding import force_unicode  # NOQA
@@ -31,7 +31,7 @@ FORMAT_CHOICES = (('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'),
 
 def media_file_name(instance, file_name):
     """Retorna o caminho, completo de nome, do media"""
-    logging.debug(os.path.join(get_file_path(instance) + instance.get_file_name()))
+    logger.debug(os.path.join(get_file_path(instance) + instance.get_file_name()))
     return os.path.join(get_file_path(instance), instance.get_file_name())
 
 

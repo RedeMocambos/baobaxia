@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 import re
-import logging
 
 from rest_framework.parsers import JSONParser
 
@@ -13,8 +12,7 @@ from mocambola.serializers import UserSerializer
 from mucua.models import Mucua
 from repository.models import Repository
 from bbx.settings import MOCAMBOLA_DIR, REPOSITORY_DIR
-
-logger = logging.getLogger(__name__)
+from bbx.utils import logger
 
 
 class FileBackend(object):
