@@ -25,7 +25,7 @@ except ImportError:
 
 TYPE_CHOICES = (('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'),
                 ('arquivo', 'arquivo'))
-FORMAT_CHOICES = (('ogg', 'ogg'), ('webm', 'webm'), ('mp4', 'mp4'),
+FORMAT_CHOICES = (('ogg', 'ogg'), ('ogv', 'ogv'), ('webm', 'webm'), ('mp4', 'mp4'),
                   ('jpg', 'jpg'), ('pdf', 'pdf'))
 
 
