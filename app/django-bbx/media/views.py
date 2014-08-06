@@ -124,9 +124,9 @@ def media_detail(request, repository, mucua, pk=None, format=None):
     if redirect_page:
         return HttpResponseRedirect(redirect_base_url + repository.name +
                                     '/' + mucua.description + '/media/')
-
     # TODO: get author (url?)
-    author = User.objects.get(pk=1)
+    author = request.user
+
     if pk:
         try:
             media = Media.objects.get(uuid=pk)
