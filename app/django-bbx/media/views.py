@@ -203,14 +203,13 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             #       default_user)
             author = User.objects.get(username=default_user)
             
-            logger.debug(request.FILES['media_file'].name)
         media = Media(repository=repository,
                       origin=mucua,  # request.DATA['origin'],
                       author=author,
                       name=request.DATA['name'],
                       note=request.DATA['note'],
                       type=request.DATA['type'],
-                      format=request.DATA['format'],
+                      format=request.FILES['media_file'].name.split('.')[1],
                       license=request.DATA['license'],
                       date=(request.DATA['date'] if request.DATA['date'] !=
                             '' else datetime.now()),
