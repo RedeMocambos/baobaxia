@@ -21,7 +21,7 @@ from bbx.utils import logger
 from mucua.models import Mucua
 from repository.models import Repository
 
-redirect_base_url = "http://localhost/api/"  # TODO: tirar / mover
+redirect_base_url = "/api/"  # TODO: tirar / mover
 
 
 @api_view(['GET'])
@@ -124,7 +124,6 @@ def media_detail(request, repository, mucua, pk=None, format=None):
     if redirect_page:
         return HttpResponseRedirect(redirect_base_url + repository.name +
                                     '/' + mucua.description + '/media/')
-    # TODO: get author (url?)
     author = request.user
 
     if pk:
@@ -172,7 +171,6 @@ def media_detail(request, repository, mucua, pk=None, format=None):
 
                     media.tags.add(tag)
 
-            # TODO: return serialized data
             return Response("updated media - OK",
                             status=status.HTTP_201_CREATED)
         else:
@@ -214,13 +212,6 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                       uuid=generate_UUID()
                       )
 
-        # Linha curl mista para testar upload E mandar data
-        # $ curl -F "name=teste123" -F "tags=entrevista" -F "note="
-        # -F "license=" -F
-        # "date=2013/06/07" -F "type=imagem" -F "mediafile=@img_0001.jpg"
-        # -X POST
-        # http://localhost:8000/redemocambos/dandara/media/ > /tmp/x.html
-
         media.save()
         if media.id:
             # get tags by list or separated by ','
@@ -237,8 +228,8 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                     tag.save()
 
                 media.tags.add(tag)
+            
             media.save()  # salva de novo para chamar o post_save
-            # TODO: return serialized data
             serializer = MediaSerializer(media)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
