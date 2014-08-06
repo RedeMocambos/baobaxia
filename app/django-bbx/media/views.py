@@ -104,7 +104,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
     """
     Retrieve, create, update or delete a media instance.
     """
-
+    
     # pegando sessao por url
     redirect_page = False
 
@@ -190,19 +190,16 @@ def media_detail(request, repository, mucua, pk=None, format=None):
         """
         create a new media
         """
-        default_user = 'a@namaste-laptop.mocambos.net'  # TODO: tirar
         if request.DATA['author'] != '':
             author = request.DATA['author']
         else:
-            author = default_user
+            author = request.user
 
         try:
             author = User.objects.get(username=author)
         except User.DoesNotExist:
-            #print ("media.author: " + media.author + " / default_user" +
-            #       default_user)
-            author = User.objects.get(username=default_user)
-            
+            author = User.objects.get(username=request.user)
+        
         media = Media(repository=repository,
                       origin=mucua,  # request.DATA['origin'],
                       author=author,
