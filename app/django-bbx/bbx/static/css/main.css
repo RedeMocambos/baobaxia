@@ -142,14 +142,15 @@ a {text-decoration: none;}
  * media list
  */
 #media-results div.media-list {}
-#content .media-list table {width: 100%; font-size: 12px}
-#content .media-list td.title {width: 46%; font-size: 14px}
+#content .media-list table {width: 100%; font-size: 12px; text-align: center}
+#content .media-list thead td {cursor: pointer; font-weight: bold; font-size: 15px }
+#content .media-list td.title {width: 51%; font-size: 14px; text-align: left}
 #content .media-list tbody td.origin,
 #content .media-list tbody td.author,
 #content .media-list tbody td.date {width: 10%}
 #content .media-list tbody td.format,
 #content .media-list tbody td.format_type,
-#content .media-list tbody td.license {width: 6%}
+#content .media-list tbody td.license {width: 5%}
 #content .media-list tbody td.is_requested {width: 4%; color: #A73400; font-weight: bold }
 #content .media .media-line a {color: #145B7A; text-align: left}
 .media-line td .icon-type {width: 21px; height: 21px; float: none !important}
