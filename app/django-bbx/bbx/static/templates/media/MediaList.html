@@ -1,13 +1,14 @@
 <table>
   <thead>
     <tr>
-      <td class="title">nome</td>
-      <td class="author">autor</td>
-      <td class="format_type">formato</td>
-      <td class="origin">origem</td>
-      <td class="date">data</td>
-      <td class="license">licença</td>
-      <td class="type">tipo</td>
+      <td class="title"><a href="">nome</a></td>
+      <td class="author"><a href="">autor</a></td>
+      <td class="format_type">formato</a></td>
+      <td class="origin">origem</a></td>
+      <td class="date">data</a></td>
+      <td class="license">licença</a></td>
+      <td class="type">tipo</a></td>
+      <td class="is_requested">estado</td>
     </tr>
   </thead>
   <tbody>
@@ -34,7 +35,7 @@
 	<span><%= media.license %></span>
       </td>
       <td class="type">
-	<div class="icon-type icon-<%= media.type %>"></div>
+	<img alt="<%= media.type%>" src="images/icon-<%= media.type %>.png" />
       </td>
       <td class="is_requested">
 	<span>
