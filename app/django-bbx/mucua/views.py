@@ -5,17 +5,20 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from django.http import HttpResponse
-
+from django.utils.translation import ugettext_lazy as _
 from mucua.models import Mucua, get_available_mucuas, get_default_mucua,get_mucua_from_UUID,get_mucua_info
 from repository.models import Repository
 from mucua.serializers import MucuaSerializer
-from bbx.utils import convertToGB
+from bbx.utils import convertToGB, logger
 
 @api_view(['GET'])
 def mucua_list(request, repository=None):
     """
     List all mucuas
     """
+    
+    logger.debug(_(u"Acessing mucuas in repository: %s") % repository)
+   
     if repository:
         try:
             repository = Repository.objects.get(name=repository)
@@ -34,7 +37,6 @@ def mucua_list(request, repository=None):
             try:
                 mucua = Mucua.objects.get(description=mucua_description)
             except Mucua.DoesNotExist:
-                print "not found: ", mucua_description
                 return Response("Mucua not found")
 
             if mucua:

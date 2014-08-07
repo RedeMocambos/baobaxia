@@ -25,7 +25,7 @@ class Command(BaseCommand):
             except Repository.DoesNotExist:
                 return False
 
+            repository_instance.sync_repository()
             update_mucuas_list(repository_instance)
             create_user_from_files(repository_instance)
-            repository_instance.sync_repository()
             create_objects_from_files(repository_instance)

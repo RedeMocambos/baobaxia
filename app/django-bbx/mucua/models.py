@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 from bbx.settings import DEFAULT_MUCUA
-from bbx.utils import dumpclean
+from bbx.utils import dumpclean, logger
 from repository.models import get_default_repository, git_annex_status
 
 
@@ -86,6 +86,8 @@ def get_available_mucuas(uuid=None, repository=None):
     json_repository_status = json.loads(
         git_annex_status(repository.get_path()))
 
+    logger.debug(_(u"JSON Repository status: %s") % json_repository_status)
+
     mucuas = []
 
     if uuid:
@@ -103,8 +105,9 @@ def get_available_mucuas(uuid=None, repository=None):
         mucuas.extend([(mucua['uuid'], mucua['description'])
                        for mucua 
                        in json_repository_status['trusted repositories']])
- 
+
     mucuas =  [(m[0], rpr(m[1].replace('[','').replace(']',''))) for m in mucuas]
+    logger.debug(u'Mucuas: %s' % mucuas)
     return mucuas
 
 def get_mucua_info(uuid, repository=None):
