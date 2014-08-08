@@ -11,9 +11,8 @@ define([
     'modules/mucua/router',
     'modules/media/router',
     'modules/bbx/router',
-    'modules/network/router',
     'modules/mocambola/router',
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter, MediaRouter, BBXRouter, NetworkRouter, MocambolaRouter){
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter, MediaRouter, BBXRouter, MocambolaRouter){
     var App = {};
     App.Router = Backbone.Router.extend({
 	Routers: {},
@@ -33,12 +32,10 @@ define([
 	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
 	    ':repository/:mucua/mocambola/*subroute': 'invokeMocambolaModule',
 	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
-	    // ':repository/rede/bbx/*subroute': 'invokeNetworkModule',
 	    ':repository/:mucua/media': 'invokeMediaModule',   
 	    ':repository/:mucua/media/*subroute': 'invokeMediaModule',   
 	    ':repository/:mucua/mucua/*subroute': 'invokeMucuaModule',
 	    ':repository/:mucua/*subroute': 'invokeMucuaModule',
-	    ':repository/:mucua': 'invokeMucuaModule',
 	},
 
 	
@@ -122,13 +119,6 @@ define([
 	    this.Routers.BbxRouter = new BBXRouter(repository + "/" + mucua + "/bbx/", subroute);
 	},
 
-	// rede
-	invokeNetworkModule: function(repository, subroute='') {
-	    var subroute = subroute || '';
-	    console.log('rede oi');
-	    BBXBaseFunctions.setNavigationVars(repository, 'rede', subroute);
-	    this.Routers.BbxRouter = new BBXRouter(repository + "/rede/", subroute);
-	},
     });
     
     var __loadConfig = function(callback) {

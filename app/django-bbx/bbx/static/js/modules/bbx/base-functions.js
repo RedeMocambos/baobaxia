@@ -112,7 +112,7 @@ define([
     var getDefaultHome = function() {
 	// MAYBE, this should be a configurable field
 	var config = $("body").data("bbx").config,
-	url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA;
+	url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/bbx/search';
 	return url;
     }
     
@@ -143,7 +143,9 @@ define([
 	
 	$('body').removeClass().addClass(name);
 	if (config.mucua == config.MYMUCUA) {
-	    $('body').addClass('mucua');
+	    $('body').addClass('my-mucua');
+	} else {
+	    $('body').addClass('other-mucua');
 	}
 	
 	console.log('render common: ' + name);
