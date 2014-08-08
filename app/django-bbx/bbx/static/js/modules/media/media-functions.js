@@ -48,63 +48,53 @@ define([
 	$(target).html(_.template(ResultsMessageTpl, data));	
     };    
 
+    var __parseUrlSearch = function(terms) {
+	var config = __getConfig();
+	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + terms;
+    }
+
     var __parseMenuSearch = function(terms) {
 	var config = __getConfig(),
 	data = {};
-	if (terms != '') {
-	    data.terms = terms;
-	    $("body").data("bbx").terms = terms;
-	    data.baseUrl = '#' + config.repository + '/' + config.mucua + '/bbx/search/';
-	    $('#result-string').html(_.template(SearchTagsMenuTpl, data));
-	    
-	    // add events
-	    $('.trash-term').on('click', function(event){ deleteTagMenuSearch(event)});	    
-	    $('.add-term').on('click', function(event){ addTagMenuSearch(event)});
-	} else {
-	    $('#result-string').html('');
-	}
+	terms = _.compact(terms); // remove any false value
+	console.log(terms);
+	$("body").data("bbx").terms = terms;
+	$('#caixa_busca')
+	    .textext({ plugins: 'tags',
+		       tagsItems: terms,
+		       ext: {
+			   tags: {
+			       removeTag: function(el) {
+				   console.log('remove');
+				   var termRemove = $(el).children().children().html(),
+				   terms = config.subroute.split('bbx/search/')[1].replace(termRemove, '');
+				   terms = terms.replace('//', '/');		   
+				   terms = (terms[terms.length -1] == '/') ? terms.substring(0, terms.length -1) : terms;
+				   
+				   window.location = __parseUrlSearch(terms);
+			       }
+			   }
+		       }
+		     })
+	    .bind('tagClick', function(e, tag, value, callback) {
+		console.log('tag click');
+		
+		window.location = __parseUrlSearch(value);
+	    })
+	    .bind('enterKeyPress', function(e) {
+		console.log('enter');
+		
+		var textext = $(e.target).textext()[0],
+		terms = textext.hiddenInput().val(),
+		terms_str = '';
+		terms_str = terms.match(/\[(.*)\]/)[1].replace(/"/g, '').replace(/,/g, '/');
+		window.location = __parseUrlSearch(terms_str);
+	    })
+	    .bind('removeTag', function(tag) {
+		console.log('removeTag: ' + tag);
+	    });	
     }
 
-    var deleteTagMenuSearch = function(event) {
-	var target = event.target,
-	tagRemove = $(target).parents()[0],
-	tagRemoveName = $(tagRemove.children[0]).html(),
-	terms = _.without($('body').data('bbx').terms, tagRemoveName),
-	currentUrl = Backbone.history.location.hash,
-	baseUrl = currentUrl.split('search/')[0],
-	termsUrl = currentUrl.split('search/')[1],
-	newUrl = baseUrl + 'search/';
-	
-	// compose new Url
-	_.each(termsUrl.split(tagRemoveName), function(term) {
-	    if (term != '') {
-		// limpa '/' do inicio e do fim
-		term = (term.charAt(0) == '/') ? term.substring(1) : term;
-		term = (term.charAt(term.length -1) == '/') ? term.substring(0, term.length-1) : term;
-		newUrl += '/' + term;
-	    }
-	});
-	newUrl = newUrl.replace(/\/\//, '\/');
-	
-	__parseMenuSearch(terms);
-	window.location = newUrl;
-    }
-    
-    var addTagMenuSearch = function(event) {
-	console.log('addTag');
-	// TODO: on/off para essa funcao ou algo similar
-	$('#caixa_busca').off();
-	$('#caixa_busca').keyup(function(e) {
-	    if (e.keyCode == 13) {
-		var cummulative = true;
-		doSearch(cummulative);
-	    } 
-	});
-	$('.plus-search').css({"border": "2px solid #339033", "padding-bottom": "2px"});
-	$('#caixa_busca').focus();
-	// manda foco para campo de busca
-    }
-    
     var setUserPrefs = function() {
 	var userPrefs = {'name': 'userPrefs',
 			 'values': {}
@@ -239,6 +229,7 @@ define([
 	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search';
 	
 	getMedia(url, function(data){
+	    __parseMenuSearch();
 	    $(el).append(_.template(MediaDestaquesMucuaTpl));
 	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
 	    
@@ -291,7 +282,7 @@ define([
 	getMedia(url, function(data){
 	    $('#content').append(_.template(MediaMocambolaTpl));
 	    data.message = 'Mocambola ainda nao publicou nenhum conteudo.';
-
+	    
 	    $('body').data('bbx').data = data;
 	    showMediaBy('', '#media-mocambola .media');
 	    $('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
@@ -304,9 +295,10 @@ define([
 	    var resultCount,
 	    messageString = "",
 	    terms = {},
-	    reString = /search\/(.*)$/,
-	    config = $("body").data("bbx").config;
-	    terms = url.match(reString)[1].split('/');
+	    config = $("body").data("bbx").config,	    
+	    terms = url.match(/search\/(.*)$/)[1].split('/');
+	    
+	    __parseMenuSearch(terms);
 	    
 	    // parse result message
 	    if (!_.isEmpty(data.medias)) {
@@ -315,7 +307,7 @@ define([
 	    } else {
 		messageString = "Nenhum resultado";
 	    }	    
-	    __parseMenuSearch(terms);
+	    
 	    $('#imagem-busca').attr('src', config.imagePath + '/buscar.png');
 	    $('#content').html(_.template(MediaResultsTpl));
 	    data.message = 'Nenhuma media encontrada para essa busca';
@@ -327,47 +319,10 @@ define([
 	});	
     };
     
-    /**
-     * execute search
-     * 
-     */
-    var doSearch = function(cummulative = false) {
-	console.log('doSearch(' + cummulative + ')');
-	var term = $('#caixa_busca')[0].value,
-	cummulative = cummulative || false,
-	config = __getConfig(),
-	url = '',
-	apiUrl = '';
-	
-	// if asked to do cummulative search, get terms
-	if (cummulative) {
-	    var terms = $('body').data('bbx').terms || {};
-	    if (_.isObject(terms) && _.size(terms) > 0) {
-		terms.push(term);
-		terms = terms.join('/');
-	    } else {
-		terms = term;
-	    }
-	} else {
-	    terms = term;
-	}
-	
-	url = '#' + config.repository      + '/' + config.mucua + '/bbx/search/' + terms;
-	apiUrl = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + terms;    
-	//TODO: dando alguma zica na busca, apagando um termo =/
-	window.location.href = url;
-	$('#imagem-busca').attr('src', config.imagePath + '/buscando.gif');
-	getMediaSearch(apiUrl);
-    };
-    
-	    
     return {
 	init: init,
 	__getConfig: __getConfig,
-	addTagMenuSearch: addTagMenuSearch,
-	deleteTagMenuSearch: deleteTagMenuSearch,
 	showMediaBy: showMediaBy,
-	doSearch: doSearch,
 	getMedia: getMedia,
 	getMediaByMucua: getMediaByMucua,
 	getMediaByNovidades: getMediaByNovidades,

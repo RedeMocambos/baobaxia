@@ -159,13 +159,7 @@ define([
 	
 	var buscadorView = new BuscadorView();
 	buscadorView.render({});
-	
-	// adiciona eventos comuns
-	$('#caixa_busca').keyup(function(e) {
-	    if (e.keyCode == 13) {
-		MediaFunctions.doSearch();
-	    } 
-	});
+	//__parseMenuSearch(terms);	
     }
     
     /**
