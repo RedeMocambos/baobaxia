@@ -193,12 +193,14 @@ define([
      *
      */
     var renderSidebar = function(pageType) {
-	var page = page || '';
+	var page = page || '',
+	config = $("body").data("bbx").config;
+	
 	console.log('render sidebar');
 	if (this.isLogged() &&
 	    ((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() == "")) {
 	    var userData = this.getFromCookie('userData');
-	    userData.mocambolaUrl = this.getDefaultHome() + '/mocambola/' + userData.username
+	    userData.mocambolaUrl = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/mocambola/' + userData.username
 	    userData.avatar = this.getAvatar();
 	    if ($('#link-login')) {
 		$('#link-login').remove();
