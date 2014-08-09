@@ -207,6 +207,36 @@ define([
 	    }
 	    $('#user-profile').html(_.template(UserProfileTpl, userData));
 	}
+	
+	if (config.mucua == 'rede') {
+	    var mucuaData = {
+		mucua: {
+		    // FAKE DATA
+		    // TODO: get from API
+		    note: 'REDE',
+		    image: '/images/rede.png',
+		    description: '',
+		    note: '',
+		    url: '',
+		    storageSize: '100GB', 
+		}
+	    }
+	    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
+	} else {
+	    var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.mucua});
+	    mucua.fetch({
+		success: function() {
+		    var mucuaData = {
+			mucua: mucua.attributes
+		    }
+		    // FAKE DATA
+		    mucuaData.mucua.image = '/images/mucua-default.png';
+		    mucuaData.mucua.url = ''; // TODO: get from API
+		    mucuaData.mucua.storageSize = '10GB'; // TODO: get from API
+		    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
+		}
+	    });	
+	}
     }
     
     /**
