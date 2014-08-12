@@ -65,9 +65,16 @@
 	<% } else if (media.type == 'audio') { %>
 	<audio controls src="<%= media.url %>" />
 	<% } else if (media.type ='arquivo') { %>
-	<a href="<%= media.url %> ">download</a>
+	<a href="<%= media.url %>" class="download">download</a>
 	<% } %>
-      </div>    
+      </div>   
+
+      <div class="blocks">
+	<% if (media.type !='arquivo') { %>
+	<a href="<%= media.url %>" class="download">download</a>
+	<% } %>
+      </div>
+      
       <% if (!media.is_local) { %>
       <div class="blocks">
 	<p class="solicit-copy">
