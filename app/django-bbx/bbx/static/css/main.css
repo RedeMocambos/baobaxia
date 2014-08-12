@@ -186,34 +186,6 @@ a {text-decoration: none;}
 #buscador-form {height: 30px; width: 250px}
 
 /*
-.text-remove {background: url("/images/trash.png") no-repeat; padding: 7px; padding-top: 3px; margin-left: 8px}
-.text-core .text-wrap .text-tag .text-button {float:left}
-
-.text-core .text-wrap .text-tags {
-    box-sizing: border-box;
-    cursor: text;
-    padding: 3px 35px 3px 3px;
-    position: absolute;
-    margin-top: -26px;
-}
-.text-core .text-wrap .text-tags .text-tag .text-button {
-    background: none repeat scroll 0 0 #e2e6f0;
-    border-radius: 8px;
-    box-sizing: border-box;
-    color: #000;
-    cursor: pointer;
-    float: left;
-    font: 12px "lucida grande",tahoma,verdana,arial,sans-serif;
-    height: 20px;
-    margin: 0 2px 2px 0;
-    padding: 4px;
-    position: relative;
-}
-
-.text-tag .text-remove {display: none}
-.text-tag:hover .text-remove {display: inline}
-*/
-/*
  * functional tags
  */
 .video .result-thumb { background-color: #88a7b5 }
