@@ -1,0 +1,53 @@
+.text-core .text-wrap .text-tags {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 3px 35px 3px 3px;
+  cursor: text;
+  cursor: text;
+  margin-top: -26px;
+}
+.text-core .text-wrap .text-tags.text-tags-on-top {
+  z-index: 2;
+}
+.text-core .text-wrap .text-tags .text-tag {
+  float: left;
+}
+.text-core .text-wrap .text-tags .text-tag .text-button {
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  float: left;
+  border: 1px solid #9daccc;
+  background: #e2e6f0;
+  color: #000;
+  padding: 2px 20px 2px 3px;
+  margin: 0 2px 2px 0;
+  cursor: pointer;
+  height: 20px;
+  font: 14px "lucida grande", tahoma, verdana, arial, sans-serif;
+  font-weight: bold;
+}
+.text-remove {
+  position: absolute;
+  display: block;
+  width: 13px;
+  height: 16px;
+  background: url("/images/trash.png") no-repeat; 
+  margin-left: 4px;
+  margin-botom: 4px;
+}
+
+.text-tag .text-remove {
+    display: none
+}
+.text-tag:hover .text-remove {
+    display: inline
+}

@@ -185,12 +185,9 @@ a {text-decoration: none;}
 
 #buscador-form {height: 30px; width: 250px}
 
+/*
 .text-remove {background: url("/images/trash.png") no-repeat; padding: 7px; padding-top: 3px; margin-left: 8px}
 .text-core .text-wrap .text-tag .text-button {float:left}
-
-.text-core {
-    width: 250px !important;
-}
 
 .text-core .text-wrap .text-tags {
     box-sizing: border-box;
@@ -198,7 +195,6 @@ a {text-decoration: none;}
     padding: 3px 35px 3px 3px;
     position: absolute;
     margin-top: -26px;
-    width: 200px;
 }
 .text-core .text-wrap .text-tags .text-tag .text-button {
     background: none repeat scroll 0 0 #e2e6f0;
@@ -216,7 +212,7 @@ a {text-decoration: none;}
 
 .text-tag .text-remove {display: none}
 .text-tag:hover .text-remove {display: inline}
-
+*/
 /*
  * functional tags
  */
