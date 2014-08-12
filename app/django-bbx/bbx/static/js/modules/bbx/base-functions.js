@@ -84,7 +84,7 @@ define([
      * @data {String} input String with the key or wildchar
      * @return {Obj} return the selected value from the cookie
      */
-    var getFromCookie = function(key = '*') {
+    var getFromCookie = function(key) {
 	var key = key || '*';
 	if ($.cookie('sessionBBX')) {
 	    var cookieData = $.parseJSON($.cookie('sessionBBX'));
@@ -121,7 +121,7 @@ define([
      * 
      * @return {String} a url
      */
-    var getAvatar = function(username = '') {
+    var getAvatar = function(username) {
 	var username = '',
 	avatarUrl = '',
 	defaultAvatar = 'avatar-default.png';
@@ -318,7 +318,7 @@ define([
 	}, 50);	    
     }
 
-    var setNavigationVars = function(repository, mucua, subroute='') {
+    var setNavigationVars = function(repository, mucua, subroute) {
 	var subroute = subroute || '',
 	reMedia = /^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/,  // padrao de uuid
 	reMocambola = /^[0-9a-zA-Z-_]*@[0-9a-zA-Z-_\.]*\.[a-zA-Z]{2,4}$/,

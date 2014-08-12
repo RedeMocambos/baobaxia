@@ -37,7 +37,7 @@ define([
 	return $("body").data("bbx").config;
     }
     
-    var __parseResultsMessage = function(message, target = '') {
+    var __parseResultsMessage = function(message) {
 	var target = target || '#result-string',
 	imageTag = '',
 	data = {
@@ -110,7 +110,7 @@ define([
      * @type {String} string of type, of a predefined list of types
      * @target {String} string of DOM class/id mapping
      */
-    var showMediaBy = function(type = '', target = '') {
+    var showMediaBy = function(type, target) {
 	var target = target || '.media-results .media',
 	type = type || '',
 	data = $('body').data('bbx').data,

@@ -52,10 +52,11 @@ define([
 	    window.location.href = urlRedirect;
 	},
 	
-	login: function(repository='', mucua='') {
-	    console.log('login');
+	login: function(repository, mucua) {
 	    var repository = repository || '',
 	    mucua = mucua || '';	    
+	    console.log('login');
+	    
 	    if (!BBXBaseFunctions.isLogged()) {
 		// undelegate elements // TODO: achar uma solucao mais elegante
 		$('body').off();
@@ -68,23 +69,24 @@ define([
 	    }
 	},
 	
-	logout: function(repository='', mucua='') {
-	    console.log('logout');
+	logout: function(repository, mucua) {
 	    var repository = repository || '',
 	    mucua = mucua || '',
 	    urlRedirect = '#login',
 	    logoutView = new LogoutView();
 	    logoutView.doLogout();
+	    console.log('logout');
+	    
 	    $('body').removeClass().addClass('home');
 	    
 	    // redirect
 	    window.location.href = urlRedirect;
 	},
 
-	register: function(repository='', mucua='') {
-	    console.log('register');
+	register: function(repository, mucua) {
 	    var repository = repository || '',
 	    mucua = mucua || '';
+	    console.log('register');
 	},
 	
 	// media
