@@ -147,7 +147,7 @@ define([
 	} else {
 	    $('body').addClass('other-mucua');
 	}
-	
+	data.lastVisitedMucuas = __getLastVisitedMucuas(config);
 	console.log('render common: ' + name);
 	if ($('#sidebar').html() == "" ||
 	    (typeof $('#sidebar').html() === "undefined")) {
@@ -157,11 +157,15 @@ define([
 	    
 	$('#content').html('');	
 	var headerView = new HeaderView();
+	if (isLogged) {
+	    // get cookie data if has visit any mucuas
+	    // 
+	}
+	
 	headerView.render(data);
 	
 	var buscadorView = new BuscadorView();
 	buscadorView.render({});
-	//__parseMenuSearch(terms);	
     }
     
     /**
@@ -239,6 +243,71 @@ define([
 	}
     }
     
+    var __getLastVisitedMucuas = function(config) {
+	// get last visited mucuas
+
+	var visitedMucuas = {'name': 'visitedMucuas', 
+			     'values': []
+			    }
+	visitedMucuas.values = getFromCookie('visitedMucuas') || [];
+	console.log('-------------------');
+	console.log(visitedMucuas.values);
+	console.log(config.mucua);
+
+	// se for mymucua, nao adiciona a navegacao
+	if (config.mucua == config.MYMUCUA || config.mucua == 'rede') {
+	    return visitedMucuas.values;
+	}
+	
+	var arrNavMucuas = visitedMucuas.values;
+	
+	if (_.isEmpty(arrNavMucuas)) {
+	    // nao foi navegada ainda
+	    console.log('nao foi navegada ainda');
+	    
+	    // adiciona ao comeco
+	    console.log('adiciona ao comeco');
+	    visitedMucuas.values.unshift(config.mucua);
+	    console.log(visitedMucuas);
+	} else {
+	    // sim, ja existe navegacao
+	    console.log('sim, ja existe navegacao');
+	    
+	    // existe o termo?
+	    console.log('existe o termo?');
+	    var indexMucua = _.indexOf(arrNavMucuas, config.mucua);
+	    console.log(indexMucua);
+	    
+	    if (indexMucua == -1) { 
+		// nao existe, adiciona ao comeco
+		console.log('nao existe, adiciona ao comeco');
+		visitedMucuas.values.unshift(config.mucua);
+	    } else if (indexMucua == 0) {
+  		// existe, e é o primeiro (ultima mucua visitada)
+		console.log('// existe, e é o primeiro (ultima mucua visitada). nao faz nada.');
+		// nao faz nada
+	    } else {
+		// existe, em outra posicao. Tem que ir para o comeco
+		// procura existente, exclui
+		console.log('procura existente, exclui');
+		visitedMucuas.values.splice(indexMucua, 1);
+		console.log(visitedMucuas.values);
+		
+		// adiciona ao comeco
+		console.log('adiciona ao comeco');
+		visitedMucuas.values.unshift(config.mucua);
+		//console.log(visitedMucuas.values);
+	    }	    
+	}
+	
+	console.log('array nav mucuas:');
+	console.log(arrNavMucuas);
+	
+	addToCookie(visitedMucuas);
+	
+	return visitedMucuas.values;
+    }
+
     /**
      * get actual mucua
      *

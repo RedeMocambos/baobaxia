@@ -8,5 +8,12 @@
       <a href="#<%= config.repository %>/rede/<%= config.subroute %>">REDE</a></li>
     <% if (!currentUrl.match(/rede/) && config.mucua != config.MYMUCUA && config.mucua != 'rede' ) { %>
     <li class="current"><a href="#<%= config.repository %>/<%= config.mucua %>/<%= config.subroute %>"><%= config.mucua %></a></li>    <% } %>
+    <% _.each(lastVisitedMucuas, function(mucuaName, i) {
+       i += 1;
+       %>
+    <% if (mucuaName != config.mucua) { %>
+    <li class="recent-<%= i %>"><a href="#<%= config.repository %>/<%= mucuaName %>/<%= config.subroute %>"><%= mucuaName %></a></li>
+    <% } %>
+    <% }) %>
   </ul>
 </div>

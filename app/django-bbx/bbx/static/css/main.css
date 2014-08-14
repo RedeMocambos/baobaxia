@@ -67,6 +67,8 @@ a {text-decoration: none;}
 .menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #fff; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
 .menu-itens li a {color: #fff; text-decoration: none; }
 .menu-itens .current {background-color: #145B7A}
+.menu-itens .recent-1 {border: 2px dashed #fff; opacity: 0.7}
+.menu-itens .recent-2 {border: 2px dashed #fff; opacity: 0.5}
 
 /*
  * login
