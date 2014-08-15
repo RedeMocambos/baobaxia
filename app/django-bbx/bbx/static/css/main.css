@@ -69,6 +69,7 @@ a {text-decoration: none;}
 .menu-itens .current {background-color: #145B7A}
 .menu-itens .recent-1 {border: 2px dashed #fff; opacity: 0.7}
 .menu-itens .recent-2 {border: 2px dashed #fff; opacity: 0.5}
+.menu-itens .recent-3 {border: 2px dashed #fff; opacity: 0.3}
 
 /*
  * login
