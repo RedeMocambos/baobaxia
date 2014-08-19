@@ -155,12 +155,12 @@ def media_detail(request, repository, mucua, pk=None, format=None):
 
         media.save()
         if media.id:
-            tags = (request.DATA['tags'] if iter(request.DATA['tags']) else
-                    request.DATA['tags'].split(','))
+            tags = request.DATA['tags'].split(',')
             media.tags.clear()
             for tag in tags:
                 if tag:
                     try:
+                        tag = tag.strip()
                         tag = Tag.objects.get(name=tag)
                     except Tag.DoesNotExist:
                         tag = Tag.objects.create(name=tag)
