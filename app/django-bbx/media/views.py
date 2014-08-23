@@ -1,9 +1,11 @@
 from os import path
 from datetime import datetime
+import json
 
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.response import Response
+from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
 from sorl.thumbnail import get_thumbnail
 
 from django.http import HttpResponseRedirect, HttpResponse
@@ -325,3 +327,16 @@ def media_url(request, repository, mucua, uuid):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     return Response(media.get_url())
+
+
+@api_view(['GET'])
+@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+def media_where_is(request, repository, mucua, uuid):
+    
+    try:
+        media = Media.objects.get(uuid=uuid)
+    except Media.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    io = media.where_is()
+    data = json.loads(io)
+    return Response(data)

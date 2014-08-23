@@ -5,6 +5,7 @@ import uuid
 from datetime import datetime
 import exceptions
 from importlib import import_module
+import subprocess
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -26,7 +27,7 @@ except ImportError:
 TYPE_CHOICES = (('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'),
                 ('arquivo', 'arquivo'))
 FORMAT_CHOICES = (('ogg', 'ogg'), ('ogv', 'ogv'), ('webm', 'webm'), ('mp4', 'mp4'),
-                  ('jpg', 'jpg'), ('pdf', 'pdf'))
+                  ('jpg', 'jpg'), ('png', 'png'), ('pdf', 'pdf'))
 
 
 def media_file_name(instance, file_name):
@@ -34,11 +35,16 @@ def media_file_name(instance, file_name):
     logger.debug(os.path.join(get_file_path(instance) + instance.get_file_name()))
     return os.path.join(get_file_path(instance), instance.get_file_name())
 
+def media_file_rename(instance, new_file_name):
+    u"""Renomeia o media no repositório."""
+    logger.info('Media renamed: ' + new_file_name)
+    cmd = 'git mv ' + os.path.basename(instance.media_file.name) + new_file_name
+    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(instance))
+    pipe.wait()
 
 def generate_UUID():
     """Gera um uuid4"""
-    return str(uuid.uuid4())
-
+    return str(uuid.uuid4())  
 
 def get_file_path(instance):
     """Retorna o caminho do media"""
@@ -155,8 +161,11 @@ class Media(models.Model):
         return '/media/' + get_media_path(self) + self.get_file_name()
 
     def get_file_name(self):
-        return (slugify(self.get_name()) + '-' + str(self.uuid[:5]) + '.' +
-                self.format)
+        if self.pk is None:
+            return (slugify(self.get_name()) + '-' + str(self.uuid[:5]) + '.' +
+                    self.format)
+        else:
+            return os.path.basename(self.media_file.name)
 
     def get_repository(self):
         return self.repository.get_name()
@@ -170,11 +179,14 @@ class Media(models.Model):
     def get_format(self):
         return self.format
 
-    # FIX
+    # FIX (Nao pega na primeira save)
     def _set_is_local(self):
-        print os.path.join(get_file_path(self), self.get_file_name())
         self.is_local = os.path.isfile(os.path.join(get_file_path(self),
                                                     self.get_file_name()))
+
+    def where_is(self):
+        from repository.models import git_annex_where_is
+        return git_annex_where_is(self)
 
     def get_tags(self):
         return self.tags

@@ -17,10 +17,11 @@ from media.models import Media
 from media.models import get_file_path
 from repository.signals import filesync_done
 from bbx.settings import DEFAULT_REPOSITORY
+from bbx.utils import logger
 
 # REPOSITORY_CHOICE é uma tupla com repositórios dentro da pasta /annex
 #REPOSITORY_CHOICES = [('mocambos', 'mocambos'), ('sarava', 'sarava')]
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
 repository_dir = settings.REPOSITORY_DIR
 
 
@@ -180,10 +181,18 @@ def git_annex_get(repository_path):
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
+def git_annex_where_is(media):
+    u"""Mostra quais mucuas tem copia do media."""
+    cmd = 'git annex whereis ' + media.get_file_name() + ' --json'
+    logger.debug('Whereis filepath: ' + get_file_path(media) + media.get_file_name())
+    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media), stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    logger.debug(error)
+    logger.debug(output)
+    return output
 
 def git_annex_sync(repository_path):
     u"""Sincroniza o repositório com os outros clones remotos."""
-    # TODO: Next release with possibility to choice what to get
     logger.info('git annex sync')
     cmd = 'git annex sync'
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
