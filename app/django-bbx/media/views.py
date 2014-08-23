@@ -64,7 +64,6 @@ def media_list(request, repository, mucua, args=None, format=None):
                                         '/bbx/search/')
 
         # TODO LOW: futuramente, otimizar query de busca - elaborar quer
-        
         # listagem de conteudo filtrando por repositorio e mucua
         if mucua == 'rede':
             medias = Media.objects.filter(
@@ -76,14 +75,12 @@ def media_list(request, repository, mucua, args=None, format=None):
             ).filter(origin=mucua.id)
         # sanitizacao -> remove '/' do final
         args = args.rstrip('/')
-        
         # pega args da url se tiver
         if args:
             for arg in args.split('/'):
                 # verifica se a palavra eh tipo, formato ou tag e filtra
-                if arg in [key for
-                           (key, type_choice) in getTypeChoices() if
-                           arg == type_choice]:
+                if (arg in [key for (key, type_choice) in getTypeChoices() if
+                            arg == type_choice]):
                     medias = medias.filter(type__iexact=arg)
                 elif arg in [key for
                              (key, format_choice) in getFormatChoices() if
@@ -92,10 +89,10 @@ def media_list(request, repository, mucua, args=None, format=None):
                 else:
                     medias = medias.filter(
                         Q(tags__name__icontains=arg) |
-                        Q(name__icontains=arg) | 
+                        Q(name__icontains=arg) |
                         Q(note__icontains=arg)
                         ).distinct()
-        
+
         # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
         return Response(serializer.data)
@@ -106,7 +103,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
     """
     Retrieve, create, update or delete a media instance.
     """
-    
+
     # pegando sessao por url
     redirect_page = False
 
@@ -146,7 +143,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
         if pk != '':
             serializer = MediaSerializer(media)
             return Response(serializer.data)
-        
+
     elif request.method == 'PUT':
         if pk == '':
             return HttpResponseRedirect(
@@ -160,15 +157,18 @@ def media_detail(request, repository, mucua, pk=None, format=None):
 
         media.save()
         if media.id:
-            tags = (request.DATA['tags'] if iter(request.DATA['tags']) else
-                    request.DATA['tags'].split(','))
+            tags = request.DATA['tags'].split(',')
             media.tags.clear()
             for tag in tags:
-                if tag != '':
+                if tag:
                     try:
+                        tag = tag.strip()
                         tag = Tag.objects.get(name=tag)
                     except Tag.DoesNotExist:
                         tag = Tag.objects.create(name=tag)
+                        # TODO: case or proximity check to avoid spelling
+                        # errors? Or do people handle this by manual merging &
+                        # deletion of tags?
                         tag.save()
 
                     media.tags.add(tag)
@@ -199,7 +199,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             author = User.objects.get(username=author)
         except User.DoesNotExist:
             author = User.objects.get(username=request.user)
-        
+
         media = Media(repository=repository,
                       origin=mucua,  # request.DATA['origin'],
                       author=author,
@@ -230,7 +230,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                     tag.save()
 
                 media.tags.add(tag)
-            
+
             media.save()  # salva de novo para chamar o post_save
             serializer = MediaSerializer(media)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -275,27 +275,27 @@ def media_by_mocambola(request, repository, mucua, username, qtd=5):
             mucua = Mucua.objects.get(description=mucua)
         except Mucua.DoesNotExist:
             mucua = Mucua.objects.get(description=DEFAULT_MUCUA)
-            redirect_page = True        
-    
+            redirect_page = True
+
     try:
         repository = Repository.objects.get(name=repository)
     except Repository.DoesNotExist:
         repository = Repository.objects.get(name=DEFAULT_REPOSITORY)
-    
+
     try:
         author = User.objects.get(username=username)
     except User.DoesNotExist:
         print 'user not exists'
-    
+
     if mucua != 'all':
         medias = Media.objects.filter(
             repository=repository.id
             ).filter(origin=mucua.id).filter(
-            author = author.id).order_by('-date')[:qtd]
+            author=author.id).order_by('-date')[:qtd]
     else:
         medias = Media.objects.filter(
             repository=repository.id
-            ).filter(author = author.id).order_by('-date')[:qtd]
+            ).filter(author=author.id).order_by('-date')[:qtd]
 
     # serializa e da saida
     serializer = MediaSerializer(medias, many=True)
@@ -304,7 +304,7 @@ def media_by_mocambola(request, repository, mucua, username, qtd=5):
 
 @api_view(['GET'])
 def show_image(request, repository, mucua, uuid, width, height, format_type):
-    
+
     try:
         media = Media.objects.get(uuid=uuid)
     except Media.DoesNotExist:
@@ -320,7 +320,7 @@ def show_image(request, repository, mucua, uuid, width, height, format_type):
 
 @api_view(['GET'])
 def media_url(request, repository, mucua, uuid):
-    
+
     try:
         media = Media.objects.get(uuid=uuid)
     except Media.DoesNotExist:
