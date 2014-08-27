@@ -31,7 +31,7 @@ create_user() {
 # PRE: pkgs:
 
 # dependencies: se for deb pkg, tirar
-apt-get install git git-annex nginx supervisor python-pip usbmount
+apt-get install git git-annex nginx supervisor python-pip 
 
 ### cria diretorio basico
 mkdir -p $DEFAULT_REPOSITORY_DIR
@@ -331,6 +331,14 @@ echo ""
 echo "Ativando o Baobáxia ..."
 supervisorctl reload
 supervisorctl restart bbx
+
+echo ""
+echo "Ativando a sincronização bbx (cron) ..."
+cp $INSTALL_DIR/baobaxia/bin/bbx-cron.sh.example $INSTALL_DIR/bin/bbx-cron.sh
+chmod +x $INSTALL_DIR/bin/bbx-cron.sh
+touch /etc/cron.d/bbx
+printf "# Sincronização do Baobáxia \n" >> /etc/cron.d/bbx
+printf "*/30 * * * * * /srv/bbx/bin/bbx-cron.sh \n" >> /etc/cron.d/bbx
 
 
 echo "..."
