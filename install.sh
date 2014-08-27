@@ -333,13 +333,12 @@ supervisorctl reload
 supervisorctl restart bbx
 
 echo ""
-echo "Ativando a sincronização bbx (cron) ..."
+echo "Ativando a sincronização (bbx-cron) ..."
 cp $INSTALL_DIR/baobaxia/bin/bbx-cron.sh.example $INSTALL_DIR/bin/bbx-cron.sh
 chmod +x $INSTALL_DIR/bin/bbx-cron.sh
 touch /etc/cron.d/bbx
 printf "# Sincronização do Baobáxia \n" >> /etc/cron.d/bbx
-printf "*/30 * * * * * /srv/bbx/bin/bbx-cron.sh \n" >> /etc/cron.d/bbx
-
+printf "*/30 * * * * * exu bash /srv/bbx/bin/bbx-cron.sh \n" >> /etc/cron.d/bbx
 
 echo "..."
 echo "Instalação completa!"
