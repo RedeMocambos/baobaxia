@@ -7,9 +7,9 @@
       <% if (media.type == 'imagem') { %>
       <img src="<%= media.url %>" />
       <% } else if (media.type == 'video') { %>
-      <video controls src="<%= media.url %>" />
+      <video preload="metadata" controls src="<%= media.url %>" />
       <% } else if (media.type == 'audio') { %>
-      <audio controls src="<%= media.url %>" />
+      <audio preload="metadata" controls src="<%= media.url %>" />
       <% } else if (media.type ='arquivo') { %>
       <a href="<%= media.url %> ">download</a>
       <% } %>
