@@ -24,7 +24,7 @@ de sistema adotada, a interface se conecta à uma API, da qual
 obtém dados, cabendo à primeira a apresentação dos resultados. Não
 cabe à interface lidar com o armazenamento ou a lógica do sistema,
 apenas com a lógica da apresentação das informações. Deste modo,
-a construção da API e a estruturação da plataforma precedem o
+a construção da \emph{API} e a estruturação da plataforma precedem o
 desenvolvimento da interface.
 
 Entretanto, por se tratar de uma ferramenta experimental e em fase
@@ -41,7 +41,7 @@ desenvolvimento.
 O levantamento das funcionalidades do sistema foi a primeira etapa
 realizada para criação do layout e implantação da interface. Para
 tal, contamos com levantamentos textuais e na elaboração de um
-wireframe.
+\emph{wireframe}.
 
 \subsection{Wireframe}
 O desenho de wireframe é um método eficiente para o design de
@@ -50,11 +50,11 @@ e o fluxo de interação entre cada uma delas. Por meio do wireframe
 os trabalhos para construção da identidade visual são orientados,
 de modo que o desenho seja compatível com a estrutura do sistema.
 
-O wireframe completo está disponível em: https://raw.githubusercontent.com/RedeMocambos/baobaxia/master/doc/layout/wireframe.svg.
-O arquivo pode ser executado utilizando o programa Inkscape (disponível
-em: http://inkscape.org).
+O wireframe completo está disponível em: \url{https://raw.githubusercontent.com/RedeMocambos/baobaxia/master/doc/layout/wireframe.svg}.
+O arquivo pode ser executado utilizando o programa Inkscape \footnote{disponível
+  em: \url{http://inkscape.org}.}.
 
-Foram listadas as seguintes páginas:
+Foram listadas no \emph{wireframe} as seguintes páginas:
 \begin{itemize}
 \item login de usuário
 \item home da mucua
@@ -75,11 +75,177 @@ Foram listadas as seguintes páginas:
 \item sincronização de dispositivo
 \end{itemize}
 
+Além destas, ainda constam como funcionalidades/ações:
+\begin{itemize}
+\item registrar
+\item logout
+\item esqueci a senha
+\item página do mocambola / profile
+\item edição da mucua
+\item lista de requisições da mucua
+\item informações da rede
+\item cabeçalho
+\item rodapé com indicação de uso da mucua
+
 \subsection{Arquitetura}
+A arquitetura da interface é modular, conectando-se com a \emph{API}
+\footnote{Uma \emph{API}\footnote{Application programming interface}
+  especifica um componente de software em termos de suas operações,
+  entradas e saídas e coorrespondentes tipos. Seu objetivo é definir
+  um conjunto de funcionalidades que são independentes da implementação
+  adotada, permitindo que tanto a implementação técnica (para dentro)
+  como a interface (que se encaixa) sejam alteradas, sem dano para
+  qualquer uma das partes.} do software básico. Isso quer dizer que
+é possível desenvolver outras interfaces em cima da mesma \emph{API}
+- como uma interface em modo texto, ou uma interface exclusiva para
+telefones celulares - sem precisar reprogramar o núcleo do programa.
+
+A arquitetura baseada em \emph{APIs} é perfeitamente adequada para
+softwares que se projetam como de longa duração, já que alterações
+tanto no interior do sistema como na interface podem ser feitas sem
+prejuízo para as outras partes. Uma melhoria interna no núcleo do sistema
+pode ser implementada sem que nem sequer se perceba alteração na parte
+da interface; do mesmo modo, qualquer alteração e implementação nova da
+interface pode ser feita contanto que utilize as rotas da \emph{API}
+existente. Trata-se de uma arquitetura modular, desacoplada,
+perfeitamente adequada para a natureza de um sistema como o Baobáxia.
+
+A \emph{API} já encontrava-se desenhada e em parte implementada; mas
+durante a construção da interface - a parte visual do sistema - novas
+tarefas e funcionalidades, expressa em rotas e \emph{urls}, foram
+adicionadas, chegando-se a um desenho mais próximo de uma versão
+operacional do sistema. 
+
+O desenho da arquitetura da \emph{API} é fundamental para construção
+da interface, pois é por meio das urls da \emph{API} que o sistema
+irá buscar informações de conteúdo e enviar dados para realizar ações.
+
+As rotas listadas abaixo estão divididas por áreas
+
+\emph{Autenticação}
+\begin{itemize}
+\item /login                    # funcionalidade de login
+\item /[repo]/[mucua]/login     # funcionalidade de login (com caminho)
+\item /logout                   # funcionalidade de logout
+\item /[repo]/[mucua]/logout    # funcionalidade de login (com caminho)
+\item /register                 # registro de novos usuários
+\item /[repo]/[mucua]/register  # registro de novos usuários (com caminho)
+\item /lost_password            # recuperação de senha
+\item /[repo]/[mucua]/lost_password   # recuperação de senha (com caminho) 
+\end{itemize}
+
+\emph{Mocambola}
+\begin{itemize}
+\item /[repo]/[mucua]/mocambola/[user] {get}          # profile do mocambola
+\item /[repo]/[mucua]/mocambola/[user] {put, delete}  # edição de dados do mocambola
+\end{itemize}
+
+\emph{Mucua}
+\begin{itemize}
+\item /[repo]/[mucua] {get}         # home da mucua
+\item /[repo]/[mucua] {put}         # atualização da mucua
+\item /[repo]/[mucua]/info          # informações sobre a mucua
+\item /[repo]/[mucua]/requests      # requisições da mucua
+\end{itemize}
+
+\emph{Home da rede}
+\begin{itemize}                
+\item /rede                         # home da rede
+\item /rede/info                    # informações da rede
+\end{itemize}
+
+\emph{Funcionalidades media}
+\begin{itemize}
+\item /[repo]/[mucua]/media {post}                # inserir media
+\item /[repo]/[mucua]/media/[uuid] {get}          # retornar media
+\item /[repo]/[mucua]/media/[uuid] {put, delete}  # atualizar media
+\item /[repo]/[mucua]/media/last {get}            # retorna últimas medias adicionadas
+\item /[repo]/[mucua]/media/[uuid]/url            # retorna url do arquivo
+\item /[repo]/[mucua]/media/[uuid]/[width]x[height].[format]       # retorna imagem da media
+\item /[repo]/[mucua]/media/[uuid]/related        # retorna media relacionada à media atual [uuid]
+\end{itemize}
+
+\emph{Funcionalidades básicas para definição de escopo}
+\begin{itemize}
+\item /repository/list                     # lista repositórios disponíveis
+\item /repository/*                        # retorna repositório padrão
+\item /[repo]/mucuas                       # retorna mucuas do [repositório]
+\item /mucua/                              # retorna mucua padrão
+\item /mucua/list                          # retorna lista das mucuas
+\end{itemize}
+
+\emph{Busca}
+\begin{itemize}
+\item /[repo]/[mucua]/bbx/search/[arg1]/[arg2]/...  # busca por argumentos
+\end{itemize}
 
 \section{Layout da interface}
+Por Layout entendemos o desenho propriamente dito, na forma de uma
+imagem, a ser implementada pelo programador web. O trabalho divide-se
+entre a criação de uma identidade visual (ideia) e o desenho das
+telas principais (a aplicação da ideia a casos reais).
+
 \subsection{Identidade visual}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/Logo_BBX.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Logomarca Baobáxia]{Logomarca Baobáxia}
+  \label{fig:Logo_BBX}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/Logo_BBX_Na_Rota.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Logomarca Baobáxia na Rota dos Baobás]{
+    Logomarca Baobáxia na Rota dos Baobás}
+  \label{fig:Logo_BBX_Na_Rota}
+\end{figure}
+
+
 \subsection{Desenho das telas principais}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/layout-login.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Página de login]{Página de login}
+  \label{fig:layout-login}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/layout-pgCONTEUDO.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Página do conteúdo]{Página do conteúdo}
+  \label{fig:layout-pgCONTEUDO}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/layout-pgMUCUA.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Página da Mucua]{Página da Mucua}
+  \label{fig:layout-pgMUCUA}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/layout-pgREDE.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Página da Rede]{Página da Rede}
+  \label{fig:layout-pgREDE}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/layout-pgREDEbusca.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Página da Rede com busca]{Página da Rede com busca}
+  \label{fig:layout-pgREDEbusca}
+\end{figure}
 
 \section{Interface para usuários}
 \subsection{Arquitetura da interface}
