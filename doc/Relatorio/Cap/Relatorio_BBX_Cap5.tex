@@ -56,36 +56,37 @@ O arquivo pode ser executado utilizando o programa Inkscape \footnote{disponíve
 
 Foram listadas no \emph{wireframe} as seguintes páginas:
 \begin{itemize}
-\item login de usuário
-\item home da mucua
-\item visualização da rede
-\item visualização por tag
-\item visualização por tags combinadas
-\item visualização no modo grid
-\item visualização no modo lista
-\item página do arquivo
-\item página do arquivo (visualzada a partir de outra mucua com alta
-  conectividade
-\item página do arquivo (visualzada a partir de outra mucua com baixa
-  conectividade
-\item envio de arquivos
-\item edição de arquivos
-\item listagem de mucuas
-\item informações da mucua
-\item sincronização de dispositivo
+  \item login de usuário
+  \item home da mucua
+  \item visualização da rede
+  \item visualização por tag
+  \item visualização por tags combinadas
+  \item visualização no modo grid
+  \item visualização no modo lista
+  \item página do arquivo
+  \item página do arquivo (visualzada a partir de outra mucua com alta
+    conectividade
+  \item página do arquivo (visualzada a partir de outra mucua com baixa
+    conectividade
+  \item envio de arquivos
+  \item edição de arquivos
+  \item listagem de mucuas
+  \item informações da mucua
+  \item sincronização de dispositivo
 \end{itemize}
 
 Além destas, ainda constam como funcionalidades/ações:
 \begin{itemize}
-\item registrar
-\item logout
-\item esqueci a senha
-\item página do mocambola / profile
-\item edição da mucua
-\item lista de requisições da mucua
-\item informações da rede
-\item cabeçalho
-\item rodapé com indicação de uso da mucua
+  \item registrar
+  \item logout
+  \item esqueci a senha
+  \item página do mocambola / profile
+  \item edição da mucua
+  \item lista de requisições da mucua
+  \item informações da rede
+  \item cabeçalho
+  \item rodapé com indicação de uso da mucua
+\end{itemize}    
 
 \subsection{Arquitetura}
 A arquitetura da interface é modular, conectando-se com a \emph{API}
@@ -124,59 +125,59 @@ As rotas listadas abaixo estão divididas por áreas
 
 \emph{Autenticação}
 \begin{itemize}
-\item /login                    # funcionalidade de login
-\item /[repo]/[mucua]/login     # funcionalidade de login (com caminho)
-\item /logout                   # funcionalidade de logout
-\item /[repo]/[mucua]/logout    # funcionalidade de login (com caminho)
-\item /register                 # registro de novos usuários
-\item /[repo]/[mucua]/register  # registro de novos usuários (com caminho)
-\item /lost_password            # recuperação de senha
-\item /[repo]/[mucua]/lost_password   # recuperação de senha (com caminho) 
+  \item /login (funcionalidade de login)
+  \item /[repo]/[mucua]/login (funcionalidade de login - com caminho)
+  \item /logout (funcionalidade de logout)
+  \item /[repo]/[mucua]/logout (funcionalidade de login - com caminho)
+  \item /register (registro de novos usuários)
+  \item /[repo]/[mucua]/register (registro de novos usuários - com caminho)
+  \item /lost\_password (recuperação de senha)
+  \item /[repo]/[mucua]/lost\_password (recuperação de senha - com caminho) 
 \end{itemize}
 
 \emph{Mocambola}
 \begin{itemize}
-\item /[repo]/[mucua]/mocambola/[user] {get}          # profile do mocambola
-\item /[repo]/[mucua]/mocambola/[user] {put, delete}  # edição de dados do mocambola
+  \item /[repo]/[mucua]/mocambola/[user] {get}          profile do mocambola
+  \item /[repo]/[mucua]/mocambola/[user] {put, delete}  edição de dados do mocambola
 \end{itemize}
 
 \emph{Mucua}
 \begin{itemize}
-\item /[repo]/[mucua] {get}         # home da mucua
-\item /[repo]/[mucua] {put}         # atualização da mucua
-\item /[repo]/[mucua]/info          # informações sobre a mucua
-\item /[repo]/[mucua]/requests      # requisições da mucua
+  \item /[repo]/[mucua] {get}         home da mucua
+  \item /[repo]/[mucua] {put}         atualização da mucua
+  \item /[repo]/[mucua]/info          informações sobre a mucua
+  \item /[repo]/[mucua]/requests      requisições da mucua
 \end{itemize}
 
 \emph{Home da rede}
 \begin{itemize}                
-\item /rede                         # home da rede
-\item /rede/info                    # informações da rede
+  \item /rede                         home da rede
+  \item /rede/info                    informações da rede
 \end{itemize}
 
 \emph{Funcionalidades media}
 \begin{itemize}
-\item /[repo]/[mucua]/media {post}                # inserir media
-\item /[repo]/[mucua]/media/[uuid] {get}          # retornar media
-\item /[repo]/[mucua]/media/[uuid] {put, delete}  # atualizar media
-\item /[repo]/[mucua]/media/last {get}            # retorna últimas medias adicionadas
-\item /[repo]/[mucua]/media/[uuid]/url            # retorna url do arquivo
-\item /[repo]/[mucua]/media/[uuid]/[width]x[height].[format]       # retorna imagem da media
-\item /[repo]/[mucua]/media/[uuid]/related        # retorna media relacionada à media atual [uuid]
+  \item /[repo]/[mucua]/media {post}                inserir media
+  \item /[repo]/[mucua]/media/[uuid] {get}          retornar media
+  \item /[repo]/[mucua]/media/[uuid] {put, delete}  atualizar media
+  \item /[repo]/[mucua]/media/last {get}            retorna últimas medias adicionadas
+  \item /[repo]/[mucua]/media/[uuid]/url            retorna url do arquivo
+  \item /[repo]/[mucua]/media/[uuid]/[width]x[height].[format]       retorna imagem da media
+  \item /[repo]/[mucua]/media/[uuid]/related        retorna media relacionada à media atual [uuid]
 \end{itemize}
 
 \emph{Funcionalidades básicas para definição de escopo}
 \begin{itemize}
-\item /repository/list                     # lista repositórios disponíveis
-\item /repository/*                        # retorna repositório padrão
-\item /[repo]/mucuas                       # retorna mucuas do [repositório]
-\item /mucua/                              # retorna mucua padrão
-\item /mucua/list                          # retorna lista das mucuas
+  \item /repository/list                     lista repositórios disponíveis
+  \item /repository/*                        retorna repositório padrão
+  \item /[repo]/mucuas                       retorna mucuas do [repositório]
+  \item /mucua/                              retorna mucua padrão
+  \item /mucua/list                          retorna lista das mucuas
 \end{itemize}
 
 \emph{Busca}
 \begin{itemize}
-\item /[repo]/[mucua]/bbx/search/[arg1]/[arg2]/...  # busca por argumentos
+  \item /[repo]/[mucua]/bbx/search/[arg1]/[arg2]/...  busca por argumentos
 \end{itemize}
 
 \section{Layout da interface}
@@ -186,6 +187,9 @@ entre a criação de uma identidade visual (ideia) e o desenho das
 telas principais (a aplicação da ideia a casos reais).
 
 \subsection{Identidade visual}
+
+Foi criada uma logomarca para o Baobáxia, considerando ...
+
 
 \begin{figure}[htbp]
   \centering
@@ -204,8 +208,22 @@ telas principais (a aplicação da ideia a casos reais).
   \label{fig:Logo_BBX_Na_Rota}
 \end{figure}
 
-
 \subsection{Desenho das telas principais}
+
+Após elaborada a identidade visual, partiu-se para o desenho das
+principais telas do sistema. A partir delas, o trabalho de codificação
+da interface pode ser iniciado, e também ajustes no desenho puderam ser
+feitos após a implementação em código do desenho.
+
+Decidiu-se que as principais telas para a fase inicial do projeto seriam:
+\begin{itemize}
+  \item Página inicial / tela de login
+  \item Página inicial da mucua
+  \item Página inicial da rede
+  \item Rodapé com indicativos sobre utilização da mucua
+  \item Interface de busca combinada
+  \item Página do conteúdo
+\end{itemize}
 
 \begin{figure}[htbp]
   \centering
@@ -248,7 +266,52 @@ telas principais (a aplicação da ideia a casos reais).
 \end{figure}
 
 \section{Interface para usuários}
+A interface propriamente dita é a interação do sistema com o usuário;
+deve conter as funcionalidades básicas do sistema disponíveis para
+interação, implementada na forma de uma página de internet. O presente
+tópico pretende discorrer sobre as tecnologias e a arquitetura adotadas.
+
 \subsection{Arquitetura da interface}
+A interface do Baobáxia é a parte superior, mais aparente, do sistema,
+conversando com o seu núcleo por meio de uma \emph{API}. Decidiu-se
+pela implementação de uma interface em HTML e JavaScript, utilizando
+uma série de bibliotecas de código, buscando separar as camadas do modelo
+de dados, lógica de programação, roteamento, visualização dos dados e
+templates de páginas.
+
+Para garantir tal arquitetura, adotamos as seguintes bibliotecas:
+\begin{itemize}
+  \item \emph{Backbone.Js}: para lidar com o modelo de dados e as conexões
+    com a \emph{API}, cuidando da atualização dos dados
+  \item \emph{Require.js}: cuida do carregamento dinâmico das bibliotecas
+    e suas dependências, adicionando tal funcionalidade ao JavaScript
+  \item \emph{Underscore.js}: biblioteca assistente para o código, adiciona
+    uma série de métodos úteis ao trato com os dados e a exibição dos
+    conteúdos na forma de Templates
+  \item \emph{Jquery} e outras bibliotecas auxiliares de código, para
+    manipulação dos dados do \emph{DOM} \footnote Document Object Model
+\end
+
 \subsection{Implementação da interface junto à API}
+Foi montada uma estrutura que permite a fácil e rápida expansão das
+funcionalidades do sistema na interface, obedecendo a um padrão de rotas e
+disposição de funcionalidades. A interface se montou acompanhando a \emph{API},
+surgerindo novas funcionalidades ainda não implementadas no núcleo do sistema.
+
+A estrutura é a que segue:
+\begin{itemize}
+  \item definição de bibliotecas e mapeamento de endereços
+  \item funcionalidades relacionadas à media
+  \item funcionalidades relacionadas à tarefas do Baobáxia
+  \item visualizações (autenticação, media, mocambola, mucua e comuns)
+  \item templates (modelos de dados para autenticação, media, mocambola e mucua)
+  \item estilos (formatação HTML / arquivos css)
+\end{itemize}
+
 \subsection{Implementação das telas principais}
-\subsection{Diagnóstico de problemas, alterações e ajustes no layout}
+Foram implementadas as telas de login com funcionalidade de logout,
+página inicial da mucua com listagem de conteúdos da mucua e dados da mucua,
+página inicial da rede com listagem de conteúdos de toda a rede (apenas
+metadados), página do conteúdo, página de edição do conteúdo, página de
+inserção de conteúdos, listagem de conteúdos por mocambolas, navegação
+por categorias, listagem em lista ou em grid.
