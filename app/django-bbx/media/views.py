@@ -201,7 +201,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             author = User.objects.get(username=request.user)
 
         media = Media(repository=repository,
-                      origin=mucua,  # request.DATA['origin'],
+                      origin=mucua,
                       author=author,
                       name=request.DATA['name'],
                       note=request.DATA['note'],

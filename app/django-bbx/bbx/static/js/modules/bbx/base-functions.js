@@ -73,7 +73,7 @@ define([
 	serializedCookie = $.toJSON(cookieData);
 	
 	$.cookie('sessionBBX', null);
-	$.cookie('sessionBBX', serializedCookie, { expires: 1});
+	$.cookie('sessionBBX', serializedCookie);
 	var cookie = $.parseJSON($.cookie('sessionBBX'));
 	return cookieData;
     }
