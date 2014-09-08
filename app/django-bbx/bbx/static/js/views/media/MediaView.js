@@ -14,8 +14,8 @@ define([
 	    console.log("view media " + uuid);	    
 	    var config = $("body").data("bbx").config,
 	    media = '',
-	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid;
-	    console.log("usuário logado? " +  BBXBaseFunctions.isLogged());
+	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
+	    urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis';
 	    
 	    var userData = BBXBaseFunctions.getFromCookie('userData');
 	    if (userData) {
@@ -34,13 +34,18 @@ define([
 		$('#content').html(_.template(MediaViewTpl, data));
 		
 		// get image
-		
-
 	    });
-	    
-	    // pegar media
-	    // dar o parse do media
-	    
+
+	    // who has the file
+	    var dataWhereis = new MediaModel([], {url: urlWhereis});
+	    dataWhereis.fetch({
+		success: function() {
+		    var mucuas = dataWhereis.attributes.whereis;		    
+		    _.each(mucuas, function(mucua) {
+			$('#whereis').append('<a href="' + config.mucua + '/' + mucua.description + '">' + mucua.description + '</a>');
+		    });
+		}
+	    });
 	}
     });
     return MediaView;
