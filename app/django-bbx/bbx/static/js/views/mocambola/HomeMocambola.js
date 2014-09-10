@@ -7,7 +7,7 @@ define([
     'modules/mocambola/model',
     'text!templates/mocambola/HomeMocambola.html',
 ], function($, _, Backbone, BBXBaseFunctions, MediaFunctions, MocambolaModel, HomeMocambolaTpl) {
-    var NetworkView = Backbone.View.extend({
+    var HomeMocambola = Backbone.View.extend({
 	el: "body",    
 
 	__getMocambola: function(username) {
@@ -48,5 +48,5 @@ define([
 	}
     });
 
-    return NetworkView;
+    return HomeMocambola;
 });

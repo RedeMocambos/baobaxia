@@ -9,10 +9,11 @@ define([
     'views/auth/LogoutView',
     'views/common/IndexView',  
     'modules/mucua/router',
+    'modules/repository/router',
     'modules/media/router',
     'modules/bbx/router',
     'modules/mocambola/router',
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter, MediaRouter, BBXRouter, MocambolaRouter){
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter, RepositoryRouter, MediaRouter, BBXRouter, MocambolaRouter){
     var App = {};
     App.Router = Backbone.Router.extend({
 	Routers: {},
@@ -29,6 +30,10 @@ define([
 	    'register': 'register',
 	    
 	    // module specific
+	    ':repository': 'invokeRepositoryModule',
+	    ':repository/': 'invokeRepositoryModule',
+	    ':repository/list': 'invokeRepositoryModule',
+	    ':repository/mucuas': 'invokeRepositoryModule',
 	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
 	    ':repository/:mucua/mocambola/*subroute': 'invokeMocambolaModule',
 	    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',	    
@@ -36,6 +41,7 @@ define([
 	    ':repository/:mucua/media/*subroute': 'invokeMediaModule',   
 	    ':repository/:mucua/mucua/*subroute': 'invokeMucuaModule',
 	    ':repository/:mucua/*subroute': 'invokeMucuaModule',
+	    ':repository/:mucua': 'invokeMucuaModule',
 	},
 
 	
@@ -94,6 +100,15 @@ define([
 	    console.log('media');
 	    BBXBaseFunctions.setNavigationVars(repository, mucua, subroute);
 	    this.Routers.MediaRouter = new MediaRouter(repository + "/" + mucua + "/media/", subroute);
+	},
+
+	// repository
+	invokeRepositoryModule: function(repository) {
+	    var subroute = window.location.hash.split('/')[1];
+	    console.log('repository');
+	    console.log('subroute: ' + subroute);
+	    BBXBaseFunctions.setNavigationVars(repository, '', subroute);
+	    this.Routers.RepositoryRouter = new RepositoryRouter(repository, subroute);
 	},
 
 	// mucua

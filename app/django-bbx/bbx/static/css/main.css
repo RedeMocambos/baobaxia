@@ -260,6 +260,11 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 #mocambola-home .actions {clear: both}
 #mocambola-home .actions h4.link a {color: #5EA933; font-size: 18px;}
 
+/*
+ * repository
+ */
+.item-mucua { border: 1px solid #bbb; display: inline; margin: 10px; padding: 6px; background-color: #ddd}
+
 /* esquema de fundo de tela personalizado para mucua */
 .rede #header,
 .media #header,

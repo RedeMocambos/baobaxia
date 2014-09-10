@@ -92,16 +92,6 @@ define([
 		     */
 		}
 	    });	    
-	    /*
-		-> media.getContentByMucua(mucua) # retorna lista de conteúdos da mucua    - OK
-		-> mucua.getData()              # retorna lista de dados gerais da mucua   - OK
-		-> mucua.getResources()         # retorna infos sobre os recursos da mucua - OK provisório (falta lógica na API)
-		-> media.getTagCloudByMucua(mucua)  # retorna nuvem de tag da mucua        - TODO
-		-> media.getDestaquesMucua(mucua) # retorna lista de destaques por mucua   - OK provisorio (falta lógica de API)
-		-> media.getNovidadesMucua(mucua) # retorna lista de novidades por mucua   - OK provisorio (falta lógica na API)
-		-> media.getNovidadesRede() # retorna lista de novidades da rede           - OK provisorio (falta lógica na API)
-		-> media.checkFunctionalTag()   # verifica por tags funcionais             - TODO
-	    */
 	}
     });
     

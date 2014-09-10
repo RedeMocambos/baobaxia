@@ -154,7 +154,7 @@ define([
 	    data.config = config;
 	    $('#footer').before(_.template(SidebarTpl, data));
 	}
-	    
+	
 	$('#content').html('');	
 	var headerView = new HeaderView();
 	if (isLogged) {
@@ -212,7 +212,8 @@ define([
 	    $('#user-profile').html(_.template(UserProfileTpl, userData));
 	}
 	
-	if (config.mucua == 'rede') {
+	// if accessing the 'rede' tab
+	if (config.mucua === 'rede' || config.mucua === '') {
 	    var mucuaData = {
 		mucua: {
 		    // FAKE DATA
@@ -220,19 +221,22 @@ define([
 		    note: 'REDE',
 		    image: '/images/rede.png',
 		    description: '',
-		    note: '',
-		    url: '',
+		    note: config.repository,
+		    url: '#' + config.repository,
 		    storageSize: '100GB', 
-		}
+		},
+		config: config
 	    }
+	    
 	    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
 	} else {
 	    var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.mucua});
 	    mucua.fetch({
 		success: function() {
 		    var mucuaData = {
-			mucua: mucua.attributes
-		    }
+			mucua: mucua.attributes,
+			config: config
+		    };
 		    // FAKE DATA
 		    mucuaData.mucua.image = '/images/mucua-default.png';
 		    mucuaData.mucua.url = ''; // TODO: get from API

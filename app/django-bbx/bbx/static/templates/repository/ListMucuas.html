@@ -1,0 +1,7 @@
+<h3>Mucuas</h3>
+
+<% _.each(mucuas, function(mucua) { %>
+<div class="item-mucua">
+  <a href="<%=config.interfaceUrl%><%= config.MYREPOSITORY%>/<%=mucua.description%>/bbx/search"><%= mucua.description %></a>
+</div>
+<% }) %>
