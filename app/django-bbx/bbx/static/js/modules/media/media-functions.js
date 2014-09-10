@@ -219,6 +219,16 @@ define([
 		if (typeof callback == 'function') {
 		    // execute callback
 		    callback(mediaData);
+		    var mediaLength = _.size(mediaData.medias);
+		    var message = "";
+		    if (mediaLength > 1) {
+			message = "Exibindo " + _.size(mediaData.medias) + " resultados" ;
+		    } else if (mediaLength == 1) {
+			message = "Exibindo " + _.size(mediaData.medias) + " resultado" ;
+		    } else if (mediaLength === 0) {
+			message = "Nenhum resultado encontrado";
+		    }
+		    $('#medias-length').html(message);
 		}
 	    }
 	});
