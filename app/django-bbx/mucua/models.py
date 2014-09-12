@@ -86,7 +86,7 @@ def get_available_mucuas(uuid=None, repository=None):
     json_repository_status = json.loads(
         git_annex_status(repository.get_path()))
 
-    logger.debug(_(u"JSON Repository status: %s") % json_repository_status)
+#    logger.debug(_(u"JSON Repository status: %s") % json_repository_status)
 
     mucuas = []
 

@@ -31,8 +31,6 @@ def git_media_post_save(instance, **kwargs):
     u"""Intercepta o sinal de *post_save* de objetos multimedia (*media*) e
     adiciona o objeto ao repositório."""
     from media.serializers import MediaSerializer
-    logger.debug(instance.type)
-    logger.debug(type(instance))
     git_annex_add(instance.get_file_name(), get_file_path(instance))
     serializer = MediaSerializer(instance)
     mediapath = get_file_path(instance)+'/'

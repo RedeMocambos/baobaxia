@@ -95,10 +95,10 @@ class MediaSerializer(serializers.ModelSerializer):
             instance.type = attrs.get('type', instance.type)
             instance.format = attrs.get('format', instance.format)
             instance.license = attrs.get('license', instance.license)
-            instance.media_file(upload_to=attrs.get('media_file',
-                                                   instance.media_file))
+#            instance.media_file(upload_to=attrs.get('media_file',
+#                                                   instance.media_file))
             instance.url = attrs.get('url',instance.url)
-            instance.tags = attrs.get('tags', instance.tags)
+#            instance.tags = attrs.get('tags', instance.tags)
             instance.repository = attrs.get('repository', instance.repository)
             instance.is_local = attrs.get('is_local', instance.is_local)
             instance.is_requested = attrs.get('is_requested', instance.is_requested)
@@ -135,7 +135,7 @@ def create_objects_from_files(repository=get_default_repository().name):
             media_json_file = open(media_json_file_path)
             data = JSONParser().parse(media_json_file)
 
-            media = Media.objects.filter(uuid=data["uuid"])
+            media = Media.objects.get(uuid=data["uuid"])
 
             if not media:
                 #dumpclean(data)
@@ -145,7 +145,7 @@ def create_objects_from_files(repository=get_default_repository().name):
                 serializer.object.save()
                 logger.info(u"%s" % _('New media created'))
             else:
-                serializer = MediaSerializer(media, data=data)
+                serializer = MediaSerializer(media, data=data, partial=True)
                 print serializer.is_valid()
                 print serializer.errors
                 serializer.object.save()            
