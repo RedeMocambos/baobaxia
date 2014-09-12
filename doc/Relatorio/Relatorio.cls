@@ -221,9 +221,9 @@
       \bigskip
       %% {\LARGE por \par}
       \bigskip
-      {\LARGE Relatório de execução - Versão 0.2 \par}
+      {\LARGE Relatório de execução - Versão 0.3 \par}
       {\small Consultoria da Gunga \par}
-      {\small Nota fiscal 0145 de 11/2013 \par}
+      {\small Nota fiscal XXX de 09/2014 \par}
       \begin{figure}[htbp]
         \centering
         \includegraphics[width=3cm]{./Fig/Logo_Gunga.pdf}

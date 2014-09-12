@@ -143,8 +143,13 @@ def create_objects_from_files(repository=get_default_repository().name):
                 print serializer.is_valid()
                 print serializer.errors
                 serializer.object.save()
+                logger.info(u"%s" % _('New media created'))
             else:
-                logger.info(u"%s" % _('This media already exist'))
+                serializer = MediaSerializer(media, data=data)
+                print serializer.is_valid()
+                print serializer.errors
+                serializer.object.save()            
+                logger.info(u"%s" % _('This media already exist. Updated.'))
 
             # Atualiza o arquivo lastSyncMark
             path = os.path.join(REPOSITORY_DIR, repository.name)
