@@ -7,6 +7,8 @@ from subprocess import PIPE
 import logging
 import exceptions
 
+from celery import Celery
+
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -24,6 +26,7 @@ from bbx.utils import logger
 #logger = logging.getLogger(__name__)
 repository_dir = settings.REPOSITORY_DIR
 
+afazeres = Celery('tasks', broker='amqp://guest@localhost//' backend='amqp')
 
 # Connecting to Media signal
 @receiver(post_save, sender=Media)
@@ -170,14 +173,21 @@ def git_annex_copy_to(repository_path):
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
+@afazeres.task
+def git_annex_get(repository_path, media_path):
+    u"""
+    Baixa os conteudos binarios desde o repositório remoto.
 
-def git_annex_get(repository_path):
-    u"""Baixa os conteudos binarios desde o repositório remoto."""
+    Retorna o output do git annex get.    
+    """
     # TODO: Next release with possibility to choice what to get
     logger.info('git annex get .')
-    cmd = 'git annex get .'
+    cmd = 'git annex get ' + media_path
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
-    pipe.wait()
+    output, error = pipe.communicate()
+    logger.debug(error)
+    logger.info(output)
+    return output
 
 def git_annex_where_is(media):
     u"""Mostra quais mucuas tem copia do media."""
@@ -186,7 +196,7 @@ def git_annex_where_is(media):
     pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media), stdout=subprocess.PIPE)
     output, error = pipe.communicate()
     logger.debug(error)
-    logger.debug(output)
+    logger.info(output)
     return output
 
 def git_annex_sync(repository_path):
@@ -207,7 +217,6 @@ def git_annex_version():
 
 def git_annex_status(repository_path):
     u"""View all mucuas in a given repository"""
-    logger.info('git annex info/status')
 
     # a partir da versao 5
     if (float(git_annex_version()) <= 5):

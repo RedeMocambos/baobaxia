@@ -18,6 +18,7 @@ from django.utils.functional import lazy
 from tag.models import Tag
 from bbx.settings import REPOSITORY_DIR
 from bbx.utils import logger
+from repository.models import git_annex_get
 
 try:
     from django.utils.encoding import force_unicode  # NOQA
@@ -51,6 +52,7 @@ def get_file_path(instance):
     return os.path.join(REPOSITORY_DIR, get_media_path(instance))
 
 def get_media_path(instance):
+    # FIX: se mudar a data quebra o path
     if instance.date == '':
         t = datetime.now
         date = t.strftime("%y/%m/%d/")
@@ -142,6 +144,7 @@ class Media(models.Model):
         _('is requested'),
         help_text=_('True if media content is awaiting a local copy'),
         default=False)
+    # FIX: request_code desnessesario.. usando o uuid mesmo
     request_code = models.CharField(max_length=100, editable=False, blank=True)
     num_copies = models.IntegerField(
         _('number of copies'), default=1, blank=True,
@@ -180,7 +183,7 @@ class Media(models.Model):
         return self.format
 
     # FIX (Nao pega na primeira save)
-    def _set_is_local(self):
+    def set_is_local(self):
         self.is_local = os.path.isfile(os.path.join(get_file_path(self),
                                                     self.get_file_name()))
 
@@ -191,8 +194,39 @@ class Media(models.Model):
     def get_tags(self):
         return self.tags
 
+    def request_copy(self):
+        u"""
+        Gera um pedido de copia local do media
+
+        Os pedidos tem um codigo uuid e são gravados em 
+        /repository/mucua/requests/uuid
+
+        O arquivo atualmente contem somente o caminho para o media no
+        repositorio.
+
+        """
+        # self.request_code = generate_uuid()
+        self.is_requested = True
+
+        try:
+            request_file = open(os.path.join(self.get_repository(), 
+                                             self.get_mucua(),
+                                             'requests',
+                                             self.uuid), 'a')
+            request_file.write(get_file_path(self))
+            request_file.close
+        except IOError:
+            logger.info(u'Alo! I can\'t write request file!')
+
+        media_path = os.path.join(REPOSITORY_DIR, self.get_repository(), get_file_path(self)))
+        repository_path = os.path.join(REPOSITORY_DIR, self.get_repository())
+        async_result = git_annex_get.delay(repository_path, media_path)
+
+        return async_result.info
+
+
     def save(self, *args, **kwargs):
-        self._set_is_local()
+        self.set_is_local()
         self.url = self.get_url()
         super(Media, self).save(*args, **kwargs)
 

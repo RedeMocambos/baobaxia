@@ -23,7 +23,7 @@ create_user() {
     USER_EXISTS=`cat /etc/passwd | grep $USER_BBX`
     if [[ "$USER_EXISTS" == '' ]]; then
 	echo "criando usuario $USER_BBX ..."
-	useradd --uid $USER_UID --create-home -p "$EXU_PASSWD" $USERNAME
+	useradd --uid $USER_UID --create-home -p "$USER_BBX_PASSWD" --shell /bin/bash $USERNAME
     fi
 }
 
@@ -31,7 +31,7 @@ create_user() {
 # PRE: pkgs:
 
 # dependencies: se for deb pkg, tirar
-apt-get install git git-annex nginx supervisor python-pip 
+apt-get install git git-annex nginx supervisor python-pip rabbitmq-server
 
 ### cria diretorio basico
 mkdir -p $DEFAULT_REPOSITORY_DIR
@@ -180,6 +180,7 @@ git annex describe here $MUCUA;
 echo ""
 echo "Criando diretórios locais da mucua $MUCUA ..."
 mkdir -p $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME/$MUCUA/mocambolas
+mkdir -p $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME/$MUCUA/requests
 mkdir -p $INSTALL_DIR/bin
 mkdir -p $INSTALL_DIR/media
 mkdir -p $INSTALL_DIR/static
@@ -253,7 +254,7 @@ tar xjvf pip_wheel_20140606.tbz ;
 # pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wheel-0.23.0-py2.py3-none-any.whl;
 # pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wsgiref-0.1.2-py2-none-any.whl;
 pip install argparse;
-pip install django;
+pip install django==1.6.7;
 pip install django-extensions;
 pip install djangorestframework;
 pip install gunicorn;

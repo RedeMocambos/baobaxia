@@ -173,6 +173,7 @@ INSTALLED_APPS = (
     'repository',
     'mocambola',
     'south',
+    'celery',
 )
 
 # A sample logging configuration. The only tangible logging
