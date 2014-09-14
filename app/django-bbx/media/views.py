@@ -1,6 +1,7 @@
 from os import path
 from datetime import datetime
 import json
+import operator
 
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
@@ -63,36 +64,94 @@ def media_list(request, repository, mucua, args=None, format=None):
                                         '/' + mucua.description +
                                         '/bbx/search/')
 
-        # TODO LOW: futuramente, otimizar query de busca - elaborar quer
-        # listagem de conteudo filtrando por repositorio e mucua
-        if mucua == 'rede':
-            medias = Media.objects.filter(
-                repository=repository.id
-            ).exclude(origin=this_mucua.id)
+        """
+        ====================
+        SEARCH ENGINE
+        
+        -------------
+        Sample urls
+        
+        Valid with the following types of url (TODO: create tests):
+        
+        [repository]/[mucua]/search/video/quilombo/limit/5
+        [repository]/[mucua]/search/orderby/note/limit/10
+        [repository]/[mucua]/search/video/quilombo/orderby/title/limit/5
+        [repository]/[mucua]/search/video/quilombo/orderby/type/desc/name/asc/limit/5
+        [repository]/[mucua]/search/video/quilombo/orderby/author/desc
+
+        TODO: still failling when receives incomplete urls. i.e.:
+        [repository]/[mucua]/search/video/quilombo/orderby/title/limit/5
+        """
+        
+        """  if passed, get limiting rules """
+
+        """ TODO: move default_limit to configurable place """
+        default_limit = 20
+        if (args.find('limit') != -1):
+            limiting_str = int(args.split('limit/')[1])
+            args = args.split('limit/')[0]
         else:
-            medias = Media.objects.filter(
-                repository=repository.id
-            ).filter(origin=mucua.id)
-        # sanitizacao -> remove '/' do final
+
+            limiting_str = default_limit
+        logger.info('limiting_str: ' + str(limiting_str))
+        
+        """ if passed, get ordering rules """
+        ordering_str = ''
+        if (args.find('orderby/') != -1):
+            ordering_terms = args.split('orderby/')[1].split('/')
+            ordering_list = []
+            counting = 0
+            for term in ordering_terms:
+                if ((term == 'asc') | (term == 'desc')):
+                    if counting == 0:
+                        continue
+                    ordering_list[-1] += ' ' + term + ' '
+                else:
+                    if (term != ''):
+                        ordering_list.append(term)                               
+                counting += 1
+        
+            ordering_str = ','.join(ordering_list)
+            
+            args = args.split('orderby/')[0]
+        else:
+            ordering_str = 'm.name'              
+        logger.info('ordering_str: ' + ordering_str)
+        
+        """ compose query string for terms """
+        term_str = ""
         args = args.rstrip('/')
-        # pega args da url se tiver
         if args:
-            for arg in args.split('/'):
-                # verifica se a palavra eh tipo, formato ou tag e filtra
+            for arg in args.split('/'):                
                 if (arg in [key for (key, type_choice) in getTypeChoices() if
                             arg == type_choice]):
-                    medias = medias.filter(type__iexact=arg)
+                    term_str += " type LIKE '%" + arg + "%'"
                 elif arg in [key for
                              (key, format_choice) in getFormatChoices() if
                              arg == format_choice]:
-                    medias = medias.filter(format__iexact=arg)
+                    term_str += " format LIKE '%" + arg + "%'"
                 else:
-                    medias = medias.filter(
-                        Q(tags__name__icontains=arg) |
-                        Q(name__icontains=arg) |
-                        Q(note__icontains=arg)
-                        ).distinct()
-
+                    term_str += " t.name LIKE '%" + arg + "%'"
+                    term_str += " OR m.name LIKE '%" + arg + "%'"
+                    term_str += " OR m.note LIKE '%" + arg + "%'"
+                    
+        if (len(term_str) > 0):
+            term_str = " AND (" + term_str + ")"
+        
+        """ exclude the content of own mucua on the network
+        TODO: maybe create also an option for including or not the own mucua data """
+        if (mucua == 'rede'):
+            origin_str = "origin_id!=" + str(this_mucua.id)
+        else:
+            origin_str = "origin_id=" + str(mucua.id)
+        
+        sql = 'SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (%s AND repository_id = %d) %s ORDER BY %s LIMIT %s' % (origin_str, repository.id, term_str, ordering_str, limiting_str)
+        
+        medias = Media.objects.raw(sql)
+        
+        """ get terms for searching """
+        logger.info('sql: ' + sql)
+        
         # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
         return Response(serializer.data)
