@@ -1,7 +1,6 @@
 from os import path
 from datetime import datetime
 import json
-import operator
 
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
@@ -91,9 +90,7 @@ def media_list(request, repository, mucua, args=None, format=None):
             limiting_str = int(args.split('limit/')[1])
             args = args.split('limit/')[0]
         else:
-
             limiting_str = default_limit
-        logger.info('limiting_str: ' + str(limiting_str))
         
         """ if passed, get ordering rules """
         ordering_str = ''
@@ -115,8 +112,7 @@ def media_list(request, repository, mucua, args=None, format=None):
             
             args = args.split('orderby/')[0]
         else:
-            ordering_str = 'm.name'              
-        logger.info('ordering_str: ' + ordering_str)
+            ordering_str = 'm.name'
         
         """ compose query string for terms """
         term_str = ""
@@ -149,8 +145,9 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         medias = Media.objects.raw(sql)
         
-        """ get terms for searching """
+        """ sql log
         logger.info('sql: ' + sql)
+        """
         
         # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
