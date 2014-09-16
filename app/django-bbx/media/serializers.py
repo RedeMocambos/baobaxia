@@ -134,22 +134,23 @@ def create_objects_from_files(repository=get_default_repository().name):
                                                 serialized_media)
             media_json_file = open(media_json_file_path)
             data = JSONParser().parse(media_json_file)
-
-            media = Media.objects.get(uuid=data["uuid"])
-
-            if not media:
+            
+            try:
+                media = Media.objects.get(uuid=data["uuid"])
+                serializer = MediaSerializer(media, data=data, partial=True)
+                print serializer.is_valid()
+                print serializer.errors
+                serializer.object.save()            
+                logger.info(u"%s" % _('This media already exist. Updated.'))
+                
+            except Media.DoesNotExist:
                 #dumpclean(data)
                 serializer = MediaSerializer(data=data)
                 print serializer.is_valid()
                 print serializer.errors
                 serializer.object.save()
                 logger.info(u"%s" % _('New media created'))
-            else:
-                serializer = MediaSerializer(media, data=data, partial=True)
-                print serializer.is_valid()
-                print serializer.errors
-                serializer.object.save()            
-                logger.info(u"%s" % _('This media already exist. Updated.'))
+            
 
             # Atualiza o arquivo lastSyncMark
             path = os.path.join(REPOSITORY_DIR, repository.name)
