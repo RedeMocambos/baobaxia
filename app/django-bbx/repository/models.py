@@ -189,6 +189,55 @@ def git_annex_where_is(media):
     logger.debug(output)
     return output
 
+def git_annex_group_add(repository_path, mucua, group):
+    u"""Adiciona a Mucua no grupo."""
+    cmd = 'git annex group ' + mucua + ' ' + group
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    logger.debug(error)
+    logger.debug(output)
+    return output
+
+def git_annex_group_del(repository_path, mucua, group):
+    u"""Remove a Mucua do grupo."""
+    cmd = 'git annex ungroup ' + mucua + ' ' + group
+    logger.debug("Command: " + cmd)
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    logger.debug(error)
+    logger.debug(output)
+    return output
+
+def git_annex_group_list(repository_path, group, mucua=None):
+    u"""Lista todos os grupos ou de uma dada mucua"""
+    if mucua == None:
+        from mucua.models import Mucua
+        mucuas = Mucua.objects.all()
+        group_set = set()
+        for mucua in mucuas:
+            cmd = 'git annex group ' + mucua.get_description()
+            logger.debug("Command: " + cmd)
+            pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+            output, error = pipe.communicate()
+            logger.debug(error)
+            logger.debug(output)
+            if output != '':
+                for group in output.split():
+                    group_set.add(group)
+        return list(group_set)
+    else:
+        cmd = 'git annex group ' + mucua.get_description()
+        logger.debug("Command: " + cmd)
+        pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+        output, error = pipe.communicate()
+        logger.debug(error)
+        logger.debug(output)
+        if output != '':
+            return output.split()
+        else:
+            return []
+
+
 def git_annex_sync(repository_path):
     u"""Sincroniza o repositório com os outros clones remotos."""
     logger.info('git annex sync')

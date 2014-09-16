@@ -1,8 +1,9 @@
 import json
 import re
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.response import Response
+from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
 
 from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
@@ -103,3 +104,40 @@ def mucua_get_info(request, uuid, repository=None):
     mucua_info['local annex size'] = convertToGB(local_size.group(1), size_list[local_size.group(2)])
     
     return Response(mucua_info)
+
+
+@api_view(['GET'])
+@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+def mucua_get_groups(request, name=None, repository=None):
+    try:     
+        mucua = Mucua.objects.get(description=name)
+    except:
+        print "not found: ", 
+        return Response("Mucua not found")
+    
+    io = mucua.get_groups(name, repository)
+    return Response(io)
+
+@api_view(['GET'])
+@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+def mucua_del_group(request, name, group, repository=None):
+    try:     
+        mucua = Mucua.objects.get(description=name)
+    except:
+        print "not found: ", 
+        return Response("Mucua not found")
+    
+    mucua.del_group(group, repository)
+    return Response("Group " + group + " deleted")
+
+@api_view(['GET'])
+@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+def mucua_add_group(request, name, group, repository=None):
+    try:     
+        mucua = Mucua.objects.get(description=name)
+    except:
+        print "not found: ", 
+        return Response("Mucua not found")
+    
+    mucua.add_group(group, repository)
+    return Response("Group " + group + " added")

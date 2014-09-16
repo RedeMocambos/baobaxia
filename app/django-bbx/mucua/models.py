@@ -13,7 +13,8 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from bbx.settings import DEFAULT_MUCUA
 from bbx.utils import dumpclean, logger
-from repository.models import get_default_repository, git_annex_status
+from repository.models import (get_default_repository, git_annex_status,
+git_annex_group_add, git_annex_group_del, git_annex_group_list)
 
 
 def get_default_mucua():
@@ -154,6 +155,90 @@ class Mucua(models.Model):
     def get_description(self):
         return self.description
 
+    def get_groups(self, mucua, repository):
+        u"""Retorna a lista de grupos da mucua"""
+
+        if not repository:
+            try:
+                repository = get_default_repository()
+            except DatabaseError:
+                return []
+
+        return git_annex_group_list(repository.get_path(),
+                                    self.get_description())
+
+    def add_group(self, group, repository):
+        u"""Retorna a lista de grupos da mucua"""
+        if not repository:
+            try:
+                repository = get_default_repository()
+            except DatabaseError:
+                return []
+
+        git_annex_group_add(repository.get_path(),
+                            self.get_description(),
+                            group)
+
+    def del_group(self, group, repository):
+        if not repository:
+            try:
+                repository = get_default_repository()
+            except DatabaseError:
+                return []
+
+        git_annex_group_del(repository.get_path(),
+                            self.get_description(),
+                            group)
+
+
+    def get_territory(self, repository):
+        u"""Retorna o territorio da mucua"""
+        if not repository:
+            try:
+                repository = get_default_repository()
+            except DatabaseError:
+                return []
+
+        groups = git_annex_group_list(repository.get_path(),
+                                      self.get_description())
+        for group in groups:
+            if group.startswith('t:'):
+                return group
+            else:
+                return ''
+          
+    def add_territory(self, territory, repository):
+        u"""Retorna a lista de grupos da mucua"""
+        if not repository:
+            try:
+                repository = get_default_repository()
+            except DatabaseError:
+                return []
+
+        actual_territory = self.get_territory
+        if actual_territory != '':
+            if territory.startswith('t:'):
+                git_annex_group_add(repository.getpath(),
+                                    self.get_description,
+                                    territory)
+                return _("Mucua enraizada em " + territory)
+            else:
+                logger.debug('Not a territory.. should start with t:')
+                return _("O territorio precisa ser indicado como 't:Nome_do_territorio'")
+        else: 
+            return _("A mucua esta já enraizada em " + actual_territory)
+
+    def del_territory(self, territory):
+        if not repository:
+            try:
+                repository = get_default_repository()
+            except DatabaseError:
+                return []
+
+        git_annex_group_del(repository.getpath(),
+                            self.get_description,
+                            territory)
+       
     def save(self, *args, **kwargs):
         self.description = get_mucua_from_UUID(uuid=self.uuid)
         super(Mucua, self).save(*args, **kwargs)
