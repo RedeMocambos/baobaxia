@@ -186,6 +186,7 @@ mkdir -p $INSTALL_DIR/media
 mkdir -p $INSTALL_DIR/static
 mkdir -p $INSTALL_DIR/run
 mkdir -p $INSTALL_DIR/log
+mkdir -p $INSTALL_DIR/log/celery
 mkdir -p $INSTALL_DIR/envs
 mkdir -p $DEFAULT_MEDIA_ROOT/db
 chown -R $USER_BBX:$USER_BBX $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME

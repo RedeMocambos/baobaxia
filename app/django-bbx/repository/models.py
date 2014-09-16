@@ -15,8 +15,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
-from media.models import Media
-from media.models import get_file_path
+from media.models import get_file_path, Media
 from repository.signals import filesync_done
 from bbx.settings import DEFAULT_REPOSITORY
 from bbx.utils import logger
@@ -26,7 +25,7 @@ from bbx.utils import logger
 #logger = logging.getLogger(__name__)
 repository_dir = settings.REPOSITORY_DIR
 
-afazeres = Celery('tasks', broker='amqp://guest@localhost//' backend='amqp')
+afazeres = Celery('tasks', broker='amqp://guest@localhost//', backend='amqp')
 
 # Connecting to Media signal
 @receiver(post_save, sender=Media)
@@ -181,12 +180,10 @@ def git_annex_get(repository_path, media_path):
     Retorna o output do git annex get.    
     """
     # TODO: Next release with possibility to choice what to get
-    logger.info('git annex get .')
     cmd = 'git annex get ' + media_path
+    logger.info(cmd)
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     output, error = pipe.communicate()
-    logger.debug(error)
-    logger.info(output)
     return output
 
 def git_annex_where_is(media):

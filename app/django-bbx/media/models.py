@@ -18,7 +18,6 @@ from django.utils.functional import lazy
 from tag.models import Tag
 from bbx.settings import REPOSITORY_DIR
 from bbx.utils import logger
-from repository.models import git_annex_get
 
 try:
     from django.utils.encoding import force_unicode  # NOQA
@@ -209,7 +208,7 @@ class Media(models.Model):
         self.is_requested = True
 
         try:
-            request_file = open(os.path.join(self.get_repository(), 
+            request_file = open(os.path.join(REPOSITORY_DIR, self.get_repository(), 
                                              self.get_mucua(),
                                              'requests',
                                              self.uuid), 'a')
@@ -218,11 +217,13 @@ class Media(models.Model):
         except IOError:
             logger.info(u'Alo! I can\'t write request file!')
 
-        media_path = os.path.join(REPOSITORY_DIR, self.get_repository(), get_file_path(self)))
+        media_path = get_file_path(self)
         repository_path = os.path.join(REPOSITORY_DIR, self.get_repository())
+        from repository.models import git_annex_get
         async_result = git_annex_get.delay(repository_path, media_path)
-
-        return async_result.info
+        logger.debug(async_result.get)
+        logger.info(async_result.info)
+#        return async_result.info
 
 
     def save(self, *args, **kwargs):

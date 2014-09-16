@@ -342,7 +342,7 @@ def media_where_is(request, repository, mucua, uuid):
     return Response(data)
 
 @api_view(['GET'])
-@renderer_classes((BrowsableAPIRenderer))
+#@renderer_classes((BrowsableAPIRenderer))
 def media_request_copy(request, repository, mucua, uuid):
     
     try:
