@@ -54,8 +54,15 @@ define([
 	    var indexView = new IndexView();
 	    indexView.render();
 	    
-	    var urlRedirect = "/#login";
-	    window.location.href = urlRedirect;
+	    var loadConfigs = setInterval(function() {
+		if ($("body").data("bbx").configLoaded === true) {
+		    var config = $("body").data("bbx").config,
+		    urlRedirect = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA;
+		    
+		    window.location.href = urlRedirect;
+		    clearInterval(loadConfigs);
+		}
+	    }, 50);  
 	},
 	
 	login: function(repository, mucua) {
@@ -150,7 +157,9 @@ define([
 	var loadConfigs = setInterval(function() {
 	    if ($("body").data("bbx").configLoaded === true) {
 		new App.Router();
-		Backbone.history.start();		
+		if (Backbone.history.handlers.length !== true) {
+		    Backbone.history.start();
+		}		
 		clearInterval(loadConfigs);		
 	    }
 	}, 30);

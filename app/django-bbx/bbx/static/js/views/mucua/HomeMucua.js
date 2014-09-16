@@ -53,17 +53,18 @@ define([
 		    data.mucua = mucua.attributes;
 		    data.mucua.url = "http://www.mocambos.net";
 		    data.mucua.image = config.imagePath + '/mucua-default.png';
-		    
 		    $('#content').html(_.template(HomeMucuaTpl, data));
 		    // get mucua resources
 		    BBX.getMucuaResources(data.mucua.uuid);		   
 		    var mucuaDOM = $("body").data("bbx").mucua;
 		    var mucuaResourcesLoad = setInterval(function() {
-			if (typeof mucuaDOM.info !== 'undefined') {
+			if (typeof mucuaDOM.info === 'object') {
+			    clearInterval(mucuaResourcesLoad);
 			    data.mucua.storageSize = mucuaDOM.info['local annex size'];
 			    data.mucua.storageAvailable = mucuaDOM.info['available local disk space'];
 			    // TODO: treat this as a changable variable
 			    data.mucua.demanded = 0;
+			    data.config = config;
 			    $('#place-profile').html(_.template(MucuaProfileTpl, data));
 			    
 			    // usage data - mucua footer
@@ -74,8 +75,6 @@ define([
 				demanded: data.mucua.demanded
 			    }
 			    BBXBaseFunctions.renderUsage(usageData);
-			    
-			    clearInterval(mucuaResourcesLoad);
 			}
 		    }, 50);
 		    

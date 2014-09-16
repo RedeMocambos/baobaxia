@@ -11,8 +11,8 @@ define([
 	    config = $("body").data("bbx").config;
 	    
 	    data.currentUrl = Backbone.history.fragment;	    
+	    data.homeUrl = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA;
 	    $('#header').html(_.template(Header, data));
-	    
 	    if ($('#menu').html() == "" ||
 		(typeof $('#menu').html() === "undefined")) {
 		data.config = config;

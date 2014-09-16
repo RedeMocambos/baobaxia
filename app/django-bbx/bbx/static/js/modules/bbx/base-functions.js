@@ -33,7 +33,7 @@ define([
 			       configLoaded: false
 			   });
 	}
-
+	
 	var configLoaded = $("body").data("bbx").configLoaded;
 	if (configLoaded === false) {
 	    __setConfig(DefaultConfig);
@@ -131,6 +131,28 @@ define([
 	avatarUrl = "images/" + defaultAvatar;
 	return avatarUrl;
     }
+
+    /**
+     * Get mucua image:
+     *
+     * search on media if there's any media with it's uuid
+     *
+     * @return image
+     * /
+    var getMucuaImage = function(mucua) {
+	var config = $("body").data("bbx").config,
+	url = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucua + '/media/' + mucua.uuid;
+	
+	var media = new MediaModel([], {url: url});
+	media.fetch({
+	    success: function() {
+		var mediaData = {
+		    media: media.attributes
+		}
+		return mediaData.url;
+	    }
+	});	
+    }*/
     
     /**
      * render common for internal pages at baobaxia
@@ -140,6 +162,7 @@ define([
     var renderCommon = function(name) {
 	var data = {},
 	config = $("body").data("bbx").config;
+	data.config = config;
 	
 	$('body').removeClass().addClass(name);
 	if (config.mucua == config.MYMUCUA) {
@@ -151,7 +174,6 @@ define([
 	console.log('render common: ' + name);
 	if ($('#sidebar').html() == "" ||
 	    (typeof $('#sidebar').html() === "undefined")) {
-	    data.config = config;
 	    $('#footer').before(_.template(SidebarTpl, data));
 	}
 	
@@ -237,8 +259,12 @@ define([
 			mucua: mucua.attributes,
 			config: config
 		    };
+		    var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid;
+		    mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
+			$('#mucua_image').attr('src', imageSrc);
+		    });
+		    
 		    // FAKE DATA
-		    mucuaData.mucua.image = '/images/mucua-default.png';
 		    mucuaData.mucua.url = ''; // TODO: get from API
 		    mucuaData.mucua.storageSize = '10GB'; // TODO: get from API
 		    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
