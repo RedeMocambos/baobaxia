@@ -20,13 +20,11 @@ define([
 	    
 	    media.fetch({
 		success: function() {
-		    var imageSrc = media.attributes[0].url;
-		    if (typeof callback == 'function') {
-			callback(imageSrc);
+		    if(!_.isEmpty(media.attributes)) {
+			var imageSrc = media.attributes[0].url;
+		    } else {
+			var imageSrc = defaultImageSrc;
 		    }
-		},
-		error: function() {
-		    var imageSrc = defaultImageSrc;
 		    if (typeof callback == 'function') {
 			callback(imageSrc);
 		    }
