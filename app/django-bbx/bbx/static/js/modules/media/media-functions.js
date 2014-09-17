@@ -56,12 +56,26 @@ define([
     var __parseMenuSearch = function(terms) {
 	var config = __getConfig(),
 	data = {};
-	terms = _.compact(terms); // remove any false value
-	console.log(terms);
+	terms = _.compact(terms), // remove any false value
+	terms_arr = [], 
+	terms_size = terms.length; 	
+	
+	// check sortby & limit
+	if (terms.length > 1) {
+	    for (var t = 0; t < terms_size; t++) {
+		term = terms[t];
+		if (term == 'orderby' || term == 'limit') {
+		    t = terms_size;
+		} else {
+		    terms_arr.push(term);
+		}	    
+	    }
+	}
+	
 	$("body").data("bbx").terms = terms;
 	$('#caixa_busca')
 	    .textext({ plugins: 'tags',
-		       tagsItems: terms,
+		       tagsItems: terms_arr,
 		       ext: {
 			   tags: {
 			       removeTag: function(el) {
