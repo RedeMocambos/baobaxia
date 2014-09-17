@@ -262,7 +262,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                       name=request.DATA['name'],
                       note=request.DATA['note'],
                       type=request.DATA['type'],
-                      format=request.FILES['media_file'].name.split('.')[1],
+                      format=request.FILES['media_file'].name.split('.')[1].lower(),
                       license=request.DATA['license'],
                       date=(request.DATA['date'] if request.DATA['date'] !=
                             '' else datetime.now()),
