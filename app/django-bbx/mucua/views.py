@@ -82,7 +82,6 @@ def mucua_get_info(request, uuid, repository=None):
     # TODO: size of repo in string format
     mucua_full = json.loads(get_mucua_info(repository))
     mucua_info = {
-        "supported remote types": mucua_full["supported remote types"],
         "local annex size": mucua_full["local annex size"],
         "local annex keys": mucua_full["local annex keys"],
         "available local disk space": mucua_full["available local disk space"],
@@ -100,29 +99,32 @@ def mucua_get_info(request, uuid, repository=None):
     available_disk = rewrite_size.match(mucua_info['available local disk space'])
     local_size = rewrite_size.match(mucua_info['local annex size'])  
             
-    mucua_info['available local disk space'] = convertToGB(available_disk.group(1), size_list[available_disk.group(2)])
-    mucua_info['local annex size'] = convertToGB(local_size.group(1), size_list[local_size.group(2)])
+    # mucua_info['available local disk space'] = convertToGB(available_disk.group(1), size_list[available_disk.group(2)])
+    mucua_info['available local disk space'] = ''
+    #mucua_info['local annex size'] = convertToGB(local_size.group(1), size_list[local_size.group(2)])
+    mucua_info['local annex size'] = ''
+    mucua_info['mucua_groups'] = mucua.get_groups(repository)
     
     return Response(mucua_info)
 
 
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
-def mucua_get_groups(request, name=None, repository=None):
+def mucua_get_groups(request, uuid=None, repository=None):
     try:     
-        mucua = Mucua.objects.get(description=name)
+        mucua = Mucua.objects.get(uuid=uuid)
     except:
         print "not found: ", 
         return Response("Mucua not found")
     
-    io = mucua.get_groups(name, repository)
+    io = mucua.get_groups(repository)
     return Response(io)
 
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
-def mucua_del_group(request, name, group, repository=None):
+def mucua_del_group(request, uuid, group, repository=None):
     try:     
-        mucua = Mucua.objects.get(description=name)
+        mucua = Mucua.objects.get(uuid=uuid)
     except:
         print "not found: ", 
         return Response("Mucua not found")
@@ -132,9 +134,9 @@ def mucua_del_group(request, name, group, repository=None):
 
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
-def mucua_add_group(request, name, group, repository=None):
+def mucua_add_group(request, uuid, group, repository=None):
     try:     
-        mucua = Mucua.objects.get(description=name)
+        mucua = Mucua.objects.get(uuid=uuid)
     except:
         print "not found: ", 
         return Response("Mucua not found")

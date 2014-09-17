@@ -155,7 +155,7 @@ class Mucua(models.Model):
     def get_description(self):
         return self.description
 
-    def get_groups(self, mucua, repository):
+    def get_groups(self, repository):
         u"""Retorna a lista de grupos da mucua"""
 
         if not repository:
@@ -165,7 +165,7 @@ class Mucua(models.Model):
                 return []
 
         return git_annex_group_list(repository.get_path(),
-                                    self.get_description())
+                                    self.uuid)
 
     def add_group(self, group, repository):
         u"""Retorna a lista de grupos da mucua"""
