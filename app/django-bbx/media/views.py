@@ -117,22 +117,29 @@ def media_list(request, repository, mucua, args=None, format=None):
         """ compose query string for terms """
         term_str = ""
         args = args.rstrip('/')
-        if args:
-            for arg in args.split('/'):                
-                if (arg in [key for (key, type_choice) in getTypeChoices() if
-                            arg == type_choice]):
-                    term_str += " type LIKE '%" + arg + "%'"
-                elif arg in [key for
+        if args != '':
+            term_index = 0
+            for term in args.split('/'):
+                term = str(term)
+                if (term in [key for (key, type_choice) in getTypeChoices() if
+                            term == type_choice]):
+                    term_str += ' type LIKE "%' + term + '%"'
+                elif term in [key for
                              (key, format_choice) in getFormatChoices() if
-                             arg == format_choice]:
-                    term_str += " format LIKE '%" + arg + "%'"
+                             term == format_choice]:
+                    term_str += ' format LIKE "%' + term + '"%"'
                 else:
-                    term_str += " t.name LIKE '%" + arg + "%'"
-                    term_str += " OR m.name LIKE '%" + arg + "%'"
-                    term_str += " OR m.note LIKE '%" + arg + "%'"
+                    if (term_index > 0):
+                        term_str += 'AND' 
+                    
+                    term_str += '( t.name LIKE "%' + term + '%"'
+                    term_str += ' OR m.name LIKE "%' + term + '%"'
+                    term_str += ' OR m.note LIKE "%' + term + '%")'
+                    term_index += 1
+                    
                     
         if (len(term_str) > 0):
-            term_str = " AND (" + term_str + ")"
+            term_str = ' AND (' + term_str + ')'
         
         """ exclude the content of own mucua on the network
         TODO: maybe create also an option for including or not the own mucua data """
@@ -141,7 +148,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         else:
             origin_str = "origin_id=" + str(mucua.id)
         
-        sql = 'SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (%s AND repository_id = %d) %s ORDER BY %s LIMIT %s' % (origin_str, repository.id, term_str, ordering_str, limiting_str)
+        sql = str('SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (%s AND repository_id = %d) %s ORDER BY %s LIMIT %s' % (origin_str, repository.id, term_str, ordering_str, limiting_str))
         
         medias = Media.objects.raw(sql)
         
