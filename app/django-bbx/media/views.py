@@ -148,7 +148,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         else:
             origin_str = "origin_id=" + str(mucua.id)
         
-        sql = str('SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (%s AND repository_id = %d) %s ORDER BY %s LIMIT %s' % (origin_str, repository.id, term_str, ordering_str, limiting_str))
+        sql ='SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (%s AND repository_id = %d) %s ORDER BY %s LIMIT %s' % (origin_str, repository.id, term_str, ordering_str, limiting_str)
         
         medias = Media.objects.raw(sql)
         

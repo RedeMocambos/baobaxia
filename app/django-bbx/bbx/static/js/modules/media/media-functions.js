@@ -61,7 +61,7 @@ define([
 	terms_size = terms.length; 	
 	
 	// check sortby & limit
-	if (terms.length > 1) {
+	if (terms.length > 0) {
 	    for (var t = 0; t < terms_size; t++) {
 		term = terms[t];
 		if (term == 'orderby' || term == 'limit') {
