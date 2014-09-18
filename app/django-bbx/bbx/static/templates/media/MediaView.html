@@ -57,9 +57,10 @@
 
     <!-- bloco multimedia -->    
     <div class="block-1 content-div">   
+      <% if (media.is_local) { %>
       <div class="media-image">
 	<% if (media.type == 'imagem') { %>
-	<img src="<%= media.url %>" />
+	<img src="<%= media.url %>" / alt="<%= media.url %>">
 	<% } else if (media.type == 'video') { %>
 	<video controls src="<%= media.url %>" />
 	<% } else if (media.type == 'audio') { %>
@@ -67,19 +68,27 @@
 	<% } else if (media.type ='arquivo') { %>
 	<a href="<%= media.url %>" class="download">download</a>
 	<% } %>
+      <% } else { %>
+      Visualização não disponível
+      <% } %>
+
       </div>   
 
+      <% if (media.is_local) { %>
       <div class="blocks">
 	<% if (media.type !='arquivo') { %>
 	<a href="<%= media.url %>" class="download">download</a>
 	<% } %>
       </div>
+      <% } %>
       
       <% if (!media.is_local) { %>
-      <div class="blocks">
+      <div class="blocks clear-both solicit-copy">
 	<p class="solicit-copy">
-	  <span class="title-bold">solicitar cópia local</span>
-	  <span class="image"></span>
+	  <a href="">
+	    <span class="title-bold">solicitar cópia local</span>
+	    <span class="image"></span>
+	  </a>
 	</p>
       </div>   
       <% } else { %>

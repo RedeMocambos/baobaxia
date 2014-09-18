@@ -42,7 +42,7 @@ define([
 		success: function() {
 		    var mucuas = dataWhereis.attributes.whereis;		    
 		    _.each(mucuas, function(mucua) {
-			$('#whereis').append('<a href="' + config.mucua + '/' + mucua.description + '">' + mucua.description + '</a>&nbsp;');
+			$('#whereis').append('<a href="' + config.interfaceUrl + config.MYREPOSITORY + '/' + mucua.description + '">' + mucua.description + '</a>&nbsp;');
 		    });
 		}
 	    });

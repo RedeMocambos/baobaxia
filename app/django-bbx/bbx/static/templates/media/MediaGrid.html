@@ -18,7 +18,7 @@
   </div>
   <span class="title">
     <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
-      <%= media.name %>
+      <% var strSize = 50; print(media.name.substring(0, strSize) + ((media.name.length > strSize) ? '...' : '')) %>
     </a>
   </span>
   <br/>

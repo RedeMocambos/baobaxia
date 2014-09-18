@@ -41,6 +41,7 @@ a {text-decoration: none;}
  */
 .inline {float: left}
 .bold {font-weight: bold}
+.clear-both {clear: both}
 /*
  * header
  */
@@ -204,7 +205,7 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 /*
  * media view
  */
-#media-view {}
+#media-view {margin-left: 15px}
 .media #content {width: 70%}
 #media-view .content-title {font-size: 18px;}
 #media-view .title-bold {font-size: 18px; font-weight: bold}
@@ -233,6 +234,7 @@ n.arquivo .result-thumb { width: 192px; height: 130px; background: #9c9 }
 #media-view .blocks .download {color: #145B7A}
 
 #media-view a {color: #fff}
+#media-view .solicit-copy a {color: #197299}
 #media-view .solicit-copy .image {background-image: url('/images/solicitar.png'); width: 17px; height: 15px; display: inline-block; }
 #media-view .solicit-copy .image:hover {background-image: url('/images/solicitar-over.png'); cursor: pointer}
 #media-view .tags a {color: #fff; font-weight: bold }
@@ -293,7 +295,7 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media_publish #dados_gerais, 
 #media_publish #tags_area, 
 #media_publish input,
-#media_publish textarea {padding-top: 3px; width: 206px; border: 2px solid #fff; border-radius: 8px}
+#media_publish textarea {padding-top: 3px; width: 206px; border: 2px solid #88A7B5; border-radius: 8px}
 .MediaPublish .bloco-1 .tags {display: none}
 #media_publish .button-nav, #media_update .button-nav {cursor: pointer; font-size: 16px; background-color: #B5A570; text-align: center; width: 150px; float: right; padding: 8px; border-radius: 4px; border: 2px solid #958555; margin: 2px }
 #media_publish #note {height: 120px}
