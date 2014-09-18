@@ -184,6 +184,7 @@ define([
 	    'audio/ogg': 'audio',
 	    'audio/mpeg': 'audio',
 	    'image/jpeg': 'imagem',
+	    'image/png': 'imagem',
 	    'video/ogg': 'video',
 	    'video/ogv': 'video',
 	    'video/avi': 'video',
