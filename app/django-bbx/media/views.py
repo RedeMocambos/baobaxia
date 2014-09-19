@@ -85,15 +85,19 @@ def media_list(request, repository, mucua, args=None, format=None):
         """  if passed, get limiting rules """
 
         """ TODO: move default_limit to configurable place """
+        params = []
+        
         default_limit = 20
+        limiting_params = []
         if (args.find('limit') != -1):
-            limiting_str = int(args.split('limit/')[1])
+            limiting_params.append(str(args.split('limit/')[1]))
             args = args.split('limit/')[0]
         else:
-            limiting_str = default_limit
+            limiting_params.append(str(default_limit))
         
         """ if passed, get ordering rules """
-        ordering_str = ''
+        ordering_sql = ''
+        ordering_params = []
         if (args.find('orderby/') != -1):
             ordering_terms = args.split('orderby/')[1].split('/')
             ordering_list = []
@@ -107,50 +111,74 @@ def media_list(request, repository, mucua, args=None, format=None):
                     if (term != ''):
                         ordering_list.append(term)                               
                 counting += 1
-        
-            ordering_str = ','.join(ordering_list)
+                
+            for ordering in ordering_list:
+                ordering_sql += '%s,'
+                ordering_params.append(ordering)
+            
+            # remove last char if it's a comma / ','
+            if ordering_sql[:-1] == ',':
+                ordering_sql = ordering_sql[:-1]
             
             args = args.split('orderby/')[0]
         else:
-            ordering_str = 'm.name'
-        
-        """ compose query string for terms """
-        term_str = ""
-        args = args.rstrip('/')
-        if args != '':
-            term_index = 0
-            for term in args.split('/'):
-                term = str(term)
-                if (term in [key for (key, type_choice) in getTypeChoices() if
-                            term == type_choice]):
-                    term_str += ' type LIKE "%' + term + '%"'
-                elif term in [key for
-                             (key, format_choice) in getFormatChoices() if
-                             term == format_choice]:
-                    term_str += ' format LIKE "%' + term + '"%"'
-                else:
-                    if (term_index > 0):
-                        term_str += 'AND' 
-                    
-                    term_str += '( t.name LIKE "%' + term + '%"'
-                    term_str += ' OR m.name LIKE "%' + term + '%"'
-                    term_str += ' OR m.note LIKE "%' + term + '%")'
-                    term_index += 1
-                    
-                    
-        if (len(term_str) > 0):
-            term_str = ' AND (' + term_str + ')'
+            ordering_sql = 'm.name'
         
         """ exclude the content of own mucua on the network
         TODO: maybe create also an option for including or not the own mucua data """
         if (mucua == 'rede'):
-            origin_str = "origin_id!=" + str(this_mucua.id)
+            origin_sql = "origin_id!=?  "
+            params.append(this_mucua.id)
+            
         else:
-            origin_str = "origin_id=" + str(mucua.id)
+            origin_sql = "origin_id=?  "
+            params.append(mucua.id)
         
-        sql ='SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (%s AND repository_id = %d) %s ORDER BY %s LIMIT %s' % (origin_str, repository.id, term_str, ordering_str, limiting_str)
+        """ appends repository id """
+        params.append(repository.id)
+
+        """ compose query string for terms """
+        term_sql = ""
+        args = args.rstrip('/')
+        if args != '':
+            term_index = 0
+            for term in args.split('/'):
+                term = str(term.encode('utf-8'))
+                if (term in [key for (key, type_choice) in getTypeChoices() if
+                            term == type_choice]):
+                    term_sql += " type LIKE ? "
+                    params.append("%" + term + "%")
+                    
+                elif term in [key for
+                             (key, format_choice) in getFormatChoices() if
+                             term == format_choice]:
+                    term_sql += " format LIKE ? "
+                    params.append("%" + term + "%")
+                else:
+                    if (term_index > 0):
+                        term_sql += " AND " 
+                    
+                    term_sql += "( t.name LIKE ? "
+                    term_sql += " OR m.name LIKE ?"
+                    term_sql += " OR m.note LIKE ? )"
+                    params.append("%" + term + "%")
+                    params.append("%" + term + "%")
+                    params.append("%" + term + "%")
+                    
+                    term_index += 1
+                    
+                    
+        if (len(term_sql) > 0):
+            term_sql = ' AND (' + term_sql + ')'
+                            
+        logger.info(params)
+        sql = "SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (" + origin_sql + " AND repository_id = ? ) " + term_sql + " ORDER BY " + ordering_sql + " LIMIT ? "
+        sql = sql.decode('utf-8')
         
-        medias = Media.objects.raw(sql)
+        params.extend(ordering_params)
+        params.extend(limiting_params)
+        
+        medias = Media.objects.raw(sql, params)
         
         """ sql log
         logger.info('sql: ' + sql)
@@ -158,6 +186,8 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
+        logger.info(serializer.data)
+                
         return Response(serializer.data)
 
 
