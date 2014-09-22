@@ -125,7 +125,7 @@ def media_list(request, repository, mucua, args=None, format=None):
             ordering_sql = 'm.name'
         
         """ exclude the content of own mucua on the network
-        TODO: maybe create also an option for including or not the own mucua data """
+        TODO: maybe create an option for including or not the own mucua results in api url (i.e.: on interface, a checkbox 'include this mucua results') """
         if (mucua == 'rede'):
             origin_sql = "origin_id!=?  "
             params.append(this_mucua.id)
