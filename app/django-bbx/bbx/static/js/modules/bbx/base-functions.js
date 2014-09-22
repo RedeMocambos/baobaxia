@@ -247,29 +247,44 @@ define([
 		    url: '#' + config.repository,
 		    storageSize: '100GB', 
 		},
-		config: config
 	    }
-	    
+	    BBX.mucua = mucuaData.mucua;
+	    mucuaData.config = config;
 	    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
 	} else {
-	    var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.mucua});
-	    mucua.fetch({
-		success: function() {
-		    var mucuaData = {
-			mucua: mucua.attributes,
-			config: config
-		    };
-		    var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid;
-		    mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
-			$('#mucua_image').attr('src', imageSrc);
-		    });
-		    
-		    // FAKE DATA
-		    mucuaData.mucua.url = ''; // TODO: get from API
-		    mucuaData.mucua.storageSize = '10GB'; // TODO: get from API
-		    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
-		}
-	    });	
+	    var loadNewMucua = false;	    
+	    // check if mucua has already been loaded
+	    if (typeof BBX.mucua === 'undefined') {
+		loadNewMucua = true;
+	    } else if (BBX.mucua) {
+		if (BBX.mucua.description !== config.mucua) {
+		    loadNewMucua = true;
+		}		    
+	    }
+	    
+	    if (loadNewMucua) {		
+		var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.mucua});
+		mucua.fetch({
+		    success: function() {
+			var mucuaData = {
+			    mucua: mucua.attributes
+			};
+			var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid;
+			mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
+			    $('#mucua_image').attr('src', imageSrc);
+			});
+			
+			// FAKE DATA
+			mucuaData.mucua.url = ''; // TODO: get from API
+			mucuaData.mucua.storageSize = '10GB'; // TODO: get from API
+			
+			BBX.mucua = mucuaData.mucua;
+			mucuaData.config = config;
+			
+			$('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
+		    }
+		});	
+	    }
 	}
     }
     
@@ -412,6 +427,8 @@ define([
 		typeof config.repositoriesList !== 'undefined') {	
 		console.log('configs loaded!');
 		$("body").data("bbx").configLoaded = true;
+		BBX.config = config;
+		
 		clearInterval(loadData);
 	    }
 	}, 50);	    
