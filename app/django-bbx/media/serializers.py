@@ -18,6 +18,24 @@ from bbx.utils import dumpclean
 
 logger = logging.getLogger(__name__)
 
+class MediaFileSerializer(serializers.ModelSerializer):
+    tags = serializers.SlugRelatedField(many=True,
+                                        slug_field='name',
+                                        read_only=True)
+    origin = serializers.SlugRelatedField(many=False, slug_field='description')
+    repository = serializers.SlugRelatedField(many=False, slug_field='name')
+    author = serializers.SlugRelatedField(many=False, slug_field='username')
+    
+    class Meta:
+        model = Media
+        fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
+                  'format', 'license', 'media_file', 'url', 'origin',
+                  'repository')
+        depth = 1
+
+    def getJSON(self):
+        return JSONRenderer().render(self.data)
+
 
 class MediaSerializer(serializers.ModelSerializer):
     tags = serializers.SlugRelatedField(many=True,
@@ -31,7 +49,7 @@ class MediaSerializer(serializers.ModelSerializer):
         model = Media
         fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
                   'format', 'license', 'media_file', 'url', 'origin',
-                  'repository')
+                  'repository', 'is_local', 'is_requested', 'num_copies')
         depth = 1
     
     def restore_fields(self, data, files):
@@ -100,10 +118,10 @@ class MediaSerializer(serializers.ModelSerializer):
             instance.url = attrs.get('url',instance.url)
 #            instance.tags = attrs.get('tags', instance.tags)
             instance.repository = attrs.get('repository', instance.repository)
-#            instance.is_local = attrs.get('is_local', instance.is_local)
-#            instance.is_requested = attrs.get('is_requested', instance.is_requested)
+            instance.is_local = attrs.get('is_local', instance.is_local)
+            instance.is_requested = attrs.get('is_requested', instance.is_requested)
 #            instance.request_code = attrs.get('request_code', instance.request_code)
-#            instance.num_copies = attrs.get('num_copies', instance.num_copies)
+            instance.num_copies = attrs.get('num_copies', instance.num_copies)
             return instance
         # Create new instance
         return Media(**attrs)

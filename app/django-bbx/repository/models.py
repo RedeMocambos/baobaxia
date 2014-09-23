@@ -30,9 +30,9 @@ repository_dir = settings.REPOSITORY_DIR
 def git_media_post_save(instance, **kwargs):
     u"""Intercepta o sinal de *post_save* de objetos multimedia (*media*) e
     adiciona o objeto ao repositório."""
-    from media.serializers import MediaSerializer
+    from media.serializers import MediaFileSerializer
     git_annex_add(instance.get_file_name(), get_file_path(instance))
-    serializer = MediaSerializer(instance)
+    serializer = MediaFileSerializer(instance)
     mediapath = get_file_path(instance)+'/'
     mediadata = os.path.splitext(instance.get_file_name())[0] + '.json'
     fout = open(mediapath + mediadata, 'w')
