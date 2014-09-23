@@ -32,7 +32,7 @@ define([
 	render: function() {
 	    var config = $("body").data("bbx").config,
 	    urlMucua = config.apiUrl +  '/mucua/by_name/' + config.mucua;
-	    
+	    console.log('render mucua');
 	    // start mucua DOM field
 	    $("body").data("bbx").mucua = {};
 	    $("body").data("bbx").media = {};	    
@@ -60,8 +60,12 @@ define([
 		    var mucuaResourcesLoad = setInterval(function() {
 			if (typeof mucuaDOM.info === 'object') {
 			    clearInterval(mucuaResourcesLoad);
-			    data.mucua.storageSize = mucuaDOM.info['local annex size'];
-			    data.mucua.storageAvailable = mucuaDOM.info['available local disk space'];
+			    
+			    data.mucua.totalDiskSpace = mucuaDOM.info['total disk space'];
+			    data.mucua.usedByAnnex = mucuaDOM.info['local annex size'];
+			    data.mucua.usedByOther = mucuaDOM.info['local used by other'];
+			    data.mucua.availableLocalDiskSpace = mucuaDOM.info['available local disk space'];
+
 			    // TODO: treat this as a changable variable
 			    data.mucua.demanded = 0;
 			    data.config = config;
@@ -69,12 +73,15 @@ define([
 			    
 			    // usage data - mucua footer
 			    // TODO: get from mucua / git annex
+			    /*
 			    var usageData = {
-				total: data.mucua.storageAvailable,
-				used: data.mucua.storageSize,
+				total: data.mucua.storageSize,
+				used_by_other: data.mucua.storageUsedByOther,
+				used_by_annex: data.mucua.storageUsedByAnnex,
 				demanded: data.mucua.demanded
-			    }
-			    BBXBaseFunctions.renderUsage(usageData);
+			    }*/
+			    data.mucua.demanded = data.mucua.demanded;
+			    BBXBaseFunctions.renderUsage(data.mucua);
 			}
 		    }, 50);
 		    

@@ -2,6 +2,7 @@
 
 import exceptions
 import json
+import subprocess
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -11,7 +12,7 @@ from django.contrib import admin
 from django.core.exceptions import ObjectDoesNotExist
 
 
-from bbx.settings import DEFAULT_MUCUA
+from bbx.settings import DEFAULT_MUCUA, MEDIA_ROOT
 from bbx.utils import dumpclean, logger
 from repository.models import (get_default_repository, git_annex_status,
 git_annex_group_add, git_annex_group_del, git_annex_group_list)
@@ -121,6 +122,14 @@ def get_mucua_info(uuid, repository=None):
     status = git_annex_status(repository.get_path())
     
     return status
+
+""" return mucua disk in Gigabytes """
+def get_mucua_disk():
+    df = subprocess.Popen(["df", MEDIA_ROOT], stdout=subprocess.PIPE)
+    output = df.communicate()[0]
+    size = int(output.split("\n")[1].split()[1]) / 1024 / 1024
+    
+    return size
 
 
 class MucuaDoesNotExists(ObjectDoesNotExist):

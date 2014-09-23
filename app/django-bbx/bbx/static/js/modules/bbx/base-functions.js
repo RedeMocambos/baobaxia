@@ -131,28 +131,6 @@ define([
 	avatarUrl = "images/" + defaultAvatar;
 	return avatarUrl;
     }
-
-    /**
-     * Get mucua image:
-     *
-     * search on media if there's any media with it's uuid
-     *
-     * @return image
-     * /
-    var getMucuaImage = function(mucua) {
-	var config = $("body").data("bbx").config,
-	url = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucua + '/media/' + mucua.uuid;
-	
-	var media = new MediaModel([], {url: url});
-	media.fetch({
-	    success: function() {
-		var mediaData = {
-		    media: media.attributes
-		}
-		return mediaData.url;
-	    }
-	});	
-    }*/
     
     /**
      * render common for internal pages at baobaxia
@@ -195,23 +173,33 @@ define([
      *
      * @return [jquery modify #footer]
      */
-    var renderUsage = function(data) {
-	var data = data || '',
+    var renderUsage = function(mucua) {
+	console.log(mucua);
+	var mucua = mucua || '',
 	reStripUnit = /^([0-9\.]+)([\w]*)/,
-	total = data.total.match(reStripUnit);
-	used = data.used.match(reStripUnit);
-	
+	total = mucua.totalDiskSpace.match(reStripUnit);
+	usedByOther = mucua.usedByOther.match(reStripUnit);
+	usedByAnnex = mucua.usedByAnnex.match(reStripUnit);
+/*
+			    data.mucua.totalDiskSpace = mucuaDOM.info['total disk space'];
+			    data.mucua.localAnnexSize = mucuaDOM.info['local annex size'];
+			    data.mucua.localUsedByOther = mucuaDOM.info['local used by other'];
+			    data.mucua.availableLocalDiskSpace = mucuaDOM.info['available local disk space'];
+*/
 	// split values from regexp
-	data.total = total[1];
-	data.totalUnit = total[2];
-	data.used = used[1];
-	data.usedUnit = used[2];
+	mucua.total = total[1];
+	mucua.totalUnit = total[2];
+	mucua.usedByOther = usedByOther[1];
+	mucua.usedByOtherUnit = usedByOther[2];
+	mucua.usedByAnnex = usedByAnnex[1];
+	mucua.usedByAnnexUnit = usedByAnnex[2];
 	
 	// calculate the percentages
-	data.usedPercent = Math.round(parseFloat(data.used) / parseFloat(data.total) * 100);
-	data.demandedPercent = Math.round(parseFloat(data.demanded) / parseFloat(data.total) * 100);
+	mucua.usedByOtherPercent = Math.round(parseFloat(mucua.usedByOther) / parseFloat(mucua.total) * 100);
+	mucua.usedByAnnexPercent = Math.round(parseFloat(mucua.usedByAnnex) / parseFloat(mucua.total) * 100);
+	mucua.demandedPercent = Math.round(parseFloat(mucua.demanded) / parseFloat(mucua.total) * 100);
 	
-	var compiledUsage = _.template(UsageBarTpl, data);
+	var compiledUsage = _.template(UsageBarTpl, mucua);
 	$('#footer').html(compiledUsage);
     }
 
@@ -282,6 +270,7 @@ define([
 			mucuaData.config = config;
 			
 			$('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
+			
 		    }
 		});	
 	    }

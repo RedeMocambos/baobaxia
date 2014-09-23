@@ -7,7 +7,7 @@ from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
 
 from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
-from mucua.models import Mucua, get_available_mucuas, get_default_mucua,get_mucua_from_UUID,get_mucua_info
+from mucua.models import Mucua, get_available_mucuas, get_default_mucua,get_mucua_from_UUID,get_mucua_info,get_mucua_disk
 from repository.models import Repository
 from mucua.serializers import MucuaSerializer
 from bbx.utils import convertToGB, logger
@@ -80,12 +80,9 @@ def mucua_get_info(request, uuid, repository=None):
     
     # TODO: it only gets data for local mucua (git annex info/status)
     # TODO: size of repo in string format
-    mucua_full = json.loads(get_mucua_info(repository))
-    mucua_info = {
-        "local annex size": mucua_full["local annex size"],
-        "local annex keys": mucua_full["local annex keys"],
-        "available local disk space": mucua_full["available local disk space"],
-        }
+
+    rewrite_size = re.compile('^([0-9\.]+)\s([a-z]*)\s*')
+    re_crop_unit = re.compile('([[0-9\.]+)')
     size_list = {'megabyte': 'MB',
                  'megabytes': 'MB',
                  'gigabyte': 'GB',
@@ -93,16 +90,30 @@ def mucua_get_info(request, uuid, repository=None):
                  'terabyte': 'TB',
                  'terabytes': 'TB'
                  }
-    # re to rewrite from textual to abbrev
-    rewrite_size = re.compile('^(\d+)\s{1,1}([a-z]+)')
     
-    available_disk = rewrite_size.match(mucua_info['available local disk space'])
-    local_size = rewrite_size.match(mucua_info['local annex size'])  
-            
-    # mucua_info['available local disk space'] = convertToGB(available_disk.group(1), size_list[available_disk.group(2)])
-    mucua_info['available local disk space'] = ''
-    #mucua_info['local annex size'] = convertToGB(local_size.group(1), size_list[local_size.group(2)])
-    mucua_info['local annex size'] = ''
+    mucua_full = json.loads(get_mucua_info(repository))
+    mucua_info = {
+        "local annex size": mucua_full["local annex size"],
+        "local annex keys": mucua_full["local annex keys"],
+        "available local disk space": mucua_full["available local disk space"],
+        "total disk space": str(get_mucua_disk()),
+        "local used by other": 0,
+        }
+
+    # re to rewrite from textual to abbrev
+    local_annex_size = rewrite_size.match(mucua_info['local annex size'])
+    available_local_disk_space = rewrite_size.match(mucua_info['available local disk space'])
+    
+    mucua_info['available local disk space'] = convertToGB(
+        str(round(float(available_local_disk_space.group(1)), 2)), size_list[available_local_disk_space.group(2)])
+    mucua_info['local annex size'] = convertToGB(
+        str(float(local_annex_size.group(1))), size_list[local_annex_size.group(2)])
+    mucua_info['local used by other'] = str(round(
+        float(re_crop_unit.match(mucua_info['total disk space']).group(1))
+        - float(re_crop_unit.match(mucua_info['local annex size']).group(1))
+        - float(re_crop_unit.match(mucua_info['available local disk space']).group(1))
+        , 2)) + 'GB'
+    
     mucua_info['mucua_groups'] = mucua.get_groups(repository)
     
     return Response(mucua_info)
