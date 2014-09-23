@@ -185,8 +185,8 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
-        logger.info(serializer.data)
-                
+        serializer.data['is_local'] = media.is_local
+        
         return Response(serializer.data)
 
 
