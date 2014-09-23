@@ -171,7 +171,6 @@ def media_list(request, repository, mucua, args=None, format=None):
         if (len(term_sql) > 0):
             term_sql = ' AND (' + term_sql + ')'
                             
-        logger.info(params)
         sql = "SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (" + origin_sql + " AND repository_id = ? ) " + term_sql + " ORDER BY " + ordering_sql + " LIMIT ? "
         sql = sql.decode('utf-8')
         
@@ -186,8 +185,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
-        logger.info(serializer.data)
-                
+        
         return Response(serializer.data)
 
 
