@@ -127,9 +127,11 @@ def get_mucua_info(uuid, repository=None):
 def get_mucua_disk():
     df = subprocess.Popen(["df", MEDIA_ROOT], stdout=subprocess.PIPE)
     output = df.communicate()[0]
-    size = int(output.split("\n")[1].split()[1]) / 1024 / 1024
+    data = []
+    data.append(int(output.split("\n")[1].split()[1]) / 1024 / 1024)  # size
+    data.append(int(output.split("\n")[1].split()[2]) / 1024 / 1024)  # used
     
-    return size
+    return data
 
 
 class MucuaDoesNotExists(ObjectDoesNotExist):

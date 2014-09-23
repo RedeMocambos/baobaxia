@@ -92,26 +92,23 @@ def mucua_get_info(request, uuid, repository=None):
                  }
     
     mucua_full = json.loads(get_mucua_info(repository))
+    size, used = get_mucua_disk()
     mucua_info = {
         "local annex size": mucua_full["local annex size"],
         "local annex keys": mucua_full["local annex keys"],
-        "available local disk space": mucua_full["available local disk space"],
-        "total disk space": str(get_mucua_disk()),
+        "available local disk space": str(used) + 'GB',
+        "total disk space": str(size) + 'GB',
         "local used by other": 0,
         }
 
     # re to rewrite from textual to abbrev
     local_annex_size = rewrite_size.match(mucua_info['local annex size'])
-    available_local_disk_space = rewrite_size.match(mucua_info['available local disk space'])
     
-    mucua_info['available local disk space'] = convertToGB(
-        str(round(float(available_local_disk_space.group(1)), 2)), size_list[available_local_disk_space.group(2)])
     mucua_info['local annex size'] = convertToGB(
         str(float(local_annex_size.group(1))), size_list[local_annex_size.group(2)])
-    mucua_info['local used by other'] = str(round(
-        float(mucua_info['total disk space'])
-        - float(re_crop_unit.match(mucua_info['local annex size']).group(1))
-        - float(re_crop_unit.match(mucua_info['available local disk space']).group(1))
+    mucua_info['local used by other'] = str(
+        round(
+            used - float(re_crop_unit.match(mucua_info['local annex size']).group(1))
         , 2)) + 'GB'
     
     mucua_info['mucua_groups'] = mucua.get_groups(repository)
