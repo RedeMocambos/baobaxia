@@ -124,14 +124,10 @@ def media_list(request, repository, mucua, args=None, format=None):
         else:
             ordering_sql = 'm.name'
         
-        """ exclude the content of own mucua on the network
-        TODO: maybe create an option for including or not the own mucua results in api url (i.e.: on interface, a checkbox 'include this mucua results') """
-        if (mucua == 'rede'):
-            origin_sql = "origin_id!=?  "
-            params.append(this_mucua.id)
-            
-        else:
-            origin_sql = "origin_id=?  "
+        origin_sql = ""
+        """ if mucua, filter it """
+        if (mucua != 'rede'):
+            origin_sql = "origin_id=? AND "
             params.append(mucua.id)
         
         """ appends repository id """
@@ -157,7 +153,7 @@ def media_list(request, repository, mucua, args=None, format=None):
                 else:
                     if (term_index > 0):
                         term_sql += " AND " 
-                    
+                        
                     term_sql += "( t.name LIKE ? "
                     term_sql += " OR m.name LIKE ?"
                     term_sql += " OR m.note LIKE ? )"
@@ -171,7 +167,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         if (len(term_sql) > 0):
             term_sql = ' AND (' + term_sql + ')'
                             
-        sql = "SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (" + origin_sql + " AND repository_id = ? ) " + term_sql + " ORDER BY " + ordering_sql + " LIMIT ? "
+        sql = "SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (" + origin_sql + " OBrepository_id = ? ) " + term_sql + " ORDER BY " + ordering_sql + " LIMIT ? "
         sql = sql.decode('utf-8')
         
         params.extend(ordering_params)
