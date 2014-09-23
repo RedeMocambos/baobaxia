@@ -94,7 +94,7 @@ a {text-decoration: none;}
 /*
  * footer
  */
-#usage-content {padding: 6px; width: 1000px; font-size: 10px; font-weight: bold }
+#usage-content {padding: 6px; font-size: 10px; font-weight: bold }
 #usage-content .usage-bar,
 #usage-content .legend {width: 700px; height: 15px; padding-left: 6px }
 #usage-content .legend .used {color: #36a; width: 150px}
@@ -105,6 +105,7 @@ a {text-decoration: none;}
 #usage-content .usage-bar .the-bar .used-other {background-color: #999; height: 9px; border-right: 1px solid #fff}
 #usage-content .usage-bar .the-bar .demanded {background-color: #c33; height: 9px}
 #usage-content .total {width: 100px; color: #385; padding-left: 6px; }
+#logos {float: right; margin-right: 20px; margin-top: -10px}
 
 /*
  * sidebar
@@ -151,16 +152,16 @@ a {text-decoration: none;}
  */
 #medias-length {color: #145B7A; font-weight: bold; font-size: 12px; float: right; margin-top: 15px; display: none }
 .bbx #medias-length {display: block }
-#media-results div.media-list {}
+#media-results div.media-list {margin-left: 4%}
 #content .media-list table {width: 100%; font-size: 12px; text-align: center}
 #content .media-list thead td {cursor: pointer; font-weight: bold; font-size: 15px }
-#content .media-list td.title {width: 51%; font-size: 14px; text-align: left}
+#content .media-list td.title {width: 30%; font-size: 14px; text-align: left}
 #content .media-list tbody td.origin,
 #content .media-list tbody td.author,
 #content .media-list tbody td.date {width: 10%}
 #content .media-list tbody td.format,
 #content .media-list tbody td.format_type,
-#content .media-list tbody td.license {width: 5%}
+#content .media-list tbody td.license {width: 10%}
 #content .media-list tbody td.is_requested {width: 4%; color: #A73400; font-weight: bold }
 #content .media .media-line a {color: #145B7A; text-align: left}
 .media-line td .icon-type {width: 21px; height: 21px; float: none !important}
@@ -182,6 +183,7 @@ a {text-decoration: none;}
 .media-box .image img,
 .media-box .image audio,
 .media-box .image video {width: 192px; height: 130px;} 
+.media-box .edit {position: absolute; margin-top: -2px; margin-left: 175px; padding-bottom: 1px; padding-left: 3px; background-color: #F4EFDD; border-radius: 4px}
 
 /*
  * busca
