@@ -109,7 +109,7 @@ def mucua_get_info(request, uuid, repository=None):
     mucua_info['local annex size'] = convertToGB(
         str(float(local_annex_size.group(1))), size_list[local_annex_size.group(2)])
     mucua_info['local used by other'] = str(round(
-        float(re_crop_unit.match(mucua_info['total disk space']).group(1))
+        float(mucua_info['total disk space'])
         - float(re_crop_unit.match(mucua_info['local annex size']).group(1))
         - float(re_crop_unit.match(mucua_info['available local disk space']).group(1))
         , 2)) + 'GB'
