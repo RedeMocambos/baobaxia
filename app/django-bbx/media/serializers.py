@@ -31,7 +31,7 @@ class MediaSerializer(serializers.ModelSerializer):
         model = Media
         fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
                   'format', 'license', 'media_file', 'url', 'origin',
-                  'repository')
+                  'repository', 'is_local')
         depth = 1
     
     def restore_fields(self, data, files):

@@ -185,7 +185,6 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         # serializa e da saida
         serializer = MediaSerializer(medias, many=True)
-        serializer.data['is_local'] = media.is_local
         
         return Response(serializer.data)
 
@@ -234,7 +233,6 @@ def media_detail(request, repository, mucua, pk=None, format=None):
 
         if pk != '':
             serializer = MediaSerializer(media)
-            serializer.data['is_local'] = media.is_local
             return Response(serializer.data)
 
     elif request.method == 'PUT':
