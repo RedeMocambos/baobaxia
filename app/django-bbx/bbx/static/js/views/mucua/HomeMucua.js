@@ -65,22 +65,12 @@ define([
 			    data.mucua.usedByAnnex = mucuaDOM.info['local annex size'];
 			    data.mucua.usedByOther = mucuaDOM.info['local used by other'];
 			    data.mucua.availableLocalDiskSpace = mucuaDOM.info['available local disk space'];
-
-			    // TODO: treat this as a changable variable
 			    data.mucua.demanded = 0;
+			    
+			    // TODO: treat this as a changable variable
 			    data.config = config;
 			    $('#place-profile').html(_.template(MucuaProfileTpl, data));
 			    
-			    // usage data - mucua footer
-			    // TODO: get from mucua / git annex
-			    /*
-			    var usageData = {
-				total: data.mucua.storageSize,
-				used_by_other: data.mucua.storageUsedByOther,
-				used_by_annex: data.mucua.storageUsedByAnnex,
-				demanded: data.mucua.demanded
-			    }*/
-			    data.mucua.demanded = data.mucua.demanded;
 			    BBXBaseFunctions.renderUsage(data.mucua);
 			}
 		    }, 50);
