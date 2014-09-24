@@ -45,7 +45,7 @@ a {text-decoration: none;}
 /*
  * header
  */
-#header {width: 100%; height: 180px; background-color: #fff; position: fixed }
+#header {width: 100%; height: 180px; background-color: #fff; position: fixed; z-index:10 }
 #header-top {background-image: url('../images/faixabanner.png'); background-repeat: repeat-x; height: 80px }
 #header-image {background-image: url('../images/cabecalho.png'); background-repeat: no-repeat; margin: 0 auto; height: 80px }
 .posicoes {display: none}
@@ -183,7 +183,7 @@ a {text-decoration: none;}
 .media-box .image img,
 .media-box .image audio,
 .media-box .image video {width: 192px; height: 130px;} 
-.media-box .edit {position: absolute; margin-top: -2px; margin-left: 175px; padding-bottom: 1px; padding-left: 3px; background-color: #F4EFDD; border-radius: 4px}
+.media-box .edit {position: absolute; margin-top: -2px; margin-left: 175px; padding-bottom: 1px; padding-left: 3px; background-color: #F4EFDD; border-radius: 4px; z-index: 1}
 
 /*
  * busca
