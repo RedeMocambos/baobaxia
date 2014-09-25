@@ -17,7 +17,7 @@ define([
 		(typeof $('#menu').html() === "undefined")) {
 		data.config = config;
 		
-		$('#header').append(_.template(MenuTpl, data));
+		$('#header-top').append(_.template(MenuTpl, data));
 	    }
 	}
     });
