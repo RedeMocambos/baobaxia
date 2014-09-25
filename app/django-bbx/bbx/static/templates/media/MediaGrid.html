@@ -7,21 +7,28 @@
       </a>
     </div>
     <!--<span><%= media.type %></span>-->
-    <div class="image">
-      <% if (media.is_local) { %>
+    <% if (media.is_local) { %>
+    <div class="image is_local <% if (media.type == 'arquivo') { %>icon-media<% } %>">
       <% if (media.type == 'imagem') { %>
-      <img src="<%= media.url %>" />
+      <img class="image" src="<%= media.url %>" />
       <% } else if (media.type == 'video') { %>
       <video preload="metadata" controls src="<%= media.url %>" />
       <% } else if (media.type == 'audio') { %>
       <audio preload="metadata" controls src="<%= media.url %>" />
-      <% } else if (media.type ='arquivo') { %>
-      <a href="<%= media.url %> ">download</a>
-      <% } %>
+      <% } else if (media.type == 'arquivo') { %>     
+      <a href="<%= media.url %>">
+	<img alt="<%= media.type%>" src="images/icon-arquivo.png" /><br/>download
+      </a>
       <% } %>
     </div>
+    <% } else { %>
+    <div class="icon-media not_local">
+      <img alt="<%= media.type%>" src="images/icon-<%=media.type%>.png" /><br/>
+    </div>
+    <% } %>
+    
   </div>
-  <span class="title">
+  <span class="title">    
     <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
       <% var strSize = 50; print(media.name.substring(0, strSize) + ((media.name.length > strSize) ? '...' : '')) %>
     </a>
