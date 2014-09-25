@@ -21,7 +21,7 @@ define([
 	    var config = $("body").data("bbx").config;
 	    if ($('#buscador').html() == "" ||
 		(typeof $('#buscador').html() === "undefined")) {
-		$('#header-bottom').append(_.template(BuscadorTpl, data));
+		$('#header-bottom').prepend(_.template(BuscadorTpl, data));
 		$('head').append('<link rel="stylesheet" href="/css/textext.plugin.tags.css" type="text/css" />');
 	    }
 	}

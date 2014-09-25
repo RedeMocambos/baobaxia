@@ -48,7 +48,7 @@ a {text-decoration: none;}
  */
 #header {width: 100%; height: 160px; background-color: #fff; position: fixed; z-index:10 }
 #header-top {background-image: url('../images/faixabanner.png'); background-repeat: repeat-x; height: 80px }
-#header-bottom { height: 75px; border-bottom: 1px solid #fff; }
+#header-bottom { float:left; margin-left: 10px; width: 70%; height: 75px; border-bottom: 1px solid #fff; }
 #header-image {background-image: url('../images/cabecalho.png'); background-repeat: no-repeat; margin: 0 auto; height: 80px }
 .posicoes {display: none}
 .home #header,
@@ -139,7 +139,7 @@ a {text-decoration: none;}
 .destaques h3.title {color: #fff; font-size: 26px; margin: 4px}
 .media #buscador .media-display-type {display: none; }
 
-#header .media-display-type div {margin: 0; padding: 0; margin-right: 15px; float: left; margin-top: 15px; }
+#header .media-display-type div {margin: 0; padding: 0; margin-right: 15px; float: right; }
 #header .media-display-type .grid {background: url(/images/grid-off.png); width: 17px; height: 17px; cursor: pointer}
 #header .media-display-type .list {background: url(/images/list-off.png); width: 17px; height: 17px; cursor: pointer}
 #header .media-display-type .grid:hover {background: url(/images/grid-on.png)}
@@ -152,7 +152,7 @@ a {text-decoration: none;}
 /*
  * media list
  */
-#medias-length {color: #145B7A; font-weight: bold; font-size: 12px; float: right; margin-top: 15px; display: none }
+#medias-length {color: #145B7A; font-weight: bold; font-size: 12px; display: none }
 .bbx #medias-length {display: block }
 #media-results div.media-list {margin-left: 4%}
 #content .media-list table {width: 100%; font-size: 12px; text-align: center}
