@@ -219,8 +219,10 @@ define([
 
     var getMedia = function(url, callback) {
 	var media = new MediaModel([], {url: url});
+	$('#content').append('<div id="loading-content"><img src="images/buscando.gif" /></div>');	
 	media.fetch({
 	    success: function() {
+		$('#content').remove("#loading-content");
 		var mediaData = {
 		    medias: media.attributes,
 		    formatDate: function(date) {

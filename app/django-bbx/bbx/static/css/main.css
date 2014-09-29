@@ -196,6 +196,7 @@ a {text-decoration: none;}
 #buscador .menu-buscador {margin-top: 4px; display: inline-block; padding-left: 6px}
 #result-string .back-to-results {color: #197290}
 .search-links {font-size: 16px; font-weight: bold; color: #fff}
+#loading-content {margin-left: 30%}
 
 #buscador-form {height: 30px; width: 250px}
 
