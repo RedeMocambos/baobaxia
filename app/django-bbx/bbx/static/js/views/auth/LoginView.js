@@ -102,8 +102,11 @@ define([
 	    var __parseTemplate = function(data) {
 		$('#header').html(_.template(HeaderHomeTpl));
 		
+		// clean sidebar
+		$('#sidebar').remove();
+		
 		// parse header
-		$('body').removeClass("").addClass("login");
+		$('body').removeClass().addClass("home login");
 		
 		// parse content
 		var compiledContent = _.template(LoginTemplate, data);
