@@ -14,6 +14,7 @@ define([
     'backbone',
     'jquery_cookie',
     'views/common/HeaderView',
+    'views/mucua/HomeMucua',
     'views/common/BuscadorView',
     'modules/mucua/model',
     'modules/repository/model',
@@ -24,7 +25,7 @@ define([
     'text!templates/common/UsageBar.html',
     'text!templates/common/UserProfile.html',
     'text!templates/common/MucuaProfile.html'
-], function($, _, Backbone, jQueryCookie, HeaderView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
+], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
     
     var init = function() {	
 	if (typeof $("body").data("bbx") === 'undefined') {
@@ -167,42 +168,124 @@ define([
 	var buscadorView = new BuscadorView();
 	buscadorView.render({});
     }
-    
+
+
     /**
      * render usage bar at footer
      *
      * @return [jquery modify #footer]
      */
-    var renderUsage = function(mucua) {
-	console.log(mucua);
-	var mucua = mucua || '',
-	reStripUnit = /^([0-9\.]+)([\w]*)/,
-	total = mucua.totalDiskSpace.match(reStripUnit);
-	usedByOther = mucua.usedByOther.match(reStripUnit);
-	usedByAnnex = mucua.usedByAnnex.match(reStripUnit);
-/*
-			    data.mucua.totalDiskSpace = mucuaDOM.info['total disk space'];
-			    data.mucua.localAnnexSize = mucuaDOM.info['local annex size'];
-			    data.mucua.localUsedByOther = mucuaDOM.info['local used by other'];
-			    data.mucua.availableLocalDiskSpace = mucuaDOM.info['available local disk space'];
-*/
-	// split values from regexp
-	mucua.total = total[1];
-	mucua.totalUnit = total[2];
-	mucua.usedByOther = usedByOther[1];
-	mucua.usedByOtherUnit = usedByOther[2];
-	mucua.usedByAnnex = usedByAnnex[1];
-	mucua.usedByAnnexUnit = usedByAnnex[2];
+    var renderUsage = function() {
+	console.log('render usage');
 	
-	// calculate the percentages
-	mucua.usedByOtherPercent = Math.round(parseFloat(mucua.usedByOther) / parseFloat(mucua.total) * 100);
-	mucua.usedByAnnexPercent = Math.round(parseFloat(mucua.usedByAnnex) / parseFloat(mucua.total) * 100);
-	mucua.demandedPercent = Math.round(parseFloat(mucua.demanded) / parseFloat(mucua.total) * 100);
+	// verifica se ja foi carregado o usage. 
+	if ($('#footer').html() === "") {
+	    // se ja foi carregado sai da funcao	    
+	    if ($('#usage-bar').length !== 0) {
+		return false;
+	    }
+	    
+	    // verifica se existe dado da mucua
+	    // - se não existe, pega os dados da mucua do config (mymucua)
+	    // - se existe, verifica se foi carregado o uuid
+	    //    - chama renderizacao dos dados
+	    // - se existe, chama renderizacao dos dados
+	    
+	    // mucua not loaded
+	    var loadMucua = null;
+	    if (typeof BBX.mucua === 'undefined') {
+		loadMucua = true;
+	    } else if (_.isObject(BBX.mucua)) {
+		if (typeof BBX.mucua.uuid === 'undefined') {		    
+		    loadMucua = true;
+		} else {
+		    loadMucua = false;
+		}
+	    }
+	    
+	    if (loadMucua === true) {
+		// load mucua
+		var config = $("body").data("bbx").config,
+		mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.MYMUCUA});
+		mucua.fetch({
+		    success: function() {
+			var mucuaData = {
+			    mucua: mucua.attributes
+			};
+			BBX.mucua = mucuaData.mucua;
+			// parse usage
+			__parseMucuaUsage(mucuaData.mucua);
+		    }
+		});		
+	    } else {
+		__parseMucuaUsage(BBX.mucua.uuid);
+	    }
+	}
+    }
+    
+    var __getMucuaResources = function(uuid) {
+	var config = $("body").data("bbx").config,
+	url = config.apiUrl + '/mucua/' + uuid + '/info',
+	mucua = '';
 	
-	var compiledUsage = _.template(UsageBarTpl, mucua);
-	$('#footer').html(compiledUsage);
+	mucua = new MucuaModel([], {url: url});
+	mucua.fetch({
+	    success: function() {
+		console.log('success');
+		BBX.mucua.info = mucua.attributes;
+	    }
+	});
+    }
+    
+    var __parseMucuaUsage = function(mucua) {
+	if (!_.isObject(mucua)) {
+	    return false;
+	}	
+	if (typeof mucua.uuid === 'undefined' ||
+	    mucua.uuid === '') { 
+	    return false;
+	}
+	
+	__getMucuaResources(mucua.uuid);
+	var mucuaResourcesLoad = setInterval(function() {
+	    if (typeof BBX.mucua.info !== 'undefined') {
+		var mucua = {},
+		mucuaDOM = BBX.mucua;
+		
+		mucua.totalDiskSpace = mucuaDOM.info['total disk space'];
+		mucua.usedByAnnex = mucuaDOM.info['local annex size'];
+		mucua.usedByOther = mucuaDOM.info['local used by other'];
+		mucua.availableLocalDiskSpace = mucuaDOM.info['available local disk space'];
+		mucua.demanded = 0; // TODO: dynamic var
+		
+		BBXBaseFunctions.renderUsage(mucua);
+		
+		reStripUnit = /^([0-9\.]+)([\w]*)/,
+		total = mucua.totalDiskSpace.match(reStripUnit);
+		usedByOther = mucua.usedByOther.match(reStripUnit);
+		usedByAnnex = mucua.usedByAnnex.match(reStripUnit);
+		
+		// split values from regexp
+		mucua.total = total[1];
+		mucua.totalUnit = total[2];
+		mucua.usedByOther = usedByOther[1];
+		mucua.usedByOtherUnit = usedByOther[2];
+		mucua.usedByAnnex = usedByAnnex[1];
+		mucua.usedByAnnexUnit = usedByAnnex[2];
+		
+		// calculate the percentages
+		mucua.usedByOtherPercent = Math.round(parseFloat(mucua.usedByOther) / parseFloat(mucua.total) * 100);
+		mucua.usedByAnnexPercent = Math.round(parseFloat(mucua.usedByAnnex) / parseFloat(mucua.total) * 100);
+		mucua.demandedPercent = Math.round(parseFloat(mucua.demanded) / parseFloat(mucua.total) * 100);
+		
+		var compiledUsage = _.template(UsageBarTpl, mucua);
+		$('#footer').html(compiledUsage);
+		clearInterval(mucuaResourcesLoad);
+	    }
+	}, 50);	
     }
 
+    
     /**
      *
      */
@@ -267,6 +350,7 @@ define([
 			mucuaData.mucua.storageSize = '10GB'; // TODO: get from API
 			
 			BBX.mucua = mucuaData.mucua;
+			console.log('loaded mucua');
 			mucuaData.config = config;
 			
 			$('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
@@ -284,10 +368,7 @@ define([
 			     'values': []
 			    }
 	visitedMucuas.values = getFromCookie('visitedMucuas') || [];
-	console.log('-------------------');
-	console.log(visitedMucuas.values);
-	console.log(config.mucua);
-
+	
 	// se for mymucua, nao adiciona a navegacao
 	if (config.mucua == config.MYMUCUA || config.mucua == 'rede') {
 	    return visitedMucuas.values;
@@ -297,45 +378,30 @@ define([
 	
 	if (_.isEmpty(arrNavMucuas)) {
 	    // nao foi navegada ainda
-	    console.log('nao foi navegada ainda');
 	    
 	    // adiciona ao comeco
-	    console.log('adiciona ao comeco');
 	    visitedMucuas.values.unshift(config.mucua);
-	    console.log(visitedMucuas);
 	} else {
 	    // sim, ja existe navegacao
-	    console.log('sim, ja existe navegacao');
 	    
-	    // existe o termo?
-	    console.log('existe o termo?');
+	    // existe o termo?	    
 	    var indexMucua = _.indexOf(arrNavMucuas, config.mucua);
-	    console.log(indexMucua);
 	    
 	    if (indexMucua == -1) { 
 		// nao existe, adiciona ao comeco
-		console.log('nao existe, adiciona ao comeco');
 		visitedMucuas.values.unshift(config.mucua);
 	    } else if (indexMucua == 0) {
   		// existe, e é o primeiro (ultima mucua visitada)
-		console.log('// existe, e é o primeiro (ultima mucua visitada). nao faz nada.');
 		// nao faz nada
 	    } else {
 		// existe, em outra posicao. Tem que ir para o comeco
 		// procura existente, exclui
-		console.log('procura existente, exclui');
 		visitedMucuas.values.splice(indexMucua, 1);
-		console.log(visitedMucuas.values);
 		
 		// adiciona ao comeco
 		console.log('adiciona ao comeco');
-		visitedMucuas.values.unshift(config.mucua);
-		//console.log(visitedMucuas.values);
 	    }	    
 	}
-	
-	console.log('array nav mucuas:');
-	console.log(arrNavMucuas);
 	
 	addToCookie(visitedMucuas);
 	

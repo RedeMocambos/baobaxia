@@ -12,8 +12,9 @@ define([
 	    var config = $("body").data("bbx").config,
 	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute;
 	    
-	    BBXBaseFunctions.renderSidebar();	   
+	    BBXBaseFunctions.renderSidebar();
 	    MediaFunctions.getMediaSearch(url);
+	    BBXBaseFunctions.renderUsage();
 	}
     });
 

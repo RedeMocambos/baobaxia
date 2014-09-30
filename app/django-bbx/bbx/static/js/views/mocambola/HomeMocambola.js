@@ -30,6 +30,7 @@ define([
 	    
 	    config.userData = BBXBaseFunctions.getFromCookie('userData');
 	    data.config = config;
+	    BBXBaseFunctions.renderUsage();
 	    BBXBaseFunctions.renderSidebar();
 
 	    // get mocambola data

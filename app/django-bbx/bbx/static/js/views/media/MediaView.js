@@ -23,6 +23,7 @@ define([
 	    } else {
 		config.userData = {};
 	    }
+	    BBXBaseFunctions.renderUsage();
 	    BBXBaseFunctions.renderSidebar();
 	    
 	    media = MediaFunctions.getMedia(url, function(data) {
