@@ -96,7 +96,7 @@ def mucua_get_info(request, uuid, repository=None):
     mucua_info = {
         "local annex size": mucua_full["local annex size"],
         "local annex keys": mucua_full["local annex keys"],
-        "available local disk space": str(used) + 'GB',
+        "available local disk space": str(size - used) + 'GB',
         "total disk space": str(size) + 'GB',
         "local used by other": 0,
         }

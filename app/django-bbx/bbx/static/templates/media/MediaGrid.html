@@ -1,11 +1,14 @@
 <% _.each(medias, function(media) { %>
 <div class="media-box <%= media.type %> <% _.each(media.tags, function(tagName) { %><%= tagName %> <% }); %>">
   <div class="result-thumb">
+    <!-- edit button if logged -->
+    <% if (BBXBaseFunctions.isLogged()) { %>
     <div class="edit">
       <a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">
 	<img src="images/edit-media-pq.png" />
       </a>
     </div>
+    <% } %>
     <!--<span><%= media.type %></span>-->
     <% if (media.is_local) { %>
     <div class="image is_local <% if (media.type == 'arquivo') { %>icon-media<% } %>">

@@ -276,6 +276,7 @@ define([
 		// calculate the percentages
 		mucua.usedByOtherPercent = Math.round(parseFloat(mucua.usedByOther) / parseFloat(mucua.total) * 100);
 		mucua.usedByAnnexPercent = Math.round(parseFloat(mucua.usedByAnnex) / parseFloat(mucua.total) * 100);
+		mucua.availableLocalDiskSpacePercent = Math.round(parseFloat(mucua.availableLocalDiskSpace) / parseFloat(mucua.total) * 100);
 		mucua.demandedPercent = Math.round(parseFloat(mucua.demanded) / parseFloat(mucua.total) * 100);
 		
 		var compiledUsage = _.template(UsageBarTpl, mucua);

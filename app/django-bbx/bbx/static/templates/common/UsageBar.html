@@ -3,11 +3,13 @@
     <div class="legend">
       <div class="used-other inline">outros: <%=usedByOtherPercent %>% (<%=usedByOther %><%=usedByOtherUnit %>)</div>
       <div class="used inline">repositório: <%=usedByAnnexPercent %>% (<%=usedByAnnex %><%=usedByAnnexUnit %>)</div>
+      <div class="available inline">livre: <%=availableLocalDiskSpacePercent %>% (<%=availableLocalDiskSpace %>)</div>
       <div class="demanded inline"><% if (demandedPercent > 0) { %>espaço solicitado: <%=demandedPercent %>%<% }%></div>
     </div>
     <div class="the-bar">
       <div class="used-other inline" style="width: <%=usedByOtherPercent %>%">&nbsp;</div>
       <div class="used inline" style="width: <%=usedByAnnexPercent %>%">&nbsp;</div>
+      <div class="available inline" style="width: <%=availableLocalDiskSpace %>%">&nbsp;</div>
       <% if (demandedPercent > 0) { %><div class="demanded inline" style="width: <%=demandedPercent %>%">&nbsp;</div><% }%>
     </div>
   </div>
