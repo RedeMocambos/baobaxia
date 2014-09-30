@@ -14,16 +14,17 @@ define([
 	 *
 	 * @return image
 	 */
-	getImage: function(url, callback) {
-	    var defaultImageSrc = '/images/mucua-default.png',
+	getImage: function(url, callback, defaultImageSrc) {
+	    var defaultImageSrc = defaultImageSrc || '/images/mucua-default.png',
 	    media = new MediaModel([], {url: url});
 	    
 	    media.fetch({
 		success: function() {
+		    var imageSrc = defaultImageSrc;
 		    if(!_.isEmpty(media.attributes)) {
-			var imageSrc = media.attributes[0].url;
-		    } else {
-			var imageSrc = defaultImageSrc;
+			if (media.attributes[0].is_local === true ) {
+			    imageSrc = media.attributes[0].url;
+			}
 		    }
 		    if (typeof callback == 'function') {
 			callback(imageSrc);

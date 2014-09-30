@@ -2,7 +2,9 @@
 <p>&nbsp;</p>
 
 <% _.each(mucuas, function(mucua) { %>
-<div class="item-mucua">
-  <a href="<%=config.interfaceUrl%><%= config.MYREPOSITORY%>/<%=mucua.description%>/bbx/search"><%= mucua.description %></a>
+<div class="item-mucua <%=mucua.description%>">
+  <a href="<%=config.interfaceUrl%><%= config.MYREPOSITORY%>/<%=mucua.description%>/bbx/search">
+    <span><%= mucua.description %></span>
+  </a>
 </div>
 <% }) %>

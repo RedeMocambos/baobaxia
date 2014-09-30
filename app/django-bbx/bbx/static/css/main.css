@@ -277,11 +277,20 @@ a {text-decoration: none;}
 /*
  * repository
  */
-.item-mucua { border: 1px solid #fff; border-bottom: 3px solid #fff; display: inline; margin: 4px; padding: 6px;
-padding-left: 40px; background-repeat: no-repeat; height: 45px; padding-top: 20px;
-background-color: #1175A0; background-image: url(../images/avatar-default.png) }
-.item-mucua a {color: #fff; font-weight: bold; }
-
+.item-mucua { border: 3px solid #fff;
+	      border-bottom: 15px solid #fff; 
+	      display: inline-table; 
+	      margin: 4px; 
+	      padding: 4px; 
+	      height: 90px; 
+	      width: 90px;
+	      border-radius: 60px; 
+	      text-align: center; 
+	      background-color: #1175A0;
+	    }
+.item-mucua a img { margin-top: 10px; border-radius: 45px}
+.item-mucua a span {font-weight: bold; vertical-align: bottom; display: inline-block; line-height: normal }
+.item-mucua a {color: #fff;}
 /* esquema de fundo de tela personalizado para mucua */
 .rede #header,
 .media #header,
