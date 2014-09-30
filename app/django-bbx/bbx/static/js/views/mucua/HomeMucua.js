@@ -2,7 +2,6 @@ define([
     'jquery', 
     'underscore',
     'backbone',
-    'modules/bbx/base-functions',
     'modules/mucua/model',
     'modules/media/model',
     'modules/media/collection',
@@ -11,21 +10,20 @@ define([
     'text!templates/common/UserProfile.html',
     'text!templates/common/MucuaProfile.html',
     'text!templates/mucua/HomeMucua.html',
-], function($, _, Backbone, BBXBaseFunctions, MucuaModel, MediaModel, MediaCollection, MediaFunctions, MocambolaModel, UserProfileTpl, MucuaProfileTpl, HomeMucuaTpl) {
+], function($, _, Backbone, MucuaModel, MediaModel, MediaCollection, MediaFunctions, MocambolaModel, UserProfileTpl, MucuaProfileTpl, HomeMucuaTpl) {
     var MucuaView = Backbone.View.extend({
 	el: "body",
-		
+	
 	render: function() {
-	    var config = $("body").data("bbx").config,
+	    var config = BBX.config,
 	    urlMucua = config.apiUrl +  '/mucua/by_name/' + config.mucua;
 	    console.log('render mucua');
+	    
 	    // start mucua DOM field
 	    $("body").data("bbx").mucua = {};
 	    $("body").data("bbx").media = {};	    
-	    // set as global function
-	    BBX.getMucuaResources = this.getMucuaResources;
 	    BBXBaseFunctions.renderSidebar();
-	    
+	    BBXBaseFunctions.renderUsage();
 	    // get specific content
 	    MediaFunctions.getMediaByMucua('#mucua-home');
 	    MediaFunctions.getMediaByNovidades();
@@ -38,6 +36,7 @@ define([
 		    data.mucua = mucua.attributes;
 		    data.mucua.url = "http://www.mocambos.net";
 		    data.mucua.image = config.imagePath + '/mucua-default.png';
+		    data.config = BBX.config;
 		    $('#content').html(_.template(HomeMucuaTpl, data));
 		    $('#place-profile').html(_.template(MucuaProfileTpl, data));
 				    

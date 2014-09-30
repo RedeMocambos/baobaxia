@@ -49,7 +49,6 @@ define([
      * @return {Bool} if there's a session opened
      */
     var isLogged = function() {
-	console.log('isLogged()');
 	if (this.getFromCookie('userData')) {
 	    // TODO: add some session check	   
 	    return true;

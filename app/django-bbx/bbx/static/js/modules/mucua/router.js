@@ -34,6 +34,7 @@ define([
 	    } else {
 		BBXBaseFunctions.renderCommon('mucua');
 	    }
+	    
 	    BBXBaseFunctions.setNavigationVars(repository, mucua);
 	    var homeMucua = new HomeMucua(); 
 	    homeMucua.render();
