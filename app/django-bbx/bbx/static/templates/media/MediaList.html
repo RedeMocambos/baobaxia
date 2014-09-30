@@ -8,7 +8,7 @@
       <td class="date">data<br/><img src="images/order-down.png" border="0" /></a></td>
       <td class="license">licença<br/><img src="images/order-down.png" border="0" /></a></td>
       <td class="type">tipo</a><br/><img src="images/order-down.png" border="0" /></a></td>
-      <td class="is_requested">estado<br/><img src="images/order-down.png" border="0" /></a></td>
+      <td class="is_requested">cópia local?<br/><img src="images/order-down.png" border="0" /></a></td>
     </tr>
   </thead>
   <tbody>
@@ -37,10 +37,11 @@
       <td class="type">
 	<img alt="<%= media.type%>" src="images/icon-<%= media.type %>.png" />
       </td>
-      <td class="is_requested">
-	<span>
-	  <% if(media.is_requested) { %>
-	  requested
+      <td class="is_local">
+	  <% if(media.is_local) { %>
+	  <span class="local">sim</span>	  
+	  <% } else { %>
+	  <span class="not_local">não</span>	  
 	  <% } %>
 	</span>
       </td>

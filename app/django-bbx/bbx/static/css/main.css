@@ -157,7 +157,10 @@ a {text-decoration: none;}
 #media-results div.media-list {margin-left: 4%}
 #content .media-list table {width: 100%; font-size: 12px; text-align: center}
 #content .media-list thead td {cursor: pointer; font-weight: bold; font-size: 15px }
+#content .media-list td {padding: 3px}
 #content .media-list td.title {width: 30%; font-size: 14px; text-align: left}
+#content .media-list tr:nth-child(even) {background-color: #c8b987}
+#content .media-list tr:nth-child(odd) {}
 #content .media-list tbody td.origin,
 #content .media-list tbody td.author,
 #content .media-list tbody td.date {width: 10%}
@@ -165,6 +168,9 @@ a {text-decoration: none;}
 #content .media-list tbody td.format_type,
 #content .media-list tbody td.license {width: 10%}
 #content .media-list tbody td.is_requested {width: 4%; color: #A73400; font-weight: bold }
+#content .media-list tbody td.is_local {width: 4%; color: #34A700; font-weight: bold }
+.is_local .local {color: #34a700}
+.is_local .not_local {color: #a73400}
 #content .media .media-line a {color: #145B7A; text-align: left}
 .media-line td .icon-type {width: 21px; height: 21px; float: none !important}
 
