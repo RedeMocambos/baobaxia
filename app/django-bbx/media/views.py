@@ -90,39 +90,42 @@ def media_list(request, repository, mucua, args=None, format=None):
         default_limit = 20
         limiting_params = []
         if (args.find('limit') != -1):
-            limiting_params.append(str(args.split('limit/')[1]))
+            limiting_params.append(int(args.split('limit/')[1]))
             args = args.split('limit/')[0]
         else:
-            limiting_params.append(str(default_limit))
+            limiting_params.append(int(default_limit))
         
         """ if passed, get ordering rules """
         ordering_sql = ''
         ordering_params = []
+        default_ordering = 'name ASC'
         if (args.find('orderby/') != -1):
             ordering_terms = args.split('orderby/')[1].split('/')
             ordering_list = []
             counting = 0
+            
+            """ as ordering must not be passed as wildchar, we're filtering the input """
+            accepted_ordering = ['uuid', 'name', 'date', 'note', 'author_id', 'origin_id', 'format', 'license', 'repository', 'is_local', 'is_requested', 'num_copies']
             for term in ordering_terms:
                 if ((term == 'asc') | (term == 'desc')):
                     if counting == 0:
                         continue
-                    ordering_list[-1] += ' ' + term + ' '
+                    ordering_sql += ' ' + term + ','
                 else:
-                    if (term != ''):
-                        ordering_list.append(term)                               
+                    if (term in accepted_ordering):
+                        ordering_sql += term
+
                 counting += 1
                 
-            for ordering in ordering_list:
-                ordering_sql += '%s,'
-                ordering_params.append(ordering)
-            
-            # remove last char if it's a comma / ','
-            if ordering_sql[:-1] == ',':
-                ordering_sql = ordering_sql[:-1]
-            
+            if ordering_sql != '':
+                if ordering_sql[-1] == ',':
+                    ordering_sql = ordering_sql[:-1]
+            else:
+                ordering_sql = default_ordering
+                
             args = args.split('orderby/')[0]
         else:
-            ordering_sql = 'm.name'
+            ordering_sql = default_ordering
         
         origin_sql = ""
         """ if mucua, filter it """
@@ -167,12 +170,10 @@ def media_list(request, repository, mucua, args=None, format=None):
         if (len(term_sql) > 0):
             term_sql = ' AND (' + term_sql + ')'
                             
-        sql = "SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (" + origin_sql + " repository_id = ? ) " + term_sql + " ORDER BY " + ordering_sql + " LIMIT ? "
+        sql = "SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (" + origin_sql + " repository_id = ? ) " + term_sql + " ORDER BY " + ordering_sql + " LIMIT ?"
         sql = sql.decode('utf-8')
         
-        params.extend(ordering_params)
         params.extend(limiting_params)
-        
         medias = Media.objects.raw(sql, params)
         
         """ sql log
