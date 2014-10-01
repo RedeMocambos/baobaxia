@@ -1,11 +1,11 @@
 <div id="media-view">
+  <% if (config.userData.username) { %>
   <div id="link-edit">
-    <% if (config.userData.username) { %>
     <a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">
       <img src="images/edit-media.png" />
     </a>
-    <% } %>
   </div>
+  <% } %>
 
   <div id="media-title">
       <h3><%= media.name %></h3>
