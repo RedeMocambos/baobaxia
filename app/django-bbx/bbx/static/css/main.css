@@ -167,7 +167,6 @@ a {text-decoration: none;}
 #content .media-list tbody td.format,
 #content .media-list tbody td.format_type,
 #content .media-list tbody td.license {width: 10%}
-#content .media-list tbody td.is_requested {width: 4%; color: #A73400; font-weight: bold }
 #content .media-list tbody td.is_local {width: 4%; color: #34A700; font-weight: bold }
 .is_local .local {color: #34a700}
 .is_local .not_local {color: #a73400}

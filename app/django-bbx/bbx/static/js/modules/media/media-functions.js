@@ -55,13 +55,15 @@ define([
 
     var __parseMenuSearch = function(terms) {
 	var config = __getConfig(),
-	data = {};
+	data = {},
 	terms = _.compact(terms), // remove any false value
 	terms_arr = [], 
 	terms_size = terms.length; 	
 	
 	// check sortby & limit
 	if (terms.length > 0) {
+	    var term = '',
+	    t = 0;
 	    for (var t = 0; t < terms_size; t++) {
 		term = terms[t];
 		if (term == 'orderby' || term == 'limit') {
@@ -156,6 +158,15 @@ define([
 	    break;
 	case 'list':
 	    $(target).html(_.template(MediaListTpl, data));
+	    
+	    $('thead td.title a').on('click', function(){ mediaSearchSort('name')});
+	    $('thead td.author a').on('click', function(){ mediaSearchSort('author_id')});
+	    $('thead td.format_type a').on('click', function(){ mediaSearchSort('format')});
+	    $('thead td.origin a').on('click', function(){ mediaSearchSort('origin_id')});
+	    $('thead td.date a').on('click', function(){ mediaSearchSort('date')});
+	    $('thead td.license a').on('click', function(){ mediaSearchSort('license')});
+	    $('thead td.type a').on('click', function(){ mediaSearchSort('type')});
+	    $('thead td.is_local a').on('click', function(){ mediaSearchSort('is_local')});
 	    break;
 	}
 	_.each(valid_types, function (type_name) {
@@ -345,6 +356,73 @@ define([
 	    $('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
 	});	
     };
+
+    var mediaSearchSort = function(field) {
+	var url = Backbone.history.location.href;
+	matches = '',
+	reUrl = '',
+	matches = null,
+	ordering_type = '/asc';
+	
+	if (!url.match('bbx/search')) {
+	    //http://namaste/#mocambos/namaste/limit/100
+	    matches = url.match('(.*)/limit/(.*)$');
+	    if (matches) {
+		url = matches[1] + '/bbx/search/limit/' + matches[2];
+	    //http://namaste/#mocambos/namaste		
+	    } else { 
+		url += '/bbx/search';
+	    }
+	}
+	
+	__check_ordering = function(url) {
+	    if (url.match('asc')) {
+		return '/desc';
+	    } else if (url.matches('desc')) {
+		return '/asc';
+	    } else {
+		return '/asc'
+	    }
+	}
+
+	// bbx/search/quiabo/orderby/is_local/limit/100
+	if (url.match('/orderby/') && url.match('/limit/')) {
+	    console.log('order && limit');
+	    reUrl = 'orderby\/(.*)\/limit';
+	    matches = url.match(reUrl);
+	    old_field = matches[1];
+	    ordering_type = (old_field == field + ordering_type) ? __check_ordering(url) : ordering_type;
+	    
+	    url = url.replace(old_field, field + ordering_type);
+	    
+        // bbx/search/quiabo/orderby/is_local
+	} else if (url.match('/orderby/') && !url.match('/limit/')) {
+	    console.log('order');
+	    reUrl = 'orderby\/(.*)$';
+	    matches = url.match(reUrl);
+	    old_field = matches[1];
+	    
+	    ordering_type = (old_field == field + ordering_type) ? __check_ordering(url) : ordering_type;
+	    url = url.replace(old_field, field + ordering_type);
+	    
+	// bbx/search/quiabo/limit/100
+	} else if (url.match('/limit/')) {
+	    console.log('limit');
+	    reUrl = '(.*)\/limit\/(.*)';
+	    matches = url.match(reUrl);
+	    
+	    ordering_type = __check_ordering(url);
+
+	    url = matches[1] + 'orderby/' + field + ordering_type + '/limit/' + matches[2];
+	// bbx/search
+	} else {
+	    console.log('else');
+	    ordering_type = __check_ordering(url);
+	    url += '/orderby/' + field + ordering_type;
+	}
+	
+	window.location.href = url;
+    }
     
     return {
 	init: init,
@@ -358,6 +436,7 @@ define([
 	getMediaRelated: getMediaRelated,
 	getMediaTypes: getMediaTypes,
 	getMediaLicenses: getMediaLicenses,
-	getTypeByMime: getTypeByMime
+	getTypeByMime: getTypeByMime,
+	mediaSearchSort: mediaSearchSort
     }
 });

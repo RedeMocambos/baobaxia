@@ -249,6 +249,10 @@ define([
 	var mucuaResourcesLoad = setInterval(function() {
 	    if (typeof BBX.mucua.info !== 'undefined') {
 		var mucua = {},
+		reStripUnit = /^([0-9\.]+)([\w]*)/,
+		total = '',
+		usedByOther = '',
+		usedByAnnex = '',
 		mucuaDOM = BBX.mucua;
 		
 		mucua.totalDiskSpace = mucuaDOM.info['total disk space'];
@@ -259,7 +263,6 @@ define([
 		
 		BBXBaseFunctions.renderUsage(mucua);
 		
-		reStripUnit = /^([0-9\.]+)([\w]*)/,
 		total = mucua.totalDiskSpace.match(reStripUnit);
 		usedByOther = mucua.usedByOther.match(reStripUnit);
 		usedByAnnex = mucua.usedByAnnex.match(reStripUnit);
@@ -341,7 +344,7 @@ define([
 			    mucua: mucua.attributes
 			};
 			var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid;
-			mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
+			var mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
 			    $('#mucua_image').attr('src', imageSrc);
 			});
 			

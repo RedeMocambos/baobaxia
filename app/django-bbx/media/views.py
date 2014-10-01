@@ -105,7 +105,7 @@ def media_list(request, repository, mucua, args=None, format=None):
             counting = 0
             
             """ as ordering must not be passed as wildchar, we're filtering the input """
-            accepted_ordering = ['uuid', 'name', 'date', 'note', 'author_id', 'origin_id', 'format', 'license', 'repository', 'is_local', 'is_requested', 'num_copies']
+            accepted_ordering = ['uuid', 'name', 'date', 'note', 'type', 'author_id', 'origin_id', 'format', 'license', 'repository', 'is_local', 'is_requested', 'num_copies']
             for term in ordering_terms:
                 if ((term == 'asc') | (term == 'desc')):
                     if counting == 0:
