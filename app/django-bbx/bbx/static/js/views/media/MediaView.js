@@ -33,8 +33,11 @@ define([
 		data.baseUrl = BBXBaseFunctions.getDefaultHome();
 		$('#back-to-results').html("<a class='back-to-results' href='javascript: history.back(-1)'><img src='" + config.imagePath + "/voltar.png'> voltar para a busca</a>");
 		$('#content').html(_.template(MediaViewTpl, data));
-		
-		// get image
+		// TODO: add an event to monitor scroll
+		// if scroll reaches the end, load more content
+		//$('body').on('scroll', function() {
+		//		    console.log('scroll');
+		//});
 	    });
 
 	    // who has the file
