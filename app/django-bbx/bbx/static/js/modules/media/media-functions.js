@@ -160,9 +160,9 @@ define([
 	    $(target).html(_.template(MediaListTpl, data));
 	    
 	    $('thead td.title a').on('click', function(){ mediaSearchSort('name')});
-	    $('thead td.author a').on('click', function(){ mediaSearchSort('author_id')});
+	    $('thead td.author a').on('click', function(){ mediaSearchSort('author')});
 	    $('thead td.format_type a').on('click', function(){ mediaSearchSort('format')});
-	    $('thead td.origin a').on('click', function(){ mediaSearchSort('origin_id')});
+	    $('thead td.origin a').on('click', function(){ mediaSearchSort('origin')});
 	    $('thead td.date a').on('click', function(){ mediaSearchSort('date')});
 	    $('thead td.license a').on('click', function(){ mediaSearchSort('license')});
 	    $('thead td.type a').on('click', function(){ mediaSearchSort('type')});

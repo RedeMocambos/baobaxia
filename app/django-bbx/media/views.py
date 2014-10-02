@@ -105,7 +105,9 @@ def media_list(request, repository, mucua, args=None, format=None):
             counting = 0
             
             """ as ordering must not be passed as wildchar, we're filtering the input """
-            accepted_ordering = ['uuid', 'name', 'date', 'note', 'type', 'author_id', 'origin_id', 'format', 'license', 'repository', 'is_local', 'is_requested', 'num_copies']
+            accepted_ordering = ['uuid', 'name', 'date', 'note', 'type', 'author', 'origin', 'format', 'license', 'repository', 'is_local', 'is_requested', 'num_copies']
+            """ hack: author and origin must be django objects, but here will assume string form """
+            hack_fields = ['author', 'origin']
             for term in ordering_terms:
                 if ((term == 'asc') | (term == 'desc')):
                     if counting == 0:
@@ -113,6 +115,8 @@ def media_list(request, repository, mucua, args=None, format=None):
                     ordering_sql += ' ' + term + ','
                 else:
                     if (term in accepted_ordering):
+                        if (term in hack_fields):
+                            term = '_' + term
                         ordering_sql += term
 
                 counting += 1
@@ -170,7 +174,23 @@ def media_list(request, repository, mucua, args=None, format=None):
         if (len(term_sql) > 0):
             term_sql = ' AND (' + term_sql + ')'
                             
-        sql = "SELECT DISTINCT m.* FROM media_media m LEFT JOIN media_media_tags mt ON m.id = mt.media_id LEFT JOIN tag_tag t ON mt.tag_id = t.id  WHERE (" + origin_sql + " repository_id = ? ) " + term_sql + " ORDER BY " + ordering_sql + " LIMIT ?"
+        sql = "SELECT DISTINCT \
+          m.*, \
+          u.username AS _author, \
+          mu.description AS _origin \
+        FROM \
+          media_media m \
+        LEFT JOIN media_media_tags mt \
+          ON m.id = mt.media_id \
+        LEFT JOIN tag_tag t \
+          ON mt.tag_id = t.id \
+        LEFT JOIN auth_user u  \
+          ON u.id = m.author_id  \
+        LEFT JOIN mucua_mucua mu \
+          ON mu.id = m.origin_id \
+        WHERE (" + origin_sql + " repository_id = ? ) " + term_sql + "  \
+        ORDER BY " + ordering_sql + "  \
+        LIMIT ?"
         sql = sql.decode('utf-8')
         
         params.extend(limiting_params)
