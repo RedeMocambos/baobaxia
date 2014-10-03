@@ -162,12 +162,20 @@ define([
 	    // get ordering; default: name
 	    // TODO: invert arrow according to order type (asc|desc)
 	    var orderby = 'name',
+	    orderbyType = 'asc',
 	    url = Backbone.history.location.href,
-	    matches = url.match('orderby/([a-zA-Z]*)/');
-	    if (matches) {
-		orderby = matches[1];
+	    matchesOrderby = url.match('orderby/([a-zA-Z]*)/'),
+	    matchesOrderbyType = url.match('orderby/[a-zA-Z]*/([asc|desc]*)/');
+	    
+	    if (matchesOrderby) {
+		orderby = matchesOrderby[1];
 	    }
-	    $('thead td.' + orderby).addClass('orderby');	    
+	    if (matchesOrderbyType) {
+		orderbyType = matchesOrderbyType[1];
+	    }
+	    
+	    $('thead td.' + orderby).addClass('orderby');
+	    $('thead td.' + orderby + ' div').removeClass().addClass('orderby_' +  orderbyType);
 	    
 	    $('thead td.name a').on('click', function(){ mediaSearchSort('name')});
 	    $('thead td.author a').on('click', function(){ mediaSearchSort('author')});

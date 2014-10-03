@@ -159,6 +159,9 @@ a {text-decoration: none;}
 #content .media-list thead td {font-weight: bold; font-size: 15px; text-align: center !important }
 #content .media-list thead a {cursor: pointer }
 #content .media-list thead td.orderby {border-bottom: 2px solid #C8B987; }
+#content .media-list thead td div {width: 13px; height: 11px; float: none; margin: 0 auto; margin-top: 5px; }
+#content .media-list thead td div.orderby_asc {background-image: url(/images/order-down.png); }
+#content .media-list thead td div.orderby_desc {background-image: url(/images/order-up.png); }
 #content .media-list td {padding: 3px}
 #content .media-list td.name {width: 30%; font-size: 14px; text-align: left}
 #content .media-list tr:nth-child(even) {background-color: #c8b987}
