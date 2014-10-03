@@ -31,7 +31,7 @@ create_user() {
 # PRE: pkgs:
 
 # dependencies: se for deb pkg, tirar
-apt-get install git git-annex nginx supervisor python-pip 
+apt-get install git git-annex nginx supervisor python-pip libjpeg-dev
 
 ### cria diretorio basico
 mkdir -p $DEFAULT_REPOSITORY_DIR
@@ -263,6 +263,7 @@ pip install south;
 pip install wheel;
 pip install wsgiref;
 pip install longerusername
+pip install PIL
 "
 
 echo ""

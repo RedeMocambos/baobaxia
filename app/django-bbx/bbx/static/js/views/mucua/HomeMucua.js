@@ -39,7 +39,7 @@ define([
 		    data.config = BBX.config;
 		    $('#content').html(_.template(HomeMucuaTpl, data));
 		    $('#place-profile').html(_.template(MucuaProfileTpl, data));
-				    
+		    
 		    //TODO: get cloud
 		    /*
 		      $.fn.tagcloud.defaults = {

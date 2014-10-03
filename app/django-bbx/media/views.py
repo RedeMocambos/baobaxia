@@ -418,12 +418,10 @@ def show_image(request, repository, mucua, uuid, width, height, format_type):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    print media.media_file
     image = get_thumbnail(media.media_file, str(width) + 'x' + str(height),
                           crop='center', quality=99)
 
-    print path.join(image.url)
-    return Response(True)
+    return Response(image.url)
 
 
 @api_view(['GET'])
