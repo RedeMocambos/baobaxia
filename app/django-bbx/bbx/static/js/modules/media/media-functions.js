@@ -163,7 +163,7 @@ define([
 	    // TODO: invert arrow according to order type (asc|desc)
 	    var orderby = 'name',
 	    url = Backbone.history.location.href,
-	    matches = url.match('orderby/(.*)/');
+	    matches = url.match('orderby/([a-zA-Z]*)/');
 	    if (matches) {
 		orderby = matches[1];
 	    }
