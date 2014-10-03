@@ -165,7 +165,7 @@ define([
 	    orderbyType = 'asc',
 	    url = Backbone.history.location.href,
 	    matchesOrderby = url.match('orderby/([a-zA-Z]*)/'),
-	    matchesOrderbyType = url.match('orderby/[a-zA-Z]*/([asc|desc]*)/');
+	    matchesOrderbyType = url.match('orderby/[a-zA-Z]*/([asc|desc]*)[/]*');
 	    
 	    if (matchesOrderby) {
 		orderby = matchesOrderby[1];
