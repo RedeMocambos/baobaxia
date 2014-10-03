@@ -5,13 +5,6 @@ define([
     'textext',
     'text!templates/common/Buscador.html',
     'textext_ajax',
-    'textext_arrow',
-    'textext_autocomplete',
-    'textext_clear',
-    'textext_filter',
-    'textext_focus',
-    'textext_filter',
-    'textext_prompt',
     'textext_tags',
 ], function($, _, Backbone, Textext, BuscadorTpl){
     var BuscadorView = Backbone.View.extend({
