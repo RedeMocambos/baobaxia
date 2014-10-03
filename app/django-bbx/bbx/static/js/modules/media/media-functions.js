@@ -431,7 +431,7 @@ define([
 	    
 	    ordering_type = __check_ordering(url);
 
-	    url = matches[1] + 'orderby/' + field + ordering_type + '/limit/' + matches[2];
+	    url = matches[1] + '/orderby/' + field + ordering_type + '/limit/' + matches[2];
 	// bbx/search
 	} else {
 	    console.log('else');
