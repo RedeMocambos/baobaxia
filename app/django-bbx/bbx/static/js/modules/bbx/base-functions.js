@@ -39,7 +39,6 @@ define([
 	if (configLoaded === false) {
 	    __setConfig(DefaultConfig);
 	}
-	
 	BBXBaseFunctions = this;
     }
     
@@ -476,7 +475,7 @@ define([
 	
 	__getMyMucua();
 	__getDefaultRepository();
-	__getRepositories();
+	__getRepositories();	
 	
 	// so preenche quando todos tiverem carregado
 	var loadData = setInterval(function() {
@@ -503,8 +502,19 @@ define([
 	config = $("body").data("bbx").config;	
 	config.repository = repository;
 	config.mucua = mucua;
-	config.subroute = subroute;
+	config.subroute = subroute,
+	currentPage = Backbone.history.location.href;
 	
+	// adds current url to redirect
+	if (!currentPage.match('login')) {
+	    addToCookie({
+		'name': 'redirect_url',
+		'values': {
+		    0: Backbone.history.location.href
+		}
+	    });
+	}
+
 	console.log('subroute: ' + config.subroute);
 	// ---------- /
 	// solve problems / restrictions at navigation menu / replace inexistant routes between rede <-> mucua	

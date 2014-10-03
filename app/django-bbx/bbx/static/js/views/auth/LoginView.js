@@ -71,7 +71,11 @@ define([
 	doLogin: function() {
 	    var userData,
 	    loginData = this.__prepareLoginData(),
-	    urlRedirect = BBXBaseFunctions.getDefaultHome();
+	    urlRedirect = '',
+	    defaultUrlRedirect = BBXBaseFunctions.getDefaultHome();
+	    // Get from cookie
+
+	    urlRedirect = BBXBaseFunctions.getFromCookie('redirect_url')[0];
 	    
 	    this.__checkLogin(loginData);
 	    
