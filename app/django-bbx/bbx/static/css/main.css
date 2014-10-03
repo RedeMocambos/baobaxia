@@ -107,7 +107,6 @@ a {text-decoration: none;}
 #usage-content .usage-bar .the-bar .used-other {background-color: #999; height: 9px; border-right: 1px solid #fff}
 #usage-content .usage-bar .the-bar .demanded {background-color: #c33; height: 9px}
 #usage-content .total {width: 100px; color: #385; padding-left: 6px; }
-#logos {float: right; margin-right: 20px; margin-top: -10px}
 
 /*
  * sidebar
@@ -336,3 +335,14 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
 .bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
 .percent { position:absolute; display:inline-block; top:3px; left:48%; }
+
+/* sobre */
+#footer #sobre {margin-left: 20px;}
+#footer #sobre a {font-size: 12px; color: #145B7A; font-weight: bold}
+
+.sobre-content {background-color: #fff; padding: 4px; border-radius: 5px}
+.sobre-content pre {font-size: 10px; color: #88A7B5}
+.sobre-content p {font-size: 12px}
+.sobre-content h3 {color: #197299; margin-left: 40px}
+.sobre-content h4 {color: #197299; margin-left: 40px}
+

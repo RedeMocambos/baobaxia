@@ -8,18 +8,20 @@ define([
     'views/auth/LoginView', 
     'views/auth/LogoutView',
     'views/common/IndexView',  
+    'views/common/SobreView',  
     'modules/mucua/router',
     'modules/repository/router',
     'modules/media/router',
     'modules/bbx/router',
     'modules/mocambola/router',
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, MucuaRouter, RepositoryRouter, MediaRouter, BBXRouter, MocambolaRouter){
+], function($, Backbone, BackboneSubroute, BBXBaseFunctions, LoginView, LogoutView, IndexView, SobreView, MucuaRouter, RepositoryRouter, MediaRouter, BBXRouter, MocambolaRouter){
     var App = {};
     App.Router = Backbone.Router.extend({
 	Routers: {},
 	
 	routes: {
 	    '' : 'index',
+	    'sobre' : 'sobre',
 	    
 	    // auth
 	    ':repository/:mucua/login': 'login',
@@ -63,6 +65,11 @@ define([
 		    clearInterval(loadConfigs);
 		}
 	    }, 50);  
+	},
+	
+	sobre: function() {
+	    var sobreView = new SobreView();
+	    sobreView.render();
 	},
 	
 	login: function(repository, mucua) {
