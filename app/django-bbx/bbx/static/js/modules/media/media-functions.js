@@ -159,9 +159,19 @@ define([
 	case 'list':
 	    $(target).html(_.template(MediaListTpl, data));
 	    
-	    $('thead td.title a').on('click', function(){ mediaSearchSort('name')});
+	    // get ordering; default: name
+	    // TODO: invert arrow according to order type (asc|desc)
+	    var orderby = 'name',
+	    url = Backbone.history.location.href,
+	    matches = url.match('orderby/(.*)/');
+	    if (matches) {
+		orderby = matches[1];
+	    }
+	    $('thead td.' + orderby).addClass('orderby');	    
+	    
+	    $('thead td.name a').on('click', function(){ mediaSearchSort('name')});
 	    $('thead td.author a').on('click', function(){ mediaSearchSort('author')});
-	    $('thead td.format_type a').on('click', function(){ mediaSearchSort('format')});
+	    $('thead td.format a').on('click', function(){ mediaSearchSort('format')});
 	    $('thead td.origin a').on('click', function(){ mediaSearchSort('origin')});
 	    $('thead td.date a').on('click', function(){ mediaSearchSort('date')});
 	    $('thead td.license a').on('click', function(){ mediaSearchSort('license')});

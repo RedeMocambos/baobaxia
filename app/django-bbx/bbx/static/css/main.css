@@ -48,7 +48,7 @@ a {text-decoration: none;}
  */
 #header {width: 100%; height: 160px; background-color: #fff; position: fixed; z-index:10 }
 #header-top {background-image: url('../images/faixabanner.png'); background-repeat: repeat-x; height: 80px }
-#header-bottom { float:left; margin-left: 10px; width: 70%; height: 75px; border-bottom: 1px solid #fff; }
+#header-bottom { float:left; margin-left: 60px; width: 70%; height: 75px; border-bottom: 1px solid #fff; }
 #header-image {background-image: url('../images/cabecalho.png'); background-repeat: no-repeat; margin: 0 auto; height: 80px }
 .posicoes {display: none}
 .home #header,
@@ -156,9 +156,11 @@ a {text-decoration: none;}
 .bbx #medias-length {display: block }
 #media-results div.media-list {margin-left: 4%}
 #content .media-list table {width: 100%; font-size: 12px; text-align: center}
-#content .media-list thead td {cursor: pointer; font-weight: bold; font-size: 15px }
+#content .media-list thead td {font-weight: bold; font-size: 15px; text-align: center !important }
+#content .media-list thead a {cursor: pointer }
+#content .media-list thead td.orderby {border-bottom: 2px solid #C8B987; }
 #content .media-list td {padding: 3px}
-#content .media-list td.title {width: 30%; font-size: 14px; text-align: left}
+#content .media-list td.name {width: 30%; font-size: 14px; text-align: left}
 #content .media-list tr:nth-child(even) {background-color: #c8b987}
 #content .media-list tr:nth-child(odd) {}
 #content .media-list tbody td.origin,
