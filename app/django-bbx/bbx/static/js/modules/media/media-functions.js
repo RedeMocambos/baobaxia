@@ -378,7 +378,7 @@ define([
 	__check_ordering = function(url) {
 	    if (url.match('asc')) {
 		return '/desc';
-	    } else if (url.matches('desc')) {
+	    } else if (url.match('desc')) {
 		return '/asc';
 	    } else {
 		return '/asc'
