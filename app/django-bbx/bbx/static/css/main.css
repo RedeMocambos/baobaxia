@@ -250,6 +250,7 @@ a {text-decoration: none;}
 #media-view .media-image video {background-color: #000; width: 85%;}
 #media-view .media-image .download,
 #media-view .blocks .download {color: #145B7A}
+#media-view #whereis a {display: inline-block}
 
 #media-view a {color: #fff}
 #media-view .solicit-copy a {color: #197299}
