@@ -75,7 +75,11 @@ define([
 	    defaultUrlRedirect = BBXBaseFunctions.getDefaultHome();
 	    // Get from cookie
 
-	    urlRedirect = BBXBaseFunctions.getFromCookie('redirect_url')[0];
+	    if (typeof BBXBaseFunctions.getFromCookie('redirect_url')[0] !== 'undefined') {
+		urlRedirect = BBXBaseFunctions.getFromCookie('redirect_url')[0];
+	    } else {
+		urlRedirect = defaultUrlRedirect;
+	    }
 	    
 	    this.__checkLogin(loginData);
 	    
