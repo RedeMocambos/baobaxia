@@ -17,17 +17,22 @@ define([
 	getImage: function(url, callback, defaultImageSrc) {
 	    var defaultImageSrc = defaultImageSrc || '/images/mucua-default.png',
 	    media = new MediaModel([], {url: url});
-	    
 	    media.fetch({
 		success: function() {
 		    var imageSrc = defaultImageSrc;
 		    if(!_.isEmpty(media.attributes)) {
 			if (media.attributes[0].is_local === true ) {
-			    imageSrc = media.attributes[0].url;
+			    var mediaItem = media.attributes[0];
+			    var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + mediaItem.uuid + '/' + 150 + 'x' + 150 + '.' + mediaItem.format;
+			    var mediaImage = new MediaModel([], {url: url});
+			    mediaImage.fetch({
+				success: function() {
+				    if (typeof callback == 'function') {
+					callback(mediaImage.attributes.url);
+				    }			    
+				}
+			    })
 			}
-		    }
-		    if (typeof callback == 'function') {
-			callback(imageSrc);
 		    }
 		}
 	    });	

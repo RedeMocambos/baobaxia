@@ -20,7 +20,7 @@
       <audio preload="metadata" controls src="<%= media.url %>" />
       <% } else if (media.type == 'arquivo') { %>     
       <a href="<%= media.url %>">
-	<img alt="<%= media.type%>" src="images/icon-arquivo.png" /><br/>download
+	<img class="<%= media.type %>" alt="<%= media.type%>" src="images/icon-arquivo.png" /><br/>download
       </a>
       <% } %>
     </div>

@@ -342,6 +342,8 @@ define([
 			var mucuaData = {
 			    mucua: mucua.attributes
 			};
+			
+			// check if that mucua has an image
 			var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid;
 			var mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
 			    $('#mucua_image').attr('src', imageSrc);

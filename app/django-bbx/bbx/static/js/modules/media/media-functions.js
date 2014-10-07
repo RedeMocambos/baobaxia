@@ -246,8 +246,9 @@ define([
 	}
     };
 
-    var getMedia = function(url, callback) {
-	var media = new MediaModel([], {url: url});
+    var getMedia = function(url, callback, params) {
+	var params = params || {},
+	media = new MediaModel([], {url: url});
 	$('#content').append('<div id="loading-content"><img src="images/buscando.gif" /></div>');	
 	media.fetch({
 	    success: function() {
@@ -260,30 +261,36 @@ define([
 			return matches[3] + '/' + matches[2] + '/' + matches[1];
 		    }
 		};
-		var medias = [],
+		var medias = {},
 		mediaLoad = [],
-		urlMedia = '',
-		width = 192,
-		height = 130;
+		urlMedia = '';
 
-		_.each(media.attributes, function(mediaItem) {
+		if (!_.isObject(media.attributes[0])) {
+		    medias[0] = media.attributes;
+		} else {
+		    medias = media.attributes;
+		}
+		
+		_.each(medias, function(mediaItem) {
 		    if (mediaItem.type === 'imagem') {
 			if (mediaItem.is_local === true) {
-			    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + mediaItem.uuid + '/' + width + 'x' + height + '.' + mediaItem.format;
+			    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + mediaItem.uuid + '/' + params.width + 'x' + params.height + '.' + mediaItem.format;
 			    mediaLoad[mediaItem.uuid] = new MediaModel([], {url: url});
 			    mediaLoad[mediaItem.uuid].fetch({
 				success: function() {
 				    mediaItem.url = mediaLoad[mediaItem.uuid].attributes.url;
 				    $('#media-' + mediaItem.uuid).removeClass('image-tmp')
 				    $('#media-' + mediaItem.uuid).attr('src', mediaItem.url);
-				    $('#media-' + mediaItem.uuid).attr('width', width);
-				    $('#media-' + mediaItem.uuid).attr('height', height);
+				    if (params.width !== '00') {
+					$('#media-' + mediaItem.uuid).attr('width', params.width);
+				    } 
+				    if (params.height !== '00') {
+					$('#media-' + mediaItem.uuid).attr('height', params.height);
+				    }
 				}
 			    });
-			    
 			}
 		    }
-		    medias.push(mediaItem);
 		});
 		mediaData.medias = medias;
 		
@@ -398,7 +405,7 @@ define([
 	    showMediaBy('', '#media-results .media');
 	    $('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
 	    $('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
-	});	
+	}, {'width': 400, 'height': 300 });
     };
 
     var mediaSearchSort = function(field) {

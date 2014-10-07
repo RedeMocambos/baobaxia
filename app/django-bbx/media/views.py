@@ -412,13 +412,20 @@ def media_by_mocambola(request, repository, mucua, username, qtd=5):
 
 @api_view(['GET'])
 def show_image(request, repository, mucua, uuid, width, height, format_type):
-
+    
     try:
         media = Media.objects.get(uuid=uuid)
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
-    image = get_thumbnail(media.media_file, str(width) + 'x' + str(height),
+    
+    if (width != '') & (height == '00'):
+        size = str(width)
+    elif (width == '00') & (height != ''):
+        size = 'x' + str(height)
+    elif (width != '') & (height != ''):
+        size = str(width) + 'x' + str(height)
+    
+    image = get_thumbnail(media.media_file, size,
                           crop='center', quality=99)
     
     return Response({'url': image.url})

@@ -59,8 +59,10 @@
     <div class="block-1 content-div">   
       <% if (media.is_local) { %>
       <div class="media-image">
-	<% if (media.type == 'imagem') { %>
-	<img src="<%= media.url %>" / alt="<%= media.url %>">
+	<% if (media.type === 'imagem') { %>
+	<a href="<%= media.url %>">
+	  <img id="media-<%= media.uuid %>" alt="imagem" />
+	</a>
 	<% } else if (media.type == 'video') { %>
 	<video controls src="<%= media.url %>" />
 	<% } else if (media.type == 'audio') { %>

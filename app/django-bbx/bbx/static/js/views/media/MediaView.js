@@ -28,7 +28,7 @@ define([
 	    
 	    media = MediaFunctions.getMedia(url, function(data) {
 		data.formatDate = BBXBaseFunctions.formatDate;
-		data.media = data.medias;
+		data.media = data.medias[0];
 		data.config = config;
 		data.baseUrl = BBXBaseFunctions.getDefaultHome();
 		$('#back-to-results').html("<a class='back-to-results' href='javascript: history.back(-1)'><img src='" + config.imagePath + "/voltar.png'> voltar para a busca</a>");
@@ -38,8 +38,8 @@ define([
 		//$('body').on('scroll', function() {
 		//		    console.log('scroll');
 		//});
-	    });
-
+	    }, {'width': '400', 'height': '00' });
+	    
 	    // who has the file
 	    var dataWhereis = new MediaModel([], {url: urlWhereis});
 	    dataWhereis.fetch({
