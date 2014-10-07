@@ -253,14 +253,40 @@ define([
 	    success: function() {
 		$('#content').remove("#loading-content");
 		var mediaData = {
-		    medias: media.attributes,
 		    formatDate: function(date) {
 			var newDate = '',
 			re = /^(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)[\.0-9]*Z$/,
 			matches = date.match(re);
-			return matches[3] + '/' + matches[2] + '/' + matches[1];	
+			return matches[3] + '/' + matches[2] + '/' + matches[1];
 		    }
 		};
+		var medias = [],
+		mediaLoad = [],
+		urlMedia = '',
+		width = 192,
+		height = 130;
+
+		_.each(media.attributes, function(mediaItem) {
+		    if (mediaItem.type === 'imagem') {
+			if (mediaItem.is_local === true) {
+			    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + mediaItem.uuid + '/' + width + 'x' + height + '.' + mediaItem.format;
+			    mediaLoad[mediaItem.uuid] = new MediaModel([], {url: url});
+			    mediaLoad[mediaItem.uuid].fetch({
+				success: function() {
+				    mediaItem.url = mediaLoad[mediaItem.uuid].attributes.url;
+				    $('#media-' + mediaItem.uuid).removeClass('image-tmp')
+				    $('#media-' + mediaItem.uuid).attr('src', mediaItem.url);
+				    $('#media-' + mediaItem.uuid).attr('width', width);
+				    $('#media-' + mediaItem.uuid).attr('height', height);
+				}
+			    });
+			    
+			}
+		    }
+		    medias.push(mediaItem);
+		});
+		mediaData.medias = medias;
+		
 		// callback / altera
 		if (typeof callback == 'function') {
 		    // execute callback

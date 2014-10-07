@@ -420,8 +420,8 @@ def show_image(request, repository, mucua, uuid, width, height, format_type):
 
     image = get_thumbnail(media.media_file, str(width) + 'x' + str(height),
                           crop='center', quality=99)
-
-    return Response(image.url)
+    
+    return Response({'url': image.url})
 
 
 @api_view(['GET'])

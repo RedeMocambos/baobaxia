@@ -13,7 +13,7 @@
     <% if (media.is_local) { %>
     <div class="image is_local <% if (media.type == 'arquivo') { %>icon-media<% } %>">
       <% if (media.type == 'imagem') { %>
-      <img class="image" src="<%= media.url %>" />
+      <img id="media-<%= media.uuid %>" class="image-tmp" src="images/icon-imagem.png" />
       <% } else if (media.type == 'video') { %>
       <video preload="metadata" controls src="<%= media.url %>" />
       <% } else if (media.type == 'audio') { %>
