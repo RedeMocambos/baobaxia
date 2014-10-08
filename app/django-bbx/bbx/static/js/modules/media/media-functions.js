@@ -195,6 +195,7 @@ define([
 		$('.media-display-type .' + type_name).css("background", "url(/images/" + type_name + "-off.png)");
 	    }	    
 	});
+	window.scrollTo(0, 0);
     }
 
     
