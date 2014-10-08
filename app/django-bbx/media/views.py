@@ -149,6 +149,8 @@ def media_list(request, repository, mucua, args=None, format=None):
                 term = str(term.encode('utf-8'))
                 if (term in [key for (key, type_choice) in getTypeChoices() if
                             term == type_choice]):
+                    if (term_index > 0):
+                        term_sql += " AND " 
                     term_sql += " type LIKE ? "
                     params.append("%" + term + "%")
                     
@@ -161,15 +163,15 @@ def media_list(request, repository, mucua, args=None, format=None):
                     if (term_index > 0):
                         term_sql += " AND " 
                         
-                    term_sql += " AND ( t.name LIKE ? "
+                    term_sql += " ( t.name LIKE ? "
                     term_sql += " OR m.name LIKE ?"
                     term_sql += " OR m.note LIKE ? )"
                     params.append("%" + term + "%")
                     params.append("%" + term + "%")
                     params.append("%" + term + "%")
                     
-                    term_index += 1
                     
+                term_index += 1
                     
         if (len(term_sql) > 0):
             term_sql = ' AND (' + term_sql + ')'
