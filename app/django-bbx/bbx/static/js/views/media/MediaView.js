@@ -23,8 +23,18 @@ define([
 	    } else {
 		config.userData = {};
 	    }
+	    
+	    $('#buscador').remove();
 	    BBXBaseFunctions.renderUsage();
 	    BBXBaseFunctions.renderSidebar();
+	    
+	    var focus = setInterval(function() {
+		var activeElId = document.activeElement.id;
+		if (activeElId != '.back-to-results') {
+		    $('.back-to-results').focus();
+		    clearInterval(focus);
+		}
+	    }, 500);
 	    
 	    media = MediaFunctions.getMedia(url, function(data) {
 		data.formatDate = BBXBaseFunctions.formatDate;

@@ -15,6 +15,14 @@ define([
 	    BBXBaseFunctions.renderSidebar();
 	    MediaFunctions.getMediaSearch(url);
 	    BBXBaseFunctions.renderUsage();
+
+	    var focus = setInterval(function() {
+		var activeElId = document.activeElement.id;
+		if (activeElId != 'caixa_busca') {
+		    $('#caixa_busca').focus();
+		    clearInterval(focus);
+		}
+	    }, 500);
 	}
     });
 
