@@ -161,7 +161,7 @@ def media_list(request, repository, mucua, args=None, format=None):
                     if (term_index > 0):
                         term_sql += " AND " 
                         
-                    term_sql += "( t.name LIKE ? "
+                    term_sql += " AND ( t.name LIKE ? "
                     term_sql += " OR m.name LIKE ?"
                     term_sql += " OR m.note LIKE ? )"
                     params.append("%" + term + "%")
