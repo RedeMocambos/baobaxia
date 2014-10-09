@@ -250,10 +250,10 @@ define([
     var getMedia = function(url, callback, params) {
 	var params = params || {},
 	media = new MediaModel([], {url: url});
-	$('#content').append('<div id="loading-content"><img src="images/buscando.gif" /></div>');	
+	$('#content').append('<div class="loading-content"><img src="images/buscando.gif" /></div>');	
 	media.fetch({
 	    success: function() {
-		$('#content').remove("#loading-content");
+		$('#content .loading-content').remove();
 		var mediaData = {
 		    formatDate: function(date) {
 			var newDate = '',
@@ -266,33 +266,42 @@ define([
 		mediaLoad = [],
 		urlMedia = '';
 
-		if (!_.isObject(media.attributes[0])) {
-		    medias[0] = media.attributes;
-		} else {
-		    medias = media.attributes;
-		}
-		
-		_.each(medias, function(mediaItem) {
-		    if (mediaItem.type === 'imagem') {
-			if (mediaItem.is_local === true) {
-			    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + mediaItem.uuid + '/' + params.width + 'x' + params.height + '.' + mediaItem.format;
-			    mediaLoad[mediaItem.uuid] = new MediaModel([], {url: url});
-			    mediaLoad[mediaItem.uuid].fetch({
-				success: function() {
-				    mediaItem.url = mediaLoad[mediaItem.uuid].attributes.url;
-				    $('#media-' + mediaItem.uuid).removeClass('image-tmp')
-				    $('#media-' + mediaItem.uuid).attr('src', mediaItem.url);
-				    if (params.width !== '00') {
-					$('#media-' + mediaItem.uuid).attr('width', params.width);
-				    } 
-				    if (params.height !== '00') {
-					$('#media-' + mediaItem.uuid).attr('height', params.height);
-				    }
-				}
-			    });
-			}
+		$('#back-to-results').remove();
+
+		if (!_.isEmpty(media.attributes) ) {
+		    if (!_.isObject(media.attributes[0])) {
+			medias[0] = media.attributes;
+		    } else {
+			medias = media.attributes;
 		    }
-		});
+		    
+		    _.each(medias, function(mediaItem) {
+			if (mediaItem.type === 'imagem') {
+			    if (mediaItem.is_local === true) {
+				url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + mediaItem.uuid + '/' + params.width + 'x' + params.height + '.' + mediaItem.format;
+				mediaLoad[mediaItem.uuid] = new MediaModel([], {url: url});
+				mediaLoad[mediaItem.uuid].fetch({
+				    success: function() {
+					mediaItem.url = mediaLoad[mediaItem.uuid].attributes.url;
+					$('#media-' + mediaItem.uuid).removeClass('image-tmp')
+					$('#media-' + mediaItem.uuid).attr('src', mediaItem.url);
+					if (params.width !== '00') {
+					    $('#media-' + mediaItem.uuid).attr('width', params.width);
+					} 
+					if (params.height !== '00') {
+					    $('#media-' + mediaItem.uuid).attr('height', params.height);
+					}
+				    }
+				});
+			    }
+			}
+		    });		    
+		} else {
+		    // no content found
+		    medias = {};
+		    $('.loading-content').remove();		    
+		}
+
 		mediaData.medias = medias;
 		
 		// callback / altera
@@ -301,6 +310,7 @@ define([
 		    callback(mediaData);
 		    var mediaLength = _.size(mediaData.medias);
 		    var message = "";
+		    
 		    if (mediaLength > 1) {
 			message = "Exibindo " + _.size(mediaData.medias) + " resultados" ;
 		    } else if (mediaLength == 1) {
@@ -308,15 +318,52 @@ define([
 		    } else if (mediaLength === 0) {
 			message = "Nenhum resultado encontrado";
 		    }
+		    
 		    $('#medias-length').html(message);
 		}
 	    }
 	});
     }		   
-    
-    var getMediaByMucua = function(el) {
+
+    var getTagCloud = function(el) {
+	/*
+	  
+	  $.fn.tagcloud.defaults = {
+	  size: {start: 10, end: 16, unit: 'pt'},
+	  color: {start: '#fada53', end: '#fada53'}
+	  };
+	  
+	  $(function () {
+	  $('#tag_cloud a').tagcloud();
+	  });
+	  }
+	  });	 
+	*/   
+    }
+
+    var getMediaByLimit = function(el, limit) {
 	var config = __getConfig(),
-	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search';
+	limit = limit || '',
+	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/';
+	if (limit !== '') {
+	    url += 'limit/' + limit;
+	}
+	
+	getMedia(url, function(data){
+	    __parseMenuSearch();
+	    $(el).html(_.template(MediaDestaquesMucuaTpl));
+	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
+	    
+	    $('body').data('bbx').data = data;
+	    showMediaBy('grid', '#destaques-mucua .media');
+	}, {'width': 190, 'height': 132 });
+    };
+    
+    var getMediaByMucua = function(el, limit) {
+	var config = __getConfig(),
+	defaultLimit = 4,
+	limit = limit || defaultLimit,
+	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/limit/' + limit ;
 	
 	getMedia(url, function(data){
 	    __parseMenuSearch();
@@ -324,13 +371,16 @@ define([
 	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
 	    
 	    $('body').data('bbx').data = data;
-	    showMediaBy('', '#destaques-mucua .media');
-	});
+	    showMediaBy('grid', '#destaques-mucua .media');
+	}, {'width': 190, 'height': 132 });
     };
 
-    var getMediaByNovidades = function(el) {
+    var getMediaByNovidades = function(el, limit) {
 	var config = __getConfig(),
-	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search' ;	
+	defaultLimit = 4,
+	limit = limit || defaultLimit,
+	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/orderby/date/desc/limit/' + limit;
+	console.log('getMediaByNovidades');
 	
 	getMedia(url, function(data){
 	    $(el).append(_.template(MediaNovidadesTpl));
@@ -338,10 +388,10 @@ define([
 
 	    // TODO: quando tem mais de um bloco de dados (ex: ultimas novidades E conteudo destacado), pensar em como guardar duas ou mais listas de media
 	    $('body').data('bbx').data = data;
-	    showMediaBy('', '#media-novidades .media');
-	    $('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
-	    $('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
-	});
+	    showMediaBy('grid', '#novidades-mucua .media');
+	    //$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
+	    //$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
+	}, {'width': 190, 'height': 132 });
     };
 
     var getMediaRelated = function(uuid) {
@@ -377,10 +427,16 @@ define([
 	    showMediaBy('', '#media-mocambola .media');
 	    $('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
 	    $('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
-	});
+	}, {'width': 190, 'height': 132 });
     };
     
-    var getMediaSearch = function(url) {
+    var getMediaSearch = function(url, limit) {
+	var limit = limit || '';
+	
+	if (limit !== '') {
+	    url += '/limit/' + limit;
+	}
+	console.log(url);
 	getMedia(url, function(data) {
 	    var resultCount,
 	    messageString = "",
@@ -404,10 +460,37 @@ define([
 	    
 	    $('body').data('bbx').data = data;
 	    showMediaBy('', '#media-results .media');
-	    $('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
-	    $('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
-	}, {'width': 400, 'height': 300 });
+	    
+	    if (url.match('limit')) {
+		$('.media-display-type .all').css("background", "url(/images/all-on.png)");
+	    } else {
+		$('.media-display-type .all').css("background", "url(/images/all-off.png)");
+	    }
+	    
+	    // todo: verificar se ja existe um evento associado; se nao tiver, adiciona - quebrado
+	    var click = $('.media-display-type .all').data('events');
+	    if (typeof click === 'undefined') {
+		$('.media-display-type .all').on('click', function(){ changeMediaLimit(1000)});	    
+		$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
+		$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
+	    }
+	}, {'width': 190, 'height': 132 });
     };
+       
+    var changeMediaLimit = function(limit) {
+	var url = Backbone.history.location.href,
+	urlApi = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/';
+	
+	if (BBX.limit) {
+	    getMediaSearch(urlApi, 20);
+	    BBX.limit = false;
+	    $('.media-display-type .all').css("background", "url(/images/all-off.png)");
+	} else {
+	    BBX.limit = true;
+	    getMediaSearch(urlApi, 1000);
+	    $('.media-display-type .all').css("background", "url(/images/all-on.png)");
+	}
+    }
 
     var mediaSearchSort = function(field) {
 	var url = Backbone.history.location.href;
@@ -481,6 +564,7 @@ define([
 	__getConfig: __getConfig,
 	showMediaBy: showMediaBy,
 	getMedia: getMedia,
+	getMediaByLimit: getMediaByLimit,
 	getMediaByMucua: getMediaByMucua,
 	getMediaByNovidades: getMediaByNovidades,
 	getMediaByMocambola: getMediaByMocambola,
@@ -489,6 +573,7 @@ define([
 	getMediaTypes: getMediaTypes,
 	getMediaLicenses: getMediaLicenses,
 	getTypeByMime: getTypeByMime,
-	mediaSearchSort: mediaSearchSort
+	mediaSearchSort: mediaSearchSort,
+	getTagCloud: getTagCloud
     }
 });

@@ -25,9 +25,12 @@ define([
 	    }
 	    
 	    $('#buscador').remove();
+	    $('#header-results').remove();
+	    $('.media-display-type').remove();
 	    BBXBaseFunctions.renderUsage();
 	    BBXBaseFunctions.renderSidebar();
 	    
+	    // set focus on back to results button
 	    var focus = setInterval(function() {
 		var activeElId = document.activeElement.id;
 		if (activeElId != '.back-to-results') {
@@ -41,7 +44,7 @@ define([
 		data.media = data.medias[0];
 		data.config = config;
 		data.baseUrl = BBXBaseFunctions.getDefaultHome();
-		$('#back-to-results').html("<a class='back-to-results' href='javascript: history.back(-1)'><img src='" + config.imagePath + "/voltar.png'> voltar para a busca</a>");
+		$('#header-bottom').append("<div id='back-to-results'><a class='back-to-results' href='javascript: history.back(-1)'><img src='" + config.imagePath + "/voltar.png'> voltar para a busca</a></div>");
 		$('#content').html(_.template(MediaViewTpl, data));
 		// TODO: add an event to monitor scroll
 		// if scroll reaches the end, load more content
