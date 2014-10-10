@@ -470,6 +470,11 @@ define([
 	    // todo: verificar se ja existe um evento associado; se nao tiver, adiciona - quebrado
 	    var click = $('.media-display-type .all').data('events');
 	    if (typeof click === 'undefined') {
+		if (url.match('limit')) {
+		    $('.media-display-type .all').css("background", "url(/images/all-on.png)");
+		} else {
+		    $('.media-display-type .all').css("background", "url(/images/all-off.png)");
+		}
 		$('.media-display-type .all').on('click', function(){ changeMediaLimit(1000)});	    
 		$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
 		$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
@@ -481,15 +486,12 @@ define([
 	var url = Backbone.history.location.href,
 	urlApi = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/';
 	
-	if (BBX.limit) {
-	    getMediaSearch(urlApi, 20);
-	    BBX.limit = false;
-	    $('.media-display-type .all').css("background", "url(/images/all-off.png)");
+	if (url.match('limit')) {
+	    url = url.split('limit')[0];
 	} else {
-	    BBX.limit = true;
-	    getMediaSearch(urlApi, 1000);
-	    $('.media-display-type .all').css("background", "url(/images/all-on.png)");
+	    url += '/limit/1000';
 	}
+	window.location.href = url;
     }
 
     var mediaSearchSort = function(field) {
