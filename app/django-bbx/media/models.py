@@ -184,6 +184,13 @@ class Media(models.Model):
         self.is_local = os.path.isfile(os.path.join(get_file_path(self),
                                                     self.get_file_name()))
 
+    def _set_num_copies(self):        
+        from repository.models import git_annex_where_is
+        import json
+        data = git_annex_where_is(self)
+        whereis = json.loads(data)
+        self.num_copies = len(whereis[u'whereis'])
+
     def where_is(self):
         from repository.models import git_annex_where_is
         return git_annex_where_is(self)
@@ -193,6 +200,7 @@ class Media(models.Model):
 
     def save(self, *args, **kwargs):
         self._set_is_local()
+        self._set_num_copies()
         self.url = self.get_url()
         super(Media, self).save(*args, **kwargs)
 

@@ -184,6 +184,7 @@ define([
 	    $('thead td.date a').on('click', function(){ mediaSearchSort('date')});
 	    $('thead td.license a').on('click', function(){ mediaSearchSort('license')});
 	    $('thead td.type a').on('click', function(){ mediaSearchSort('type')});
+	    $('thead td.num_copies a').on('click', function(){ mediaSearchSort('num_copies')});
 	    $('thead td.is_local a').on('click', function(){ mediaSearchSort('is_local')});
 	    break;
 	}
