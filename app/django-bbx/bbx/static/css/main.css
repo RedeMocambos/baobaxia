@@ -47,7 +47,7 @@ a {text-decoration: none;}
 /*
  * header
  */
-#header {width: 100%; height: 160px; background-color: #fff; position: fixed; z-index:10 }
+#header {width: 100%; height: 175px; background-color: #fff; position: fixed; z-index:10 }
 #header-top {background-image: url('../images/faixabanner.png'); background-repeat: repeat-x; height: 80px }
 #header-bottom { float:left; margin-left: 60px; width: 70%; height: 85px; border-bottom: 1px solid #fff; }
 #header-image {background-image: url('../images/cabecalho.png'); background-repeat: no-repeat; margin: 0 auto; height: 80px }
