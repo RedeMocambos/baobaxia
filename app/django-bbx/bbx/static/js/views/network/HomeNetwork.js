@@ -2,9 +2,9 @@ define([
     'jquery', 
     'underscore',
     'backbone',
-    'modules/bbx/base-functions',
-    'modules/media/media-functions',
-], function($, _, Backbone, BBXBaseFunctions, MediaFunctions) {
+    'modules/bbx/functions',
+    'modules/media/functions',
+], function($, _, Backbone, BBXFunctions, MediaFunctions) {
     var NetworkView = Backbone.View.extend({
 	el: "body",    
 
@@ -12,8 +12,8 @@ define([
 	    var config = $("body").data("bbx").config,
 	    url = config.apiUrl + '/rede/bbx/search/' + subroute;
 	    
-	    BBXBaseFunctions.renderUsage();
-	    BBXBaseFunctions.renderSidebar();
+	    BBXFunctions.renderUsage();
+	    BBXFunctions.renderSidebar();
 	    MediaFunctions.getMediaSearch(url);
 	}
     });

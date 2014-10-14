@@ -14,8 +14,8 @@ define([
 		$('#header-bottom').html('');
 	    }
 	    
-	    BBXBaseFunctions.renderSidebar();
-	    BBXBaseFunctions.renderUsage();
+	    BBXFunctions.renderSidebar();
+	    BBXFunctions.renderUsage();
 	    $('#content').html(_.template(SobreTpl));
 	}
     });

@@ -2,10 +2,10 @@ define([
     'jquery', 
     'backbone',
     'backbone_subroute',
-    'modules/bbx/base-functions',
+    'modules/bbx/functions',
     'views/bbx/Search',
     'views/network/HomeNetwork'
-], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, Search, HomeNetwork){
+], function($, Backbone, Backbone_Subroute, BBXFunctions, Search, HomeNetwork){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    '*': 'homeNetwork',
@@ -24,8 +24,8 @@ define([
 		completeSubroute = 'bbx/search/' + subroute;
 	    }
 
-	    BBXBaseFunctions.setNavigationVars(repository, mucua, completeSubroute);
-	    BBXBaseFunctions.renderCommon('bbx');
+	    BBXFunctions.setNavigationVars(repository, mucua, completeSubroute);
+	    BBXFunctions.renderCommon('bbx');
 	    var homeNetwork = new HomeNetwork();
 	    homeNetwork.render(subroute);
 	    

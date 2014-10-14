@@ -3,8 +3,8 @@ define([
     'underscore',
     'backbone',
     'jquery_cookie',
-    'modules/bbx/base-functions',
-], function($, _, Backbone, jQueryCookie, jQueryJson, BBXBaseFunctions){
+    'modules/bbx/functions',
+], function($, _, Backbone, jQueryCookie, jQueryJson, BBXFunctions){
     var LogoutView = Backbone.View.extend({
 	doLogout: function() {
 	    console.log('logout');

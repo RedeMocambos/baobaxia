@@ -2,11 +2,11 @@ define([
     'jquery', 
     'underscore',
     'backbone',
-    'modules/bbx/base-functions',
-    'modules/media/media-functions',
+    'modules/bbx/functions',
+    'modules/media/functions',
     'modules/repository/model',
     'text!templates/repository/HomeRepository.html',
-], function($, _, Backbone, BBXBaseFunctions, MediaFunctions, RepositoryModel, HomeRepositoryTpl) {
+], function($, _, Backbone, BBXFunctions, MediaFunctions, RepositoryModel, HomeRepositoryTpl) {
     var HomeRepository = Backbone.View.extend({
 	el: "body",    
 	
@@ -14,9 +14,9 @@ define([
 	    var config = $("body").data("bbx").config,
 	    data = {};
 	    
-	    config.userData = BBXBaseFunctions.getFromCookie('userData');
+	    config.userData = BBXFunctions.getFromCookie('userData');
 	    data.config = config;
-	    BBXBaseFunctions.renderSidebar();
+	    BBXFunctions.renderSidebar();
 	    
 	    $('#content').html(_.template(HomeRepositoryTpl, data));
 	}

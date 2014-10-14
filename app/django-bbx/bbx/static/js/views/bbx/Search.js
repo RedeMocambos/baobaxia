@@ -2,9 +2,9 @@ define([
     'jquery', 
     'underscore',
     'backbone',
-    'modules/bbx/base-functions',
-    'modules/media/media-functions',
-], function($, _, Backbone, BBXBaseFunctions, MediaFunctions) {
+    'modules/bbx/functions',
+    'modules/media/functions',
+], function($, _, Backbone, BBXFunctions, MediaFunctions) {
     var SearchView = Backbone.View.extend({
 	el: "body",    
 
@@ -12,9 +12,9 @@ define([
 	    var config = $("body").data("bbx").config,
 	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute;
 
-	    BBXBaseFunctions.renderSidebar();
+	    BBXFunctions.renderSidebar();
 	    MediaFunctions.getMediaSearch(url);
-	    BBXBaseFunctions.renderUsage();
+	    BBXFunctions.renderUsage();
 
 	    var focus = setInterval(function() {
 		var activeElId = document.activeElement.id;

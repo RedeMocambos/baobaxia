@@ -2,7 +2,7 @@
  * Baobaxia
  * 2014
  * 
- * media/media-functions.js
+ * media/functions.js
  *
  *  Media related functions
  *
@@ -12,7 +12,7 @@ define([
     'jquery', 
     'underscore',
     'backbone',
-    'modules/bbx/base-functions',
+    'modules/bbx/functions',
     'modules/media/model',
     'modules/media/collection',
     'modules/mucua/model',
@@ -25,12 +25,12 @@ define([
     'text!templates/media/MediaList.html',
     'text!templates/common/ResultsMessage.html',
     'text!templates/common/SearchTagsMenu.html'
-], function($, _, Backbone, BBXBaseFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, ResultsMessageTpl, SearchTagsMenuTpl){
-    this.BBXBaseFunctions = BBXBaseFunctions;
+], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, ResultsMessageTpl, SearchTagsMenuTpl){
+    this.BBXFunctions = BBXFunctions;
     
     var init = function() {
 	this.functions = {};
-	this.functions.BBXBaseFunctions = BBXBaseFunctions;
+	this.functions.BBXFunctions = BBXFunctions;
     }
 
     var __getConfig = function() {
@@ -132,10 +132,10 @@ define([
 	data = $('body').data('bbx').data,
 	valid_types = ['list', 'grid'];
 	
-	if (typeof BBXBaseFunctions === 'undefined') {
-	    var BBXBaseFunctions = window.BBXBaseFunctions;
+	if (typeof BBXFunctions === 'undefined') {
+	    var BBXFunctions = window.BBXFunctions;
 	}
-	var userPrefs = BBXBaseFunctions.getFromCookie('userPrefs');
+	var userPrefs = BBXFunctions.getFromCookie('userPrefs');
 	if (_.isEmpty(userPrefs)) {
 	    userPrefs = setUserPrefs();
 	}
@@ -150,7 +150,7 @@ define([
 	
 	// seta novo media-listing-type
 	userPrefs.values.media_listing_type = type;
-	BBXBaseFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
+	BBXFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
 	
 	switch(type) {
 	case 'grid':

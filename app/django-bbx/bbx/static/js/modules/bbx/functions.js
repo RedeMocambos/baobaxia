@@ -2,7 +2,7 @@
  * Baobaxia
  * 2014
  * 
- * bbx/base-functions.js
+ * bbx/functions.js
  *
  *  All functions of general use, intended to be accessed by modules of the interface; includes also some private functions. The list of public functions is declared at the end of the file.
  *
@@ -18,7 +18,7 @@ define([
     'views/common/BuscadorView',
     'modules/mucua/model',
     'modules/repository/model',
-    'modules/media/media-functions',
+    'modules/media/functions',
     'json!config.json',
     'text!templates/common/Content.html',
     'text!templates/common/Sidebar.html',
@@ -39,7 +39,7 @@ define([
 	if (configLoaded === false) {
 	    __setConfig(DefaultConfig);
 	}
-	BBXBaseFunctions = this;
+	BBXFunctions = this;
     }
     
     /**
@@ -260,7 +260,7 @@ define([
 		mucua.availableLocalDiskSpace = mucuaDOM.info['available local disk space'];
 		mucua.demanded = 0; // TODO: dynamic var
 		
-		BBXBaseFunctions.renderUsage(mucua);
+		BBXFunctions.renderUsage(mucua);
 		
 		total = mucua.totalDiskSpace.match(reStripUnit);
 		usedByOther = mucua.usedByOther.match(reStripUnit);

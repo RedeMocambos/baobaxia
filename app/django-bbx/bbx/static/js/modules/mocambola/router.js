@@ -2,10 +2,10 @@ define([
     'jquery', 
     'backbone',
     'backbone_subroute',
-    'modules/bbx/base-functions',
+    'modules/bbx/functions',
     'modules/mocambola/model',
     'views/mocambola/HomeMocambola',
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, MocambolaModel, HomeMocambola){
+], function($, Backbone, BackboneSubroute, BBXFunctions, MocambolaModel, HomeMocambola){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    ':username' : 'homeMocambola',
@@ -17,7 +17,7 @@ define([
 	
 	homeMocambola: function(username) {	    
 	    console.log("home mocambola");
-	    BBXBaseFunctions.renderCommon('mocambola');
+	    BBXFunctions.renderCommon('mocambola');
 	    
 	    var homeMocambola = new HomeMocambola(); 
 	    homeMocambola.render(username);

@@ -2,11 +2,11 @@ define([
     'jquery', 
     'underscore',
     'backbone', 
-    'modules/bbx/base-functions',
-    'modules/media/media-functions',
+    'modules/bbx/functions',
+    'modules/media/functions',
     'modules/media/model',
     'text!templates/media/MediaView.html'
-], function($, _, Backbone, BBXBaseFunctions, MediaFunctions, MediaModel, MediaViewTpl){
+], function($, _, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaViewTpl){
     
     var MediaView = Backbone.View.extend({
 	
@@ -17,7 +17,7 @@ define([
 	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
 	    urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis';
 	    
-	    var userData = BBXBaseFunctions.getFromCookie('userData');
+	    var userData = BBXFunctions.getFromCookie('userData');
 	    if (userData) {
 		config.userData = userData;
 	    } else {
@@ -27,8 +27,8 @@ define([
 	    $('#buscador').remove();
 	    $('#header-results').remove();
 	    $('.media-display-type').remove();
-	    BBXBaseFunctions.renderUsage();
-	    BBXBaseFunctions.renderSidebar();
+	    BBXFunctions.renderUsage();
+	    BBXFunctions.renderSidebar();
 	    
 	    // set focus on back to results button
 	    var focus = setInterval(function() {
@@ -40,10 +40,10 @@ define([
 	    }, 500);
 	    
 	    media = MediaFunctions.getMedia(url, function(data) {
-		data.formatDate = BBXBaseFunctions.formatDate;
+		data.formatDate = BBXFunctions.formatDate;
 		data.media = data.medias[0];
 		data.config = config;
-		data.baseUrl = BBXBaseFunctions.getDefaultHome();
+		data.baseUrl = BBXFunctions.getDefaultHome();
 		$('#header-bottom').append("<div id='back-to-results'><a class='back-to-results' href='javascript: history.back(-1)'><img src='" + config.imagePath + "/voltar.png'> voltar para a busca</a></div>");
 		$('#content').html(_.template(MediaViewTpl, data));
 		// TODO: add an event to monitor scroll
