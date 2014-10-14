@@ -239,6 +239,7 @@ define([
 	    'lgplv3': 'lgpl v3 - gnu lesser public license',
 	    'agplv3': 'agpl v3 - gnu affero public license',
 	    'copyleft':  'copyleft',
+	    'clnc_educ':  'cópia livre para fins educacionais - não comercial',
 	    'cc': 'creative commons',
 	    'cc_nc': 'creative commons - não comercial',
 	    'cc_ci': 'creative commons -  compartilha igual',

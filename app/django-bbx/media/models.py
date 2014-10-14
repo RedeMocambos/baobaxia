@@ -200,7 +200,7 @@ class Media(models.Model):
 
     def save(self, *args, **kwargs):
         self._set_is_local()
-        self._set_num_copies()
+        #self._set_num_copies()
         self.url = self.get_url()
         super(Media, self).save(*args, **kwargs)
 
