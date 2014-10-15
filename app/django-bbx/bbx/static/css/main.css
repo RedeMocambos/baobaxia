@@ -100,10 +100,11 @@ a {text-decoration: none;}
 #usage-content {padding: 6px; font-size: 10px; font-weight: bold }
 #usage-content .usage-bar,
 #usage-content .legend {width: 700px; height: 15px; padding-left: 6px }
-#usage-content .legend .used {color: #36a; width: 150px}
-#usage-content .legend .used-other {color: #999; width: 150px}
-#usage-content .legend .demanded {color: #c33; width: 150px}
-#usage-content .usage-bar .the-bar {border: 3px solid #fff; height: 9px; width: 700px}
+#usage-content .legend .available {color: #000; width: 150px; margin-right: 5px}
+#usage-content .legend .used {color: #36a; width: 150px; margin-right: 5px}
+#usage-content .legend .used-other {color: #999; width: 150px; margin-right: 5px}
+#usage-content .legend .demanded {color: #c33; width: 150px; margin-right: 5px}
+#usage-content .usage-bar .the-bar {border: 3px solid #fff; height: 9px; width: 700px;}
 #usage-content .usage-bar .the-bar .used {background-color: #36a; height: 9px; border-right: 1px solid #fff}
 #usage-content .usage-bar .the-bar .used-other {background-color: #999; height: 9px; border-right: 1px solid #fff}
 #usage-content .usage-bar .the-bar .demanded {background-color: #c33; height: 9px}

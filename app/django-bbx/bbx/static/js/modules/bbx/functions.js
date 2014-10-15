@@ -275,10 +275,10 @@ define([
 		mucua.usedByAnnexUnit = usedByAnnex[2];
 		
 		// calculate the percentages
-		mucua.usedByOtherPercent = Math.round(parseFloat(mucua.usedByOther) / parseFloat(mucua.total) * 100);
-		mucua.usedByAnnexPercent = Math.round(parseFloat(mucua.usedByAnnex) / parseFloat(mucua.total) * 100);
-		mucua.availableLocalDiskSpacePercent = Math.round(parseFloat(mucua.availableLocalDiskSpace) / parseFloat(mucua.total) * 100);
-		mucua.demandedPercent = Math.round(parseFloat(mucua.demanded) / parseFloat(mucua.total) * 100);
+		mucua.usedByOtherPercent = parseFloat(parseFloat(mucua.usedByOther) / parseFloat(mucua.total) * 100).toFixed(1);
+		mucua.usedByAnnexPercent = parseFloat(parseFloat(mucua.usedByAnnex) / parseFloat(mucua.total) * 100).toFixed(1);
+		mucua.availableLocalDiskSpacePercent = parseFloat(parseFloat(mucua.availableLocalDiskSpace) / parseFloat(mucua.total) * 100).toFixed(1);
+		mucua.demandedPercent = parseFloat(parseFloat(mucua.demanded) / parseFloat(mucua.total) * 100).toFixed(1);
 		
 		var compiledUsage = _.template(UsageBarTpl, mucua);
 		$('#footer').html(compiledUsage);
