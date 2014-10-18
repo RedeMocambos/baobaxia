@@ -2,11 +2,11 @@ define([
     'jquery', 
     'underscore',
     'backbone',
-    'modules/bbx/base-functions',
-    'modules/media/media-functions',
+    'modules/bbx/functions',
+    'modules/media/functions',
     'modules/mocambola/model',
     'text!templates/mocambola/HomeMocambola.html',
-], function($, _, Backbone, BBXBaseFunctions, MediaFunctions, MocambolaModel, HomeMocambolaTpl) {
+], function($, _, Backbone, BBXFunctions, MediaFunctions, MocambolaModel, HomeMocambolaTpl) {
     var HomeMocambola = Backbone.View.extend({
 	el: "body",    
 
@@ -28,10 +28,10 @@ define([
 	    var config = $("body").data("bbx").config,
 	    data = {};
 	    
-	    config.userData = BBXBaseFunctions.getFromCookie('userData');
+	    config.userData = BBXFunctions.getFromCookie('userData');
 	    data.config = config;
-	    BBXBaseFunctions.renderUsage();
-	    BBXBaseFunctions.renderSidebar();
+	    BBXFunctions.renderUsage();
+	    BBXFunctions.renderSidebar();
 
 	    // get mocambola data
 	    this.__getMocambola(username);
@@ -40,7 +40,7 @@ define([
 		mocambolaDOM = $("body").data("bbx").mocambola;
 		if (typeof mocambolaDOM !== 'undefined') {
 		    data.mocambola = mocambolaDOM;
-		    data.mocambola.avatar = BBXBaseFunctions.getAvatar();
+		    data.mocambola.avatar = BBXFunctions.getAvatar();
 		    $('#content').html(_.template(HomeMocambolaTpl, data));
 		    MediaFunctions.getMediaByMocambola('all', username);
 		    clearInterval(getMocambolaLoad);

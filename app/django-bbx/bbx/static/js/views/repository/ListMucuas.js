@@ -2,12 +2,12 @@ define([
     'jquery', 
     'underscore',
     'backbone',
-    'modules/bbx/base-functions',
-    'modules/media/media-functions',
+    'modules/bbx/functions',
+    'modules/media/functions',
     'modules/repository/model',
     'modules/mucua/model',
     'text!templates/repository/ListMucuas.html',
-], function($, _, Backbone, BBXBaseFunctions, MediaFunctions, RepositoryModel, MucuaModel, ListMucuasTpl) {
+], function($, _, Backbone, BBXFunctions, MediaFunctions, RepositoryModel, MucuaModel, ListMucuasTpl) {
     var ListMucuas = Backbone.View.extend({
 	el: "body", 
 
@@ -26,10 +26,10 @@ define([
 	    mucuas = new MucuaModel([], {url: url}),
 	    data = {};
 	    
-	    config.userData = BBXBaseFunctions.getFromCookie('userData');
+	    config.userData = BBXFunctions.getFromCookie('userData');
 	    data.config = config;
 	    
-	    BBXBaseFunctions.renderSidebar();
+	    BBXFunctions.renderSidebar();
 	    mucuas.parseMucuaImage = this.parseMucuaImage;
 	    mucuas.fetch({
 		success: function() {

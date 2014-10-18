@@ -5,7 +5,7 @@ define([
     'modules/mucua/model',
     'modules/media/model',
     'modules/media/collection',
-    'modules/media/media-functions',
+    'modules/media/functions',
     'modules/mocambola/model',
     'text!templates/common/UserProfile.html',
     'text!templates/common/MucuaProfile.html',
@@ -22,8 +22,8 @@ define([
 	    // start mucua DOM field
 	    $("body").data("bbx").mucua = {};
 	    $("body").data("bbx").media = {};	    
-	    BBXBaseFunctions.renderSidebar();
-	    BBXBaseFunctions.renderUsage();
+	    BBXFunctions.renderSidebar();
+	    BBXFunctions.renderUsage();
 	    $('.media-display-type').remove();
 
 	    // get specific content

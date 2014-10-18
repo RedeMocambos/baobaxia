@@ -2,7 +2,7 @@
  * Baobaxia
  * 2014
  * 
- * bbx/base-functions.js
+ * bbx/functions.js
  *
  *  All functions of general use, intended to be accessed by modules of the interface; includes also some private functions. The list of public functions is declared at the end of the file.
  *
@@ -18,7 +18,7 @@ define([
     'views/common/BuscadorView',
     'modules/mucua/model',
     'modules/repository/model',
-    'modules/media/media-functions',
+    'modules/media/functions',
     'json!config.json',
     'text!templates/common/Content.html',
     'text!templates/common/Sidebar.html',
@@ -39,7 +39,7 @@ define([
 	if (configLoaded === false) {
 	    __setConfig(DefaultConfig);
 	}
-	BBXBaseFunctions = this;
+	BBXFunctions = this;
     }
     
     /**
@@ -260,7 +260,7 @@ define([
 		mucua.availableLocalDiskSpace = mucuaDOM.info['available local disk space'];
 		mucua.demanded = 0; // TODO: dynamic var
 		
-		BBXBaseFunctions.renderUsage(mucua);
+		BBXFunctions.renderUsage(mucua);
 		
 		total = mucua.totalDiskSpace.match(reStripUnit);
 		usedByOther = mucua.usedByOther.match(reStripUnit);
@@ -275,10 +275,10 @@ define([
 		mucua.usedByAnnexUnit = usedByAnnex[2];
 		
 		// calculate the percentages
-		mucua.usedByOtherPercent = Math.round(parseFloat(mucua.usedByOther) / parseFloat(mucua.total) * 100);
-		mucua.usedByAnnexPercent = Math.round(parseFloat(mucua.usedByAnnex) / parseFloat(mucua.total) * 100);
-		mucua.availableLocalDiskSpacePercent = Math.round(parseFloat(mucua.availableLocalDiskSpace) / parseFloat(mucua.total) * 100);
-		mucua.demandedPercent = Math.round(parseFloat(mucua.demanded) / parseFloat(mucua.total) * 100);
+		mucua.usedByOtherPercent = parseFloat(parseFloat(mucua.usedByOther) / parseFloat(mucua.total) * 100).toFixed(1);
+		mucua.usedByAnnexPercent = parseFloat(parseFloat(mucua.usedByAnnex) / parseFloat(mucua.total) * 100).toFixed(1);
+		mucua.availableLocalDiskSpacePercent = parseFloat(parseFloat(mucua.availableLocalDiskSpace) / parseFloat(mucua.total) * 100).toFixed(1);
+		mucua.demandedPercent = parseFloat(parseFloat(mucua.demanded) / parseFloat(mucua.total) * 100).toFixed(1);
 		
 		var compiledUsage = _.template(UsageBarTpl, mucua);
 		$('#footer').html(compiledUsage);

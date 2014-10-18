@@ -4,7 +4,7 @@ define([
     'backbone',
     'jquery_cookie',
     'jquery_json',
-    'modules/bbx/base-functions',
+    'modules/bbx/functions',
     'modules/repository/model',
     'modules/mucua/model',
     'modules/mucua/collection',
@@ -12,7 +12,7 @@ define([
     'json!config.json',
     'text!templates/auth/LoginTemplate.html',
     'text!templates/common/HeaderHome.html',
-], function($, _, Backbone, jQueryCookie, jQueryJson, BBXBaseFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, Config, LoginTemplate, HeaderHomeTpl){
+], function($, _, Backbone, jQueryCookie, jQueryJson, BBXFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, Config, LoginTemplate, HeaderHomeTpl){
     var LoginView = Backbone.View.extend({
 	el: "body",
 	
@@ -72,11 +72,11 @@ define([
 	    var userData,
 	    loginData = this.__prepareLoginData(),
 	    urlRedirect = '',
-	    defaultUrlRedirect = BBXBaseFunctions.getDefaultHome();
+	    defaultUrlRedirect = BBXFunctions.getDefaultHome();
 	    // Get from cookie
 
-	    if (typeof BBXBaseFunctions.getFromCookie('redirect_url')[0] !== 'undefined') {
-		urlRedirect = BBXBaseFunctions.getFromCookie('redirect_url')[0];
+	    if (typeof BBXFunctions.getFromCookie('redirect_url')[0] !== 'undefined') {
+		urlRedirect = BBXFunctions.getFromCookie('redirect_url')[0];
 	    } else {
 		urlRedirect = defaultUrlRedirect;
 	    }
@@ -91,7 +91,7 @@ define([
 		
 		if (typeof userData.values !== 'undefined') {
 		    // set cookie that expires in one day
-		    BBXBaseFunctions.addToCookie(userData);
+		    BBXFunctions.addToCookie(userData);
 		    $('body').data('bbx').userData = '';
 		    
 		    // redirect

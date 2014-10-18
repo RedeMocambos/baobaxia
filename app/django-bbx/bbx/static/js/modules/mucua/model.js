@@ -26,9 +26,7 @@ define([
 		    if(!_.isEmpty(media.attributes)) {
 			if (media.attributes[0].is_local === true ) {
 			    var mediaItem = media.attributes[0];
-			    if (BBX.config.mucua === '') {
-				mucua = BBX.config.MYMUCUA;
-			    }
+			    mucua = (BBX.config.mucua === '') ? BBX.config.MYMUCUA : mucua = BBX.config.mucua;
 			    
 			    var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + mucua + '/media/' + mediaItem.uuid + '/' + width + 'x' + height + '.' + mediaItem.format;
 			    var mediaImage = new MediaModel([], {url: url});
