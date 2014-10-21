@@ -25,11 +25,11 @@ define([
 		    var imageSrc = defaultImageSrc;
 		    if(!_.isEmpty(media.attributes)) {
 			if (media.attributes[0].is_local === true ) {
-			    var mediaItem = media.attributes[0];
-			    mucua = (BBX.config.mucua === '') ? BBX.config.MYMUCUA : mucua = BBX.config.mucua;
+			    var mediaItem = media.attributes[0],
+			    mucua = (BBX.config.mucua === '') ? BBX.config.MYMUCUA : mucua = BBX.config.mucua,
+			    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + mucua + '/media/' + mediaItem.uuid + '/' + width + 'x' + height + '.' + mediaItem.format,
+			    mediaImage = new MediaModel([], {url: url});
 			    
-			    var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + mucua + '/media/' + mediaItem.uuid + '/' + width + 'x' + height + '.' + mediaItem.format;
-			    var mediaImage = new MediaModel([], {url: url});
 			    mediaImage.fetch({
 				success: function() {
 				    if (typeof callback == 'function') {

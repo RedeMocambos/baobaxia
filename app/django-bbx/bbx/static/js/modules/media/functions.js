@@ -220,6 +220,7 @@ define([
 	    'video/ogv': 'video',
 	    'video/avi': 'video',
 	    'video/mp4': 'video',
+	    'video/webm': 'video',
 	    'application/pdf': 'arquivo'
 	},
 	type = 'arquivo';

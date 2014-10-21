@@ -63,7 +63,10 @@ define([
      * @return {Obj} return the complete new object
      */
     var addToCookie = function(data) {
-	var cookieData = {};
+	var cookieData = {},
+	serializedCookie = '',
+	cookie = null;
+	
 	console.log('addToCookie()');
 	if ($.cookie('sessionBBX')) {
 	    cookieData = $.parseJSON($.cookie('sessionBBX'));	    
@@ -501,11 +504,12 @@ define([
 	matchMedia = '',
 	matchSearch = '',
 	matchMocambola = '',
-	config = $("body").data("bbx").config;	
+	config = $("body").data("bbx").config,
+	currentPage = Backbone.history.location.href;
+	
 	config.repository = repository;
 	config.mucua = mucua;
-	config.subroute = subroute,
-	currentPage = Backbone.history.location.href;
+	config.subroute = subroute;
 	
 	// adds current url to redirect
 	if (!currentPage.match('login')) {
