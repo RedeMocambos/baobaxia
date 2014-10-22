@@ -186,6 +186,7 @@ define([
 	    $('thead td.type a').on('click', function(){ mediaSearchSort('type')});
 	    $('thead td.num_copies a').on('click', function(){ mediaSearchSort('num_copies')});
 	    $('thead td.is_local a').on('click', function(){ mediaSearchSort('is_local')});
+
 	    break;
 	}
 	_.each(valid_types, function (type_name) {
