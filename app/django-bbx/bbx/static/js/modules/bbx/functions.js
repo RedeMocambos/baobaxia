@@ -520,7 +520,7 @@ define([
 		}
 	    });
 	}
-
+	
 	console.log('subroute: ' + config.subroute);
 	// ---------- /
 	// solve problems / restrictions at navigation menu / replace inexistant routes between rede <-> mucua	
