@@ -125,10 +125,12 @@ define([
      *
      * @type {String} string of type, of a predefined list of types
      * @target {String} string of DOM class/id mapping
+     * @skipCookie {Bool} bool if user don't want to set user preferences with this value
      */
-    var showMediaBy = function(type, target) {
+    var showMediaBy = function(type, target, skipCookie) {
 	var target = target || '.media-results .media',
 	type = type || '',
+	skipCookie = skipCookie || false,
 	data = $('body').data('bbx').data,
 	valid_types = ['list', 'grid'];
 	
@@ -150,7 +152,9 @@ define([
 	
 	// seta novo media-listing-type
 	userPrefs.values.media_listing_type = type;
-	BBXFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
+	if (!skipCookie) {
+	    BBXFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
+	}
 	
 	switch(type) {
 	case 'grid':
@@ -375,7 +379,7 @@ define([
 	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
 	    
 	    $('body').data('bbx').data = data;
-	    showMediaBy('grid', '#destaques-mucua .media');
+	    showMediaBy('grid', '#destaques-mucua .media', true);
 	}, {'width': 190, 'height': 132 });
     };
 
@@ -392,7 +396,7 @@ define([
 
 	    // TODO: quando tem mais de um bloco de dados (ex: ultimas novidades E conteudo destacado), pensar em como guardar duas ou mais listas de media
 	    $('body').data('bbx').data = data;
-	    showMediaBy('grid', '#novidades-mucua .media');
+	    showMediaBy('grid', '#novidades-mucua .media', true);
 	    //$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
 	    //$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
 	}, {'width': 190, 'height': 132 });
