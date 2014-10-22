@@ -32,17 +32,18 @@ define([
 	    data.config = config;
 	    BBXFunctions.renderUsage();
 	    BBXFunctions.renderSidebar();
-
 	    // get mocambola data
 	    this.__getMocambola(username);
 	    var mocambolaDOM = '';
 	    var getMocambolaLoad = setInterval(function() {
 		mocambolaDOM = $("body").data("bbx").mocambola;
-		if (typeof mocambolaDOM !== 'undefined') {
+		if ((typeof mocambolaDOM !== 'undefined') && (mocambolaDOM !== '')) {
 		    data.mocambola = mocambolaDOM;
+		    
 		    data.mocambola.avatar = BBXFunctions.getAvatar();
 		    $('#content').html(_.template(HomeMocambolaTpl, data));
 		    MediaFunctions.getMediaByMocambola('all', username);
+		    $("body").data("bbx").mocambola = '';
 		    clearInterval(getMocambolaLoad);
 		}
 	    }, 50);
