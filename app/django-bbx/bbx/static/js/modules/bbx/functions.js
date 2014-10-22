@@ -405,6 +405,8 @@ define([
 		// procura existente, exclui
 		visitedMucuas.values.splice(indexMucua, 1);
 		
+		// adicinoa ao comeco (mas nao exibe no template)
+		visitedMucuas.values.unshift(config.mucua);
 		// adiciona ao comeco
 		console.log('adiciona ao comeco');
 	    }	    
