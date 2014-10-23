@@ -44,7 +44,6 @@ def git_media_post_save(instance, **kwargs):
               instance.author.email,
               get_file_path(instance))
 
-
 def get_default_repository():
     return Repository.objects.get(name=DEFAULT_REPOSITORY)
 
