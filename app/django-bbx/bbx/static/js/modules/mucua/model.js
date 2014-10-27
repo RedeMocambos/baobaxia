@@ -29,7 +29,6 @@ define([
 			    mucua = (BBX.config.mucua === '') ? BBX.config.MYMUCUA : mucua = BBX.config.mucua,
 			    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + mucua + '/media/' + mediaItem.uuid + '/' + width + 'x' + height + '.' + mediaItem.format,
 			    mediaImage = new MediaModel([], {url: url});
-			    
 			    mediaImage.fetch({
 				success: function() {
 				    if (typeof callback == 'function') {
@@ -37,7 +36,11 @@ define([
 				    }			    
 				}
 			    })
-			}		
+			} else {
+			    if (typeof callback == 'function') {
+				callback(defaultImageSrc);
+			    }
+			}			    
 		    } else {
 			// no image for mucua
 			if (typeof callback == 'function') {

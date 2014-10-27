@@ -99,10 +99,12 @@ def mucua_get_info(request, uuid, repository=None):
         "available local disk space": str(size - used) + 'GB',
         "total disk space": str(size) + 'GB',
         "local used by other": 0,
+        "network size" : mucua_full["size of annexed files in working tree"]
         }
 
     # re to rewrite from textual to abbrev
     local_annex_size = rewrite_size.match(mucua_info['local annex size'])
+    network_size = rewrite_size.match(mucua_info['network size'])
     
     mucua_info['local annex size'] = convertToGB(
         str(float(local_annex_size.group(1))), size_list[local_annex_size.group(2)])
@@ -110,6 +112,8 @@ def mucua_get_info(request, uuid, repository=None):
         round(
             used - float(re_crop_unit.match(mucua_info['local annex size']).group(1))
         , 2)) + 'GB'
+    mucua_info['network size'] =  convertToGB(
+        str(float(network_size.group(1))), size_list[network_size.group(2)])
     
     mucua_info['mucua_groups'] = mucua.get_groups(repository)
     
