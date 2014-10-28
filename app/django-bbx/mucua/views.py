@@ -11,6 +11,7 @@ from mucua.models import Mucua, get_available_mucuas, get_default_mucua,get_mucu
 from repository.models import Repository
 from mucua.serializers import MucuaSerializer
 from bbx.utils import convertToGB, logger
+from bbx.settings import DEFAULT_MUCUA
 
 @api_view(['GET'])
 def mucua_list(request, repository=None):
@@ -77,7 +78,9 @@ def mucua_get_info(request, uuid, repository=None):
     except Mucua.DoesNotExist:
         print "not found: ", uuid
         return Response("Mucua not found")
-    
+
+    if mucua.description != DEFAULT_MUCUA:
+        return Response("Error: git annex can only get details from local mucua.")
     # TODO: it only gets data for local mucua (git annex info/status)
     # TODO: size of repo in string format
 
