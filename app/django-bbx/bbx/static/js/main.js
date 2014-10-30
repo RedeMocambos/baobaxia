@@ -3,11 +3,11 @@
 
 require.config({
     shin: {
-	underscore: { 
+	lodash: { 
 	    exports: '_'
 	},
 	backbone: {
-	    deps: ['underscore', 'jquery'],
+	    deps: ['lodash', 'jquery'],
 	    exports: 'Backbone'
 	},
 	'textext.core': {
@@ -28,6 +28,7 @@ require.config({
 	jquery_json: 'lib/jquery.json.min',
 	jquery_form: 'lib/jquery.form.min',
 	underscore: 'lib/underscore-amd',
+	lodash: 'lib/lodash-min',
 	backbone: 'lib/backbone-amd',
  	backbone_form: 'lib/backbone-forms.min',
 	templates: '../templates',
@@ -43,7 +44,7 @@ require.config({
 });
 
 require([
-    'jquery', 'underscore', 'backbone', 'app', 'backbone_subroute'], function($, _, Backbone, App){
+    'jquery', 'lodash', 'backbone', 'app', 'backbone_subroute'], function($, _, Backbone, App){
 	// add csrftoken support to backbone posts
 	// thx to https://gist.github.com/gcollazo/1240683 :D
 	var oldSync = Backbone.sync;

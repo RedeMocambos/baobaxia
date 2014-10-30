@@ -10,7 +10,7 @@
 
 define([
     'jquery', 
-    'underscore',
+    'lodash',
     'backbone',
     'jquery_cookie',
     'views/common/HeaderView',
@@ -69,9 +69,14 @@ define([
 	
 	console.log('addToCookie()');
 	if ($.cookie('sessionBBX')) {
-	    cookieData = $.parseJSON($.cookie('sessionBBX'));	    
+	    cookieData = $.parseJSON($.cookie('sessionBBX'));
 	}
-	cookieData[data.name] = data.values;
+	if (_.isNull(cookieData)) {
+	    cookieData = {};
+	}
+	
+	cookieData[data.name] = data.values
+	
 	serializedCookie = $.toJSON(cookieData);
 	
 	$.cookie('sessionBBX', null);

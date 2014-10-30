@@ -1,6 +1,6 @@
 define([
     'jquery',
-    'underscore',
+    'lodash',
     'backbone',
     'modules/media/model'
 ], function($, _, Backbone, MediaModel) {

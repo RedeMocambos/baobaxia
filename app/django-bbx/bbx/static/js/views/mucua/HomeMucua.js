@@ -1,6 +1,6 @@
 define([
     'jquery', 
-    'underscore',
+    'lodash',
     'backbone',
     'modules/mucua/model',
     'modules/media/model',

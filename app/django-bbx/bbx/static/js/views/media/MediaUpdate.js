@@ -1,6 +1,6 @@
 define([
     'jquery', 
-    'underscore',
+    'lodash',
     'jquery_cookie',
     'jquery_form',
     'backbone', 

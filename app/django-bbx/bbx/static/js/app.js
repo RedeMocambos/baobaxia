@@ -1,7 +1,7 @@
 // Filename: app.js
 define([
     'jquery',
-    'underscore',
+    'lodash',
     'backbone',
     'router',
     'backbone_subroute',

@@ -25,7 +25,12 @@ def mocambola_detail(request, repository, mucua, mocambola):
     try:
         user = User.objects.get(username=mocambola)
     except User.DoesNotExist:
-        return Response('Usuario inexistente.')
+        response_data = {
+            'error': True,
+            'errorMessage': 'Usuario inexistente.',
+        }
+            
+        return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
 
     # TODO: verificar questao abaixo:
     #  atualmente, esta serializando o user

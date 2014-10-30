@@ -1,6 +1,6 @@
 define([
     'jquery', 
-    'underscore',
+    'lodash',
     'backbone',
     'text!templates/common/Sobre.html',
 ], function($, _, Backbone, SobreTpl){

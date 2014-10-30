@@ -7,6 +7,7 @@ define([
     'modules/bbx/functions',
     'views/auth/LoginView', 
     'views/auth/LogoutView',
+    'views/auth/RegisterView', 
     'views/common/IndexView',  
     'views/common/SobreView',  
     'modules/mucua/router',
@@ -14,7 +15,7 @@ define([
     'modules/media/router',
     'modules/bbx/router',
     'modules/mocambola/router',
-], function($, Backbone, BackboneSubroute, BBXFunctions, LoginView, LogoutView, IndexView, SobreView, MucuaRouter, RepositoryRouter, MediaRouter, BBXRouter, MocambolaRouter){
+], function($, Backbone, BackboneSubroute, BBXFunctions, LoginView, LogoutView, RegisterView, IndexView, SobreView, MucuaRouter, RepositoryRouter, MediaRouter, BBXRouter, MocambolaRouter){
     var App = {};
     App.Router = Backbone.Router.extend({
 	Routers: {},
@@ -30,6 +31,7 @@ define([
 	    'logout': 'logout',
 	    ':repository/:mucua/register': 'register',
 	    'register': 'register',
+	    'registrar': 'register',
 	    
 	    // module specific
 	    ':repository': 'invokeRepositoryModule',
@@ -107,6 +109,9 @@ define([
 	    var repository = repository || '',
 	    mucua = mucua || '';
 	    console.log('register');
+
+	    var registerView = new RegisterView();
+	    registerView.render();
 	},
 	
 	// media

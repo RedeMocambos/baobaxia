@@ -1,6 +1,6 @@
 define([
     'jquery', 
-    'underscore',
+    'lodash',
     'backbone',
     'text!templates/common/Header.html',
     'text!templates/common/Menu.html',

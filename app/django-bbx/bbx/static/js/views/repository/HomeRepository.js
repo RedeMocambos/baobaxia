@@ -1,6 +1,6 @@
 define([
     'jquery', 
-    'underscore',
+    'lodash',
     'backbone',
     'modules/bbx/functions',
     'modules/media/functions',
