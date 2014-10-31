@@ -64,7 +64,7 @@ def login(request):
             except User.DoesNotExist:
                 logger.debug(u"%s" % (
                         _('Exception caught, UserDoesNotExist')
-                        ))                
+                        ))    
             if user:
                 serializer = UserSerializer(user)
                 return Response(serializer.data)

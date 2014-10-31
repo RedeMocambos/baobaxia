@@ -39,9 +39,9 @@ define([
     }
 	
     var __checkLogin = function(loginData) {
+	var url = Config.apiUrl + '/' + loginData.repository + '/' + loginData.mucua + '/mocambola/login';
 	//TODO: fazer check_login na API
-	var mocambola = new MocambolaModel(loginData, 					       
-					   {url: Config.apiUrl + '/' + loginData.repository + '/' + loginData.mucua + '/mocambola/login'});	    
+	var mocambola = new MocambolaModel(loginData, {url: url});
 	
 	mocambola.save()
 	    .always(function(userData) {
@@ -70,7 +70,7 @@ define([
 	// Get from cookie
 	
 	if (loginData === '') {
-	    __prepareLoginData();
+	    loginData = __prepareLoginData();
 	    __checkLogin(loginData);
 	}
 	
@@ -79,7 +79,6 @@ define([
 	} else {
 	    urlRedirect = defaultUrlRedirect;
 	}	
-	
 	//timeout nessa parte de baixo
 	var loginOK = setInterval(function() {
 	    var userData = {'name': 'userData',
