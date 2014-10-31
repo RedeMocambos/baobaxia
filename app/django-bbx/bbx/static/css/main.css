@@ -88,7 +88,7 @@ a {text-decoration: none;}
 .login #content .right #form_login .second-line div {clear: both; color: #2f7f37; font-weight: bold }
 .login #content .right #form_login input,
 .login #content .right #form_login select {border: #81bc5f solid 1px; border-radius: 4px; font-size: 10px; width: 100px; margin: 5px }
-
+.login #content .right #form_login .first-line div {float: left}
 .login input.submit {width: 30px !important }
 .login #message-area {color: #f66 !important}
 .register #content .right #form_login .second-line p {color: #a4945c }
