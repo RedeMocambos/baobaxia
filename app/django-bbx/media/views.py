@@ -356,7 +356,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
 
 
 @api_view(['GET'])
-def media_last(request, repository, mucua, qtd=5):
+def media_last(request, repository, mucua, limit=5):
     """
     List the last added medias
     """
@@ -372,14 +372,14 @@ def media_last(request, repository, mucua, qtd=5):
 
     medias = Media.objects.filter(
         repository=repository.id
-    ).filter(origin=mucua.id).order_by('-date')[:qtd]
+    ).filter(origin=mucua.id).order_by('-date')[:limit]
     # serializa e da saida
     serializer = MediaSerializer(medias, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
-def media_by_mocambola(request, repository, mucua, username, qtd=5):
+def media_by_mocambola(request, repository, mucua, username, limit=20):
     if mucua != 'all':
         try:
             mucua = Mucua.objects.get(description=mucua)
@@ -401,11 +401,11 @@ def media_by_mocambola(request, repository, mucua, username, qtd=5):
         medias = Media.objects.filter(
             repository=repository.id
             ).filter(origin=mucua.id).filter(
-            author=author.id).order_by('-date')[:qtd]
+                author=author.id).order_by('-date')[:limit]
     else:
         medias = Media.objects.filter(
             repository=repository.id
-            ).filter(author=author.id).order_by('-date')[:qtd]
+        ).filter(author=author.id).order_by('-date')[:limit]
 
     # serializa e da saida
     serializer = MediaSerializer(medias, many=True)

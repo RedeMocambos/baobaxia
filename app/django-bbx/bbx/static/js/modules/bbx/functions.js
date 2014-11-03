@@ -557,7 +557,7 @@ define([
     var setNavigationVars = function(repository, mucua, subroute) {
 	var subroute = subroute || '',
 	reMedia = /^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/,  // padrao de uuid
-	reMocambola = /^[0-9a-zA-Z-_]*@[0-9a-zA-Z-_\.]*\.[a-zA-Z]{2,4}$/,
+	reMocambola = /^[0-9a-zA-Z-_]*@[0-9a-zA-Z-_\.]*\.[a-zA-Z]{2,4}/,
 	reSearch = /search/,
 	matchMedia = '',
 	matchSearch = '',

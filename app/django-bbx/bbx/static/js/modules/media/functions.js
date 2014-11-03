@@ -417,14 +417,19 @@ define([
 	});
     };
 
-    var getMediaByMocambola = function(origin, username) {
+    var getMediaByMocambola = function(origin, username, limit) {
 	var config = __getConfig(),
-	url = '';
+	url = '',
+	limit = limit || '';
+	
+	if (limit !== '') {
+	    limit = 'limit/' + limit; 
+	}
 	
 	if (origin == 'all') {
-	    url = config.apiUrl + '/' + config.repository + '/all/mocambola/' + username + '/media';
+	    url = config.apiUrl + '/' + config.repository + '/all/mocambola/' + username + '/media/' + limit;
 	} else {
-	    url = config.apiUrl + '/' + config.repository + config.origin + '/mocambola/' + username + '/media';
+	    url = config.apiUrl + '/' + config.repository + config.origin + '/mocambola/' + username + '/media/' + limit;
 	}
 	
 	getMedia(url, function(data){
@@ -433,8 +438,23 @@ define([
 	    
 	    $('body').data('bbx').data = data;
 	    showMediaBy('', '#media-mocambola .media');
-	    $('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
-	    $('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
+
+	    if (url.match('limit')) {
+		$('.media-display-type .all').css("background", "url(/images/all-on.png)");
+	    } else {
+		$('.media-display-type .all').css("background", "url(/images/all-off.png)");
+	    }
+	    var click = $('.media-display-type .all').data('events');
+	    if (typeof click === 'undefined') {
+		if (url.match('limit')) {
+		    $('.media-display-type .all').css("background", "url(/images/all-on.png)");
+		} else {
+		    $('.media-display-type .all').css("background", "url(/images/all-off.png)");
+		}
+		$('.media-display-type .all').on('click', function(){ changeMediaLimit(1000, url)});	    
+		$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
+		$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
+	    }
 	}, {'width': 190, 'height': 132 });
     };
     
@@ -490,16 +510,25 @@ define([
 	}, {'width': 190, 'height': 132 });
     };
        
-    var changeMediaLimit = function(limit) {
+    /* 
+     * changeMediaLimit
+     *
+     * @limit {integer} number of objects to limit the query
+     * @urlApi {string} optional string for passing urlApi; by default it's the bbx/search url
+     * @return {void} return action is changing url
+     
+     */
+    var changeMediaLimit = function(limit, urlApi) {
 	var url = Backbone.history.location.href,
-	urlApi = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/';
-	
+	urlApi = urlApi || BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/';
+	console.log('change media limit');
+	console.log(urlApi);
 	if (url.match('limit')) {
-	    url = url.split('limit')[0];
+	    url = url.split('/limit')[0];
 	} else {
 	    url += '/limit/1000';
 	}
-	window.location.href = url;
+	window.location.replace(url);
     }
 
     var mediaSearchSort = function(field) {
@@ -566,7 +595,7 @@ define([
 	    url += '/orderby/' + field + ordering_type;
 	}
 	
-	window.location.href = url;
+	window.location.replace(url);
     }
     
     return {

@@ -10,10 +10,16 @@ define([
     var HomeMocambola = Backbone.View.extend({
 	el: "body",    
 
-	__getMocambola: function(username) {
+	__getMocambola: function(username, limit) {
 	    var config = $("body").data("bbx").config,
-	    url = config.apiUrl + '/' + config.repository + '/'+ config.mucua + '/mocambola/' + username,
-	    mocambola = '';
+	    limit = limit || '',
+	    url = '',
+	    mocambola = null;
+	    
+	    if (limit !== '') {
+		limit = '/limit/' + limit;
+	    }
+	    url = config.apiUrl + '/' + config.repository + '/'+ config.mucua + '/mocambola/' + username + limit,
 	    
 	    mocambola = new MocambolaModel([], {url: url});
 	    mocambola.fetch({
@@ -24,9 +30,10 @@ define([
 	    });
 	},
 
-	render: function(username) {
+	render: function(username, limit) {
 	    var config = $("body").data("bbx").config,
-	    data = {};
+	    data = {},
+	    limit = limit || '';
 	    
 	    config.userData = BBXFunctions.getFromCookie('userData');
 	    data.config = config;
@@ -42,7 +49,7 @@ define([
 		    
 		    data.mocambola.avatar = BBXFunctions.getAvatar();
 		    $('#content').html(_.template(HomeMocambolaTpl, data));
-		    MediaFunctions.getMediaByMocambola('all', username);
+		    MediaFunctions.getMediaByMocambola('all', username, limit);
 		    $("body").data("bbx").mocambola = '';
 		    clearInterval(getMocambolaLoad);
 		}
