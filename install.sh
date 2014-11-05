@@ -12,7 +12,7 @@ DEFAULT_REPOSITORY_NAME='mocambos'
 INSTALL_DIR='/srv/bbx'
 LOG_DIR='log/'
 PACK_DIR='/root/baobaxia'
-PACK_FILE='pip_wheel_20140606.tbz'
+#PACK_FILE='pip_wheel_20140606.tbz'
 BBX_LOCAL_REPO='/root/baobaxia'
 BBX_REMOTE_REPO='http://github.com/RedeMocambos/baobaxia'
 
@@ -189,12 +189,15 @@ mkdir -p $INSTALL_DIR/run
 mkdir -p $INSTALL_DIR/log
 mkdir -p $INSTALL_DIR/envs
 mkdir -p $DEFAULT_MEDIA_ROOT/db
+mkdir -p $DEFAULT_MEDIA_ROOT/cache
 chown -R $USER_BBX:$USER_BBX $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME
 chmod -R 775 $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME
 chown -R $USER_BBX:$USER_BBX $INSTALL_DIR
 chmod -R 775 $INSTALL_DIR
 chown -R $USER_BBX:$USER_BBX $DEFAULT_MEDIA_ROOT/db
 chmod -R 775 $DEFAULT_MEDIA_ROOT/db
+chown -R $USER_BBX:$USER_BBX $DEFAULT_MEDIA_ROOT/cache
+chmod -R 775 $DEFAULT_MEDIA_ROOT/cache
 
 echo ""
 echo "Copiando arquivos do Baobáxia ..."
@@ -234,7 +237,7 @@ pip install --upgrade pip
 hash -r
 # cria ambiente virtual
 pip install virtualenv
-cp $PACK_DIR/$PACK_FILE $INSTALL_DIR/
+#cp $PACK_DIR/$PACK_FILE $INSTALL_DIR/
 chown root:$USER_BBX $INSTALL_DIR/envs
 chmod 775 $INSTALL_DIR/envs
 #xhost +
@@ -242,30 +245,18 @@ su - $USER_BBX -c "
 virtualenv $INSTALL_DIR/envs/bbx ;
 . $INSTALL_DIR/envs/bbx/bin/activate ;
 pip install --upgrade setuptools ;
-cd $INSTALL_DIR;
-tar xjvf pip_wheel_20140606.tbz ;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/argparse-1.2.1-py2-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/Django-1.6.5-py2.py3-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/django_extensions-1.1.1-py2-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/djangorestframework-2.3.6-py2-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/gunicorn-18.0-py2-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/six-1.3.0-py2-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/sorl_thumbnail-11.12.1b-py27-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/South-0.8.4-py2.py3-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wheel-0.23.0-py2.py3-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wsgiref-0.1.2-py2-none-any.whl;
-pip install argparse;
-pip install django;
-pip install django-extensions;
-pip install djangorestframework;
-pip install gunicorn;
-pip install six;
-pip install sorl-thumbnail;
-pip install south;
-pip install wheel;
-pip install wsgiref;
-pip install longerusername
-pip install Pillow
+pip install Django==1.6.6 ;
+pip install Pillow==2.6.1 ;
+pip install South==1.0 ;
+pip install argparse==1.2.1 ;
+pip install django-extensions==1.3.11 ;
+pip install djangorestframework==2.3.14 ;
+pip install gunicorn==19.1.1 ;
+pip install longerusername==0.4 ;
+pip install six==1.7.3 ;
+pip install sorl-thumbnail==11.12 ;
+pip install wheel==0.24.0 ;
+pip install wsgiref==0.1.2 ;
 "
 
 echo ""
@@ -335,13 +326,14 @@ echo "Ativando o Baobáxia ..."
 supervisorctl reload
 supervisorctl restart bbx
 
-echo ""
-echo "Ativando a sincronização (bbx-cron) ..."
-cp $INSTALL_DIR/baobaxia/bin/bbx-cron.sh.example $INSTALL_DIR/bin/bbx-cron.sh
-chmod +x $INSTALL_DIR/bin/bbx-cron.sh
-touch /etc/cron.d/bbx
-printf "# Sincronização do Baobáxia \n" >> /etc/cron.d/bbx
-printf "*/30 * * * * * exu bash /srv/bbx/bin/bbx-cron.sh \n" >> /etc/cron.d/bbx
+#echo ""
+#echo "Ativando a sincronização (bbx-cron) ..."
+#cp $INSTALL_DIR/baobaxia/bin/bbx-cron.sh.example $INSTALL_DIR/bin/bbx-cron.sh
+#chmod +x $INSTALL_DIR/bin/bbx-cron.sh
+#touch /etc/cron.d/bbx
+#printf "# Sincronização do Baobáxia \n" >> /etc/cron.d/bbx
+#printf "*/30 * * * * * exu bash /srv/bbx/bin/bbx-cron.sh \n" >> /etc/cron.d/bbx
 
 echo "..."
 echo "Instalação completa!"
+
