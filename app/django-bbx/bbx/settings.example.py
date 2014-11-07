@@ -20,6 +20,8 @@ REPOSITORY_DIR = os.path.join(MEDIA_ROOT, REPOSITORY_DIR_NAME)
 MOCAMBOLA_DIR = "mocambolas"  # Nome da pasta onde estao os usuarios em .json
 DEFAULT_MUCUA = "dandara"
 DEFAULT_REPOSITORY = "mocambos"
+DEFAULT_LANG = "pt-br"
+INSTALLED_LANGS = ["pt-br", "en"]
 
 POLICIES_DIR = os.path.join(PROJECT_ROOT, "policy")
 
@@ -172,6 +174,7 @@ INSTALLED_APPS = (
     'tag',
     'repository',
     'mocambola',
+    'lang',
     'south',
     'sorl.thumbnail',
 )
