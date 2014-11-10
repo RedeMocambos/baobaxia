@@ -1,13 +1,13 @@
 define([
     'jquery', 
-    'underscore',
+    'lodash',
     'jquery_form',
     'backbone', 
-    'modules/bbx/base-functions',
-    'modules/media/media-functions',
+    'modules/bbx/functions',
+    'modules/media/functions',
     'modules/media/model',
     'text!templates/media/MediaPublish.html'
-], function($, _, JQueryForm, Backbone, BBXBaseFunctions, MediaFunctions, MediaModel, MediaPublishTpl){
+], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl){
     
     var MediaPublish = Backbone.View.extend({	
 	render: function(){
@@ -61,7 +61,7 @@ define([
 	    mediaToken = null;
 	    
 	    // session user data
-	    config.userData = BBXBaseFunctions.getFromCookie('userData');
+	    config.userData = BBXFunctions.getFromCookie('userData');
 	    
 	    // set data
 	    data.types = MediaFunctions.getMediaTypes(),

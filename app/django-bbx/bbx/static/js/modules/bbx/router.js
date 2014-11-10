@@ -2,9 +2,9 @@ define([
     'jquery', 
     'backbone',
     'backbone_subroute',
-    'modules/bbx/base-functions',
+    'modules/bbx/functions',
     'views/bbx/Search',
-], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, Search){
+], function($, Backbone, Backbone_Subroute, BBXFunctions, Search){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    // bbx
@@ -39,8 +39,8 @@ define([
 		completeSubroute = 'bbx/search/' + subroute;
 	    }
 	    console.log("completeSubroute: " + completeSubroute);
-	    BBXBaseFunctions.setNavigationVars(repository, mucua, completeSubroute);	    
-	    BBXBaseFunctions.renderCommon('bbx ' + mucua);
+	    BBXFunctions.setNavigationVars(repository, mucua, completeSubroute);	    
+	    BBXFunctions.renderCommon('bbx ' + mucua);
 	    var search = new Search();
 	    search.render(subroute);
 	},

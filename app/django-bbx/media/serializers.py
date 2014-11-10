@@ -18,6 +18,24 @@ from bbx.utils import dumpclean
 
 logger = logging.getLogger(__name__)
 
+class MediaFileSerializer(serializers.ModelSerializer):
+    tags = serializers.SlugRelatedField(many=True,
+                                        slug_field='name',
+                                        read_only=True)
+    origin = serializers.SlugRelatedField(many=False, slug_field='description')
+    repository = serializers.SlugRelatedField(many=False, slug_field='name')
+    author = serializers.SlugRelatedField(many=False, slug_field='username')
+    
+    class Meta:
+        model = Media
+        fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
+                  'format', 'license', 'media_file', 'url', 'origin',
+                  'repository')
+        depth = 1
+
+    def getJSON(self):
+        return JSONRenderer().render(self.data)
+
 
 class MediaSerializer(serializers.ModelSerializer):
     tags = serializers.SlugRelatedField(many=True,
@@ -31,7 +49,7 @@ class MediaSerializer(serializers.ModelSerializer):
         model = Media
         fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
                   'format', 'license', 'media_file', 'url', 'origin',
-                  'repository', 'tags', 'is_local', 'is_requested', 'request_code', 'num_copies')
+                  'repository', 'is_local', 'is_requested', 'num_copies')
         depth = 1
     
     def restore_fields(self, data, files):
@@ -102,7 +120,7 @@ class MediaSerializer(serializers.ModelSerializer):
             instance.repository = attrs.get('repository', instance.repository)
             instance.is_local = attrs.get('is_local', instance.is_local)
             instance.is_requested = attrs.get('is_requested', instance.is_requested)
-            instance.request_code = attrs.get('request_code', instance.request_code)
+#            instance.request_code = attrs.get('request_code', instance.request_code)
             instance.num_copies = attrs.get('num_copies', instance.num_copies)
             return instance
         # Create new instance
@@ -134,22 +152,23 @@ def create_objects_from_files(repository=get_default_repository().name):
                                                 serialized_media)
             media_json_file = open(media_json_file_path)
             data = JSONParser().parse(media_json_file)
-
-            media = Media.objects.get(uuid=data["uuid"])
-
-            if not media:
+            
+            try:
+                media = Media.objects.get(uuid=data["uuid"])
+                serializer = MediaSerializer(media, data=data, partial=True)
+                print serializer.is_valid()
+                print serializer.errors
+                serializer.object.save()            
+                logger.info(u"%s" % _('This media already exist. Updated.'))
+                
+            except Media.DoesNotExist:
                 #dumpclean(data)
                 serializer = MediaSerializer(data=data)
                 print serializer.is_valid()
                 print serializer.errors
                 serializer.object.save()
                 logger.info(u"%s" % _('New media created'))
-            else:
-                serializer = MediaSerializer(media, data=data, partial=True)
-                print serializer.is_valid()
-                print serializer.errors
-                serializer.object.save()            
-                logger.info(u"%s" % _('This media already exist. Updated.'))
+            
 
             # Atualiza o arquivo lastSyncMark
             path = os.path.join(REPOSITORY_DIR, repository.name)

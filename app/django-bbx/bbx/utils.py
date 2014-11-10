@@ -35,10 +35,10 @@ def convertToGB(size, unit):
     if unit == 'MB':
         size = float(size)/1000
     if unit == 'GB':
-        size = size
+        size = float(size)
     if unit == 'TB':
         size = float(size) * 1000
-    return str(size) + 'GB'
+    return str(round(size, 2)) + 'GB'
 
 def dumpclean(obj):
     """Function to print all field/dictionary of a given object.

@@ -1,6 +1,6 @@
 define([
     'jquery',
-    'underscore',
+    'lodash',
     'backbone',
     'backbone_form',
     'text!templates/auth/LoginTemplate.html'

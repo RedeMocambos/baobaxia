@@ -9,6 +9,7 @@ urlpatterns = patterns(
         'login'),
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-\[\]]+)/mocambola/' +
         '(?P<mocambola>[a-zA-Z0-9\-\.@]+)$', 'mocambola_detail'),
+    url(r'^mocambola/register', 'create_auth'),
 
 )
 

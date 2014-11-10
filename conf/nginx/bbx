@@ -53,8 +53,8 @@ server {
 		    }  
 		}		   
 
-	location /cache {
-	      	 alias /srv/_domain_/static/cache/;	
+	location /media/cache {
+	      	 alias /data/bbx/cache/;	
 	         error_page 404 @bbx; 
 	} 
 

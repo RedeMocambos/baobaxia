@@ -1,6 +1,6 @@
 define([
     'jquery', 
-    'underscore',
+    'lodash',
     'backbone',
     'text!templates/common/Index.html',
 ], function($, _, Backbone, IndexTpl){

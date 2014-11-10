@@ -16,20 +16,21 @@
   <!-- right -->
   <div class="right">
     <div id="form_login">
+      <h3 class="title">Registrando novo/a usuário/a</h3> 
+      <ul id="message-area"></ul>
       <form method="post">
 	<div class="first-line">
 	  <div id="mocambola-area">
-	    <p>Mocambola</p>
-	    <input type="text" name="mocambola" id="mocambola" /><img src="images/arroba.png"/>
+	    <p>Login do/a Mocambola</p>
+	    <input type="text" name="mocambola" id="mocambola" />
 	  </div>
 	  <div id="mucua-area">
-	    <p>Mucua</p>
+	    <p>Selecione sua Mucua</p>
 	    <select name="mucua" id="mucua">
 	      <% _.each(_.sortBy(mucuaList, 'description'), function(mucua) { %>
 	      <option name="<%=mucua.description %>"><%=mucua.description %></option>
 	      <% }) %>
 	    </select>
-	    <img src="images/ponto.png"/>
 	  </div>
 	  <div id="repositorio-area">
 	    <p>Repositório</p>
@@ -44,9 +45,9 @@
 	  <div id="message-area"></div>
 	  <div id="pass-area">
 	    <p>Senha</p>
-	    <input type="password" name="password" id="password" /> &nbsp; <input type="button" value="ok" class="submit"><br/>
-	    <p><a href="#esqueci_a_senha">Perdi a senha</a></p>
-	    <p><a href="#registrar">Registrar-se</a><p/>
+	    <input type="password" name="password" id="password" />
+	    <p>Digite novamente a senha</p>
+	    <input type="password" name="password2" id="password2" /> &nbsp; <input type="button" value="registrar" class="submit"><br/>
 	  </div>
 	</div>
       </form>

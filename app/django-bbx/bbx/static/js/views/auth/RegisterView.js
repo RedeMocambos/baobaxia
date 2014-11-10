@@ -2,52 +2,41 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'jquery_cookie',
-    'jquery_json',
     'modules/auth/functions',
     'modules/bbx/functions',
-    'modules/repository/model',
     'modules/mucua/model',
     'modules/mucua/collection',
     'modules/mocambola/model',
-    'json!config.json',
-    'text!templates/auth/LoginTemplate.html',
-    'text!templates/common/HeaderHome.html',
-], function($, _, Backbone, jQueryCookie, jQueryJson, AuthFunctions, BBXFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, Config, LoginTemplate, HeaderHomeTpl){
-    var LoginView = Backbone.View.extend({
+    'views/auth/LoginView',
+    'text!templates/auth/Register.html',
+], function($, _, Backbone, AuthFunctions, BBXFunctions, MucuaModel, MucuaCollection, MocambolaModel, LoginView, RegisterTpl){
+    var RegisterView = Backbone.View.extend({
 	el: "body",
 	
 	events: {
-	    "click .submit": "doLogin",
-	    "keyup #password": "__checkKeyPress"
-	    // TODO: get ENTER type on password field
-	},
-	
-	// problema: eventos duplicados atrapalham qdo carrega de novo!
-	//	    this.delegateEvents(".submit", "click", "doLogin");
-	
-	__checkKeyPress: function(e) {
-	    if (e.keyCode == 13) {
-		this.doLogin();
-	    } 
+	    "click .submit": "doRegister",
+	    "keyup #password2": "__checkKeyPress"
 	},
 
-	doLogin: function() {
-	    AuthFunctions.doLogin();
+	__checkKeyPress: function(e) {
+	    if (e.keyCode == 13) {
+		this.doRegister();
+	    } 
 	},
 	
-	render: function(){
+	doRegister: function() {
+	    AuthFunctions.doRegister();
+	},
+
+	render: function() {
 	    var __parseTemplate = function(data) {
-		$('#header').html(_.template(HeaderHomeTpl));
-		
 		// clean sidebar
 		$('#sidebar').remove();
-		
 		// parse header
-		$('body').removeClass().addClass("home login");
+		$('body').removeClass().addClass("home register login");
 		
 		// parse content
-		var compiledContent = _.template(LoginTemplate, data);
+		var compiledContent = _.template(RegisterTpl, data);
 		$('#content').html(compiledContent);
 	    }
 	    
@@ -72,6 +61,7 @@ define([
 			    }
 			    // set mucua list
 			    $("body").data("bbx").config.mucuaList = mucuaList;
+			    
 			    var data = {
 				defaultRepository: config.repository,
 				mucuaList: mucuaList,
@@ -96,9 +86,8 @@ define([
 		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/mocambola/login";
 		var mocambola = new MocambolaModel([], {url: url});
 		mocambola.fetch({});
-	    };
+	    };	    
 	}
     })
-
-    return LoginView;
-});
+    return RegisterView;
+})	

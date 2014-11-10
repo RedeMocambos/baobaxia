@@ -86,7 +86,7 @@ STATIC_ROOT = "/srv/bbx/static"
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
-THUMBNAILS_ROOT = os.path.join(STATIC_ROOT, 'cache')
+THUMBNAILS_ROOT = "/data/bbx/cache"
 THUMBNAILS_URL = '/cache'
 THUMBNAILS_STORAGE = 'bbx.utils.storage.ThumbnailStorage'
 
@@ -174,6 +174,7 @@ INSTALLED_APPS = (
     'mocambola',
     'south',
     'celery',
+    'sorl.thumbnail',
 )
 
 # A sample logging configuration. The only tangible logging

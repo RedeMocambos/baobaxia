@@ -2,10 +2,10 @@ define([
     'jquery', 
     'backbone',
     'backbone_subroute',
-    'modules/bbx/base-functions',
+    'modules/bbx/functions',
     'modules/mucua/model',
     'views/mucua/HomeMucua',
-], function($, Backbone, BackboneSubroute, BBXBaseFunctions, MucuaModel, HomeMucua){
+], function($, Backbone, BackboneSubroute, BBXFunctions, MucuaModel, HomeMucua){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    '*' : 'homeMucua',
@@ -30,11 +30,12 @@ define([
 	    mucua = this.__getMucua();
 	    // TODO: verificar se mantem isso ou se cria view especifica para Network
 	    if (mucua == 'rede') {
-		BBXBaseFunctions.renderCommon('rede');
+		BBXFunctions.renderCommon('rede');
 	    } else {
-		BBXBaseFunctions.renderCommon('mucua');
+		BBXFunctions.renderCommon('mucua');
 	    }
-	    BBXBaseFunctions.setNavigationVars(repository, mucua);
+	    
+	    BBXFunctions.setNavigationVars(repository, mucua);
 	    var homeMucua = new HomeMucua(); 
 	    homeMucua.render();
 	},

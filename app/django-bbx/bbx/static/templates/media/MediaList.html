@@ -1,14 +1,15 @@
 <table>
   <thead>
     <tr>
-      <td class="title"><a href="">nome<br/><img src="images/order-down.png" border="0" /></a></td>
-      <td class="author"><a href="">autor<br/><img src="images/order-down.png" border="0" /></a></td>
-      <td class="format_type">formato<br/><img src="images/order-down.png" border="0" /></a></td>
-      <td class="origin">origem<br/><img src="images/order-down.png" border="0" /></a></td>
-      <td class="date">data<br/><img src="images/order-down.png" border="0" /></a></td>
-      <td class="license">licença<br/><img src="images/order-down.png" border="0" /></a></td>
-      <td class="type">tipo</a><br/><img src="images/order-down.png" border="0" /></a></td>
-      <td class="is_requested">estado<br/><img src="images/order-down.png" border="0" /></a></td>
+      <td class="name"><a>nome<br/><div class="orderby_asc"></div></a></td>
+      <td class="author"><a>autor<br/><div class="orderby_asc"></div></a></td>
+      <td class="format"><a>formato<br/><div class="orderby_asc"></div></a></td>
+      <td class="origin"><a>origem<br/><div class="orderby_asc"></div></a></td>
+      <td class="date"><a>data<br/><div class="orderby_asc"></div></a></td>
+      <td class="license"><a>licença<br/><div class="orderby_asc"></div></a></td>
+      <td class="type"><a>tipo<br/><div class="orderby_asc"></div></a></td>
+      <td class="num_copies"><a>cópias<br/><div class="orderby_asc"></div></a></td>
+      <td class="is_local"><a>cópia local?<br/><div class="orderby_asc"></div></a></td>
     </tr>
   </thead>
   <tbody>
@@ -26,7 +27,7 @@
 	<span><%= media.format %></span>
       </td>
       <td class="origin">
-	<span><a href="<% print('#' + media.repository + '/' + media.origin) %>/bbx/search"><%= media.origin %></a></span>
+	<span><a href="<% print('#' + media.repository + '/' + media.origin) %>"><%= media.origin %></a></span>
       </td>
       <td class="date">
 	<span><%= formatDate(media.date) %></span>
@@ -37,10 +38,14 @@
       <td class="type">
 	<img alt="<%= media.type%>" src="images/icon-<%= media.type %>.png" />
       </td>
-      <td class="is_requested">
-	<span>
-	  <% if(media.is_requested) { %>
-	  requested
+      <td class="num_copies">
+	<span><%= media.num_copies %></span>
+      </td>
+      <td class="is_local">
+	  <% if(media.is_local) { %>
+	  <span class="local">sim</span>	  
+	  <% } else { %>
+	  <span class="not_local">não</span>	  
 	  <% } %>
 	</span>
       </td>
@@ -48,6 +53,9 @@
     <% }) %>
   </tbody>
 </table>
+<h5 style="text-align: center">
+  <a href="<%= Backbone.history.location.href %>/limit/1000">ver todos</a>
+</h5>
 <% if (_.isEmpty(medias)) { %>
 <h4 class="message"><%= message %></h4>
 <% } %>

@@ -2,13 +2,13 @@ define([
     'jquery', 
     'backbone',
     'backbone_subroute',
-    'modules/bbx/base-functions',
+    'modules/bbx/functions',
     'modules/media/model', 
     'modules/media/collection',
     'views/media/MediaView', 
     'views/media/MediaPublish',
     'views/media/MediaUpdate',
-], function($, Backbone, Backbone_Subroute, BBXBaseFunctions, MediaModel, MediaCollection, MediaViewView, MediaPublishView, MediaUpdateView){
+], function($, Backbone, Backbone_Subroute, BBXFunctions, MediaModel, MediaCollection, MediaViewView, MediaPublishView, MediaUpdateView){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    '': 'publish',
@@ -34,8 +34,8 @@ define([
 	    var repository = this.__getRepository(),
 	    mucua = this.__getMucua();
 	    
-	    BBXBaseFunctions.setNavigationVars(repository, mucua, uuid);
-	    BBXBaseFunctions.renderCommon('media');
+	    BBXFunctions.setNavigationVars(repository, mucua, uuid);
+	    BBXFunctions.renderCommon('media');
 	    var mediaViewView = new MediaViewView();
 	    mediaViewView.render(uuid);
 	},
@@ -46,9 +46,9 @@ define([
 	    var repository = this.__getRepository(),
 	    mucua = this.__getMucua();
 	    
-	    BBXBaseFunctions.renderCommon(repository, mucua);
-	    BBXBaseFunctions.setNavigationVars(repository, mucua);
-	    BBXBaseFunctions.renderCommon('media');
+	    BBXFunctions.renderCommon(repository, mucua);
+	    BBXFunctions.setNavigationVars(repository, mucua);
+	    BBXFunctions.renderCommon('media');
 	    var mediaPublishView = new MediaPublishView();
 	    mediaPublishView.render();
 	},
@@ -58,7 +58,7 @@ define([
 	    
 	    var repository = this.__getRepository(),
 	    mucua = this.__getMucua();
-	    BBXBaseFunctions.renderCommon('media');	    
+	    BBXFunctions.renderCommon('media');	    
 	    var mediaUpdateView = new MediaUpdateView();
 	    mediaUpdateView.render(uuid);	
 	},

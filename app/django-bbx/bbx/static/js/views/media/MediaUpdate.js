@@ -1,14 +1,14 @@
 define([
     'jquery', 
-    'underscore',
+    'lodash',
     'jquery_cookie',
     'jquery_form',
     'backbone', 
-    'modules/bbx/base-functions',
-    'modules/media/media-functions',
+    'modules/bbx/functions',
+    'modules/media/functions',
     'modules/media/model',
     'text!templates/media/MediaPublish.html'
-], function($, _, jQueryCookie, jQueryForm, Backbone, BBXBaseFunctions, MediaFunctions, MediaModel, MediaPublishTpl){
+], function($, _, jQueryCookie, jQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl){
     var MediaUpdate = Backbone.View.extend({
 	
 	__getFormData: function() {
@@ -73,7 +73,7 @@ define([
 	    var config = $("body").data("bbx").config,   
 	    urlApi = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid,
 	    urlMediaView = config.interfaceUrl + config.repository + '/' +  config.mucua + '/media/' + uuid;
-	    BBXBaseFunctions.renderSidebar();
+	    BBXFunctions.renderSidebar();
 	    
 	    var media = new MediaModel([], {url: urlApi});
 	    media.fetch({

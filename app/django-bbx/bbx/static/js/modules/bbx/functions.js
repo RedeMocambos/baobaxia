@@ -2,7 +2,7 @@
  * Baobaxia
  * 2014
  * 
- * bbx/base-functions.js
+ * bbx/functions.js
  *
  *  All functions of general use, intended to be accessed by modules of the interface; includes also some private functions. The list of public functions is declared at the end of the file.
  *
@@ -10,21 +10,22 @@
 
 define([
     'jquery', 
-    'underscore',
+    'lodash',
     'backbone',
     'jquery_cookie',
     'views/common/HeaderView',
+    'views/mucua/HomeMucua',
     'views/common/BuscadorView',
     'modules/mucua/model',
     'modules/repository/model',
-    'modules/media/media-functions',
+    'modules/media/functions',
     'json!config.json',
     'text!templates/common/Content.html',
     'text!templates/common/Sidebar.html',
     'text!templates/common/UsageBar.html',
     'text!templates/common/UserProfile.html',
     'text!templates/common/MucuaProfile.html'
-], function($, _, Backbone, jQueryCookie, HeaderView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
+], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
     
     var init = function() {	
 	if (typeof $("body").data("bbx") === 'undefined') {
@@ -33,13 +34,12 @@ define([
 			       configLoaded: false
 			   });
 	}
-
+	
 	var configLoaded = $("body").data("bbx").configLoaded;
 	if (configLoaded === false) {
 	    __setConfig(DefaultConfig);
 	}
-	
-	BBXBaseFunctions = this;
+	BBXFunctions = this;
     }
     
     /**
@@ -48,7 +48,6 @@ define([
      * @return {Bool} if there's a session opened
      */
     var isLogged = function() {
-	console.log('isLogged()');
 	if (this.getFromCookie('userData')) {
 	    // TODO: add some session check	   
 	    return true;
@@ -64,12 +63,20 @@ define([
      * @return {Obj} return the complete new object
      */
     var addToCookie = function(data) {
-	var cookieData = {};
+	var cookieData = {},
+	serializedCookie = '',
+	cookie = null;
+	
 	console.log('addToCookie()');
 	if ($.cookie('sessionBBX')) {
-	    cookieData = $.parseJSON($.cookie('sessionBBX'));	    
+	    cookieData = $.parseJSON($.cookie('sessionBBX'));
 	}
-	cookieData[data.name] = data.values;
+	if (_.isNull(cookieData)) {
+	    cookieData = {};
+	}
+	
+	cookieData[data.name] = data.values
+	
 	serializedCookie = $.toJSON(cookieData);
 	
 	$.cookie('sessionBBX', null);
@@ -140,6 +147,7 @@ define([
     var renderCommon = function(name) {
 	var data = {},
 	config = $("body").data("bbx").config;
+	data.config = config;
 	
 	$('body').removeClass().addClass(name);
 	if (config.mucua == config.MYMUCUA) {
@@ -151,7 +159,6 @@ define([
 	console.log('render common: ' + name);
 	if ($('#sidebar').html() == "" ||
 	    (typeof $('#sidebar').html() === "undefined")) {
-	    data.config = config;
 	    $('#footer').before(_.template(SidebarTpl, data));
 	}
 	
@@ -167,38 +174,153 @@ define([
 	var buscadorView = new BuscadorView();
 	buscadorView.render({});
     }
-    
+
+
     /**
      * render usage bar at footer
      *
      * @return [jquery modify #footer]
      */
-    var renderUsage = function(data) {
-	var data = data || '',
-	reStripUnit = /^([0-9\.]+)([\w]*)/,
-	total = data.total.match(reStripUnit);
-	used = data.used.match(reStripUnit);
+    var renderUsage = function() {
+	console.log('render usage');
 	
-	// split values from regexp
-	data.total = total[1];
-	data.totalUnit = total[2];
-	data.used = used[1];
-	data.usedUnit = used[2];
+	// verifica se ja foi carregado o usage. 
+	if ($('#footer').html() === "") {
+	    // se ja foi carregado sai da funcao	    
+	    if ($('#usage-bar').length !== 0) {
+		return false;
+	    }
+	    
+	    // verifica se existe dado da mucua
+	    // - se não existe, pega os dados da mucua do config (mymucua)
+	    // - se existe, verifica se foi carregado o uuid
+	    //    - chama renderizacao dos dados
+	    // - se existe, chama renderizacao dos dados
+	    
+	    // mucua not loaded
+	    var loadMucua = null;
+	    if (typeof BBX.mucua === 'undefined') {
+		loadMucua = true;
+	    } else if (_.isObject(BBX.mucua)) {
+		if (typeof BBX.mucua.uuid === 'undefined') {		    
+		    loadMucua = true;
+		} else {
+		    loadMucua = false;
+		}
+	    }
+	    
+	    if (loadMucua === true) {
+		// load mucua
+		var config = $("body").data("bbx").config,
+		mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.MYMUCUA});
+		mucua.fetch({
+		    success: function() {
+			var mucuaData = {
+			    mucua: mucua.attributes
+			};
+			BBX.mucua = mucuaData.mucua;
+			// parse usage
+			__parseMucuaUsage(mucuaData.mucua);
+		    }
+		});		
+	    } else {
+		__parseMucuaUsage(BBX.mucua.uuid);
+	    }
+	}
+    }
+    
+    var __getMucuaResources = function(uuid) {
+	var config = $("body").data("bbx").config,
+	url = config.apiUrl + '/mucua/' + uuid + '/info',
+	mucua = {};
 	
-	// calculate the percentages
-	data.usedPercent = Math.round(parseFloat(data.used) / parseFloat(data.total) * 100);
-	data.demandedPercent = Math.round(parseFloat(data.demanded) / parseFloat(data.total) * 100);
+	mucua = new MucuaModel([], {url: url});
+	mucua.fetch({
+	    success: function() {
+		var mucuaData = {},
+		reStripUnit = /^([0-9\.]+)([\w]*)/,
+		total = '',
+		usedByOther = '',
+		usedByAnnex = '',
+		networkSize = '';
+		
+		// set mucua info to global variable
+		BBX.mucua.info = mucua.attributes;
+		if (typeof BBX.network === 'undefined') {
+		    var networkData = {
+			note: 'REDE',
+			image: '/images/rede.png',
+			description: '',
+			note: config.repository,
+			url: '#' + config.repository
+		    }
+		    BBX.network = networkData;
+		}
+		
+		networkSize = mucua.attributes['network size'].match(reStripUnit);
+		BBX.network.info = { 
+		    'network_size': networkSize[1]
+		};
+		
+		// set mucua variables from API
+		mucuaData.totalDiskSpace = BBX.mucua.info['total disk space'];
+		mucuaData.usedByAnnex = BBX.mucua.info['local annex size'];
+		mucuaData.usedByOther = BBX.mucua.info['local used by other'];
+		mucuaData.availableLocalDiskSpace = BBX.mucua.info['available local disk space'];
+		mucuaData.demanded = 0; // TODO: dynamic var
+		
+		total = mucuaData.totalDiskSpace.match(reStripUnit);
+		usedByOther = mucuaData.usedByOther.match(reStripUnit);
+		usedByAnnex = mucuaData.usedByAnnex.match(reStripUnit);
+		
+		// split values from regexp
+		mucuaData.total = total[1];
+		mucuaData.totalUnit = total[2];
+		mucuaData.usedByOther = usedByOther[1];
+		mucuaData.usedByOtherUnit = usedByOther[2];
+		mucuaData.usedByAnnex = usedByAnnex[1];
+		mucuaData.usedByAnnexUnit = usedByAnnex[2];
+		
+		// calculate the percentages
+		mucuaData.usedByOtherPercent = parseFloat(parseFloat(mucuaData.usedByOther) / parseFloat(mucuaData.total) * 100).toFixed(1);
+		mucuaData.usedByAnnexPercent = parseFloat(parseFloat(mucuaData.usedByAnnex) / parseFloat(mucuaData.total) * 100).toFixed(1);
+		mucuaData.availableLocalDiskSpacePercent = parseFloat(parseFloat(mucuaData.availableLocalDiskSpace) / parseFloat(mucuaData.total) * 100).toFixed(1);
+		mucuaData.demandedPercent = parseFloat(parseFloat(mucuaData.demanded) / parseFloat(mucuaData.total) * 100).toFixed(1);
+		
+		BBX.mucua.info = mucuaData;
+	    }
+	});
+    }
+    
+    var __parseMucuaUsage = function(mucua) {
+	if (!_.isObject(mucua)) {
+	    return false;
+	}	
+	if (typeof mucua.uuid === 'undefined' ||
+	    mucua.uuid === '') { 
+	    return false;
+	}
 	
-	var compiledUsage = _.template(UsageBarTpl, data);
-	$('#footer').html(compiledUsage);
+	__getMucuaResources(mucua.uuid);
+	var mucuaResourcesLoad = setInterval(function() {
+	    if (typeof BBX.mucua.info !== 'undefined') {
+		//BBXFunctions.renderUsage(BBX.mucua);
+		var compiledUsage = _.template(UsageBarTpl, BBX.mucua.info);
+		$('#footer').html(compiledUsage);
+		clearInterval(mucuaResourcesLoad);
+	    }
+	}, 100);	
     }
 
+    
     /**
      *
      */
     var renderSidebar = function(pageType) {
 	var page = page || '',
-	config = $("body").data("bbx").config;
+	config = $("body").data("bbx").config,
+	mucuaData = {},
+	networkData = {};
 	
 	console.log('render sidebar');
 	if (this.isLogged() &&
@@ -212,38 +334,93 @@ define([
 	    $('#user-profile').html(_.template(UserProfileTpl, userData));
 	}
 	
-	// if accessing the 'rede' tab
+	// if accessing the 'rede' tab, prepare networkData
 	if (config.mucua === 'rede' || config.mucua === '') {
-	    var mucuaData = {
-		mucua: {
-		    // FAKE DATA
-		    // TODO: get from API
-		    note: 'REDE',
-		    image: '/images/rede.png',
-		    description: '',
-		    note: config.repository,
-		    url: '#' + config.repository,
-		    storageSize: '100GB', 
-		},
-		config: config
+	    // if data not set at global, fill object
+	    if (typeof BBX.network === 'undefined') {
+		networkData = {
+		    mucua: {
+			note: 'REDE',
+			image: '/images/rede.png',
+			description: '',
+			note: config.repository,
+			url: '#' + config.repository,
+		    }
+		}
+	    } else {
+		networkData.mucua = BBX.network;
 	    }
 	    
-	    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
-	} else {
-	    var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.mucua});
-	    mucua.fetch({
-		success: function() {
-		    var mucuaData = {
-			mucua: mucua.attributes,
-			config: config
-		    };
-		    // FAKE DATA
-		    mucuaData.mucua.image = '/images/mucua-default.png';
-		    mucuaData.mucua.url = ''; // TODO: get from API
-		    mucuaData.mucua.storageSize = '10GB'; // TODO: get from API
-		    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
+	    var networkResourcesLoad = setInterval(function() {
+		// if network not set at global, fetch data
+		if (typeof BBX.network !== 'undefined') { 
+		    if (typeof BBX.network.storageSize === 'undefined') {
+			networkData.mucua.storageSize = BBX.network.info.network_size;
+			BBX.network = networkData.mucua;	
+		    }
+		    networkData.config = config;
+		    $('#place-profile').html(_.template(MucuaProfileTpl, networkData));
+		    $('#mucua_image').attr('src', networkData.mucua.image);
+		    clearInterval(networkResourcesLoad);
 		}
-	    });	
+	    }, 100);
+						   
+	// else - accessing mucua
+	} else {
+	    var loadNewMucua = false;	    
+	    // check if mucua has already been loaded
+	    if (typeof BBX.mucua === 'undefined') {
+		loadNewMucua = true;
+	    } else if (BBX.mucua) {
+		if (BBX.mucua.description !== config.mucua) {
+		    loadNewMucua = true;
+		}		    
+	    }
+	    
+	    if (loadNewMucua) {		
+		var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.mucua});
+		mucua.fetch({
+		    success: function() {
+			mucuaData = {
+			    mucua: mucua.attributes
+			};
+			
+			// FAKE DATA
+			mucuaData.mucua.url = ''; // TODO: get from API
+			BBX.mucua = mucuaData.mucua;			
+			
+			// retrieve mucua info data
+			if (typeof BBX.mucua.info === 'undefined') {
+			    __getMucuaResources(mucuaData.mucua.uuid);
+			}
+			
+			var mucuaResourcesLoad = setInterval(function() {
+			    if (typeof BBX.mucua.info !== 'undefined') {
+				if (BBX.mucua.description === BBX.config.MYMUCUA) {
+				    mucuaData.mucua.info = BBX.mucua.info;
+				}
+				mucuaData.config = config;
+				mucuaData.mucua.storageSize = mucuaData.mucua.info.usedByAnnex;
+				
+				$('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
+				
+				// check if that mucua has an image
+				var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid;
+				var mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
+				    $('#mucua_image').attr('src', imageSrc);
+				});
+				BBX.mucua = mucuaData.mucua;			
+				
+				clearInterval(mucuaResourcesLoad);
+			    }
+			}, 100);
+		    }
+		});	
+	    } else {
+		mucuaData.mucua = BBX.mucua;
+		mucuaData.config = config;
+		$('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
+	    }
 	}
     }
     
@@ -254,10 +431,7 @@ define([
 			     'values': []
 			    }
 	visitedMucuas.values = getFromCookie('visitedMucuas') || [];
-	console.log('-------------------');
-	console.log(visitedMucuas.values);
-	console.log(config.mucua);
-
+	
 	// se for mymucua, nao adiciona a navegacao
 	if (config.mucua == config.MYMUCUA || config.mucua == 'rede') {
 	    return visitedMucuas.values;
@@ -267,45 +441,32 @@ define([
 	
 	if (_.isEmpty(arrNavMucuas)) {
 	    // nao foi navegada ainda
-	    console.log('nao foi navegada ainda');
 	    
 	    // adiciona ao comeco
-	    console.log('adiciona ao comeco');
 	    visitedMucuas.values.unshift(config.mucua);
-	    console.log(visitedMucuas);
 	} else {
 	    // sim, ja existe navegacao
-	    console.log('sim, ja existe navegacao');
 	    
-	    // existe o termo?
-	    console.log('existe o termo?');
+	    // existe o termo?	    
 	    var indexMucua = _.indexOf(arrNavMucuas, config.mucua);
-	    console.log(indexMucua);
 	    
 	    if (indexMucua == -1) { 
 		// nao existe, adiciona ao comeco
-		console.log('nao existe, adiciona ao comeco');
 		visitedMucuas.values.unshift(config.mucua);
 	    } else if (indexMucua == 0) {
   		// existe, e é o primeiro (ultima mucua visitada)
-		console.log('// existe, e é o primeiro (ultima mucua visitada). nao faz nada.');
 		// nao faz nada
 	    } else {
 		// existe, em outra posicao. Tem que ir para o comeco
 		// procura existente, exclui
-		console.log('procura existente, exclui');
 		visitedMucuas.values.splice(indexMucua, 1);
-		console.log(visitedMucuas.values);
 		
+		// adicinoa ao comeco (mas nao exibe no template)
+		visitedMucuas.values.unshift(config.mucua);
 		// adiciona ao comeco
 		console.log('adiciona ao comeco');
-		visitedMucuas.values.unshift(config.mucua);
-		//console.log(visitedMucuas.values);
 	    }	    
 	}
-	
-	console.log('array nav mucuas:');
-	console.log(arrNavMucuas);
 	
 	addToCookie(visitedMucuas);
 	
@@ -377,7 +538,7 @@ define([
 	
 	__getMyMucua();
 	__getDefaultRepository();
-	__getRepositories();
+	__getRepositories();	
 	
 	// so preenche quando todos tiverem carregado
 	var loadData = setInterval(function() {
@@ -386,6 +547,8 @@ define([
 		typeof config.repositoriesList !== 'undefined') {	
 		console.log('configs loaded!');
 		$("body").data("bbx").configLoaded = true;
+		BBX.config = config;
+		
 		clearInterval(loadData);
 	    }
 	}, 50);	    
@@ -394,15 +557,27 @@ define([
     var setNavigationVars = function(repository, mucua, subroute) {
 	var subroute = subroute || '',
 	reMedia = /^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/,  // padrao de uuid
-	reMocambola = /^[0-9a-zA-Z-_]*@[0-9a-zA-Z-_\.]*\.[a-zA-Z]{2,4}$/,
+	reMocambola = /^[0-9a-zA-Z-_]*@[0-9a-zA-Z-_\.]*\.[a-zA-Z]{2,4}/,
 	reSearch = /search/,
 	matchMedia = '',
 	matchSearch = '',
 	matchMocambola = '',
-	config = $("body").data("bbx").config;	
+	config = $("body").data("bbx").config,
+	currentPage = Backbone.history.location.href;
+	
 	config.repository = repository;
 	config.mucua = mucua;
 	config.subroute = subroute;
+	
+	// adds current url to redirect
+	if (!currentPage.match('login')) {
+	    addToCookie({
+		'name': 'redirect_url',
+		'values': {
+		    0: Backbone.history.location.href
+		}
+	    });
+	}
 	
 	console.log('subroute: ' + config.subroute);
 	// ---------- /

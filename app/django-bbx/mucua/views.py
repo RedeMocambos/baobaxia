@@ -1,15 +1,17 @@
 import json
 import re
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.response import Response
+from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
 
 from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
-from mucua.models import Mucua, get_available_mucuas, get_default_mucua,get_mucua_from_UUID,get_mucua_info
+from mucua.models import Mucua, get_available_mucuas, get_default_mucua,get_mucua_from_UUID,get_mucua_info,get_mucua_disk
 from repository.models import Repository
 from mucua.serializers import MucuaSerializer
 from bbx.utils import convertToGB, logger
+from bbx.settings import DEFAULT_MUCUA
 
 @api_view(['GET'])
 def mucua_list(request, repository=None):
@@ -76,16 +78,14 @@ def mucua_get_info(request, uuid, repository=None):
     except Mucua.DoesNotExist:
         print "not found: ", uuid
         return Response("Mucua not found")
-    
+
+    if mucua.description != DEFAULT_MUCUA:
+        return Response("Error: git annex can only get details from local mucua.")
     # TODO: it only gets data for local mucua (git annex info/status)
     # TODO: size of repo in string format
-    mucua_full = json.loads(get_mucua_info(repository))
-    mucua_info = {
-        "supported remote types": mucua_full["supported remote types"],
-        "local annex size": mucua_full["local annex size"],
-        "local annex keys": mucua_full["local annex keys"],
-        "available local disk space": mucua_full["available local disk space"],
-        }
+
+    rewrite_size = re.compile('^([0-9\.]+)\s([a-z]*)\s*')
+    re_crop_unit = re.compile('([[0-9\.]+)')
     size_list = {'megabyte': 'MB',
                  'megabytes': 'MB',
                  'gigabyte': 'GB',
@@ -93,13 +93,68 @@ def mucua_get_info(request, uuid, repository=None):
                  'terabyte': 'TB',
                  'terabytes': 'TB'
                  }
-    # re to rewrite from textual to abbrev
-    rewrite_size = re.compile('^(\d+)\s{1,1}([a-z]+)')
     
-    available_disk = rewrite_size.match(mucua_info['available local disk space'])
-    local_size = rewrite_size.match(mucua_info['local annex size'])  
-            
-    mucua_info['available local disk space'] = convertToGB(available_disk.group(1), size_list[available_disk.group(2)])
-    mucua_info['local annex size'] = convertToGB(local_size.group(1), size_list[local_size.group(2)])
+    mucua_full = json.loads(get_mucua_info(repository))
+    size, used = get_mucua_disk()
+    mucua_info = {
+        "local annex size": mucua_full["local annex size"],
+        "local annex keys": mucua_full["local annex keys"],
+        "available local disk space": str(size - used) + 'GB',
+        "total disk space": str(size) + 'GB',
+        "local used by other": 0,
+        "network size" : mucua_full["size of annexed files in working tree"]
+        }
+
+    # re to rewrite from textual to abbrev
+    local_annex_size = rewrite_size.match(mucua_info['local annex size'])
+    network_size = rewrite_size.match(mucua_info['network size'])
+    
+    mucua_info['local annex size'] = convertToGB(
+        str(float(local_annex_size.group(1))), size_list[local_annex_size.group(2)])
+    mucua_info['local used by other'] = str(
+        round(
+            used - float(re_crop_unit.match(mucua_info['local annex size']).group(1))
+        , 2)) + 'GB'
+    mucua_info['network size'] =  convertToGB(
+        str(float(network_size.group(1))), size_list[network_size.group(2)])
+    
+    mucua_info['mucua_groups'] = mucua.get_groups(repository)
     
     return Response(mucua_info)
+
+
+@api_view(['GET'])
+@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+def mucua_get_groups(request, uuid=None, repository=None):
+    try:     
+        mucua = Mucua.objects.get(uuid=uuid)
+    except:
+        print "not found: ", 
+        return Response("Mucua not found")
+    
+    io = mucua.get_groups(repository)
+    return Response(io)
+
+@api_view(['GET'])
+@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+def mucua_del_group(request, uuid, group, repository=None):
+    try:     
+        mucua = Mucua.objects.get(uuid=uuid)
+    except:
+        print "not found: ", 
+        return Response("Mucua not found")
+    
+    mucua.del_group(group, repository)
+    return Response("Group " + group + " deleted")
+
+@api_view(['GET'])
+@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+def mucua_add_group(request, uuid, group, repository=None):
+    try:     
+        mucua = Mucua.objects.get(uuid=uuid)
+    except:
+        print "not found: ", 
+        return Response("Mucua not found")
+    
+    mucua.add_group(group, repository)
+    return Response("Group " + group + " added")

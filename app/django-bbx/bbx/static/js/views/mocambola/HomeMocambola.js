@@ -1,19 +1,25 @@
 define([
     'jquery', 
-    'underscore',
+    'lodash',
     'backbone',
-    'modules/bbx/base-functions',
-    'modules/media/media-functions',
+    'modules/bbx/functions',
+    'modules/media/functions',
     'modules/mocambola/model',
     'text!templates/mocambola/HomeMocambola.html',
-], function($, _, Backbone, BBXBaseFunctions, MediaFunctions, MocambolaModel, HomeMocambolaTpl) {
+], function($, _, Backbone, BBXFunctions, MediaFunctions, MocambolaModel, HomeMocambolaTpl) {
     var HomeMocambola = Backbone.View.extend({
 	el: "body",    
 
-	__getMocambola: function(username) {
+	__getMocambola: function(username, limit) {
 	    var config = $("body").data("bbx").config,
-	    url = config.apiUrl + '/' + config.repository + '/'+ config.mucua + '/mocambola/' + username,
-	    mocambola = '';
+	    limit = limit || '',
+	    url = '',
+	    mocambola = null;
+	    
+	    if (limit !== '') {
+		limit = '/limit/' + limit;
+	    }
+	    url = config.apiUrl + '/' + config.repository + '/'+ config.mucua + '/mocambola/' + username + limit,
 	    
 	    mocambola = new MocambolaModel([], {url: url});
 	    mocambola.fetch({
@@ -24,24 +30,27 @@ define([
 	    });
 	},
 
-	render: function(username) {
+	render: function(username, limit) {
 	    var config = $("body").data("bbx").config,
-	    data = {};
+	    data = {},
+	    limit = limit || '';
 	    
-	    config.userData = BBXBaseFunctions.getFromCookie('userData');
+	    config.userData = BBXFunctions.getFromCookie('userData');
 	    data.config = config;
-	    BBXBaseFunctions.renderSidebar();
-
+	    BBXFunctions.renderUsage();
+	    BBXFunctions.renderSidebar();
 	    // get mocambola data
 	    this.__getMocambola(username);
 	    var mocambolaDOM = '';
 	    var getMocambolaLoad = setInterval(function() {
 		mocambolaDOM = $("body").data("bbx").mocambola;
-		if (typeof mocambolaDOM !== 'undefined') {
+		if ((typeof mocambolaDOM !== 'undefined') && (mocambolaDOM !== '')) {
 		    data.mocambola = mocambolaDOM;
-		    data.mocambola.avatar = BBXBaseFunctions.getAvatar();
+		    
+		    data.mocambola.avatar = BBXFunctions.getAvatar();
 		    $('#content').html(_.template(HomeMocambolaTpl, data));
-		    MediaFunctions.getMediaByMocambola('all', username);
+		    MediaFunctions.getMediaByMocambola('all', username, limit);
+		    $("body").data("bbx").mocambola = '';
 		    clearInterval(getMocambolaLoad);
 		}
 	    }, 50);

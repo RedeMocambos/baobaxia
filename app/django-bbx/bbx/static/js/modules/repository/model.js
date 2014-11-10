@@ -1,8 +1,7 @@
 define([
     'jquery',
-    'underscore',
     'backbone'
-], function($, _, Backbone) {
+], function($, Backbone) {
     var RepositoryModel = Backbone.Model.extend({
 	idAttribute: 'uuid'
     });

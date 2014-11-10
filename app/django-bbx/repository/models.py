@@ -32,9 +32,9 @@ afazeres = Celery('tasks', broker='amqp://guest@localhost//', backend='amqp')
 def git_media_post_save(instance, **kwargs):
     u"""Intercepta o sinal de *post_save* de objetos multimedia (*media*) e
     adiciona o objeto ao repositório."""
-    from media.serializers import MediaSerializer
+    from media.serializers import MediaFileSerializer
     git_annex_add(instance.get_file_name(), get_file_path(instance))
-    serializer = MediaSerializer(instance)
+    serializer = MediaFileSerializer(instance)
     mediapath = get_file_path(instance)+'/'
     mediadata = os.path.splitext(instance.get_file_name())[0] + '.json'
     fout = open(mediapath + mediadata, 'w')
@@ -45,7 +45,6 @@ def git_media_post_save(instance, **kwargs):
               instance.author.username,
               instance.author.email,
               get_file_path(instance))
-
 
 def get_default_repository():
     return Repository.objects.get(name=DEFAULT_REPOSITORY)
@@ -195,6 +194,55 @@ def git_annex_where_is(media):
     logger.debug(error)
     logger.info(output)
     return output
+
+def git_annex_group_add(repository_path, mucua, group):
+    u"""Adiciona a Mucua no grupo."""
+    cmd = 'git annex group ' + mucua + ' ' + group
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    logger.debug(error)
+    logger.debug(output)
+    return output
+
+def git_annex_group_del(repository_path, mucua, group):
+    u"""Remove a Mucua do grupo."""
+    cmd = 'git annex ungroup ' + mucua + ' ' + group
+    logger.debug("Command: " + cmd)
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    logger.debug(error)
+    logger.debug(output)
+    return output
+
+def git_annex_group_list(repository_path, group, mucua=None):
+    u"""Lista todos os grupos ou de uma dada mucua"""
+    if mucua == None:
+        from mucua.models import Mucua
+        mucuas = Mucua.objects.all()
+        group_set = set()
+        for mucua in mucuas:
+            cmd = 'git annex group ' + mucua.get_description()
+            logger.debug("Command: " + cmd)
+            pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+            output, error = pipe.communicate()
+            logger.debug(error)
+            logger.debug(output)
+            if output != '':
+                for group in output.split():
+                    group_set.add(group)
+        return list(group_set)
+    else:
+        cmd = 'git annex group ' + mucua.get_description()
+        logger.debug("Command: " + cmd)
+        pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+        output, error = pipe.communicate()
+        logger.debug(error)
+        logger.debug(output)
+        if output != '':
+            return output.split()
+        else:
+            return []
+
 
 def git_annex_sync(repository_path):
     u"""Sincroniza o repositório com os outros clones remotos."""
