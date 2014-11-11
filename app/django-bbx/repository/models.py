@@ -196,6 +196,45 @@ def git_annex_where_is(media):
     return output
 
 
+def git_annex_list_tags(media):
+    u"""Enumerar as etiquetas do media."""
+    cmd = 'git annex metadata ' + media.get_file_name()
+    logger.debug('list_tags filepath: ' +
+                 get_file_path(media) + media.get_file_name())
+    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media),
+                            stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    tags = []
+    for line in output.split('\n'):
+        split_line = line.strip().split('=')
+        if len(split_line) > 1 and split_line[0] == 'tag':
+            tag = "".join(split_line[1:])  # Allow for '=' in the tag itself
+            tags.append(tag)
+    return tags
+
+
+def git_annex_add_tag(media, tag):
+    u"""Adicionar uma etiqueta ao media."""
+    cmd = 'git annex metadata -t {0} {1}'.format(tag, media.get_file_name())
+    logger.debug(' '.join(['add_tag tag filepath:',
+                           tag, get_file_path(media) + media.get_file_name()]))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media),
+                            stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    return 'ok' in output.split('\n')
+
+
+def git_annex_remove_tag(media, tag):
+    u"""Adicionar uma etiqueta ao media."""
+    cmd = 'git annex metadata -u {0} {1}'.format(tag, media.get_file_name())
+    logger.debug(' '.join(['add_tag tag filepath:',
+                           tag, get_file_path(media) + media.get_file_name()]))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media),
+                            stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    return 'ok' in output.split('\n')
+
+
 def git_annex_group_add(repository_path, mucua, group):
     u"""Adiciona a Mucua no grupo."""
     cmd = 'git annex group ' + mucua + ' ' + group
