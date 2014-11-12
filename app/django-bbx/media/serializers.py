@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-                                                                                                                                                           
+# -*- coding: utf-8 -*-
 import os
 import logging
 import subprocess
@@ -13,6 +13,7 @@ from django.core.exceptions import ValidationError
 
 from media.models import Media
 from repository.models import get_latest_media, get_default_repository, Repository
+
 from bbx.settings import REPOSITORY_DIR
 from bbx.utils import dumpclean
 
@@ -64,7 +65,7 @@ class MediaSerializer(serializers.ModelSerializer):
 
         for field_name, field in self.fields.items():
             field.initialize(parent=self, field_name=field_name)
-            if(field_name == 'media_file'):
+            if field_name == 'media_file':
                 # field_name = 'dataUri'
                 field = serializers.CharField()
                 try:
@@ -168,7 +169,18 @@ def create_objects_from_files(repository=get_default_repository().name):
                 print serializer.errors
                 serializer.object.save()
                 logger.info(u"%s" % _('New media created'))
-            
+
+            # TODO: Synchronize/update tags.  
+            #
+            # 1) Add all tags found in the
+            # git-annex metadata and not already present on the media.
+            # 2) If tags from other mucuas have been deleted (are missing in
+            # the git_annex metadata tags), remove them from this media.
+            # media = serializer.object
+            # tags = git_annex_list_tags(media)
+            # TODO: Well, we need to do something like this, but probably we
+            # want to do it inside the serializer.
+            print media, git_annex_list_tags(media)
 
             # Atualiza o arquivo lastSyncMark
             path = os.path.join(REPOSITORY_DIR, repository.name)
@@ -182,4 +194,8 @@ def create_objects_from_files(repository=get_default_repository().name):
             last_sync_mark.close()
 
     except CommandError:
-        pass
+        # TODO: Why are we catching this error?
+        # We might want to inform the user about it instead of throwing it
+        # away.
+        raise
+        #pass
