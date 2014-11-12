@@ -1,4 +1,5 @@
 import json
+import os
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -6,15 +7,20 @@ from rest_framework import status
 
 from django.template import Template, RequestContext
 from django.http import HttpResponse
+from django.utils import translation
+from django.utils.translation import ugettext as _
+from django.shortcuts import render
+from django.conf.urls import i18n 
 
-from bbx.settings import DEFAULT_LANG, INSTALLED_LANGS
+
+from bbx.settings import LANGUAGES, LANGUAGE_CODE, TEMPLATE_DIRS
 from bbx.utils import logger
 
 @api_view(['GET'])
 def default_lang(request):
     
     response_data = {
-        'defaultLang': DEFAULT_LANG
+        'defaultLang': LANGUAGE_CODE
     }
     logger.info('default_lang')
     return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
@@ -23,35 +29,33 @@ def default_lang(request):
 def available_langs(request):
     
     response_data = {
-        'availableLangs': INSTALLED_LANGS
+        'availableLangs': LANGUAGES
     }
     logger.info('availableLangs')
     return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
 
-@api_view(['GET'])
-def get_lang(request, lang):
-    logger.info('get_lang: ' + lang)
-    if lang not in INSTALLED_LANGS:
+def parse_templates(request, module_name, template_name, lang):
+    if not any(lang in LANGUAGE for LANGUAGE in LANGUAGES):
         response_data = {
             'error': True,
-            'errorMessage': 'Language "' + lang + '" not installed'
+            'errorMessage': 'Language \'' + lang + '\' not installed'
         }
         return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
     
-    # if language exists, continue
+    translation.activate(lang)
+    request.session['django_language'] = lang    
+
+    module_path = os.path.join(TEMPLATE_DIRS[0], module_name)
+    template_name = os.path.join(TEMPLATE_DIRS[0], module_name, template_name)
     
-    langs = {
-        'pt-br': {
-            'login': 'entrar'
-        },
-        'en' : {
-            'login': 'login'
-        }
-    }
+    # check if module exists    
+    module_exists = os.path.isdir(os.path.join(TEMPLATE_DIRS[0], module_name))
+    if not module_exists:
+        return HttpResponse(_("Module does " + module_name + " not exists."))
+
+    # check if template exists
+    template_exists = os.path.isfile(template_name)
+    if not template_exists:
+        return HttpResponse(_("Template " + template_name + " does not exists."))
     
-    response_data = {
-        'strings': langs[lang]
-    }
-    
-    return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
-    
+    return render(request, template_name)

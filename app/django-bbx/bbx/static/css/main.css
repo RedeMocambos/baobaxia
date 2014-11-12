@@ -54,6 +54,7 @@ a {text-decoration: none;}
 .posicoes {display: none}
 .home #header,
 .login #header {height: 295px; background: url('../images/home-header-repeat.png') repeat-x; }
+.logo {background-image: url('../images/logo.png')}
 
 .home #header #header-top,
 .login #header #header-top {background: url('../images/login-home-header.png') no-repeat scroll; width: 1137px; height: 295px; margin: 0 auto}

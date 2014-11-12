@@ -3,5 +3,6 @@
     "apiUrl": "/api",
     "interfaceUrl": "/#",
     "MYMUCUA":"bbxnamaste",
-    "MYREPOSITORY": "mocambos"
+    "MYREPOSITORY": "mocambos",
+    "defaultLang": "pt-br"
 }

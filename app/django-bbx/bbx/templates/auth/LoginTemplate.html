@@ -1,0 +1,60 @@
+{% load i18n %}
+{% get_language_info for LANGUAGE_CODE as lang %}
+Language code: {{ lang.code }}<br />
+Languages: {{ LANGUAGES }}<br />
+
+<div id="content-top">
+  <!-- left -->
+  <div class="left">
+    <div></div>
+  </div>
+  <!-- end left -->
+  
+  <!-- middle -->
+  <div class="middle">
+    <div class="logo">
+    </div>
+  </div>
+  <!-- end middle -->
+{% trans 'Spanish' %}
+  <!-- right -->
+  <div class="right">
+    <div id="form_login">
+      <form method="post">
+	<div class="first-line">
+	  <div id="mocambola-area">
+	    <p>{% trans "Mocambola" %}</p>
+	    <input type="text" name="mocambola" id="mocambola" /><img src="/images/arroba.png"/>
+	  </div>
+	  <div id="mucua-area">
+	    <p>{% trans "Mucua" %}</p>
+	    <select name="mucua" id="mucua">
+	      <% _.each(_.sortBy(mucuaList, 'description'), function(mucua) { %>
+	      <option name="<%=mucua.description %>"><%=mucua.description %></option>
+	      <% }) %>
+	    </select>
+	    <img src="/images/ponto.png"/>
+	  </div>
+	  <div id="repositorio-area">
+	    <p>{% trans "Repository" %}</p>
+	    <select name="repository" id="repository">
+	      <% _.each(repositoryList, function(repository) { %>
+	      <option name="<%=repository.name %>"><%=repository.name %></option>
+	      <% }) %>
+	    </select><img src="/images/ponto.png"/><span>net</span>
+	  </div>
+	</div>
+	<div class="second-line">
+	  <div id="message-area"></div>
+	  <div id="pass-area">
+	    <p>{% trans "password" %}</p>
+	    <input type="password" name="password" id="password" /> &nbsp; <input type="button" value="ok" class="submit"><br/>
+	    <p><a href="#esqueci_a_senha">{% trans "lost my password" %}</a></p>
+	    <p><a href="#registrar">{% trans "register" %}</a><p/>
+	  </div>
+	</div>
+      </form>
+    </div>
+  </div>
+  <!-- end right -->
+</div>

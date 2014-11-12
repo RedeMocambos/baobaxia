@@ -1,0 +1,243 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-11-12 18:26-0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: bbx/auth.py:60 mocambola/models.py:57
+msgid "Error deserialing"
+msgstr ""
+
+#: bbx/auth.py:68 bbx/auth.py:89
+msgid "User"
+msgstr ""
+
+#: bbx/auth.py:70
+msgid "logged in"
+msgstr ""
+
+#: bbx/auth.py:75 mocambola/views.py:66
+msgid "Exception caught, UserDoesNotExist"
+msgstr ""
+
+#: bbx/auth.py:90
+msgid "doesn't exist or password is wrong!"
+msgstr ""
+
+#: bbx/settings.example.py:28 bbx/settings.py:28
+msgid "English"
+msgstr ""
+
+#: bbx/settings.example.py:29 bbx/settings.py:29
+#: bbx/templates/auth/LoginTemplate.html:19
+msgid "Spanish"
+msgstr ""
+
+#: bbx/settings.example.py:30 bbx/settings.py:30
+msgid "Brazilian Portuguese"
+msgstr ""
+
+#: bbx/templates/admin/base_site.html:4 bbx/templates/admin/base_site.html:7
+msgid "Quintão do Baobáxia"
+msgstr ""
+
+#: bbx/templates/auth/LoginTemplate.html:26
+msgid "Mocambola"
+msgstr ""
+
+#: bbx/templates/auth/LoginTemplate.html:30
+msgid "Mucua"
+msgstr ""
+
+#: bbx/templates/auth/LoginTemplate.html:39 media/serializers.py:145
+msgid "Repository"
+msgstr ""
+
+#: bbx/templates/auth/LoginTemplate.html:50
+msgid "password"
+msgstr ""
+
+#: bbx/templates/auth/LoginTemplate.html:52
+msgid "lost my password"
+msgstr ""
+
+#: bbx/templates/auth/LoginTemplate.html:53
+msgid "register"
+msgstr ""
+
+#: lang/views.py:53
+msgid "Module don't exists"
+msgstr ""
+
+#: media/models.py:105
+msgid "uuid"
+msgstr ""
+
+#: media/models.py:106
+msgid "Media universal unique identifier"
+msgstr ""
+
+#: media/models.py:107
+msgid "No UUID"
+msgstr ""
+
+#: media/models.py:108 repository/models.py:293
+msgid "name"
+msgstr ""
+
+#: media/models.py:109
+msgid "Media name"
+msgstr ""
+
+#: media/models.py:110
+msgid "No title"
+msgstr ""
+
+#: media/models.py:112
+msgid "URL"
+msgstr ""
+
+#: media/models.py:113
+msgid "date"
+msgstr ""
+
+#: media/models.py:114
+msgid "Media criation date"
+msgstr ""
+
+#: media/models.py:115
+msgid "note"
+msgstr ""
+
+#: media/models.py:116 repository/models.py:299
+msgid "Note.. use as you wish!"
+msgstr ""
+
+#: media/models.py:121
+msgid "type"
+msgstr ""
+
+#: media/models.py:122
+msgid "Type of the media, like image, document, video, ..."
+msgstr ""
+
+#: media/models.py:126
+msgid "format"
+msgstr ""
+
+#: media/models.py:131
+msgid "license"
+msgstr ""
+
+#: media/models.py:132
+msgid "License of the media, like, cc, gpl, bsd, ..."
+msgstr ""
+
+#: media/models.py:138
+msgid "is local"
+msgstr ""
+
+#: media/models.py:139
+msgid "True if media content is available locally"
+msgstr ""
+
+#: media/models.py:142
+msgid "is requested"
+msgstr ""
+
+#: media/models.py:143
+msgid "True if media content is awaiting a local copy"
+msgstr ""
+
+#: media/models.py:147
+msgid "number of copies"
+msgstr ""
+
+#: media/models.py:148
+msgid "Number of copies of the media in the repository"
+msgstr ""
+
+#: media/serializers.py:144
+msgid "DESERIALIZING"
+msgstr ""
+
+#: media/serializers.py:146
+msgid "List of media found in repository.."
+msgstr ""
+
+#: media/serializers.py:149
+msgid "Serialized Media"
+msgstr ""
+
+#: media/serializers.py:162
+msgid "This media already exist. Updated."
+msgstr ""
+
+#: media/serializers.py:170
+msgid "New media created"
+msgstr ""
+
+#: media/serializers.py:178
+msgid "Revision is"
+msgstr ""
+
+#: media/views.py:286
+msgid "updated media - OK"
+msgstr ""
+
+#: media/views.py:289 media/views.py:348
+msgid "error while creating media"
+msgstr ""
+
+#: mucua/models.py:235
+msgid "Mucua enraizada em "
+msgstr ""
+
+#: mucua/models.py:238
+msgid "O territorio precisa ser indicado como 't:Nome_do_territorio'"
+msgstr ""
+
+#: mucua/models.py:240
+msgid "A mucua esta já enraizada em "
+msgstr ""
+
+#: mucua/views.py:21
+#, python-format
+msgid "Acessing mucuas in repository: %s"
+msgstr ""
+
+#: repository/models.py:294
+msgid "Repository name taken from available repositories"
+msgstr ""
+
+#: repository/models.py:298
+msgid "notes"
+msgstr ""
+
+#: repository/models.py:303
+msgid "synchronize"
+msgstr ""
+
+#: repository/models.py:304
+msgid "Tick here to enablesyncronization of this repository"
+msgstr ""
+
+#: repository/models.py:309
+msgid "repository"
+msgstr ""
+
+#: repository/models.py:310
+msgid "repositories"
+msgstr ""
