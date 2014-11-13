@@ -35,6 +35,11 @@ def available_langs(request):
     return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
 
 def parse_templates(request, module_name, template_name, lang):
+    # hack for portuguese
+    accepted = ('pt-br', 'pt_br', 'pt-BR')
+    if lang in accepted:
+        lang = 'pt_BR'
+    
     if not any(lang in LANGUAGE for LANGUAGE in LANGUAGES):
         response_data = {
             'error': True,
@@ -44,18 +49,18 @@ def parse_templates(request, module_name, template_name, lang):
     
     translation.activate(lang)
     request.session['django_language'] = lang    
-
+    
     module_path = os.path.join(TEMPLATE_DIRS[0], module_name)
     template_name = os.path.join(TEMPLATE_DIRS[0], module_name, template_name)
     
     # check if module exists    
     module_exists = os.path.isdir(os.path.join(TEMPLATE_DIRS[0], module_name))
     if not module_exists:
-        return HttpResponse(_("Module does " + module_name + " not exists."))
+        return HttpResponse(_("Module does not exists: ") + module_path)
 
     # check if template exists
     template_exists = os.path.isfile(template_name)
     if not template_exists:
-        return HttpResponse(_("Template " + template_name + " does not exists."))
+        return HttpResponse(_("Template does not exists: ") + template_name)
     
     return render(request, template_name)
