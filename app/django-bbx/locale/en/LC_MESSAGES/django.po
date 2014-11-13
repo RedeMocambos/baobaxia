@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-12 18:26-0200\n"
+"POT-Creation-Date: 2014-11-13 11:02-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,7 +41,6 @@ msgid "English"
 msgstr ""
 
 #: bbx/settings.example.py:29 bbx/settings.py:29
-#: bbx/templates/auth/LoginTemplate.html:19
 msgid "Spanish"
 msgstr ""
 
@@ -53,32 +52,150 @@ msgstr ""
 msgid "Quintão do Baobáxia"
 msgstr ""
 
-#: bbx/templates/auth/LoginTemplate.html:26
+#: bbx/templates/auth/LoginTemplate.html:22
 msgid "Mocambola"
 msgstr ""
 
-#: bbx/templates/auth/LoginTemplate.html:30
+#: bbx/templates/auth/LoginTemplate.html:26
 msgid "Mucua"
 msgstr ""
 
-#: bbx/templates/auth/LoginTemplate.html:39 media/serializers.py:145
+#: bbx/templates/auth/LoginTemplate.html:35
+#: bbx/templates/auth/Register.html:36 media/serializers.py:145
 msgid "Repository"
 msgstr ""
 
-#: bbx/templates/auth/LoginTemplate.html:50
+#: bbx/templates/auth/LoginTemplate.html:46
 msgid "password"
 msgstr ""
 
-#: bbx/templates/auth/LoginTemplate.html:52
+#: bbx/templates/auth/LoginTemplate.html:48
 msgid "lost my password"
 msgstr ""
 
-#: bbx/templates/auth/LoginTemplate.html:53
+#: bbx/templates/auth/LoginTemplate.html:49
 msgid "register"
 msgstr ""
 
-#: lang/views.py:53
-msgid "Module don't exists"
+#: bbx/templates/auth/Register.html:19
+msgid "Registering new user"
+msgstr ""
+
+#: bbx/templates/auth/Register.html:24
+msgid "Mocambola login"
+msgstr ""
+
+#: bbx/templates/auth/Register.html:28
+msgid "Select your mucua"
+msgstr ""
+
+#: bbx/templates/auth/Register.html:47
+msgid "Password"
+msgstr ""
+
+#: bbx/templates/auth/Register.html:49
+msgid "Password, again"
+msgstr ""
+
+#: bbx/templates/common/Footer.html:2
+msgid "Footer"
+msgstr ""
+
+#: bbx/templates/common/Header.html:4
+msgid "Header"
+msgstr ""
+
+#: bbx/templates/common/Menu.html:3
+msgid "Menu"
+msgstr ""
+
+#: bbx/templates/common/Menu.html:9
+msgid "NETWORK"
+msgstr ""
+
+#: bbx/templates/common/MucuaProfile.html:7
+msgid "Collection:"
+msgstr ""
+
+#: bbx/templates/common/MucuaProfile.html:9
+msgid "more info"
+msgstr ""
+
+#: bbx/templates/common/MucuaProfile.html:11
+msgid "list of mucuas"
+msgstr ""
+
+#: bbx/templates/common/SearchTagsMenu.html:16
+msgid "Add term to search"
+msgstr ""
+
+#: bbx/templates/common/Sidebar.html:3
+msgid "do login"
+msgstr ""
+
+#: bbx/templates/common/Sidebar.html:7 bbx/templates/common/Sidebar.html:8
+#: bbx/templates/common/Sidebar.html:9 bbx/templates/common/Sidebar.html:10
+msgid "cloud"
+msgstr ""
+
+#: bbx/templates/common/Sobre.html:4
+msgid "About Baobaxia"
+msgstr ""
+
+#: bbx/templates/common/Sobre.html:5
+msgid "About baobaxia page text part 1"
+msgstr ""
+
+#: bbx/templates/common/Sobre.html:9
+msgid "About baobaxia page text part 2"
+msgstr ""
+
+#: bbx/templates/common/Sobre.html:13
+msgid "About baobaxia page text part 3"
+msgstr ""
+
+#: bbx/templates/common/Sobre.html:16
+msgid "About baobaxia page text part 4"
+msgstr ""
+
+#: bbx/templates/common/Sobre.html:21
+msgid "Support"
+msgstr ""
+
+#: bbx/templates/common/Sobre.html:23
+msgid "Support: FBB Foundation"
+msgstr ""
+
+#: bbx/templates/common/Sobre.html:24
+msgid "This project has the Banco do Brasil Foundation Support."
+msgstr ""
+
+#: bbx/templates/common/UsageBar.html:5
+msgid "others:"
+msgstr ""
+
+#: bbx/templates/common/UsageBar.html:6
+msgid "repository:"
+msgstr ""
+
+#: bbx/templates/common/UsageBar.html:7
+msgid "available:"
+msgstr ""
+
+#: bbx/templates/common/UsageBar.html:8
+msgid "demanded space:"
+msgstr ""
+
+#: bbx/templates/common/UsageBar.html:19
+msgid "support / about baobaxia"
+msgstr ""
+
+#: lang/views.py:59
+msgid "Module does not exists: "
+msgstr ""
+
+#: lang/views.py:64
+msgid "Template does not exists: "
 msgstr ""
 
 #: media/models.py:105

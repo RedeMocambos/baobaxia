@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-12 18:26-0200\n"
+"POT-Creation-Date: 2014-11-13 11:02-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,7 +41,6 @@ msgid "English"
 msgstr "Inglês"
 
 #: bbx/settings.example.py:29 bbx/settings.py:29
-#: bbx/templates/auth/LoginTemplate.html:19
 msgid "Spanish"
 msgstr "Espanhol"
 
@@ -53,33 +52,181 @@ msgstr "Português do Brasil"
 msgid "Quintão do Baobáxia"
 msgstr "quintal do bbx"
 
-#: bbx/templates/auth/LoginTemplate.html:26
+#: bbx/templates/auth/LoginTemplate.html:22
 msgid "Mocambola"
 msgstr "Mocambola"
 
-#: bbx/templates/auth/LoginTemplate.html:30
+#: bbx/templates/auth/LoginTemplate.html:26
 msgid "Mucua"
 msgstr "Mucua"
 
-#: bbx/templates/auth/LoginTemplate.html:39 media/serializers.py:145
+#: bbx/templates/auth/LoginTemplate.html:35
+#: bbx/templates/auth/Register.html:36 media/serializers.py:145
 msgid "Repository"
 msgstr "Repositório"
 
-#: bbx/templates/auth/LoginTemplate.html:50
+#: bbx/templates/auth/LoginTemplate.html:46
 msgid "password"
 msgstr "senha"
 
-#: bbx/templates/auth/LoginTemplate.html:52
+#: bbx/templates/auth/LoginTemplate.html:48
 msgid "lost my password"
 msgstr "perdi minha senha"
 
-#: bbx/templates/auth/LoginTemplate.html:53
+#: bbx/templates/auth/LoginTemplate.html:49
 msgid "register"
 msgstr "registrar-se"
 
-#: lang/views.py:53
-msgid "Module don't exists"
+#: bbx/templates/auth/Register.html:19
+msgid "Registering new user"
+msgstr "Registrando mocambola"
+
+#: bbx/templates/auth/Register.html:24
+msgid "Mocambola login"
+msgstr "Login do/a Mocambola"
+
+#: bbx/templates/auth/Register.html:28
+msgid "Select your mucua"
+msgstr "Selecione sua mucua"
+
+#: bbx/templates/auth/Register.html:47
+msgid "Password"
+msgstr "Senha"
+
+#: bbx/templates/auth/Register.html:49
+msgid "Password, again"
+msgstr "Senha novamente"
+
+#: bbx/templates/common/Footer.html:2
+msgid "Footer"
+msgstr "Rodapé"
+
+#: bbx/templates/common/Header.html:4
+msgid "Header"
+msgstr "Cabeçalho"
+
+#: bbx/templates/common/Menu.html:3
+msgid "Menu"
+msgstr "Menu"
+
+#: bbx/templates/common/Menu.html:9
+msgid "NETWORK"
+msgstr "REDE"
+
+#: bbx/templates/common/MucuaProfile.html:7
+msgid "Collection:"
+msgstr "Acervo:"
+
+#: bbx/templates/common/MucuaProfile.html:9
+msgid "more info"
+msgstr "mais informações"
+
+#: bbx/templates/common/MucuaProfile.html:11
+msgid "list of mucuas"
+msgstr "lista de mucuas"
+
+#: bbx/templates/common/SearchTagsMenu.html:16
+msgid "Add term to search"
+msgstr "Adicionar termo à essa busca"
+
+#: bbx/templates/common/Sidebar.html:3
+msgid "do login"
+msgstr "entrar"
+
+#: bbx/templates/common/Sidebar.html:7 bbx/templates/common/Sidebar.html:8
+#: bbx/templates/common/Sidebar.html:9 bbx/templates/common/Sidebar.html:10
+msgid "cloud"
+msgstr "nuvem"
+
+#: bbx/templates/common/Sobre.html:4
+msgid "About Baobaxia"
+msgstr "Sobre o baobáxia"
+
+#: bbx/templates/common/Sobre.html:5
+msgid "About baobaxia page text part 1"
 msgstr ""
+"\"A ideia nasce da referência do Baobá, árvore que vive "
+"milhares                               .   *               (de anos e "
+"representa simbolicamente a memória coletiva ligada ao        __ \\ /| // "
+"(>__/)território. Baobáxia é a união de baobá com galáxia. Uma galáxia "
+"de       \\_| |// __/ _/memórias coletivas locais ligadas ao território. A "
+"galáxia liga também      |    % __/com as estrelas, que por sua vez são "
+"ligadas a Casa de Cultura Tainã,        \\     )que em tupi-guarani "
+"significa caminho das estrelas. Baobáxia vira bbx,      /   b   "
+"\\             Qtirando as vocais, que remete ao acrônimo bbs que eram os "
+"nós de uma       /     b   )           /_ > antiga rede de computadores. "
+"\"                                            (       .   \\         "
+"_(x)_                                    _ _ _ "
+"_________________________________/             )______  z\\ \"  \\  "
+"_________§20§____ _ _ _"
+
+#: bbx/templates/common/Sobre.html:9
+msgid "About baobaxia page text part 2"
+msgstr ""
+"<strong>Baobáxia</strong> é uma arquitetura distribuída, voltada para a "
+"integraçãode redes locais mesmo em localidades nas quais a conexão à "
+"internet seja instável, lenta ou ausente. Não basta usar tecnologias de "
+"informação já existentes - precisamosmoldar o próprio desenvolvimento para "
+"que atenda às demandas da sociedade. Adota comoprincípio básico e "
+"metodologia de trabalho os fundamentos do software livre, tanto nagestão das "
+"equipes de trabalho, quanto nas soluções tecnológicas que utilizará. "
+"Concebido e desenvolvido pela <a href=\"http://www.mocambos.net\">Rede "
+"Mocambos</a>"
+
+#: bbx/templates/common/Sobre.html:13
+msgid "About baobaxia page text part 3"
+msgstr ""
+"Nosso código é aberto e licenciado pela GNU General Public License; "
+"atualmente, o código é versionado usando Git com um <a href=\"https://github."
+"com/RedeMocambos/baobaxia\">repositório no Github</a>."
+
+#: bbx/templates/common/Sobre.html:16
+msgid "About baobaxia page text part 4"
+msgstr ""
+"O Baobáxia é desenvolvido tendo como base o software <a href=\"http://git-"
+"annex.branchable.com/\">Git Annex</a>. Deixamos aqui nosso profundo "
+"agradecimento e apoio a Joey Hess, desenvolvedor desse maravilhoso software. "
+"=)"
+
+#: bbx/templates/common/Sobre.html:21
+msgid "Support"
+msgstr "Apoio"
+
+#: bbx/templates/common/Sobre.html:23
+msgid "Support: FBB Foundation"
+msgstr "Apoio: Fundação FBB"
+
+#: bbx/templates/common/Sobre.html:24
+msgid "This project has the Banco do Brasil Foundation Support."
+msgstr "Esse projeto conta com o apoio da Fundação Banco do Brasil."
+
+#: bbx/templates/common/UsageBar.html:5
+msgid "others:"
+msgstr "outros:"
+
+#: bbx/templates/common/UsageBar.html:6
+msgid "repository:"
+msgstr "Repositório"
+
+#: bbx/templates/common/UsageBar.html:7
+msgid "available:"
+msgstr "disponível:"
+
+#: bbx/templates/common/UsageBar.html:8
+msgid "demanded space:"
+msgstr "espaço requisitado"
+
+#: bbx/templates/common/UsageBar.html:19
+msgid "support / about baobaxia"
+msgstr "apoio / sobre o baobáxia"
+
+#: lang/views.py:59
+msgid "Module does not exists: "
+msgstr "Módulo não existe: "
+
+#: lang/views.py:64
+msgid "Template does not exists: "
+msgstr "Template não existe: "
 
 #: media/models.py:105
 msgid "uuid"
@@ -99,27 +246,27 @@ msgstr "nome"
 
 #: media/models.py:109
 msgid "Media name"
-msgstr ""
+msgstr "Nome da mídia"
 
 #: media/models.py:110
 msgid "No title"
-msgstr ""
+msgstr "Sem título"
 
 #: media/models.py:112
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: media/models.py:113
 msgid "date"
-msgstr ""
+msgstr "data"
 
 #: media/models.py:114
 msgid "Media criation date"
-msgstr ""
+msgstr "Data de criação da mídia"
 
 #: media/models.py:115
 msgid "note"
-msgstr ""
+msgstr "anotação"
 
 #: media/models.py:116 repository/models.py:299
 msgid "Note.. use as you wish!"
@@ -127,27 +274,27 @@ msgstr ""
 
 #: media/models.py:121
 msgid "type"
-msgstr ""
+msgstr "tipo"
 
 #: media/models.py:122
 msgid "Type of the media, like image, document, video, ..."
-msgstr ""
+msgstr "Tipo da mídia, ex: imagem, documento, vídeo, áudio etc..."
 
 #: media/models.py:126
 msgid "format"
-msgstr ""
+msgstr "formato"
 
 #: media/models.py:131
 msgid "license"
-msgstr ""
+msgstr "licença"
 
 #: media/models.py:132
 msgid "License of the media, like, cc, gpl, bsd, ..."
-msgstr ""
+msgstr "Licença da mídia, ex: cc, gpl, bsd etc..."
 
 #: media/models.py:138
 msgid "is local"
-msgstr ""
+msgstr "é local"
 
 #: media/models.py:139
 msgid "True if media content is available locally"
@@ -155,7 +302,7 @@ msgstr ""
 
 #: media/models.py:142
 msgid "is requested"
-msgstr ""
+msgstr "foi requisitado"
 
 #: media/models.py:143
 msgid "True if media content is awaiting a local copy"
@@ -187,7 +334,7 @@ msgstr ""
 
 #: media/serializers.py:170
 msgid "New media created"
-msgstr ""
+msgstr "Nova mídia criada"
 
 #: media/serializers.py:178
 msgid "Revision is"
@@ -242,14 +389,5 @@ msgstr ""
 msgid "repositories"
 msgstr ""
 
-#~ msgid "cadeira"
-#~ msgstr "cadeira em pt"
-
 #~ msgid "lost_password"
 #~ msgstr "perdi minha senha"
-
-#~ msgid "login"
-#~ msgstr "entrar"
-
-#~ msgid "about baobaxia"
-#~ msgstr "sobre o baobáxia"
