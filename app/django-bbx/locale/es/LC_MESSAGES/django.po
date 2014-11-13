@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 11:02-0200\n"
+"POT-Creation-Date: 2014-11-13 11:32-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,7 +50,7 @@ msgid "Brazilian Portuguese"
 msgstr ""
 
 #: bbx/templates/admin/base_site.html:4 bbx/templates/admin/base_site.html:7
-msgid "Quintão do Baobáxia"
+msgid "Baobaxia Garden"
 msgstr ""
 
 #: bbx/templates/auth/LoginTemplate.html:22
@@ -58,6 +58,7 @@ msgid "Mocambola"
 msgstr ""
 
 #: bbx/templates/auth/LoginTemplate.html:26
+#: bbx/templates/media/MediaView.html:23
 msgid "Mucua"
 msgstr ""
 
@@ -191,6 +192,163 @@ msgstr ""
 msgid "support / about baobaxia"
 msgstr ""
 
+#: bbx/templates/media/MediaDestaquesMucua.html:4
+msgid "mucua highlights"
+msgstr ""
+
+#: bbx/templates/media/MediaGrid.html:24 bbx/templates/media/MediaView.html:83
+msgid "download"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:5 media/models.py:108
+#: repository/models.py:293
+msgid "name"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:6
+msgid "author"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:7 media/models.py:126
+msgid "format"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:8
+msgid "origin"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:9 media/models.py:113
+msgid "date"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:10 media/models.py:131
+msgid "license"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:11 media/models.py:121
+msgid "type"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:12
+msgid "copies"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:13
+msgid "is local?"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:47
+msgid "yes"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:49
+msgid "no"
+msgstr ""
+
+#: bbx/templates/media/MediaMocambola.html:4
+msgid "content published by mocambola"
+msgstr ""
+
+#: bbx/templates/media/MediaNovidades.html:3
+msgid "new content"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:11
+msgid "Title:"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:13
+msgid "Tags:"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:17
+msgid "File type"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:30
+#: bbx/templates/media/MediaView.html:75
+msgid "No preview available"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:48
+#: bbx/templates/media/MediaView.html:102
+msgid "UUID:"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:62
+msgid "Author"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:67
+#: bbx/templates/media/MediaView.html:22
+msgid "Date"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:72
+msgid "Origin"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:76
+#: bbx/templates/media/MediaView.html:24
+msgid "Format"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:86
+msgid "Availability"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:88
+msgid "Description"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:99
+msgid "View media"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:106
+msgid "Update"
+msgstr ""
+
+#: bbx/templates/media/MediaPublish.html:106
+msgid "Upload file"
+msgstr ""
+
+#: bbx/templates/media/MediaRelated.html:3
+msgid "related content"
+msgstr ""
+
+#: bbx/templates/media/MediaView.html:21
+msgid "By"
+msgstr ""
+
+#: bbx/templates/media/MediaView.html:25
+msgid "Size"
+msgstr ""
+
+#: bbx/templates/media/MediaView.html:26
+msgid "License"
+msgstr ""
+
+#: bbx/templates/media/MediaView.html:52
+msgid "who was this file?"
+msgstr ""
+
+#: bbx/templates/media/MediaView.html:92
+msgid "request local copy"
+msgstr ""
+
+#: bbx/templates/media/MediaView.html:99
+msgid "Local content"
+msgstr ""
+
+#: bbx/templates/mocambola/HomeMocambola.html:10
+msgid "Publish new content"
+msgstr ""
+
+#: bbx/templates/repository/ListMucuas.html:2
+msgid "Mucuas"
+msgstr ""
+
 #: lang/views.py:59
 msgid "Module does not exists: "
 msgstr ""
@@ -211,10 +369,6 @@ msgstr ""
 msgid "No UUID"
 msgstr ""
 
-#: media/models.py:108 repository/models.py:293
-msgid "name"
-msgstr ""
-
 #: media/models.py:109
 msgid "Media name"
 msgstr ""
@@ -225,10 +379,6 @@ msgstr ""
 
 #: media/models.py:112
 msgid "URL"
-msgstr ""
-
-#: media/models.py:113
-msgid "date"
 msgstr ""
 
 #: media/models.py:114
@@ -243,20 +393,8 @@ msgstr ""
 msgid "Note.. use as you wish!"
 msgstr ""
 
-#: media/models.py:121
-msgid "type"
-msgstr ""
-
 #: media/models.py:122
 msgid "Type of the media, like image, document, video, ..."
-msgstr ""
-
-#: media/models.py:126
-msgid "format"
-msgstr ""
-
-#: media/models.py:131
-msgid "license"
 msgstr ""
 
 #: media/models.py:132

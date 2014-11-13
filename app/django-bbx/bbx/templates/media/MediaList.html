@@ -1,15 +1,16 @@
+{% load i18n %}
 <table>
   <thead>
     <tr>
-      <td class="name"><a>nome<br/><div class="orderby_asc"></div></a></td>
-      <td class="author"><a>autor<br/><div class="orderby_asc"></div></a></td>
-      <td class="format"><a>formato<br/><div class="orderby_asc"></div></a></td>
-      <td class="origin"><a>origem<br/><div class="orderby_asc"></div></a></td>
-      <td class="date"><a>data<br/><div class="orderby_asc"></div></a></td>
-      <td class="license"><a>licença<br/><div class="orderby_asc"></div></a></td>
-      <td class="type"><a>tipo<br/><div class="orderby_asc"></div></a></td>
-      <td class="num_copies"><a>cópias<br/><div class="orderby_asc"></div></a></td>
-      <td class="is_local"><a>cópia local?<br/><div class="orderby_asc"></div></a></td>
+      <td class="name"><a>{% trans "name" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="author"><a>{% trans "author" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="format"><a>{% trans "format" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="origin"><a>{% trans "origin" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="date"><a>{% trans "date" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="license"><a>{% trans "license" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="type"><a>{% trans "type" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="num_copies"><a>{% trans "copies" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="is_local"><a>{% trans "is local?" %}<br/><div class="orderby_asc"></div></a></td>
     </tr>
   </thead>
   <tbody>
@@ -43,9 +44,9 @@
       </td>
       <td class="is_local">
 	  <% if(media.is_local) { %>
-	  <span class="local">sim</span>	  
+	  <span class="local">{% trans "yes" %}</span>	  
 	  <% } else { %>
-	  <span class="not_local">não</span>	  
+	  <span class="not_local">{% trans "no" %}</span>	  
 	  <% } %>
 	</span>
       </td>
@@ -53,9 +54,6 @@
     <% }) %>
   </tbody>
 </table>
-<h5 style="text-align: center">
-  <a href="<%= Backbone.history.location.href %>/limit/1000">ver todos</a>
-</h5>
 <% if (_.isEmpty(medias)) { %>
 <h4 class="message"><%= message %></h4>
 <% } %>

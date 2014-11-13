@@ -1,3 +1,4 @@
+{% load i18n %}
 <div id="media-view">
   <% if (config.userData.username) { %>
   <div id="link-edit">
@@ -17,12 +18,12 @@
     <!-- inner sidebar -->
     <div class="block-2 content-div">
       <div class="block-title">
-	<p>Por</p>
-	<p>Data</p>
-	<p>Mucua</p>
-	<p>Formato</p>
-	<p>Tamanho</p>
-	<p>Licença</p>
+	<p>{% trans "By" %}</p>
+	<p>{% trans "Date" %}</p>
+	<p>{% trans "Mucua" %}</p>
+	<p>{% trans "Format" %}</p>
+	<p>{% trans "Size" %}</p>
+	<p>{% trans "License" %}</p>
       </div>
       <div class="block-fields">
 	<p><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>"><%= media.author.split('@')[0] %></a></p>
@@ -48,7 +49,7 @@
       <% } %>
       <div class="blocks">
 	<p class="quem-tem">
-	  <span class="title-bold">quem tem esse arquivo?</span>
+	  <span class="title-bold">{% trans "who was this file?" %}</span>
 	  <span id="whereis">&nbsp;</span>
 	</p>
       </div>
@@ -71,7 +72,7 @@
 	<a href="<%= media.url %>" class="download">download</a>
 	<% } %>
       <% } else { %>
-      Visualização não disponível
+      {% trans "No preview available" %}
       <% } %>
 
       </div>   
@@ -79,7 +80,7 @@
       <% if (media.is_local) { %>
       <div class="blocks">
 	<% if (media.type !='arquivo') { %>
-	<a href="<%= media.url %>" class="download">download</a>
+	<a href="<%= media.url %>" class="download">{% trans "download" %}</a>
 	<% } %>
       </div>
       <% } %>
@@ -88,17 +89,17 @@
       <div class="blocks clear-both solicit-copy">
 	<p class="solicit-copy">
 	  <a href="">
-	    <span class="title-bold">solicitar cópia local</span>
+	    <span class="title-bold">{% trans "request local copy" %} local</span>
 	    <span class="image"></span>
 	  </a>
 	</p>
       </div>   
       <% } else { %>
       <p class="">
-	Conteúdo local
+	{% trans "Local content" %}
       </p>
       <% } %>
-      <p class="uuid">UUID: <%= media.uuid %></p>
+      <p class="uuid">{% trans "UUID:" %} <%= media.uuid %></p>
     </div>
     <!-- bloco multimedia -->    
   </div>
