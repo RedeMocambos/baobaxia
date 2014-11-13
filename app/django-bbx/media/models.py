@@ -16,8 +16,10 @@ from django.template.defaultfilters import slugify
 from django.utils.functional import lazy
 
 from tag.models import Tag
-from bbx.settings import REPOSITORY_DIR
+from bbx.settings import REPOSITORY_DIR, DEFAULT_MUCUA
 from bbx.utils import logger
+from repository.tasks import git_annex_get
+
 
 try:
     from django.utils.encoding import force_unicode  # NOQA
@@ -215,26 +217,29 @@ class Media(models.Model):
         self.is_requested = True
 
         try:
-            request_file = open(os.path.join(REPOSITORY_DIR, self.get_repository(), 
-                                             self.get_mucua(),
+            request_filename = os.path.join(REPOSITORY_DIR, self.get_repository(), 
+                                             DEFAULT_MUCUA,
                                              'requests',
-                                             self.uuid), 'a')
-            request_file.write(get_file_path(self))
+                                             self.uuid)
+            logger.info(request_filename)
+            request_file = open(request_filename, 'a')
+            request_file.write(self.media_file.path)
             request_file.close
+
         except IOError:
             logger.info(u'Alo! I can\'t write request file!')
+            
+        logger.debug("get_file_path: " + get_file_path(self))
+        logger.debug("media_file.name: " + os.path.basename(self.media_file.name))
 
-        media_path = get_file_path(self)
-        repository_path = os.path.join(REPOSITORY_DIR, self.get_repository())
-        from repository.models import git_annex_get
-        async_result = git_annex_get.delay(repository_path, media_path)
+        async_result = git_annex_get.delay(get_file_path(self), os.path.basename(self.media_file.name))
         logger.debug(async_result.get)
         logger.info(async_result.info)
 #        return async_result.info
 
 
     def save(self, *args, **kwargs):
-        self._set_is_local()
+        self.set_is_local()
         if self.pk is not None:
             self._set_num_copies()
         self.url = self.get_url()
@@ -245,6 +250,10 @@ class Media(models.Model):
 
 
 class TagPolicyDoesNotExist(exceptions.Exception):
+    def __init__(self, args=None):
+        self.args = args
+
+class MediaDoesNotExist(exceptions.Exception):
     def __init__(self, args=None):
         self.args = args
 

@@ -7,7 +7,6 @@ from subprocess import PIPE
 import logging
 import exceptions
 
-from celery import Celery
 
 from django.db import models
 from django.conf import settings
@@ -25,7 +24,6 @@ from bbx.utils import logger
 #logger = logging.getLogger(__name__)
 repository_dir = settings.REPOSITORY_DIR
 
-afazeres = Celery('tasks', broker='amqp://guest@localhost//', backend='amqp')
 
 # Connecting to Media signal
 @receiver(post_save, sender=Media)
@@ -45,6 +43,8 @@ def git_media_post_save(instance, **kwargs):
               instance.author.username,
               instance.author.email,
               get_file_path(instance))
+
+
 
 def get_default_repository():
     return Repository.objects.get(name=DEFAULT_REPOSITORY)
@@ -100,6 +100,32 @@ def _get_available_folders(path):
                   if os.path.isdir(os.path.join(path, name))]
     return folder_list
 
+
+def git_remote_get_list(repository=DEFAULT_REPOSITORY):
+    """
+    Returns the list of connected mucua (git remote)
+    
+    """
+    try:
+        current_repository = Repository.objects.get(
+            name=repository)
+    except Repository.DoesNotExist:
+        return []
+
+    cmd = 'git remote -v'
+    pipe = subprocess.Popen(cmd, shell=True, 
+                            cwd=os.path.join(repository_dir, 
+                                             current_repository.name), 
+                            stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+
+    mucuas = []
+    # Match repositories.
+    if output:
+        for line in output.splitlines():
+            mucuas.append(line.split(None, 1)[0])
+    return list(set(mucuas))
+   
 
 def git_add(file_name, repository_path):
     u"""Adiciona um arquivo no repositório."""
@@ -171,19 +197,19 @@ def git_annex_copy_to(repository_path):
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
-@afazeres.task
-def git_annex_get(repository_path, media_path):
-    u"""
-    Baixa os conteudos binarios desde o repositório remoto.
+# @afazeres.task
+# def git_annex_get(repository_path, media_path):
+#     u"""
+#     Baixa os conteudos binarios desde o repositório remoto.
 
-    Retorna o output do git annex get.    
-    """
-    # TODO: Next release with possibility to choice what to get
-    cmd = 'git annex get ' + media_path
-    logger.info(cmd)
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
-    output, error = pipe.communicate()
-    return output
+#     Retorna o output do git annex get.    
+#     """
+#     # TODO: Next release with possibility to choice what to get
+#     cmd = 'git annex get ' + media_path
+#     logger.info(cmd)
+#     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+#     output, error = pipe.communicate()
+#     return output
 
 def git_annex_where_is(media):
     u"""Mostra quais mucuas tem copia do media."""
@@ -194,6 +220,17 @@ def git_annex_where_is(media):
     logger.debug(error)
     logger.info(output)
     return output
+
+def git_annex_drop(media):
+    u"""Mostra quais mucuas tem copia do media."""
+    cmd = 'git annex drop --force ' + os.path.basename(media.media_file.name) 
+    logger.debug('Dropping filepath: ' + get_file_path(media) + media.get_file_name())
+    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media), stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    logger.debug(error)
+    logger.info(output)
+    return output
+
 
 def git_annex_group_add(repository_path, mucua, group):
     u"""Adiciona a Mucua no grupo."""
