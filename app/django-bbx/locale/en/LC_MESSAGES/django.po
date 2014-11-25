@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 11:32-0200\n"
+"POT-Creation-Date: 2014-11-13 16:48-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,11 +116,11 @@ msgstr ""
 
 #: bbx/templates/common/MucuaProfile.html:7
 msgid "Collection:"
-msgstr ""
+msgstr "Collection:"
 
 #: bbx/templates/common/MucuaProfile.html:9
 msgid "more info"
-msgstr ""
+msgstr "more info"
 
 #: bbx/templates/common/MucuaProfile.html:11
 msgid "list of mucuas"
@@ -189,6 +189,10 @@ msgstr ""
 
 #: bbx/templates/common/UsageBar.html:19
 msgid "support / about baobaxia"
+msgstr ""
+
+#: bbx/templates/media/BackToSearch.html:4
+msgid "back to search"
 msgstr ""
 
 #: bbx/templates/media/MediaDestaquesMucua.html:4
@@ -292,6 +296,11 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
+#: bbx/templates/media/MediaPublish.html:78
+#: bbx/templates/media/MediaView.html:26
+msgid "License"
+msgstr ""
+
 #: bbx/templates/media/MediaPublish.html:86
 msgid "Availability"
 msgstr ""
@@ -322,10 +331,6 @@ msgstr ""
 
 #: bbx/templates/media/MediaView.html:25
 msgid "Size"
-msgstr ""
-
-#: bbx/templates/media/MediaView.html:26
-msgid "License"
 msgstr ""
 
 #: bbx/templates/media/MediaView.html:52

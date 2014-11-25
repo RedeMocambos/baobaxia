@@ -75,7 +75,7 @@
 	
 	<p class="format"><span class="title">{% trans "Format" %}</span><br/> <%= media.format %></p>
 	
-	<div class="license"><span class="title">{% Trans "License" %}</span><br/>
+	<div class="license"><span class="title">{% trans "License" %}</span><br/>
 	  <select name="license" id="license">
 	    <% _.each(licenses, function(value, key) { %>
 	    <option value="<%= key %>" <% if (media.license == key) { %>selected<% } %>><%= value %></option>

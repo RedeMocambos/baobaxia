@@ -5,7 +5,7 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/mocambola/model',
-    'text!templates/mocambola/HomeMocambola.html',
+    'text!/api/templates/' + userLang + '/mocambola/HomeMocambola.html',
 ], function($, _, Backbone, BBXFunctions, MediaFunctions, MocambolaModel, HomeMocambolaTpl) {
     var HomeMocambola = Backbone.View.extend({
 	el: "body",    

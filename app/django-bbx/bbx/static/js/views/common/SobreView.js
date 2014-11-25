@@ -2,7 +2,7 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'text!templates/common/Sobre.html',
+    'text!/api/templates/' + userLang + '/common/Sobre.html',
 ], function($, _, Backbone, SobreTpl){
     var SobreView = Backbone.View.extend({
 	render: function() {

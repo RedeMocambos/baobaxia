@@ -1,5 +1,10 @@
-var BBX = {};
-
+var BBX = {},
+userLang = '';
+if (typeof BBX.config === 'undefined') {
+    userLang = navigator.language || navigator.userLanguage;
+} else {
+    userLang = BBX.config.userLang;
+}
 define([
     'jquery', 
     'backbone',

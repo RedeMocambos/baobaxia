@@ -7,9 +7,9 @@ define([
     'modules/media/collection',
     'modules/media/functions',
     'modules/mocambola/model',
-    'text!templates/common/UserProfile.html',
-    'text!templates/common/MucuaProfile.html',
-    'text!templates/mucua/HomeMucua.html',
+    'text!/api/templates/' + userLang + '/common/UserProfile.html',
+    'text!/api/templates/' + userLang + '/common/MucuaProfile.html',
+    'text!/api/templates/' + userLang + '/mucua/HomeMucua.html',
 ], function($, _, Backbone, MucuaModel, MediaModel, MediaCollection, MediaFunctions, MocambolaModel, UserProfileTpl, MucuaProfileTpl, HomeMucuaTpl) {
     var MucuaView = Backbone.View.extend({
 	el: "body",

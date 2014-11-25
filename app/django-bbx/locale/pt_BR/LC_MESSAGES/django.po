@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 11:32-0200\n"
+"POT-Creation-Date: 2014-11-13 16:48-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -221,9 +221,13 @@ msgstr "espaço requisitado"
 msgid "support / about baobaxia"
 msgstr "apoio / sobre o baobáxia"
 
+#: bbx/templates/media/BackToSearch.html:4
+msgid "back to search"
+msgstr "voltar para a busca"
+
 #: bbx/templates/media/MediaDestaquesMucua.html:4
 msgid "mucua highlights"
-msgstr "destaques mucua"
+msgstr "destaques da mucua"
 
 #: bbx/templates/media/MediaGrid.html:24 bbx/templates/media/MediaView.html:83
 msgid "download"
@@ -236,7 +240,7 @@ msgstr "nome"
 
 #: bbx/templates/media/MediaList.html:6
 msgid "author"
-msgstr ""
+msgstr "autor"
 
 #: bbx/templates/media/MediaList.html:7 media/models.py:126
 msgid "format"
@@ -322,6 +326,11 @@ msgstr "Origem"
 msgid "Format"
 msgstr "Formato"
 
+#: bbx/templates/media/MediaPublish.html:78
+#: bbx/templates/media/MediaView.html:26
+msgid "License"
+msgstr "Licença"
+
 #: bbx/templates/media/MediaPublish.html:86
 msgid "Availability"
 msgstr "Disponibilidade"
@@ -348,15 +357,11 @@ msgstr "conteúdo relacionado"
 
 #: bbx/templates/media/MediaView.html:21
 msgid "By"
-msgstr ""
+msgstr "Por"
 
 #: bbx/templates/media/MediaView.html:25
 msgid "Size"
-msgstr ""
-
-#: bbx/templates/media/MediaView.html:26
-msgid "License"
-msgstr "Licença"
+msgstr "Tamanho"
 
 #: bbx/templates/media/MediaView.html:52
 msgid "who was this file?"

@@ -6,10 +6,10 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
                        url(r'^api/admin/', include(admin.site.urls)),
+                       url(r'^api/', include('lang.urls')),
                        url(r'^cache/', include('media.urls')),
                        url(r'^api/', include('media.urls')),
                        url(r'^api/', include('repository.urls')),
                        url(r'^api/', include('mucua.urls')),
                        url(r'^api/', include('mocambola.urls')),
-                       url(r'^api/', include('lang.urls')),
                        )

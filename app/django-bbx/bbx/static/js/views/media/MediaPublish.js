@@ -6,7 +6,7 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!templates/media/MediaPublish.html'
+    'text!/api/templates/' + userLang + '/media/MediaPublish.html'
 ], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl){
     
     var MediaPublish = Backbone.View.extend({	
