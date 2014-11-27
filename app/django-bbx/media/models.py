@@ -20,7 +20,6 @@ from bbx.settings import REPOSITORY_DIR, DEFAULT_MUCUA
 from bbx.utils import logger
 from repository.tasks import git_annex_get
 
-
 try:
     from django.utils.encoding import force_unicode  # NOQA
 except ImportError:
@@ -213,28 +212,34 @@ class Media(models.Model):
         repositorio.
 
         """
-        # self.request_code = generate_uuid()
-        self.is_requested = True
+        self.set_is_local()
+        if not self.is_local:
+            self.is_requested = True
 
-        try:
-            request_filename = os.path.join(REPOSITORY_DIR, self.get_repository(), 
-                                             DEFAULT_MUCUA,
-                                             'requests',
-                                             self.uuid)
-            logger.info(request_filename)
-            request_file = open(request_filename, 'a')
-            request_file.write(self.media_file.path)
-            request_file.close
-
-        except IOError:
-            logger.info(u'Alo! I can\'t write request file!')
+            try:
+                request_filename = os.path.join(REPOSITORY_DIR, self.get_repository(), 
+                                                DEFAULT_MUCUA,
+                                                'requests',
+                                                self.uuid)
+                logger.info(request_filename)
+                request_file = open(request_filename, 'a')
+                request_file.write(self.media_file.path)
+                request_file.close
+                # TODO: Need to git add
+                logger.debug("ADDING REQUEST: " + os.path.basename(request_filename))
+                logger.debug("ADDED ON: " + os.path.dirname(request_filename))
+                from repository.models import git_add
+                git_add(os.path.basename(request_filename), os.path.dirname(request_filename))
+                
+            except IOError:
+                logger.info(u'Alo! I can\'t write request file!')
             
-        logger.debug("get_file_path: " + get_file_path(self))
-        logger.debug("media_file.name: " + os.path.basename(self.media_file.name))
-
+                logger.debug("get_file_path: " + get_file_path(self))
+                logger.debug("media_file.name: " + os.path.basename(self.media_file.name))
+        
         async_result = git_annex_get.delay(get_file_path(self), os.path.basename(self.media_file.name))
         logger.debug(async_result.get)
-        logger.info(async_result.info)
+        logger.debug(async_result.info)
 #        return async_result.info
 
 
