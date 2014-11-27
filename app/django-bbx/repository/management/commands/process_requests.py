@@ -32,28 +32,36 @@ class Command(BaseCommand):
 
         requests_path = os.path.join(REPOSITORY_DIR, repository, mucua, 'requests') 
         request_list = [uuid for uuid in os.listdir(requests_path)]
+
         for request_uuid in request_list:
             try:
                 media = Media.objects.get(uuid=request_uuid)
                 media.set_is_local()
                 if media.is_local:
                     request_list = [uuid for uuid in request_list if uuid != request_uuid]
+                    os.remove(os.path.join(requests_path, request_uuid))
                     # Here we also git annex drop the file because
                     # it's only a "transport copy", couse of
                     # media.is_requested = False.
-                    if media.is_requested == False:
-                        git_annex_drop(media)
-                    else:
-                        media.is_requested = False
+                    if not media.is_requested:
+                        # Drop list -- git_annex_drop(media)
+                        drop = False
+                        for lmucua in linked_mucuas:
+                            requests = os.listdir(os.path.join(REPOSITORY_DIR, repository, lmucua, "requests"))
+                            if request_uuid not in requests:
+                                drop = True
+                        if drop:
+                            git_annex_drop(media)
                 else:
-                    request_file = open(os.path.join(requests_path, request_uuid), 'r')
-                    media_path = request_file.readline()
-                    request_file.close()
+                    # request_file = open(os.path.join(requests_path, request_uuid), 'r')
+                    # media_path = request_file.readline()
+                    # request_file.close()
                     repository_path = os.path.join(REPOSITORY_DIR, media.get_repository())
                     async_result = git_annex_get.delay(get_file_path(media), 
                                                        os.path.basename(media.media_file.name))
                     logger.info(async_result.info)
-                    os.remove(os.path.join(requests_path, request_uuid))
+                    media.set_is_local()
+                    media.save()
             except MediaDoesNotExist:
                 request_list = [uuid for uuid in request_list if uuid != request_uuid]
                 logger.debug('Requested media not found')
