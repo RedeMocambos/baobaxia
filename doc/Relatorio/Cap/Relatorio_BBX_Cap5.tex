@@ -82,6 +82,7 @@ Além destas, ainda constam como funcionalidades/ações:
   \item logout
   \item esqueci a senha
   \item página do mocambola / profile
+  \item edição dos dados do mocambola / profile
   \item edição da mucua
   \item lista de requisições da mucua
   \item informações da rede
@@ -189,8 +190,6 @@ telas principais (a aplicação da ideia a casos reais).
 
 \subsection{Identidade visual}
 
-Foi criada uma logomarca para o Baobáxia, considerando ...
-
 \emph{Baobá, árvore que vive milhares de anos e representa simbolicamente
 a memória coletiva ligada ao território. Baobáxia é a união de baobá com
 galáxia. Uma galáxia de memórias coletivas locais ligadas ao território,
@@ -230,23 +229,6 @@ aplicativo.
     Logomarca Baobáxia na Rota dos Baobás}
   \label{fig:Logo_BBX_Na_Rota}
 \end{figure}
-
-\subsection{Desenho das telas principais}
-
-Após elaborada a identidade visual, partiu-se para o desenho das
-principais telas do sistema. A partir delas, o trabalho de codificação
-da interface pode ser iniciado, e também ajustes no desenho puderam ser
-feitos após a implementação em código do desenho.
-
-Decidiu-se que as principais telas para a fase inicial do projeto seriam:
-\begin{itemize}
-  \item Página inicial / tela de login
-  \item Página inicial da mucua
-  \item Página inicial da rede
-  \item Rodapé com indicativos sobre utilização da mucua
-  \item Interface de busca combinada
-  \item Página do conteúdo
-\end{itemize}
 
 \begin{figure}[htbp]
   \centering
@@ -288,11 +270,38 @@ Decidiu-se que as principais telas para a fase inicial do projeto seriam:
   \label{fig:layout-pgREDEbusca}
 \end{figure}
 
+\subsection{Desenho das telas principais}
+
+Após elaborada a identidade visual, partiu-se para o desenho das
+principais telas do sistema. A partir delas, o trabalho de codificação
+da interface pode ser iniciado, e também ajustes no desenho puderam ser
+feitos após a implementação em código do desenho.
+
+Decidiu-se que as principais telas para a fase inicial do projeto seriam:
+\begin{itemize}
+  \item Página inicial / tela de login
+  \item Página inicial da mucua
+  \item Página inicial da rede
+  \item Rodapé com indicativos sobre utilização da mucua
+  \item Interface de busca combinada
+  \item Página do conteúdo
+\end{itemize}
+
+\newpage
+\newpage
+\newpage
+
+%%
+%% INTERFACE PARA USUÁRIOS
+%%
+
+
 \section{Interface para usuários}
 A interface propriamente dita é a interação do sistema com o usuário;
 deve conter as funcionalidades básicas do sistema disponíveis para
 interação, implementada na forma de uma página de internet. O presente
 tópico pretende discorrer sobre as tecnologias e a arquitetura adotadas.
+
 
 \subsection{Arquitetura da interface}
 A interface do Baobáxia é a parte superior, mais aparente, do sistema,
@@ -308,12 +317,283 @@ Para garantir tal arquitetura, adotamos as seguintes bibliotecas:
     com a \emph{API}, cuidando da atualização dos dados
   \item \emph{Require.js}: cuida do carregamento dinâmico das bibliotecas
     e suas dependências, adicionando tal funcionalidade ao JavaScript
-  \item \emph{Underscore.js}: biblioteca assistente para o código, adiciona
+  \item \emph{Lodash.js}: biblioteca assistente para o código, adiciona
     uma série de métodos úteis ao trato com os dados e a exibição dos
     conteúdos na forma de Templates
   \item \emph{Jquery} e outras bibliotecas auxiliares de código, para
     manipulação dos dados do \emph{DOM} \footnote Document Object Model
 \end{itemize}
+
+\subsection{Arquitetura de código da interface}
+A atual implementação da interface localiza-se na pasta de conteúdo estático
+do Django, localizada em:
+\emph{/srv/bbx/baobaxia/app/django-bbx/bbx/static}
+
+Note que esta é a pasta raiz para operações na interface. Listando o conteúdo,
+temos:
+\begin{itemize}
+  \item /css     -> arquivos de formatação de estilos html
+  \item /images  -> imagens estáticas usadas pela interface
+  \item index.html  -> página inicial
+  \item /js      -> aplicação JavaScript
+\end{itemize}
+
+Sob a pasta /js, temos outra estrutura, que obedece a certos padrões de código
+por nós definidos:
+\begin{itemize}
+  \item app.js   -> definição do aplicativo
+  \item config.json  -> arquivo de configuração da interface
+  \item config.json.example  -> exemplo de arquivo de configuração da interface
+  \item /lib     -> localização de todas as bibliotecas javascript utilizadas pela interface
+  \item main.js  -> função inicializadora do aplicativo
+  \item /modules  -> módulos Backbone.js
+  \item README    -> Arquivo de instruções
+  \item router.js   -> roteamento da aplicação
+  \item /views    -> visualizações de dados da interface
+\end{itemize}
+
+Dentre as bibliotecas utilizadas, temos as seguintes:
+\begin{itemize}
+  \item backbone-amd.js   -> biblioteca Backbone.js
+  \item backbone.subroute.min.js -> sub rotas para o Backbone.js
+  \item jquery.cookie.js  -> manipulação de cookies via jQuery
+  \item jquery.json.min.js  -> manipulação de arquivos JSON via jQuery
+  \item jquery-min.js     -> bibloteca jQuery
+  \item jquery.tagcloud.js   -> geração de nuvem de tags via jQuery
+  \item lodash-min.js    -> biblioteca acessória para JavaScript, substituição para Underscore
+  \item require    -> plugins da biblioteca require (json.js e text.js)
+  \item require.js  -> biblioteca Require.js
+  \item textext -> biblioteca jQuery para campos de formulário
+\end{itemize}
+
+\textbf{Backbone.js}\\
+O Backbone.js é uma biblioteca JavaScript para criar uma estrutura de
+aplicação compatível com chamadas a APIs REST que retornam resultados em JSON.
+Foi adotada por apresentar boa comunicação com a API de Backend do Baobáxia, baseado
+no Django REST Framework. Trabalha com modelos (models), coleções (collections) e
+visualizações (views). Por meio dele, foi possível construir uma interface
+baseada em eventos e assíncrona; ou seja, a interface é renderizada conforme são
+carregados os elementos a partir da API.
+
+Mais informações sobre o BackboneJS podem ser obtidas na sua página: \url{http://backbonejs.org}
+
+\textbf{jQuery}\\
+JQuery é uma biblioteca consolidada para manipulação de elementos HTML via
+JavaScript. Por meio dela, é possível alterar estilos, textos e remodelar completamente
+uma página HTML. É possível manipular campos identificados por um ID, por classes
+de css ou mesmo diretamente os elementos HTML, como no exemplo abaixo:
+
+\begin{code}
+  <p>Título</p>
+  <div id="id-campo">texto velho</div>
+  <div id="id-campo2">algum texto... </div>
+  <div class="css-class"></div>
+  <p>Outro texto...</p>
+
+  <script type="text/javascript">
+  $('#id-campo').html('novo texto');
+  $('#id-campo2').append('adicionando o link: <a href="http://www.url.com">link</a>');
+  $('.css-class').html('<a href="http://www.url.com">link</a>');
+  $('p').css('font-weight: bold');
+  </script>
+\end{code}
+
+O resultado será algo como:
+\\
+\emph{Título}\\
+novo texto\\
+algum texto... adicionando o link: \href{http://www.url.com}{link}\\
+\emph{Outro texto...}
+
+Mais informações sobre o jQuery podem ser obtidas em: \url{http://jquery.com/}
+
+\textbf{Require.js}\\
+A biblioteca Require.js cumpre o propósito de carregar arquivos e módulos de uma
+aplicação JavaScript, garantindo que a execução do código só se dê após finalizado
+o carregamento. Permite que bibliotecas sejam definidas como base para outras,
+garantindo o carregamento primeiro das dependências para então carregar o arquivo
+em questão.
+
+Usa-se um arquivo de definição geral dos caminhos, localizado em main.js. Por exemplo:
+\begin{code}
+require.config({
+    shin: {
+	lodash: { 
+	    exports: '_'
+	},
+	backbone: {
+	    deps: ['lodash', 'jquery'],
+	    exports: 'Backbone'
+	},
+    },
+    paths: {
+	jquery: 'lib/jquery-min',
+	lodash: 'lib/lodash-min',
+	backbone: 'lib/backbone-amd',
+    },
+    waitSeconds: 200
+});
+
+\end{code}
+
+Em outro arquivo, podem ser carregados:
+
+\begin{code}
+  define([
+    'backbone',
+    'jquery', 
+    'lodash',
+  ], function(Backbone, $, _) {
+    ...
+  }
+\end{code}
+
+Neste caso, o jQuery possui apenas um carregamento simples. Com a chave
+'shim' definida, são passados atributos especiais; no caso do Lodash,
+apenas o arquivo é exportado para a variável \_. No caso do Backbone,
+além de definir um objeto a ser exportado, são apresentadas suas dependências,
+no caso, do Lodash e do JQuery. Deste modo, o arquivo do Backbone só será
+carregado após o correto carregamento das dependências, independentemente
+da ordem em que forem posicionados no arquivo que for carregá-los.
+
+Mais informações podem ser encontradas em: \url{http://requirejs.org/}
+
+Além das funcionalidades oferecidas para o programador JavaScript, pelo Require.js
+é possível incluir arquivos do tipo JSON ou texto, o que pode ser utilizado para
+renderizar modelos html (templates) por meio do Underscore ou Lodash. Para tal,
+utilizamos o plugin de texto, localizado em 'lib/require/text.js'.
+
+Por meio do Lodash, implementamos um sistema de templates para a interface. O
+Lodash possui a função \_.template(text, data, options), que pode ser utilizada
+com o template abaixo:
+
+\begin{code}
+  <div id="media-view">
+  <% if (username) { %>
+  <div id="link-edit">
+    <a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">
+      <img src="images/edit-media.png" />
+    </a>
+  </div>
+  <% } %>
+
+  <div id="media-title">
+      <h3><%= nome %></h3>
+  </div>
+\end{code}
+
+Para renderizar o template, chame a função e passe os dados:
+
+\begin{code}
+
+define([
+    'jquery', 
+    'lodash',
+    'backbone', 
+      'text!templates/media/MediaView.html'
+], function($, _, Backbone, MediaViewTpl){
+      var MediaView = Backbone.View.extend({
+	render: function(){
+          var data = {
+            username: 'fulano@tal.org',
+            nome: 'fulano'
+          }
+          $('#content').html(_.template(MediaViewTpl, data);
+        }
+      });
+      ...            
+\end{code}
+
+É possível adicionar lógica a partir das variáveis que são passadas ao template,
+criando um "html dinâmico".
+
+\textbf{Lodash}\\
+Lodash é uma biblioteca derivada do Underscore.js (\url{http://underscorejs.org/}),
+que expande suas funcionalidades e tem suporte nativo à especificação AMD (Asynchronous
+module definition - definição de módulos assíncrona), para carregamento de móduls
+em JavaScript.
+
+Adicionalmente, a biblioteca Lodash expande as funcionalidades do Underscore.js,
+com mais funções para manipulação de matrizes, objetos e estruturas de dados.
+
+Como o Underscore, o Lodash também utiliza o caractere como padrão \_ para suas
+funcionalidades. Desse modo, uma vez carregado, podemos:
+
+\begin{code}
+  <script text='text/javascript'>
+  _.first(['abc', 'def', 'ghi']);    // retornará 'abc'
+  </script>
+\end{code}
+
+Mais informações podem ser encontradas em: \url{https://lodash.com/}
+
+
+A combinação das bibliotecas acima criou um ambiente de desenvolvimento flexível,
+que permite que novas rotas ao usuário sejam adicionadas, apontando para funções
+internas, chamadas de API etc.
+
+Um módulo, sob a pasta /modules/[nome], pode ter os seguintes arquivos:
+\begin {itemize}
+  \item model.js    -> modelo de dados; arquivo necessário ao Backbone.js
+  \item collection.js   -> coleção de modelos; arquivo necessário ao Backbone.js para armazenar conjuntos de dados
+  \item functions.js   -> funções específicas do módulo
+  \item router.js   -> arquivo de sub rotas
+\end{itemize}
+
+No arquivo \emph{/srv/bbx/baobaxia/app/django-bbx/bbx/static/js/router.js} são
+adicionadas rotas simples e rotas complexas. Abaixo, segue o padrão 'caminho' : 'nomeDaFuncao',
+como no exemplo abaixo:
+
+\begin{code}
+  routes: {
+    'logout': 'logout',
+    ':repository/:mucua/logout': 'logout',
+    ':repository/:mucua/bbx/*subroute': 'invokeBbxModule',
+  },
+  
+  logout: function(repository, mucua) {
+    ...
+  },
+  
+  invokeMucuaModule: function(repository, mucua, subroute) {
+    var subroute = subroute || '';
+    ...
+    this.Routers.MucuaRouter = new MucuaRouter(repository + "/" + mucua + "/", subroute);
+  }      
+\end{code}
+
+Nesse caso, logout será encaminhada para a função 'logout', e todas as sub-rotas dentro
+de /[repository]/[mucua]/mucua/bbx/ serão encaminhadas para outro arquivo de rotas,
+de sub rotas associadas ao módulo (no caso, 'mucua'). Esse arquivo de rotas deve ser
+posicionado em \emph{/srv/bbx/baobaxia/app/django-bbx/bbx/static/js/modules/nome\_do\_modulo/router.js}
+
+O código terá a instrução de rotas com a seguinte sintaxe:
+
+\begin{code}
+  routes: {
+    '*' : 'homeMucua',
+    'info' : 'infoMucua',
+  },
+  homeMucua: function() {
+    ...
+  },
+  infoMucua: function() {
+    ...
+  }
+\end{code}
+
+Adicionamos à estrutura de arquivos básica do Backbone.js arquivos de funções gerais,
+localizados na pasta /modules; deste modo, caso um módulo tenha funções
+específicas, estas deve estar contidas num arquivo \emph{functions.js} na
+respectiva pasta /modules. Ex:
+
+\begin{itemize}
+  \item /srv/bbx/baobaxia/app/django-bbx/bbx/static/js/modules/bbx/functions.js
+  \item /srv/bbx/baobaxia/app/django-bbx/bbx/static/js/modules/media/functions.js
+\end{itemize}
+
+As visualizações (views) são chamadas pelas rotas (router.js), articulando modelos
+(models.js) e dando saída por meio de templates.
 
 \subsection{Implementação da interface junto à API}
 Foi montada uma estrutura que permite a fácil e rápida expansão das
@@ -332,9 +612,146 @@ A estrutura é a que segue:
 \end{itemize}
 
 \subsection{Implementação das telas principais}
-Foram implementadas as telas de login com funcionalidade de logout,
-página inicial da mucua com listagem de conteúdos da mucua e dados da mucua,
-página inicial da rede com listagem de conteúdos de toda a rede (apenas
-metadados), página do conteúdo, página de edição do conteúdo, página de
-inserção de conteúdos, listagem de conteúdos por mocambolas, navegação
-por categorias, listagem em lista ou em grid.
+Foram implementadas funcionalidades nas seguintes frentes:
+
+\textbf{Autenticação e usuários}\\
+
+Implementou-se um sistema básico de login, com logout e cadastro de novos
+usuários, todo pela interface. O usuário pode também publicar conteúdos e
+editar os existentes.
+
+\textbf{Mucuas}\\
+
+Foi criada uma página para a Mucua, com bloco de destaques e conteúdo recente.
+É possível fazer buscas na mucua e obter informações gerais sobre a mucua,
+sobre uso do disco etc.
+
+\textbf{Rede}\\
+
+Sempre é exibida uma aba para a Rede, que alterna a busca atual para o escopo
+da rede. Assim, uma busca geral na mucua alternará para uma busca geral na rede;
+uma busca por 'video' na mucua alternará para uma busca de 'video' na rede toda.
+
+Por rede, entende-se o conteúdo que é difundido por todas as mucuas, incluída a
+mucua atual.
+
+Sob a consulta de Rede, é possível ver a lista das mucuas conectadas ao
+repositório, com link para cada uma delas.
+
+\textbf{Buscas}\\
+
+Os conteúdos são buscados em vários campos:
+
+\begin{itemize}
+  \item título
+  \item descrição
+  \item tipo de conteúdo
+  \item formato
+  \item categorias (em implantação)    
+\end{itemize}
+
+É possível listar conteúdos por Mucua e por Mocambola.
+
+\textbf{Listagens}\\
+
+São oferecidas listagens no formato grid, com possibilidade de executar ou
+visualizar o conteúdo na própria página; ou no formato listagem, com possibilidade
+de ordenar os conteúdos por título, autor, data de publicação, origem, licença, tipo,
+número de cópias pela rede e se há cópia do arquivo na mucua local.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/InterfaceBaobaxia-busca-video.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Busca por vídeo + baobá]{Busca por vídeo + baobá}
+  \label{fig:InterfaceBaobaxia-busca-video}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/InterfaceBaobaxia-busca-video-baoba.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Busca por vídeo + baobá]{Busca por vídeo + baobá}
+  \label{fig:InterfaceBaobaxia-busca-video-baoba}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/InterfaceBaobaxia-home-mucua.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Home da mucua]{Home da mucua}
+  \label{fig:InterfaceBaobaxia-home-mucua}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/InterfaceBaobaxia-listagem-sort.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Busca no modo listagem, com ordernação]{Busca no modo listagem, com ordernação}
+  \label{fig:InterfaceBaobaxia-listagem-sort}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/InterfaceBaobaxia-lista-mucuas.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Lista de mucuas]{Lista de mucuas}
+  \label{fig:InterfaceBaobaxia-lista-mucuas}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/InterfaceBaobaxia-login.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Tela de login]{Tela de login}
+  \label{fig:InterfaceBaobaxia-login}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/InterfaceBaobaxia-media-view.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Visualização de mídia]{Visualização de mídia}
+  \label{fig:InterfaceBaobaxia-media-view}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/InterfaceBaobaxia-media-publish.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Publicação de mídia]{Publicação de mídia}
+  \label{fig:InterfaceBaobaxia-media-publish}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/InterfaceBaobaxia-media-edit.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Edição de mídia]{Edição de mídia}
+  \label{fig:InterfaceBaobaxia-media-edit}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/InterfaceBaobaxia-mucua-listagem.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Lista de mucuas]{Lista de mucuas}
+  \label{fig:InterfaceBaobaxia-mucua-listagem}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/InterfaceBaobaxia-rede-listagem.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Listagem em Rede]{Listagem em Rede}
+  \label{fig:InterfaceBaobaxia-rede-listagem}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./Fig/InterfaceBaobaxia-registrar.pdf}
+  \rule{35em}{0.5pt}
+  \caption[Registro de novos usuários]{Registro de novos usuários}
+  \label{fig:InterfaceBaobaxia-registrar}
+\end{figure}
+
