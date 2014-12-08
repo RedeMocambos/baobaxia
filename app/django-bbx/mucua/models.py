@@ -128,9 +128,8 @@ def get_mucua_disk():
     df = subprocess.Popen(["df", MEDIA_ROOT], stdout=subprocess.PIPE)
     output = df.communicate()[0]
     data = []
-    data.append(int(output.split("\n")[1].split()[1]) / 1024 / 1024)  # size
-    data.append(int(output.split("\n")[1].split()[2]) / 1024 / 1024)  # used
-    
+    data.append(float(output.split("\n")[1].split()[1]) / 1024 / 1024)  # size
+    data.append(float(output.split("\n")[1].split()[2]) / 1024 / 1024)  # used
     return data
 
 
