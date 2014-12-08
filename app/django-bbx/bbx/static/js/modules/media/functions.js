@@ -50,6 +50,7 @@ define([
 
     var __parseUrlSearch = function(terms) {
 	var config = __getConfig();
+	terms = terms.replace(' ', '/');
 	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + terms;
     }
 
