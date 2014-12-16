@@ -134,6 +134,12 @@ def git_add(file_name, repository_path):
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
+def git_rm(file_name, repository_path):
+    u"""Adiciona um arquivo no repositório."""
+    logger.info('git rm ' + file_name)
+    cmd = 'git rm -f ' + file_name
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+    pipe.wait()
 
 def git_commit(file_title, author_name, author_email, repository_path):
     u"""Executa o *commit* no repositório impostando os dados do author."""

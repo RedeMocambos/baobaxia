@@ -215,13 +215,16 @@ class Media(models.Model):
         self.set_is_local()
         if not self.is_local:
             self.is_requested = True
-
+            self.save()
             try:
-                request_filename = os.path.join(REPOSITORY_DIR, self.get_repository(), 
+                requests_path = os.path.join(REPOSITORY_DIR, self.get_repository(), 
                                                 DEFAULT_MUCUA,
-                                                'requests',
-                                                self.uuid)
-                logger.info(request_filename)
+                                                'requests')
+                if not os.path.exists(requests_path):
+                    os.makedirs(requests_path)
+                
+                request_filename = os.path.join(requests_path, self.uuid)
+                logger.info("REQUESTING: " + request_filename)
                 request_file = open(request_filename, 'a')
                 request_file.write(self.media_file.path)
                 request_file.close
@@ -237,10 +240,10 @@ class Media(models.Model):
                 logger.debug("get_file_path: " + get_file_path(self))
                 logger.debug("media_file.name: " + os.path.basename(self.media_file.name))
         
-        async_result = git_annex_get.delay(get_file_path(self), os.path.basename(self.media_file.name))
-        logger.debug(async_result.get)
-        logger.debug(async_result.info)
-#        return async_result.info
+            async_result = git_annex_get.delay(get_file_path(self), os.path.basename(self.media_file.name))
+            #logger.debug(async_result.get)
+            #logger.debug(async_result.info)
+
 
 
     def save(self, *args, **kwargs):

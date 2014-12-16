@@ -24,4 +24,4 @@ def git_annex_get(repository_path, media_path):
     logger.info(cmd)
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     output, error = pipe.communicate()
-    return output
+#    return output

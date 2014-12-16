@@ -87,7 +87,7 @@
       <% if (!media.is_local) { %>
       <div class="blocks clear-both solicit-copy">
 	<p class="solicit-copy">
-	  <a href="">
+	  <a href="<%= '/api/' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/request">
 	    <span class="title-bold">solicitar cópia local</span>
 	    <span class="image"></span>
 	  </a>
