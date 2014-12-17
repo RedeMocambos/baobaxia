@@ -31,13 +31,8 @@ create_user() {
 # PRE: pkgs:
 
 # dependencies: se for deb pkg, tirar
-<<<<<<< HEAD
-apt-get install git git-annex nginx supervisor python-pip rabbitmq-server
-=======
-apt-get install git git-annex nginx supervisor python-pip libjpeg-dev libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools
+apt-get install git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools
 
-
->>>>>>> master
 
 ### cria diretorio basico
 mkdir -p $DEFAULT_REPOSITORY_DIR
@@ -251,19 +246,7 @@ su - $USER_BBX -c "
 virtualenv $INSTALL_DIR/envs/bbx ;
 . $INSTALL_DIR/envs/bbx/bin/activate ;
 pip install --upgrade setuptools ;
-<<<<<<< HEAD
 cd $INSTALL_DIR;
-tar xjvf pip_wheel_20140606.tbz ;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/argparse-1.2.1-py2-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/Django-1.6.5-py2.py3-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/django_extensions-1.1.1-py2-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/djangorestframework-2.3.6-py2-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/gunicorn-18.0-py2-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/six-1.3.0-py2-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/sorl_thumbnail-11.12.1b-py27-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/South-0.8.4-py2.py3-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wheel-0.23.0-py2.py3-none-any.whl;
-# pip install --use-wheel --no-index --find-links=local/wheel local/wheel/wsgiref-0.1.2-py2-none-any.whl;
 pip install argparse;
 pip install django==1.6.7;
 pip install django-extensions;
@@ -274,21 +257,8 @@ pip install sorl-thumbnail;
 pip install south;
 pip install wheel;
 pip install wsgiref;
-pip install longerusername
-=======
-pip install Django==1.6.6 ;
-pip install Pillow==2.6.1 ;
-pip install South==1.0 ;
-pip install argparse==1.2.1 ;
-pip install django-extensions==1.3.11 ;
-pip install djangorestframework==2.3.14 ;
-pip install gunicorn==19.1.1 ;
-pip install longerusername==0.4 ;
-pip install six==1.7.3 ;
-pip install sorl-thumbnail==11.12 ;
-pip install wheel==0.24.0 ;
-pip install wsgiref==0.1.2 ;
->>>>>>> master
+pip install longerusername;
+pip install celery
 "
 
 echo ""
@@ -349,22 +319,29 @@ echo "Ativando NGINX ..."
 service nginx restart
 
 echo ""
-echo "Criando arquivo de configuração do Supervisor ..."
+echo "Criando arquivo de configuração do Supervisor para BBX..."
 cp $INSTALL_DIR/baobaxia/conf/supervisor/bbx /etc/supervisor/conf.d/bbx.conf
 sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/supervisor/conf.d/bbx.conf
+
+echo ""
+echo "Criando arquivo de configuração do Supervisor para Celery..."
+cp $INSTALL_DIR/baobaxia/conf/supervisor/celeryd /etc/supervisor/conf.d/celeryd.conf
 
 echo ""
 echo "Ativando o Baobáxia ..."
 supervisorctl reload
 supervisorctl restart bbx
+supervisorctl restart celeryd
 
-#echo ""
-#echo "Ativando a sincronização (bbx-cron) ..."
-#cp $INSTALL_DIR/baobaxia/bin/bbx-cron.sh.example $INSTALL_DIR/bin/bbx-cron.sh
-#chmod +x $INSTALL_DIR/bin/bbx-cron.sh
-#touch /etc/cron.d/bbx
-#printf "# Sincronização do Baobáxia \n" >> /etc/cron.d/bbx
-#printf "*/30 * * * * * exu bash /srv/bbx/bin/bbx-cron.sh \n" >> /etc/cron.d/bbx
+echo ""
+echo "Instalando script de sincronização (bbx-cron) ..."
+cp $INSTALL_DIR/baobaxia/bin/bbx-cron.sh.example $INSTALL_DIR/bin/bbx-cron.sh
+chmod +x $INSTALL_DIR/bin/bbx-cron.sh
+
+echo ""
+echo "Instalando script para pedidos de arquivos (process-requests) ..."
+cp $INSTALL_DIR/baobaxia/bin/process-requests.sh.example $INSTALL_DIR/bin/process-requests.sh
+chmod +x $INSTALL_DIR/bin/process-requests.sh
 
 echo "..."
 echo "Instalação completa!"

@@ -40,10 +40,10 @@ def git_media_post_save(instance, **kwargs):
     fout.close()
     git_add(mediadata, mediapath)
     git_commit(instance.get_file_name(),
-              instance.author.username,
-              instance.author.email,
-              get_file_path(instance))
-
+               instance.author.username,
+               instance.author.email,
+               get_file_path(instance),
+               os.path.join(mediapath, mediadata))
 
 
 def get_default_repository():
@@ -141,12 +141,12 @@ def git_rm(file_name, repository_path):
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
-def git_commit(file_title, author_name, author_email, repository_path):
+def git_commit(file_title, author_name, author_email, repository_path, file_path):
     u"""Executa o *commit* no repositório impostando os dados do author."""
     logger.info('git commit --author="' + author_name + ' <' + author_email +
                 '>" -m "' + file_title + '"')
     cmd = ('git commit --author="' + author_name + ' <' + author_email +
-           '>" -m "' + file_title + '"')
+           '>" -m "' + file_title + '" -- ' + file_path)
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
@@ -220,11 +220,8 @@ def git_annex_copy_to(repository_path):
 def git_annex_where_is(media):
     u"""Mostra quais mucuas tem copia do media."""
     cmd = 'git annex whereis ' + media.get_file_name() + ' --json'
-    logger.debug('Whereis filepath: ' + get_file_path(media) + media.get_file_name())
     pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media), stdout=subprocess.PIPE)
     output, error = pipe.communicate()
-    logger.debug(error)
-    logger.info(output)
     return output
 
 def git_annex_drop(media):
