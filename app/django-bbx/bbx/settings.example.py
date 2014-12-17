@@ -14,6 +14,16 @@ PROJECT_ROOT = os.path.realpath(
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = "/data/bbx/"
 
+## Broker settings.
+BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+
+# List of modules to import when celery starts.
+CELERY_IMPORTS = ('repository.tasks',)
+
+## Using the database to store task state and results.
+CELERY_RESULT_BACKEND = 'amqp'
+CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.   
+
 # Change this to the full path to your own repository
 REPOSITORY_DIR_NAME ="repositories"
 REPOSITORY_DIR = os.path.join(MEDIA_ROOT, REPOSITORY_DIR_NAME)
@@ -173,6 +183,7 @@ INSTALLED_APPS = (
     'repository',
     'mocambola',
     'south',
+    'celery',
     'sorl.thumbnail',
 )
 

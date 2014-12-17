@@ -103,7 +103,8 @@ def mocambola_post_save(instance, **kwargs):
     fout.close()
     git_add(mocamboladata, mocambolapath)
     git_commit(mocamboladata, instance.user.get_username(),
-              instance.user.email, instance.repository.get_path())
+               instance.user.email, instance.repository.get_path(),
+               os.path.join(mocambolapath, mocamboladata))
 
 # TODO HIGH: Precisa serializar o user tambem na criaçao e update
 # diretamente pelo usuario
