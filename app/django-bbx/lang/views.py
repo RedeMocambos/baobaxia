@@ -33,20 +33,16 @@ def available_langs(request):
     }
     logger.info('availableLangs')
     return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
-
-def parse_templates(request, module_name, template_name, lang):
-    # hack for portuguese
-    accepted = ('pt-br', 'pt_br', 'pt-BR')
-    if lang in accepted:
-        lang = 'pt_BR'
     
+@api_view(['GET'])
+def parse_templates(request, module_name, template_name, lang):
     if not any(lang in LANGUAGE for LANGUAGE in LANGUAGES):
         response_data = {
             'error': True,
-            'errorMessage': 'Language \'' + lang + '\' not installed'
+            'errorMessage': _('Language not installed: ') + lang
         }
         return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
-    
+
     translation.activate(lang)
     request.session['django_language'] = lang    
     
@@ -56,11 +52,19 @@ def parse_templates(request, module_name, template_name, lang):
     # check if module exists    
     module_exists = os.path.isdir(os.path.join(TEMPLATE_DIRS[0], module_name))
     if not module_exists:
-        return HttpResponse(_("Module does not exists: ") + module_path)
-
+        response_data = {
+            'error': True,
+            'errorMessage': _('Module does not exists: ') + module_path
+        }
+        return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+    
     # check if template exists
     template_exists = os.path.isfile(template_name)
     if not template_exists:
-        return HttpResponse(_("Template does not exists: ") + template_name)
+        response_data = {
+            'error': True,
+            'errorMessage': _("Template does not exists: ") + template_name,
+        }
+        return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
     
     return render(request, template_name)

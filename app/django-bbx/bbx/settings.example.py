@@ -20,15 +20,13 @@ REPOSITORY_DIR = os.path.join(MEDIA_ROOT, REPOSITORY_DIR_NAME)
 MOCAMBOLA_DIR = "mocambolas"  # Nome da pasta onde estao os usuarios em .json
 DEFAULT_MUCUA = "dandara"
 DEFAULT_REPOSITORY = "mocambos"
-LOCALE_PATHS = (
-    '/srv/bbx/baobaxia/app/django-bbx/locale',
-)
+LOCALE_PATHS = (os.path.join(PROJECT_ROOT, 'locale'),)
 ugettext = lambda s: s
-LANGUAGES = (
-    ('en', ugettext('English')),
-    ('es', ugettext('Spanish')),
+LANGUAGES = [
+    ('en_US', ugettext('English')),
+    ('es_ES', ugettext('Spanish')),
     ('pt_BR', ugettext('Brazilian Portuguese')),
-)
+]
 USE_I18N = True
 
 POLICIES_DIR = os.path.join(PROJECT_ROOT, "policy")
