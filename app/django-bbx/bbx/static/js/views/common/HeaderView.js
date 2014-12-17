@@ -2,8 +2,8 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'text!/api/templates/' + userLang + '/common/Header.html',
-    'text!/api/templates/' + userLang + '/common/Menu.html',
+    'text!/templates/' + userLang + '/common/Header.html',
+    'text!/templates/' + userLang + '/common/Menu.html',
 ], function($, _, Backbone, Header, MenuTpl){
     var HeaderView = Backbone.View.extend({
 	render: function(data) {

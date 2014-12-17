@@ -1,0 +1,5 @@
+Generate language files by running:
+
+su - exu
+exu@mucua:~$ source /srv/bbx/envs/bbx/bin/activate
+(bbx)exu@mucua:~$ python /srv/bbx/baobaxia/app/django-bbx/manage.py update_templates

@@ -3,7 +3,7 @@ define([
     'lodash',
     'backbone',
     'textext',
-    'text!/api/templates/' + userLang + '/common/Buscador.html',
+    'text!/templates/' + userLang + '/common/Buscador.html',
     'textext_ajax',
     'textext_tags',
 ], function($, _, Backbone, Textext, BuscadorTpl){

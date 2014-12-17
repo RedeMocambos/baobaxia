@@ -16,15 +16,15 @@ define([
     'modules/media/model',
     'modules/media/collection',
     'modules/mucua/model',
-    'text!/api/templates/' + userLang + '/media/MediaDestaquesMucua.html',
-    'text!/api/templates/' + userLang + '/media/MediaNovidades.html',
-    'text!/api/templates/' + userLang + '/media/MediaMocambola.html',
-    'text!/api/templates/' + userLang + '/media/MediaRelated.html',
-    'text!/api/templates/' + userLang + '/media/MediaResults.html',
-    'text!/api/templates/' + userLang + '/media/MediaGrid.html',
-    'text!/api/templates/' + userLang + '/media/MediaList.html',
-    'text!/api/templates/' + userLang + '/common/ResultsMessage.html',
-    'text!/api/templates/' + userLang + '/common/SearchTagsMenu.html'
+    'text!/templates/' + userLang + '/media/MediaDestaquesMucua.html',
+    'text!/templates/' + userLang + '/media/MediaNovidades.html',
+    'text!/templates/' + userLang + '/media/MediaMocambola.html',
+    'text!/templates/' + userLang + '/media/MediaRelated.html',
+    'text!/templates/' + userLang + '/media/MediaResults.html',
+    'text!/templates/' + userLang + '/media/MediaGrid.html',
+    'text!/templates/' + userLang + '/media/MediaList.html',
+    'text!/templates/' + userLang + '/common/ResultsMessage.html',
+    'text!/templates/' + userLang + '/common/SearchTagsMenu.html'
 ], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, ResultsMessageTpl, SearchTagsMenuTpl){
     this.BBXFunctions = BBXFunctions;
     

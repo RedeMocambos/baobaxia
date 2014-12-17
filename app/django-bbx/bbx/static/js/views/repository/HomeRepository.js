@@ -5,7 +5,7 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/repository/model',
-    'text!/api/templates/' + userLang + '/repository/HomeRepository.html',
+    'text!/templates/' + userLang + '/repository/HomeRepository.html',
 ], function($, _, Backbone, BBXFunctions, MediaFunctions, RepositoryModel, HomeRepositoryTpl) {
     var HomeRepository = Backbone.View.extend({
 	el: "body",    

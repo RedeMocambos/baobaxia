@@ -1,10 +1,14 @@
 var BBX = {},
-userLang = '';
+    userLang = '';
 if (typeof BBX.config === 'undefined') {
     userLang = navigator.language || navigator.userLanguage;
 } else {
     userLang = BBX.config.userLang;
 }
+// normalize language code from 'xx-xx', 'xx_xx' or whatelse to 'xx_XX'
+var reLang = /([a-zA-Z]{2})[\-\_]([a-zA-Z]{2})/;
+var reMatches = userLang.match(reLang);
+userLang = reMatches[1] + '_' + reMatches[2].toUpperCase();
 define([
     'jquery', 
     'backbone',

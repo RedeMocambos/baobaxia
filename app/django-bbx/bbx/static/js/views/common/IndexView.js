@@ -2,7 +2,7 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'text!/api/templates/' + userLang + '/common/Index.html',
+    'text!/templates/' + userLang + '/common/Index.html',
 ], function($, _, Backbone, IndexTpl){
     var HeaderView = Backbone.View.extend({
 	render: function() {

@@ -6,7 +6,7 @@ define([
     'modules/media/functions',
     'modules/repository/model',
     'modules/mucua/model',
-    'text!/api/templates/' + userLang + '/repository/ListMucuas.html',
+    'text!/templates/' + userLang + '/repository/ListMucuas.html',
 ], function($, _, Backbone, BBXFunctions, MediaFunctions, RepositoryModel, MucuaModel, ListMucuasTpl) {
     var ListMucuas = Backbone.View.extend({
 	el: "body", 
