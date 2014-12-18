@@ -92,14 +92,14 @@ def mucua_get_info(request, uuid, repository=None):
                  'terabyte': 'TB',
                  'terabytes': 'TB'
                  }
-    
+     
     mucua_full = json.loads(get_mucua_info(repository))
     size, used = get_mucua_disk()
     mucua_info = {
         "local annex size": mucua_full["local annex size"],
         "local annex keys": mucua_full["local annex keys"],
-        "available local disk space": str(size - used) + 'GB',
-        "total disk space": str(size) + 'GB',
+        "available local disk space": str(int(size) - int(used)) + 'GB',
+        "total disk space": str(int(size)) + 'GB',
         "local used by other": 0,
         "network size" : mucua_full["size of annexed files in working tree"]
         }
@@ -110,10 +110,13 @@ def mucua_get_info(request, uuid, repository=None):
     
     mucua_info['local annex size'] = convertToGB(
         str(float(local_annex_size.group(1))), size_list[local_annex_size.group(2)])
-    mucua_info['local used by other'] = str(
-        round(
-            used - float(re_crop_unit.match(mucua_info['local annex size']).group(1))
-        , 2)) + 'GB'
+    mucua_info['local used by other'] = convertToGB(
+        str(used - float(re_crop_unit.match(mucua_info['local annex size']).group(1))
+        ), size_list[network_size.group(2)]
+    )
+    if mucua_info['local used by other'] < 0:
+	mucua_info['local used by other'] = 0
+
     mucua_info['network size'] =  convertToGB(
         str(float(network_size.group(1))), size_list[network_size.group(2)])
     

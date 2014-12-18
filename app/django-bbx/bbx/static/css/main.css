@@ -100,7 +100,7 @@ a {text-decoration: none;}
 /*
  * footer
  */
-#usage-content {padding: 6px; font-size: 10px; font-weight: bold }
+#usage-content {padding: 6px; font-size: 9px; font-weight: bold }
 #usage-content .usage-bar,
 #usage-content .legend {width: 700px; height: 15px; padding-left: 6px }
 #usage-content .legend .available {color: #000; width: 150px; margin-right: 5px}

@@ -263,10 +263,10 @@ define([
 		};
 		
 		// set mucua variables from API
-		mucuaData.totalDiskSpace = BBX.mucua.info['total disk space'];
-		mucuaData.usedByAnnex = BBX.mucua.info['local annex size'];
-		mucuaData.usedByOther = BBX.mucua.info['local used by other'];
-		mucuaData.availableLocalDiskSpace = BBX.mucua.info['available local disk space'];
+		mucuaData.totalDiskSpace = String(BBX.mucua.info['total disk space'])
+		mucuaData.usedByAnnex = String(BBX.mucua.info['local annex size']);
+		mucuaData.usedByOther = String(BBX.mucua.info['local used by other']);
+		mucuaData.availableLocalDiskSpace = String(BBX.mucua.info['available local disk space'])
 		mucuaData.demanded = 0; // TODO: dynamic var
 		
 		total = mucuaData.totalDiskSpace.match(reStripUnit);
@@ -286,7 +286,7 @@ define([
 		mucuaData.usedByAnnexPercent = parseFloat(parseFloat(mucuaData.usedByAnnex) / parseFloat(mucuaData.total) * 100).toFixed(1);
 		mucuaData.availableLocalDiskSpacePercent = parseFloat(parseFloat(mucuaData.availableLocalDiskSpace) / parseFloat(mucuaData.total) * 100).toFixed(1);
 		mucuaData.demandedPercent = parseFloat(parseFloat(mucuaData.demanded) / parseFloat(mucuaData.total) * 100).toFixed(1);
-		
+			
 		BBX.mucua.info = mucuaData;
 	    }
 	});

@@ -23,7 +23,7 @@ create_user() {
     USER_EXISTS=`cat /etc/passwd | grep $USER_BBX`
     if [[ "$USER_EXISTS" == '' ]]; then
 	echo "criando usuario $USER_BBX ..."
-	useradd --uid $USER_UID --create-home -p "$EXU_PASSWD" $USERNAME
+	useradd --uid $USER_UID --create-home -p "$USER_BBX_PASSWD" --shell /bin/bash $USERNAME
     fi
 }
 
@@ -31,8 +31,7 @@ create_user() {
 # PRE: pkgs:
 
 # dependencies: se for deb pkg, tirar
-apt-get install git git-annex nginx supervisor python-pip libjpeg-dev libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools
-
+apt-get install git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools
 
 
 ### cria diretorio basico
@@ -182,11 +181,13 @@ git annex describe here $MUCUA;
 echo ""
 echo "Criando diretórios locais da mucua $MUCUA ..."
 mkdir -p $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME/$MUCUA/mocambolas
+mkdir -p $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME/$MUCUA/requests
 mkdir -p $INSTALL_DIR/bin
 mkdir -p $INSTALL_DIR/media
 mkdir -p $INSTALL_DIR/static
 mkdir -p $INSTALL_DIR/run
 mkdir -p $INSTALL_DIR/log
+mkdir -p $INSTALL_DIR/log/celery
 mkdir -p $INSTALL_DIR/envs
 mkdir -p $DEFAULT_MEDIA_ROOT/db
 mkdir -p $DEFAULT_MEDIA_ROOT/cache
@@ -245,18 +246,19 @@ su - $USER_BBX -c "
 virtualenv $INSTALL_DIR/envs/bbx ;
 . $INSTALL_DIR/envs/bbx/bin/activate ;
 pip install --upgrade setuptools ;
-pip install Django==1.6.6 ;
-pip install Pillow==2.6.1 ;
-pip install South==1.0 ;
-pip install argparse==1.2.1 ;
-pip install django-extensions==1.3.11 ;
-pip install djangorestframework==2.3.14 ;
-pip install gunicorn==19.1.1 ;
-pip install longerusername==0.4 ;
-pip install six==1.7.3 ;
-pip install sorl-thumbnail==11.12 ;
-pip install wheel==0.24.0 ;
-pip install wsgiref==0.1.2 ;
+cd $INSTALL_DIR;
+pip install argparse;
+pip install django==1.6.7;
+pip install django-extensions;
+pip install djangorestframework;
+pip install gunicorn;
+pip install six;
+pip install sorl-thumbnail;
+pip install south;
+pip install wheel;
+pip install wsgiref;
+pip install longerusername;
+pip install celery
 "
 
 echo ""
@@ -317,22 +319,29 @@ echo "Ativando NGINX ..."
 service nginx restart
 
 echo ""
-echo "Criando arquivo de configuração do Supervisor ..."
+echo "Criando arquivo de configuração do Supervisor para BBX..."
 cp $INSTALL_DIR/baobaxia/conf/supervisor/bbx /etc/supervisor/conf.d/bbx.conf
 sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/supervisor/conf.d/bbx.conf
+
+echo ""
+echo "Criando arquivo de configuração do Supervisor para Celery..."
+cp $INSTALL_DIR/baobaxia/conf/supervisor/celeryd /etc/supervisor/conf.d/celeryd.conf
 
 echo ""
 echo "Ativando o Baobáxia ..."
 supervisorctl reload
 supervisorctl restart bbx
+supervisorctl restart celeryd
 
-#echo ""
-#echo "Ativando a sincronização (bbx-cron) ..."
-#cp $INSTALL_DIR/baobaxia/bin/bbx-cron.sh.example $INSTALL_DIR/bin/bbx-cron.sh
-#chmod +x $INSTALL_DIR/bin/bbx-cron.sh
-#touch /etc/cron.d/bbx
-#printf "# Sincronização do Baobáxia \n" >> /etc/cron.d/bbx
-#printf "*/30 * * * * * exu bash /srv/bbx/bin/bbx-cron.sh \n" >> /etc/cron.d/bbx
+echo ""
+echo "Instalando script de sincronização (bbx-cron) ..."
+cp $INSTALL_DIR/baobaxia/bin/bbx-cron.sh.example $INSTALL_DIR/bin/bbx-cron.sh
+chmod +x $INSTALL_DIR/bin/bbx-cron.sh
+
+echo ""
+echo "Instalando script para pedidos de arquivos (process-requests) ..."
+cp $INSTALL_DIR/baobaxia/bin/process-requests.sh.example $INSTALL_DIR/bin/process-requests.sh
+chmod +x $INSTALL_DIR/bin/process-requests.sh
 
 echo "..."
 echo "Instalação completa!"
