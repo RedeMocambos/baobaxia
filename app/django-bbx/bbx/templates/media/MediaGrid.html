@@ -1,0 +1,54 @@
+{% load i18n %}
+<% _.each(medias, function(media) { %>
+<div class="media-box <%= media.type %> <% _.each(media.tags, function(tagName) { %><%= tagName %> <% }); %>">
+  <div class="result-thumb">
+    <!-- edit button if logged -->
+    <% if (BBXFunctions.isLogged()) { %>
+    <div class="edit">
+      <a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">
+	<img src="images/edit-media-pq.png" />
+      </a>
+    </div>
+    <% } %>
+    <!--<span><%= media.type %></span>-->
+    <% if (media.is_local) { %>
+    <div class="image is_local <% if (media.type == 'arquivo') { %>icon-media<% } %>">
+      <% if (media.type == 'imagem') { %>
+      <img id="media-<%= media.uuid %>" class="image-tmp" src="images/icon-imagem.png" />
+      <% } else if (media.type == 'video') { %>
+      <video preload="metadata" controls src="<%= media.url %>" />
+      <% } else if (media.type == 'audio') { %>
+      <audio preload="metadata" controls src="<%= media.url %>" />
+      <% } else if (media.type == 'arquivo') { %>     
+      <a href="<%= media.url %>">
+	<img class="<%= media.type %>" alt="<%= media.type%>" src="images/icon-arquivo.png" /><br/>{% trans "download" %}
+      </a>
+      <% } %>
+    </div>
+    <% } else { %>
+    <div class="icon-media not_local">
+      <img alt="<%= media.type%>" src="images/icon-<%=media.type%>.png" /><br/>
+    </div>
+    <% } %>
+    
+  </div>
+  <span class="title">    
+    <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+      <% var strSize = 50; print(media.name.substring(0, strSize) + ((media.name.length > strSize) ? '...' : '')) %>
+    </a>
+  </span>
+  <br/>
+  <div style="float: left;">
+    <span class="format_type"><%= media.format %></span><br/>
+    <span class="origin"><%= media.origin %></span>
+  </div>
+  <div style="float: left;">
+    <span class="date"><%= formatDate(media.date) %></span><br/>
+    <span class="license"><%= media.license %></span>
+
+  </div>
+</div>
+<% }) %>
+<% if (_.isEmpty(medias)) { %>
+<h4 class="message"><%= message %></h4>
+<% } %>

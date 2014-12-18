@@ -1,0 +1,59 @@
+{% load i18n %}
+<table>
+  <thead>
+    <tr>
+      <td class="name"><a>{% trans "name" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="author"><a>{% trans "author" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="format"><a>{% trans "format" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="origin"><a>{% trans "origin" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="date"><a>{% trans "date" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="license"><a>{% trans "license" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="type"><a>{% trans "type" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="num_copies"><a>{% trans "copies" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="is_local"><a>{% trans "is local?" %}<br/><div class="orderby_asc"></div></a></td>
+    </tr>
+  </thead>
+  <tbody>
+    <% _.each(medias, function(media) { %>
+    <tr class="media-line">
+      <td class="title">
+	<a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+	  <span><%= media.name %></span>
+	</a>
+      </td>
+      <td class="author">
+	<span><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>"><%= media.author.split('@')[0] %></a></span>
+      </td>
+      <td class="format_type">
+	<span><%= media.format %></span>
+      </td>
+      <td class="origin">
+	<span><a href="<% print('#' + media.repository + '/' + media.origin) %>"><%= media.origin %></a></span>
+      </td>
+      <td class="date">
+	<span><%= formatDate(media.date) %></span>
+      </td>
+      <td class="license">
+	<span><%= media.license %></span>
+      </td>
+      <td class="type">
+	<img alt="<%= media.type%>" src="images/icon-<%= media.type %>.png" />
+      </td>
+      <td class="num_copies">
+	<span><%= media.num_copies %></span>
+      </td>
+      <td class="is_local">
+	  <% if(media.is_local) { %>
+	  <span class="local">{% trans "yes" %}</span>	  
+	  <% } else { %>
+	  <span class="not_local">{% trans "no" %}</span>	  
+	  <% } %>
+	</span>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+<% if (_.isEmpty(medias)) { %>
+<h4 class="message"><%= message %></h4>
+<% } %>

@@ -28,5 +28,7 @@ app/django-bbx/bbx/settings.py
 ### bbx static ###
 app/django-bbx/bbx/static/js/config.json
 
+app/django-bbx/bbx/static/templates/*
+
 # Virtual environment
 bbxenv

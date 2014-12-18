@@ -1,0 +1,114 @@
+{% load i18n %}
+<!-- begin of media-publish -->
+<div id="media_publish" class="<%=page %>">
+  <h3><%= pageTitle %></h3>
+  <form action="" method="post" enctype="multipart/form-data" id="form_media_publish">  
+    <input type="hidden" name="csrfmiddlewaretoken" id="csrfmiddlewaretoken" value="" />
+
+    <!-- begin of media-update -->    
+    <div id="media-update" class="edit">
+      <div class="bloco-1">
+	<p class="name"><span class="title">{% trans "Title:" %}</span><br/>
+	  <input type="text" name="name" id="name" value="<%= media.name %>"></p>
+	<p class="tags"><span class="title">{% trans "Tags:" %}</span> <br/>
+	  <input type="text" name="tags" id="tags" value="<% _.each(media.tags, function(tagName) { %><%= tagName %>,<% }); %>">
+	</p>
+	
+	<p class="type"><span class="title">{% trans "File type" %}</span><br/>
+	  <select name="type" id="type" <% if (page == 'MediaUpdate') { %>disabled<% } %>>
+	    <% _.each(types, function(value, key) { %>
+	    <option value="<%= key %>" <% if (media.type == key) { %>selected<% } %>><%= value %></option>
+	    <% }) %>
+	  </select>
+	</p>
+	<p class="imagem">
+	  <!-- TODO: visualização por tipo de arquivo -->
+	  <% if (_.isEmpty(media.uuid)) { %>
+	  <% } else { %> 
+	  <% if (_.isEmpty(media.image_preview)) { %>
+	  <div class="image_preview">
+	    <span>{% trans "No preview available" %}</span>
+	  </div>
+	  <% } %>
+	  <% } %>
+	</p>
+	<p class="file">
+	  <input type="file" name="media_file" id="media_file" value="<%= media.media_file %>" />
+	</p>
+	<div class="progress">
+          <div class="bar"></div >
+          <div class="percent">0%</div >
+	</div>
+	<p class="media_file">
+	  <a id="media_file-original" href='file:<%= media.media_file %>'><%= media.media_file %></a>
+	</p>
+
+	<% if (_.isEmpty(media.uuid)) { %>
+	<% } else { %> 
+	<p class="uuid">{% trans "UUID:" %} <%= media.uuid %></p>
+	<% } %>
+      </div>
+      <!-- end of bloco-1 -->
+
+      <!-- begin bloco-2 -->      
+      <div class="bloco-2">
+	<input type="hidden" name="repository" id="repository" value="<%= media.repository %>">
+	<input type="hidden" name="author" id="author" value="<%= media.author %>">
+	<input type="hidden" name="origin" id="origin" value="<%= media.origin %>">
+	<input type="hidden" name="format" id="format" value="<%= media.format %>">
+	<input type="hidden" name="uuid" id="uuid" value="<%= media.uuid %>">
+
+	<p class="autor">
+	  <span class="title">{% trans "Author" %}</span><br/>
+	  <a href='<% print('#/mocambola/' + media.author) %>'><%= media.author %></a>
+	</p>
+	
+	<p class="date">
+	  <span class="title">{% trans "Date" %}</span><br/>
+	  <input type="text" name="date" id="date" value="<%= media.date %>"/>
+	</p>
+
+	<p class="origin">
+	  <span class="title">{% trans "Origin" %}</span><br/>
+	  <%= media.origin %>
+	</p>
+	
+	<p class="format"><span class="title">{% trans "Format" %}</span><br/> <%= media.format %></p>
+	
+	<div class="license"><span class="title">{% trans "License" %}</span><br/>
+	  <select name="license" id="license">
+	    <% _.each(licenses, function(value, key) { %>
+	    <option value="<%= key %>" <% if (media.license == key) { %>selected<% } %>><%= value %></option>
+	    <% }) %>
+	  </select>
+	  <div id="license_image" class="license-<%= media.license %>"></div>
+	</div>
+	<p class="quem-tem"><span class="title">{% trans "Availability" %}</span><br/></p>
+	<br/>
+	<p class="note"><span class="title">{% trans "Description" %}</span><br/>
+	<textarea name="note" id="note"><%= media.note %></textarea>
+
+      </div>
+    <!-- end of bloco-2 -->    
+
+    <div class="buttons">
+      <% if (page == 'MediaUpdate') { %>
+      <div id="view-media" class="button-nav">
+	<img src="images/view-media.png">
+	<br />
+	<span>{% trans "View media" %}</span>
+      </div>
+      <% } %>
+      
+      <div id="submit" class="button-nav">
+	<img src="images/save.png">
+	<br />
+	<span><% if (page == 'MediaUpdate') { %>{% trans "Update" %}<% } else { %>{% trans "Upload file" %}<% } %></span>
+      </div>
+    </div>
+    
+    </div>
+    <!-- end of media-update -->
+  </form>
+</div>
+<!-- end of media-publish -->

@@ -20,11 +20,11 @@ define([
     'modules/repository/model',
     'modules/media/functions',
     'json!config.json',
-    'text!templates/common/Content.html',
-    'text!templates/common/Sidebar.html',
-    'text!templates/common/UsageBar.html',
-    'text!templates/common/UserProfile.html',
-    'text!templates/common/MucuaProfile.html'
+    'text!/templates/' + userLang + '/common/Content.html',
+    'text!/templates/' + userLang + '/common/Sidebar.html',
+    'text!/templates/' + userLang + '/common/UsageBar.html',
+    'text!/templates/' + userLang + '/common/UserProfile.html',
+    'text!/templates/' + userLang + '/common/MucuaProfile.html'
 ], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
     
     var init = function() {	
