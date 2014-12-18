@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-18 21:33-0200\n"
+"POT-Creation-Date: 2014-12-18 21:46-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -304,7 +304,7 @@ msgid "No preview available"
 msgstr "Sem visualização disponível"
 
 #: bbx/templates/media/MediaPublish.html:48
-#: bbx/templates/media/MediaView.html:120
+#: bbx/templates/media/MediaView.html:117
 msgid "UUID:"
 msgstr "UUID"
 
@@ -367,11 +367,11 @@ msgstr "Tamanho"
 msgid "who was this file?"
 msgstr "quem tem esse arquivo?"
 
-#: bbx/templates/media/MediaView.html:110
+#: bbx/templates/media/MediaView.html:107
 msgid "request local copy"
 msgstr "solicitar cópia local"
 
-#: bbx/templates/media/MediaView.html:117
+#: bbx/templates/media/MediaView.html:114
 msgid "Local content"
 msgstr "Conteúdo local"
 
