@@ -1,0 +1,5 @@
+#!/bin/bash
+#
+. /srv/bbx/envs/bbx/bin/activate
+python /srv/bbx/baobaxia/app/django-bbx/manage.py update_templates
+python /srv/bbx/baobaxia/app/django-bbx/manage.py --collectstatic --noinput
