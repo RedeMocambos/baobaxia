@@ -258,7 +258,7 @@ pip install south;
 pip install wheel;
 pip install wsgiref;
 pip install longerusername;
-pip install celery
+pip install celery==3.1.14
 "
 
 echo ""

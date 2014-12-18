@@ -10,7 +10,5 @@ autostart=true
 autorestart=true
 startsecs=10
 
-environment = 
-	    DJANGO_SETTINGS_MODULE=bbx.settings
 
-; PYTHONPATH="/srv/bbx/envs/bbx/",
+environment = DJANGO_SETTINGS_MODULE="bbx.settings"; PYTHONPATH="/srv/bbx/envs/bbx",
