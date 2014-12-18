@@ -34,18 +34,15 @@
   </div>
   <span class="title">    
     <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
-      <% var strSize = 50; print(media.name.substring(0, strSize) + ((media.name.length > strSize) ? '...' : '')) %>
+      <% var strSize = 35; print(media.name.substring(0, strSize) + ((media.name.length > strSize) ? '...' : '')) %>
     </a>
   </span>
   <br/>
-  <div style="float: left;">
-    <span class="format_type"><%= media.format %></span><br/>
-    <span class="origin"><%= media.origin %></span>
+  <div style="float:right;" class="origin">
+    <span><%= media.origin %></span>
   </div>
-  <div style="float: left;">
-    <span class="date"><%= formatDate(media.date) %></span><br/>
-    <span class="license"><%= media.license %></span>
-
+  <div style="float: left;" class="date">
+    <span><%= formatDate(media.date) %></span><br/>
   </div>
 </div>
 <% }) %>

@@ -1,37 +1,47 @@
 {% load i18n %}
 <div id="media-view">
-  <% if (config.userData.username) { %>
-  <div id="link-edit">
-    <a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">
-      <img src="images/edit-media.png" />
-    </a>
-  </div>
-  <% } %>
-
-  <div id="media-title">
-      <h3><%= media.name %></h3>
-  </div>
-
   <!-- inicio inner content -->
   <div id="inner-content">
     
     <!-- inner sidebar -->
     <div class="block-2 content-div">
-      <div class="block-title">
-	<p>{% trans "By" %}</p>
-	<p>{% trans "Date" %}</p>
-	<p>{% trans "Mucua" %}</p>
-	<p>{% trans "Format" %}</p>
-	<p>{% trans "Size" %}</p>
-	<p>{% trans "License" %}</p>
+      <% if (config.userData.username) { %>
+      <div id="link-edit">
+	<a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">
+	  <img src="images/edit-media.png" />
+	</a>
       </div>
+      <% } %>
+      
+      <table class="block-title">
+	<tr>
+	  <td class="left">{% trans "By" %}</td>
+	  <td class="right"><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>"><%= media.author.split('@')[0] %></a></td>
+	</tr>
+	<tr>
+	  <td class="left">{% trans "Date" %}</td>
+	  <td class="right"><%= formatDate(media.date) %></td>
+	</tr>
+	<tr>
+	  <td class="left">{% trans "Mucua" %}</td>
+	  <td class="right"><a href="<% print('#' + media.repository + '/' + media.origin) %>"><%= media.origin %></a></td>
+	</tr>
+	<tr>
+	  <td class="left">{% trans "Format" %}</td>
+	  <td class="right"><%= media.format %></td>
+	</tr>
+	<tr>
+	  <td class="left">{% trans "Size" %}</td>
+	  <td class="right">0GB</td>
+	</tr>
+	<tr>
+	  <td class="left">{% trans "License" %}</td>
+	  <td class="right license-image license-<%= media.license %>"></td>
+	</tr>
+      </table>
+      
+      
       <div class="block-fields">
-	<p><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>"><%= media.author.split('@')[0] %></a></p>
-	<p><%= formatDate(media.date) %></p>
-	<p><a href="<% print('#' + media.repository + '/' + media.origin) %>"><%= media.origin %></a></p>
-	<p><%= media.format %></p>
-	<p>0GB</p>
-	<p><div class="license-image license-<%= media.license %>"></div></p>      
       </div>
       <% if (media.tags != '') { %>
       <div class="blocks">
@@ -42,14 +52,9 @@
 	</p>      
       </div>
       <% } %>
-      <% if (media.note != '') { %>
       <div class="blocks">
-	<p class="text"><%= media.note %></p>
-      </div>
-      <% } %>
-      <div class="blocks">
+	<h3 class="quem-tem title">{% trans "who was this file?" %}</h3>	
 	<p class="quem-tem">
-	  <span class="title-bold">{% trans "who was this file?" %}</span>
 	  <span id="whereis">&nbsp;</span>
 	</p>
       </div>
@@ -57,7 +62,11 @@
     <!-- fim de inner sidebar -->
 
     <!-- bloco multimedia -->    
-    <div class="block-1 content-div">   
+    <div class="block-1 content-div">
+      <div id="media-title">
+	<h3><%= media.name %></h3>
+      </div>
+      
       <% if (media.is_local) { %>
       <div class="media-image">
 	<% if (media.type === 'imagem') { %>
@@ -75,6 +84,12 @@
       {% trans "No preview available" %}
       <% } %>
 
+      <% if (media.note != '') { %>
+      <div class="blocks" style="clear: both">
+	<p class="text"><%= media.note %></p>
+      </div>
+      <% } %>
+      
       </div>   
 
       <% if (media.is_local) { %>
