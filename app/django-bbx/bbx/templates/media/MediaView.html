@@ -103,9 +103,6 @@
       <% if (!media.is_local) { %>
       <div class="blocks clear-both solicit-copy">
 	<p class="solicit-copy">
-	  <a href="">
-	    <span class="title-bold">
-	      local</span>
 	  <a href="<%= '/api/' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/request">
 	    <span class="title-bold">{% trans "request local copy" %}</span>
 	    <span class="image"></span>
