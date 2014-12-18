@@ -21,6 +21,8 @@ Session.vim
 *~
 *.pyc
 
+*.mo
+
 ### bbx django ###
 app/django-bbx/bbx/.database.sqlite
 app/django-bbx/bbx/settings.py

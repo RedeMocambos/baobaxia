@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 16:48-0200\n"
+"POT-Creation-Date: 2014-12-18 21:33-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,15 +36,15 @@ msgstr ""
 msgid "doesn't exist or password is wrong!"
 msgstr "não existe ou senha errada!"
 
-#: bbx/settings.example.py:28 bbx/settings.py:28
+#: bbx/settings.example.py:36 bbx/settings.py:26
 msgid "English"
 msgstr "Inglês"
 
-#: bbx/settings.example.py:29 bbx/settings.py:29
+#: bbx/settings.example.py:37 bbx/settings.py:27
 msgid "Spanish"
 msgstr "Espanhol"
 
-#: bbx/settings.example.py:30 bbx/settings.py:30
+#: bbx/settings.example.py:38 bbx/settings.py:28
 msgid "Brazilian Portuguese"
 msgstr "Português do Brasil"
 
@@ -57,7 +57,7 @@ msgid "Mocambola"
 msgstr "Mocambola"
 
 #: bbx/templates/auth/LoginTemplate.html:26
-#: bbx/templates/media/MediaView.html:23
+#: bbx/templates/media/MediaView.html:26
 msgid "Mucua"
 msgstr "Mucua"
 
@@ -126,7 +126,7 @@ msgstr "mais informações"
 msgid "list of mucuas"
 msgstr "lista de mucuas"
 
-#: bbx/templates/common/SearchTagsMenu.html:16
+#: bbx/templates/common/SearchTagsMenu.html:17
 msgid "Add term to search"
 msgstr "Adicionar termo à essa busca"
 
@@ -229,12 +229,12 @@ msgstr "voltar para a busca"
 msgid "mucua highlights"
 msgstr "destaques da mucua"
 
-#: bbx/templates/media/MediaGrid.html:24 bbx/templates/media/MediaView.html:83
+#: bbx/templates/media/MediaGrid.html:24 bbx/templates/media/MediaView.html:98
 msgid "download"
 msgstr "baixar"
 
-#: bbx/templates/media/MediaList.html:5 media/models.py:108
-#: repository/models.py:293
+#: bbx/templates/media/MediaList.html:5 media/models.py:110
+#: repository/models.py:339
 msgid "name"
 msgstr "nome"
 
@@ -242,7 +242,7 @@ msgstr "nome"
 msgid "author"
 msgstr "autor"
 
-#: bbx/templates/media/MediaList.html:7 media/models.py:126
+#: bbx/templates/media/MediaList.html:7 media/models.py:128
 msgid "format"
 msgstr "formato"
 
@@ -250,15 +250,15 @@ msgstr "formato"
 msgid "origin"
 msgstr "origem"
 
-#: bbx/templates/media/MediaList.html:9 media/models.py:113
+#: bbx/templates/media/MediaList.html:9 media/models.py:115
 msgid "date"
 msgstr "data"
 
-#: bbx/templates/media/MediaList.html:10 media/models.py:131
+#: bbx/templates/media/MediaList.html:10 media/models.py:133
 msgid "license"
 msgstr "licença"
 
-#: bbx/templates/media/MediaList.html:11 media/models.py:121
+#: bbx/templates/media/MediaList.html:11 media/models.py:123
 msgid "type"
 msgstr "tipo"
 
@@ -299,12 +299,12 @@ msgid "File type"
 msgstr "Tipo de arquivo"
 
 #: bbx/templates/media/MediaPublish.html:30
-#: bbx/templates/media/MediaView.html:75
+#: bbx/templates/media/MediaView.html:84
 msgid "No preview available"
 msgstr "Sem visualização disponível"
 
 #: bbx/templates/media/MediaPublish.html:48
-#: bbx/templates/media/MediaView.html:102
+#: bbx/templates/media/MediaView.html:120
 msgid "UUID:"
 msgstr "UUID"
 
@@ -322,12 +322,12 @@ msgid "Origin"
 msgstr "Origem"
 
 #: bbx/templates/media/MediaPublish.html:76
-#: bbx/templates/media/MediaView.html:24
+#: bbx/templates/media/MediaView.html:30
 msgid "Format"
 msgstr "Formato"
 
 #: bbx/templates/media/MediaPublish.html:78
-#: bbx/templates/media/MediaView.html:26
+#: bbx/templates/media/MediaView.html:38
 msgid "License"
 msgstr "Licença"
 
@@ -355,23 +355,23 @@ msgstr "Subir arquivo"
 msgid "related content"
 msgstr "conteúdo relacionado"
 
-#: bbx/templates/media/MediaView.html:21
+#: bbx/templates/media/MediaView.html:18
 msgid "By"
 msgstr "Por"
 
-#: bbx/templates/media/MediaView.html:25
+#: bbx/templates/media/MediaView.html:34
 msgid "Size"
 msgstr "Tamanho"
 
-#: bbx/templates/media/MediaView.html:52
+#: bbx/templates/media/MediaView.html:56
 msgid "who was this file?"
 msgstr "quem tem esse arquivo?"
 
-#: bbx/templates/media/MediaView.html:92
+#: bbx/templates/media/MediaView.html:110
 msgid "request local copy"
 msgstr "solicitar cópia local"
 
-#: bbx/templates/media/MediaView.html:99
+#: bbx/templates/media/MediaView.html:117
 msgid "Local content"
 msgstr "Conteúdo local"
 
@@ -380,83 +380,102 @@ msgid "Publish new content"
 msgstr "Publicar novo conteúdo"
 
 #: bbx/templates/repository/ListMucuas.html:2
-#, fuzzy
 msgid "Mucuas"
 msgstr "Mucua"
 
-#: lang/views.py:59
+#: lang/views.py:42
+msgid "Language not installed: "
+msgstr ""
+
+#: lang/views.py:57
 msgid "Module does not exists: "
 msgstr "Módulo não existe: "
 
-#: lang/views.py:64
+#: lang/views.py:66
 msgid "Template does not exists: "
 msgstr "Template não existe: "
 
-#: media/models.py:105
+#: lang/management/commands/update_templates.py:28
+msgid "Updating templates..."
+msgstr ""
+
+#: lang/management/commands/update_templates.py:37
+msgid "Language code not supported:"
+msgstr ""
+
+#: lang/management/commands/update_templates.py:53
+msgid "...created folder "
+msgstr ""
+
+#: lang/management/commands/update_templates.py:57
+msgid "Parsing templates: "
+msgstr ""
+
+#: media/models.py:107
 msgid "uuid"
 msgstr "uuid"
 
-#: media/models.py:106
+#: media/models.py:108
 msgid "Media universal unique identifier"
 msgstr "Identificador universal único da mídia"
 
-#: media/models.py:107
+#: media/models.py:109
 msgid "No UUID"
 msgstr "Sem UUID"
 
-#: media/models.py:109
+#: media/models.py:111
 msgid "Media name"
 msgstr "Nome da mídia"
 
-#: media/models.py:110
+#: media/models.py:112
 msgid "No title"
 msgstr "Sem título"
 
-#: media/models.py:112
+#: media/models.py:114
 msgid "URL"
 msgstr "URL"
 
-#: media/models.py:114
+#: media/models.py:116
 msgid "Media criation date"
 msgstr "Data de criação da mídia"
 
-#: media/models.py:115
+#: media/models.py:117
 msgid "note"
 msgstr "anotação"
 
-#: media/models.py:116 repository/models.py:299
+#: media/models.py:118 repository/models.py:345
 msgid "Note.. use as you wish!"
 msgstr ""
 
-#: media/models.py:122
+#: media/models.py:124
 msgid "Type of the media, like image, document, video, ..."
 msgstr "Tipo da mídia, ex: imagem, documento, vídeo, áudio etc..."
 
-#: media/models.py:132
+#: media/models.py:134
 msgid "License of the media, like, cc, gpl, bsd, ..."
 msgstr "Licença da mídia, ex: cc, gpl, bsd etc..."
 
-#: media/models.py:138
+#: media/models.py:140
 msgid "is local"
 msgstr "é local"
 
-#: media/models.py:139
+#: media/models.py:141
 msgid "True if media content is available locally"
 msgstr ""
 
-#: media/models.py:142
+#: media/models.py:144
 msgid "is requested"
 msgstr "foi requisitado"
 
-#: media/models.py:143
+#: media/models.py:145
 msgid "True if media content is awaiting a local copy"
 msgstr ""
 
-#: media/models.py:147
+#: media/models.py:150
 msgid "number of copies"
 msgstr "número de cópias"
 
-#: media/models.py:148
+#: media/models.py:151
 msgid "Number of copies of the media in the repository"
 msgstr "Número de cópias da mídia no repositório"
 
@@ -492,15 +511,15 @@ msgstr ""
 msgid "error while creating media"
 msgstr ""
 
-#: mucua/models.py:235
+#: mucua/models.py:234
 msgid "Mucua enraizada em "
 msgstr ""
 
-#: mucua/models.py:238
+#: mucua/models.py:237
 msgid "O territorio precisa ser indicado como 't:Nome_do_territorio'"
 msgstr ""
 
-#: mucua/models.py:240
+#: mucua/models.py:239
 msgid "A mucua esta já enraizada em "
 msgstr ""
 
@@ -509,27 +528,27 @@ msgstr ""
 msgid "Acessing mucuas in repository: %s"
 msgstr ""
 
-#: repository/models.py:294
+#: repository/models.py:340
 msgid "Repository name taken from available repositories"
 msgstr ""
 
-#: repository/models.py:298
+#: repository/models.py:344
 msgid "notes"
 msgstr ""
 
-#: repository/models.py:303
+#: repository/models.py:349
 msgid "synchronize"
 msgstr ""
 
-#: repository/models.py:304
+#: repository/models.py:350
 msgid "Tick here to enablesyncronization of this repository"
 msgstr ""
 
-#: repository/models.py:309
+#: repository/models.py:355
 msgid "repository"
 msgstr ""
 
-#: repository/models.py:310
+#: repository/models.py:356
 msgid "repositories"
 msgstr ""
 
