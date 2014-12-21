@@ -300,8 +300,10 @@ define([
 	    mucua.uuid === '') { 
 	    return false;
 	}
-	
-	__getMucuaResources(mucua.uuid);
+
+	if (typeof BBX.mucua.info === 'undefined') {	
+	    __getMucuaResources(mucua.uuid);
+	}
 	var mucuaResourcesLoad = setInterval(function() {
 	    if (typeof BBX.mucua.info !== 'undefined') {
 		//BBXFunctions.renderUsage(BBX.mucua);
