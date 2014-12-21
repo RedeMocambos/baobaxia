@@ -13,18 +13,19 @@ define([
 
 	parseMucuaImage: function(mucua) {
 	    var urlMucuaImage = BBX.config.apiUrl + '/' + BBX.config.MYREPOSITORY + '/' + mucua.description + '/bbx/search/' + mucua.uuid,
-	    mucuaModel  = new MucuaModel();
-	    mucuaImageSrc = mucuaModel.getImage(urlMucuaImage, function(imageSrc){
-		var el = 'item-mucua ' + mucua.description;
-		$('.' + mucua.description + ' a').prepend('<img id="mucua_image" src="' + imageSrc + '" />');
-	    }, "/images/avatar-default.png", 45, 45);
+		mucuaModel  = new MucuaModel(),
+		mucuaImageSrc = mucuaModel.getImage(urlMucuaImage, function(imageSrc){
+		    var el = 'item-mucua ' + mucua.description;
+		    $('.' + mucua.description + ' a').prepend('<img id="mucua_image" src="' + imageSrc + '" />');
+		}, "/images/avatar-default.png", 45, 45);
+	    
 	},
 	
 	render: function() {
 	    var config = $("body").data("bbx").config,
-	    url = config.apiUrl + '/' + config.repository + '/mucuas',
-	    mucuas = new MucuaModel([], {url: url}),
-	    data = {};
+		url = config.apiUrl + '/' + config.repository + '/mucuas',
+		mucuas = new MucuaModel([], {url: url}),
+		data = {};
 	    
 	    config.userData = BBXFunctions.getFromCookie('userData');
 	    data.config = config;

@@ -16,7 +16,8 @@ define([
 	
 	render: function() {
 	    var config = BBX.config,
-	    urlMucua = config.apiUrl +  '/mucua/by_name/' + config.mucua;
+		urlMucua = config.apiUrl +  '/mucua/by_name/' + config.mucua;
+	    
 	    console.log('render mucua');
 	    
 	    // start mucua DOM field

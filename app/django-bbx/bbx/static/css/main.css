@@ -241,12 +241,12 @@ a {text-decoration: none;}
  * media view
  */
 #media-view {margin-left: 15px}
-.media #content {width: 68%}
+.media #content {width: 70%; float: left; margin-left: 60px}
 #media-view .content-title {font-size: 18px;}
 #media-view .title-bold {font-size: 18px; font-weight: bold}
 
 #media-view #link-edit {background-image: url(../images/edit-media.png); width: 51px; height: 21px; float: right;}
-#media-view #media-title h3 { color:#197299; font-size: 20px; height: 26px}
+#media-view #media-title h3 { color:#197299; font-size: 20px}
 
 #media-view #inner-content {margin-right: 30px }
 #media-view .block-1 {display: inline; width: 60%; min-width: 420px; padding-right: 2px}

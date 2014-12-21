@@ -30,10 +30,11 @@ define([
 
 	search: function(subroute) {
 	    var subroute = subroute || '',
-	    completeSubroute = '',
-	    config = $("body").data("bbx").config,
-	    repository = this.__getRepository(),
-	    mucua = this.__getMucua();
+		completeSubroute = '',
+		config = $("body").data("bbx").config,
+		repository = this.__getRepository(),
+		mucua = this.__getMucua(),
+		search = new Search();
 	    
 	    if (config.subroute.match(/search/)) {
 		completeSubroute = 'bbx/search/' + subroute;
@@ -41,7 +42,7 @@ define([
 	    console.log("completeSubroute: " + completeSubroute);
 	    BBXFunctions.setNavigationVars(repository, mucua, completeSubroute);	    
 	    BBXFunctions.renderCommon('bbx ' + mucua);
-	    var search = new Search();
+
 	    search.render(subroute);
 	},
     });

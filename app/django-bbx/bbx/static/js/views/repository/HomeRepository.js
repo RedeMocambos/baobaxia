@@ -12,7 +12,7 @@ define([
 	
 	render: function(username) {
 	    var config = $("body").data("bbx").config,
-	    data = {};
+		data = {};
 	    
 	    config.userData = BBXFunctions.getFromCookie('userData');
 	    data.config = config;

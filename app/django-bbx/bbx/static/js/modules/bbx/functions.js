@@ -64,8 +64,8 @@ define([
      */
     var addToCookie = function(data) {
 	var cookieData = {},
-	serializedCookie = '',
-	cookie = null;
+	    serializedCookie = '',
+	    cookie = null;
 	
 	console.log('addToCookie()');
 	if ($.cookie('sessionBBX')) {
@@ -119,7 +119,7 @@ define([
     var getDefaultHome = function() {
 	// MAYBE, this should be a configurable field
 	var config = $("body").data("bbx").config,
-	url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/bbx/search';
+	    url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/bbx/search';
 	return url;
     }
     
@@ -130,8 +130,8 @@ define([
      */
     var getAvatar = function(username) {
 	var username = '',
-	avatarUrl = '',
-	defaultAvatar = 'avatar-default.png';
+	    avatarUrl = '',
+	    defaultAvatar = 'avatar-default.png';
 	
 	// TODO: implement avatar
 	
@@ -146,7 +146,8 @@ define([
      */
     var renderCommon = function(name) {
 	var data = {},
-	config = $("body").data("bbx").config;
+	    config = $("body").data("bbx").config;
+	
 	data.config = config;
 	
 	$('body').removeClass().addClass(name);
@@ -231,8 +232,8 @@ define([
     
     var __getMucuaResources = function(uuid) {
 	var config = $("body").data("bbx").config,
-	url = config.apiUrl + '/mucua/' + uuid + '/info',
-	mucua = {};
+	    url = config.apiUrl + '/mucua/' + uuid + '/info',
+	    mucua = {};
 	
 	mucua = new MucuaModel([], {url: url});
 	mucua.fetch({
@@ -320,9 +321,9 @@ define([
      */
     var renderSidebar = function(pageType) {
 	var page = page || '',
-	config = $("body").data("bbx").config,
-	mucuaData = {},
-	networkData = {};
+	    config = $("body").data("bbx").config,
+	    mucuaData = {},
+	    networkData = {};
 	
 	console.log('render sidebar');
 	if (this.isLogged() &&
@@ -407,8 +408,8 @@ define([
 				$('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
 				
 				// check if that mucua has an image
-				var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid;
-				var mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
+				var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid,
+				    mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
 				    $('#mucua_image').attr('src', imageSrc);
 				});
 				BBX.mucua = mucuaData.mucua;			
@@ -535,7 +536,8 @@ define([
     var __setConfig = function(jsConfig) {
 	// configuracoes padrao: config.json
 	var jsConfig = jsConfig || '',
-	config = jsConfig;
+	    config = jsConfig;
+	
 	$("body").data("bbx").config = jsConfig;
 	
 	__getMyMucua();
@@ -558,14 +560,14 @@ define([
 
     var setNavigationVars = function(repository, mucua, subroute) {
 	var subroute = subroute || '',
-	reMedia = /^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/,  // padrao de uuid
-	reMocambola = /^[0-9a-zA-Z-_]*@[0-9a-zA-Z-_\.]*\.[a-zA-Z]{2,4}/,
-	reSearch = /search/,
-	matchMedia = '',
-	matchSearch = '',
-	matchMocambola = '',
-	config = $("body").data("bbx").config,
-	currentPage = Backbone.history.location.href;
+	    reMedia = /^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/,  // padrao de uuid
+	    reMocambola = /^[0-9a-zA-Z-_]*@[0-9a-zA-Z-_\.]*\.[a-zA-Z]{2,4}/,
+	    reSearch = /search/,
+	    matchMedia = '',
+	    matchSearch = '',
+	    matchMocambola = '',
+	    config = $("body").data("bbx").config,
+	    currentPage = Backbone.history.location.href;
 	
 	config.repository = repository;
 	config.mucua = mucua;

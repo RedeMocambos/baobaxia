@@ -17,10 +17,12 @@ define([
 	},
 	
 	homeMocambola: function(username, limit) {	    
-	    var limit = limit || '';
+	    var limit = limit || '',
+		homeMocambola = new HomeMocambola();
+	    
 	    console.log("home mocambola");
 	    BBXFunctions.renderCommon('mocambola');
-	    var homeMocambola = new HomeMocambola(); 
+	    
 	    homeMocambola.render(username, limit);
 	}
     });

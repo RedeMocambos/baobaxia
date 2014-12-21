@@ -8,7 +8,7 @@ define([
     var HeaderView = Backbone.View.extend({
 	render: function(data) {
 	    var data = data || {},
-	    config = $("body").data("bbx").config;
+		config = $("body").data("bbx").config;
 	    
 	    data.currentUrl = Backbone.history.fragment;	    
 	    data.homeUrl = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA;

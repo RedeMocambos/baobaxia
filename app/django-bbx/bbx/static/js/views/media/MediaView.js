@@ -15,11 +15,11 @@ define([
 	render: function(uuid){
 	    console.log("view media " + uuid);	    
 	    var config = $("body").data("bbx").config,
-	    media = '',
-	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
-	    urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis';
+		media = '',
+		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
+		urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis',
+		userData = BBXFunctions.getFromCookie('userData');
 	    
-	    var userData = BBXFunctions.getFromCookie('userData');
 	    if (userData) {
 		config.userData = userData;
 	    } else {

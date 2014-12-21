@@ -10,7 +10,7 @@ define([
 
 	render: function(subroute) {
 	    var config = $("body").data("bbx").config,
-	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute;
+		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute;
 
 	    BBXFunctions.renderSidebar();
 	    MediaFunctions.getMediaSearch(url);

@@ -32,11 +32,12 @@ define([
 	    console.log("media view");
 	    
 	    var repository = this.__getRepository(),
-	    mucua = this.__getMucua();
+		mucua = this.__getMucua(),
+		mediaViewView = new MediaViewView();
 	    
 	    BBXFunctions.setNavigationVars(repository, mucua, uuid);
 	    BBXFunctions.renderCommon('media');
-	    var mediaViewView = new MediaViewView();
+	    
 	    mediaViewView.render(uuid);
 	},
 	
@@ -44,12 +45,13 @@ define([
 	    console.log("media publish");
 	    
 	    var repository = this.__getRepository(),
-	    mucua = this.__getMucua();
+		mucua = this.__getMucua(),
+		mediaPublishView = new MediaPublishView();
 	    
 	    BBXFunctions.renderCommon(repository, mucua);
 	    BBXFunctions.setNavigationVars(repository, mucua);
 	    BBXFunctions.renderCommon('media');
-	    var mediaPublishView = new MediaPublishView();
+	    
 	    mediaPublishView.render();
 	},
 
@@ -57,9 +59,11 @@ define([
 	    console.log("media edit/update");
 	    
 	    var repository = this.__getRepository(),
-	    mucua = this.__getMucua();
+		mucua = this.__getMucua(),
+		mediaUpdateView = new MediaUpdateView();
+	    
 	    BBXFunctions.renderCommon('media');	    
-	    var mediaUpdateView = new MediaUpdateView();
+	    
 	    mediaUpdateView.render(uuid);	
 	},
 

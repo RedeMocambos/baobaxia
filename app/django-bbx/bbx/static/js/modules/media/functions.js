@@ -39,11 +39,11 @@ define([
     
     var __parseResultsMessage = function(message) {
 	var target = target || '#result-string',
-	imageTag = '',
-	data = {
-	    config: __getConfig(),
-	    message: message
-	}
+	    imageTag = '',
+	    data = {
+		config: __getConfig(),
+		message: message
+	    }
 	
 	$(target).html(_.template(ResultsMessageTpl, data));	
     };    
@@ -56,10 +56,10 @@ define([
 
     var __parseMenuSearch = function(terms) {
 	var config = __getConfig(),
-	data = {},
-	terms = _.compact(terms), // remove any false value
-	terms_arr = [], 
-	terms_size = terms.length; 	
+	    data = {},
+	    terms = _.compact(terms), // remove any false value
+	    terms_arr = [], 
+	    terms_size = terms.length; 	
 	
 	// check sortby & limit
 	if (terms.length > 0) {
@@ -84,7 +84,8 @@ define([
 			       removeTag: function(el) {
 				   console.log('remove');
 				   var termRemove = $(el).children().children().html(),
-				   terms = config.subroute.split('bbx/search/')[1].replace(termRemove, '');
+				       terms = config.subroute.split('bbx/search/')[1].replace(termRemove, '');
+				   
 				   terms = terms.replace('//', '/');		   
 				   terms = (terms[terms.length -1] == '/') ? terms.substring(0, terms.length -1) : terms;
 				   
@@ -102,8 +103,9 @@ define([
 		console.log('enter');
 		
 		var textext = $(e.target).textext()[0],
-		terms = textext.hiddenInput().val(),
-		terms_str = '';
+		    terms = textext.hiddenInput().val(),
+		    terms_str = '';
+		
 		terms_str = terms.match(/\[(.*)\]/)[1].replace(/"/g, '').replace(/,/g, '/');
 		window.location = __parseUrlSearch(terms_str);
 	    })
@@ -130,10 +132,10 @@ define([
      */
     var showMediaBy = function(type, target, skipCookie) {
 	var target = target || '.media-results .media',
-	type = type || '',
-	skipCookie = skipCookie || false,
-	data = $('body').data('bbx').data,
-	valid_types = ['list', 'grid'];
+	    type = type || '',
+	    skipCookie = skipCookie || false,
+	    data = $('body').data('bbx').data,
+	    valid_types = ['list', 'grid'];
 	
 	if (typeof BBXFunctions === 'undefined') {
 	    var BBXFunctions = window.BBXFunctions;
@@ -167,10 +169,10 @@ define([
 	    // get ordering; default: name
 	    // TODO: invert arrow according to order type (asc|desc)
 	    var orderby = 'name',
-	    orderbyType = 'asc',
-	    url = Backbone.history.location.href,
-	    matchesOrderby = url.match('orderby/([a-zA-Z]*)/'),
-	    matchesOrderbyType = url.match('orderby/[a-zA-Z]*/([asc|desc]*)[/]*');
+		orderbyType = 'asc',
+		url = Backbone.history.location.href,
+		matchesOrderby = url.match('orderby/([a-zA-Z]*)/'),
+		matchesOrderbyType = url.match('orderby/[a-zA-Z]*/([asc|desc]*)[/]*');
 	    
 	    if (matchesOrderby) {
 		orderby = matchesOrderby[1];
@@ -258,7 +260,8 @@ define([
 
     var getMedia = function(url, callback, params) {
 	var params = params || {},
-	media = new MediaModel([], {url: url});
+	    media = new MediaModel([], {url: url});
+	
 	$('#content').append('<div class="loading-content"><img src="images/buscando.gif" /></div>');	
 	media.fetch({
 	    success: function() {
@@ -266,15 +269,16 @@ define([
 		var mediaData = {
 		    formatDate: function(date) {
 			var newDate = '',
-			re = /^(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)[\.0-9]*Z$/,
-			matches = date.match(re);
+			    re = /^(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)[\.0-9]*Z$/,
+			    matches = date.match(re);
+			
 			return matches[3] + '/' + matches[2] + '/' + matches[1];
 		    }
 		};
 		var medias = {},
-		mediaLoad = [],
-		urlMedia = '';
-
+		    mediaLoad = [],
+		    urlMedia = '';
+		
 		$('#back-to-results').remove();
 
 		if (!_.isEmpty(media.attributes) ) {
@@ -317,8 +321,8 @@ define([
 		if (typeof callback == 'function') {
 		    // execute callback
 		    callback(mediaData);
-		    var mediaLength = _.size(mediaData.medias);
-		    var message = "";
+		    var mediaLength = _.size(mediaData.medias),
+		    message = "";
 		    
 		    if (mediaLength > 1) {
 			message = "Exibindo " + _.size(mediaData.medias) + " resultados" ;
@@ -352,8 +356,9 @@ define([
 
     var getMediaByLimit = function(el, limit) {
 	var config = __getConfig(),
-	limit = limit || '',
-	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/';
+	    limit = limit || '',
+	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/';
+	
 	if (limit !== '') {
 	    url += 'limit/' + limit;
 	}
@@ -370,9 +375,9 @@ define([
     
     var getMediaByMucua = function(el, limit) {
 	var config = __getConfig(),
-	defaultLimit = 4,
-	limit = limit || defaultLimit,
-	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/limit/' + limit ;
+	    defaultLimit = 4,
+	    limit = limit || defaultLimit,
+	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/limit/' + limit ;
 	
 	getMedia(url, function(data){
 	    __parseMenuSearch();
@@ -386,9 +391,10 @@ define([
 
     var getMediaByNovidades = function(el, limit) {
 	var config = __getConfig(),
-	defaultLimit = 4,
-	limit = limit || defaultLimit,
-	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/orderby/date/desc/limit/' + limit;
+	    defaultLimit = 4,
+	    limit = limit || defaultLimit,
+	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/orderby/date/desc/limit/' + limit;
+	
 	console.log('getMediaByNovidades');
 	
 	getMedia(url, function(data){
@@ -405,7 +411,7 @@ define([
 
     var getMediaRelated = function(uuid) {
 	var config = __getConfig(),
-	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/related';
+	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/related';
 	
 	getMedia(url, function(data){
 	    $('#content').append(_.template(MediaRelatedTpl));
@@ -420,8 +426,8 @@ define([
 
     var getMediaByMocambola = function(origin, username, limit) {
 	var config = __getConfig(),
-	url = '',
-	limit = limit || '';
+	    url = '',
+	    limit = limit || '';
 	
 	if (limit !== '') {
 	    limit = 'limit/' + limit; 
@@ -468,10 +474,10 @@ define([
 	console.log(url);
 	getMedia(url, function(data) {
 	    var resultCount,
-	    messageString = "",
-	    terms = {},
-	    config = $("body").data("bbx").config,	    
-	    terms = url.match(/search\/(.*)$/)[1].split('/');
+		messageString = "",
+		terms = {},
+		config = $("body").data("bbx").config,	    
+		terms = url.match(/search\/(.*)$/)[1].split('/');
 	    
 	    __parseMenuSearch(terms);
 	    
@@ -521,7 +527,8 @@ define([
      */
     var changeMediaLimit = function(limit, urlApi) {
 	var url = Backbone.history.location.href,
-	urlApi = urlApi || BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/';
+	    urlApi = urlApi || BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/';
+	
 	console.log('change media limit');
 	console.log(urlApi);
 	if (url.match('limit')) {
@@ -533,11 +540,11 @@ define([
     }
 
     var mediaSearchSort = function(field) {
-	var url = Backbone.history.location.href;
-	matches = '',
-	reUrl = '',
-	matches = null,
-	ordering_type = '/asc';
+	var url = Backbone.history.location.href,
+	    matches = '',
+	    reUrl = '',
+	    matches = null,
+	    ordering_type = '/asc';
 	
 	if (!url.match('bbx/search')) {
 	    //http://namaste/#mocambos/namaste/limit/100
