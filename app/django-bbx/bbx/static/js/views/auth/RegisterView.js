@@ -8,7 +8,7 @@ define([
     'modules/mucua/collection',
     'modules/mocambola/model',
     'views/auth/LoginView',
-    'text!/templates/' + userLang + '/auth/Register.html',
+    'text!/templates/' + BBX.userLang + '/auth/Register.html',
 ], function($, _, Backbone, AuthFunctions, BBXFunctions, MucuaModel, MucuaCollection, MocambolaModel, LoginView, RegisterTpl){
     var RegisterView = Backbone.View.extend({
 	el: "body",

@@ -5,9 +5,9 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!/templates/' + userLang + '/media/MediaView.html',
-    'text!/templates/' + userLang + '/media/BackToSearch.html',
-    'text!/templates/' + userLang + '/media/MucuaHasFile.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaView.html',
+    'text!/templates/' + BBX.userLang + '/media/BackToSearch.html',
+    'text!/templates/' + BBX.userLang + '/media/MucuaHasFile.html',
 ], function($, _, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaViewTpl, BackToSearchTpl, MucuaHasFileTpl){
     
     var MediaView = Backbone.View.extend({

@@ -1,17 +1,18 @@
-var BBX = {},
-    userLang = '',
-    reMatches = null,
-    reLang = /([a-zA-Z]{2})[\-\_]([a-zA-Z]{2})/;    
+var BBX = {};
+
+BBX.userLang = null,
+BBX.reMatches = null,
+BBX.reLang = /([a-zA-Z]{2})[\-\_]([a-zA-Z]{2})/;    
 
 if (typeof BBX.config === 'undefined') {
-    userLang = navigator.language || navigator.userLanguage;
+    BBX.userLang = navigator.language || navigator.userLanguage;
 } else {
-    userLang = BBX.config.userLang;
+    BBX.userLang = BBX.config.userLang;
 }
 // normalize language code from 'xx-xx', 'xx_xx' or whatelse to 'xx_XX'
-reMatches = userLang.match(reLang);
+BBX.reMatches = BBX.userLang.match(BBX.reLang);
 // splicit public (?)
-userLang = reMatches[1] + '_' + reMatches[2].toUpperCase();
+BBX.userLang = BBX.reMatches[1] + '_' + BBX.reMatches[2].toUpperCase();
 
 define([
     'jquery', 

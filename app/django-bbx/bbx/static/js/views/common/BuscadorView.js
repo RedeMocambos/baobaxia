@@ -3,19 +3,21 @@ define([
     'lodash',
     'backbone',
     'textext',
-    'text!/templates/' + userLang + '/common/Buscador.html',
+    'modules/media/functions',
+    'text!/templates/' + BBX.userLang + '/common/Buscador.html',
     'textext_ajax',
     'textext_tags',
-], function($, _, Backbone, Textext, BuscadorTpl){
+], function($, _, Backbone, Textext, MediaFunctions, BuscadorTpl){
     var BuscadorView = Backbone.View.extend({
 	render: function(data) {
-	    //var data = data || {};
 	    console.log('buscador');
 	    var config = $("body").data("bbx").config,
 		tags = BBX.config.subroute.split('bbx/search/');
 
-	    // add tags classes for functional tags style
-	    _.each(tags[1].split('/'), function(tag) {
+	    // add tag classes for functional tags style
+	    tags = MediaFunctions.__cleanTerms(tags)
+	    
+	    _.each(tags, function(tag) {
 		$("body").addClass(tag);	  
 	    });
 	    

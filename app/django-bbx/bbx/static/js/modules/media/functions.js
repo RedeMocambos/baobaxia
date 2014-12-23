@@ -16,15 +16,15 @@ define([
     'modules/media/model',
     'modules/media/collection',
     'modules/mucua/model',
-    'text!/templates/' + userLang + '/media/MediaDestaquesMucua.html',
-    'text!/templates/' + userLang + '/media/MediaNovidades.html',
-    'text!/templates/' + userLang + '/media/MediaMocambola.html',
-    'text!/templates/' + userLang + '/media/MediaRelated.html',
-    'text!/templates/' + userLang + '/media/MediaResults.html',
-    'text!/templates/' + userLang + '/media/MediaGrid.html',
-    'text!/templates/' + userLang + '/media/MediaList.html',
-    'text!/templates/' + userLang + '/common/ResultsMessage.html',
-    'text!/templates/' + userLang + '/common/SearchTagsMenu.html'
+    'text!/templates/' + BBX.userLang + '/media/MediaDestaquesMucua.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaNovidades.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaMocambola.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaRelated.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaResults.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaGrid.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaList.html',
+    'text!/templates/' + BBX.userLang + '/common/ResultsMessage.html',
+    'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html'
 ], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, ResultsMessageTpl, SearchTagsMenuTpl){
     this.BBXFunctions = BBXFunctions;
     
@@ -54,17 +54,20 @@ define([
 	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + terms;
     }
 
-    var __parseMenuSearch = function(terms) {
-	var config = __getConfig(),
-	    data = {},
-	    terms = _.compact(terms), // remove any false value
-	    terms_arr = [], 
-	    terms_size = terms.length; 	
+    
+    /*
+     * clean terms by removing false or non-terms string from url
+     */
+    var __cleanTerms = function(terms) {
+	var terms = _.compact(terms), // remove any false value
+	    terms_size = terms.length,
+	    terms_arr = [],
+	    callback = callback || false;
 	
-	// check sortby & limit
+	// check sortby & limit	and remove sizes
 	if (terms.length > 0) {
 	    var term = '',
-	    t = 0;
+		t = 0;
 	    for (var t = 0; t < terms_size; t++) {
 		term = terms[t];
 		if (term == 'orderby' || term == 'limit') {
@@ -74,6 +77,13 @@ define([
 		}	    
 	    }
 	}
+	return terms_arr;
+    }
+    
+    var __parseMenuSearch = function(terms) {
+	var config = __getConfig(),
+	    data = {},
+	    terms_arr = __cleanTerms(terms);
 	
 	$("body").data("bbx").terms = terms;
 	$('#caixa_busca')
@@ -111,9 +121,9 @@ define([
 	    })
 	    .bind('removeTag', function(tag) {
 		console.log('removeTag: ' + tag);
-	    });	
+	    });
     }
-
+       
     var setUserPrefs = function() {
 	var userPrefs = {'name': 'userPrefs',
 			 'values': {}
@@ -621,6 +631,7 @@ define([
 	getMediaLicenses: getMediaLicenses,
 	getTypeByMime: getTypeByMime,
 	mediaSearchSort: mediaSearchSort,
-	getTagCloud: getTagCloud
+	getTagCloud: getTagCloud,
+	__cleanTerms: __cleanTerms	
     }
 });
