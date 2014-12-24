@@ -285,9 +285,7 @@ define([
 			return matches[3] + '/' + matches[2] + '/' + matches[1];
 		    }
 		};
-		var medias = {},
-		    mediaLoad = [],
-		    urlMedia = '';
+		var medias = {};
 		
 		$('#back-to-results').remove();
 
@@ -297,28 +295,8 @@ define([
 		    } else {
 			medias = media.attributes;
 		    }
-		    
-		    _.each(medias, function(mediaItem) {
-			if (mediaItem.type === 'imagem') {
-			    if (mediaItem.is_local === true) {
-				url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + mediaItem.uuid + '/' + params.width + 'x' + params.height + '.' + mediaItem.format;
-				mediaLoad[mediaItem.uuid] = new MediaModel([], {url: url});
-				mediaLoad[mediaItem.uuid].fetch({
-				    success: function() {
-					mediaItem.url = mediaLoad[mediaItem.uuid].attributes.url;
-					$('#media-' + mediaItem.uuid).removeClass('image-tmp')
-					$('#media-' + mediaItem.uuid).attr('src', mediaItem.url);
-					if (params.width !== '00') {
-					    $('#media-' + mediaItem.uuid).attr('width', params.width);
-					} 
-					if (params.height !== '00') {
-					    $('#media-' + mediaItem.uuid).attr('height', params.height);
-					}
-				    }
-				});
-			    }
-			}
-		    });		    
+		    mediaData.params = params;
+		    mediaData.parseThumb = __parseThumb;
 		} else {
 		    // no content found
 		    medias = {};
@@ -346,8 +324,30 @@ define([
 		}
 	    }
 	});
-    }		   
+    }
 
+    var __parseThumb = function(media, params) {
+	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + media.uuid + '/' + params.width + 'x' + params.height + '.' + media.format,
+	    mediaLoad = [];
+	
+	mediaLoad[media.uuid] = new MediaModel([], {url: url});
+	mediaLoad[media.uuid].fetch({
+ 	    success: function() {
+		media.url = mediaLoad[media.uuid].attributes.url;
+		$('#media-' + media.uuid).removeClass('image-tmp')
+		$('#media-' + media.uuid).attr('src', media.url);
+		
+		if (params.width !== '00') {
+  		    $('#media-' + media.uuid).attr('width', params.width);
+		} 
+		
+		if (params.height !== '00') {
+		    $('#media-' + media.uuid).attr('height', params.height);
+		}
+	    }
+	});
+    }
+    
     var getTagCloud = function(el) {
 	/*
 	  
