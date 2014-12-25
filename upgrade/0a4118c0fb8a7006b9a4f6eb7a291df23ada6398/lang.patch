@@ -1,0 +1,11 @@
+--- /srv/bbx/baobaxia/app/django-bbx/bbx/settings.py    2014-12-25 01:00:10.581310118 -0200
++++ /srv/bbx/baobaxia/app/django-bbx/bbx/settings.py    2014-12-25 01:00:23.729310614 -0200
+@@ -64,7 +64,7 @@
+
+ # Language code for this installation. All choices can be found here:
+ # http://www.i18nguy.com/unicode/language-identifiers.html
+-LANGUAGE_CODE = 'pt-br'
++LANGUAGE_CODE = 'pt_BR'
+
+ SITE_ID = 1
+
