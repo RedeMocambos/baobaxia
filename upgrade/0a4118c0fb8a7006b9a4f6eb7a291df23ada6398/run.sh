@@ -1,6 +1,6 @@
 #!/bin/bash
 patch -p0 < internationalization.patch
-patch -p0 < lang.patch
+patch -p0 < lang-template.patch
 
 sudo supervisorctl restart bbx
 . /srv/bbx/envs/bbx/bin/activate
