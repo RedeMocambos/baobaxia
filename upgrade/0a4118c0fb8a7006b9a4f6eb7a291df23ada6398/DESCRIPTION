@@ -1,1 +1,8 @@
 Upgrade for internationalization
+
+Needs to update:
+
+
+apt-get install gettext
+app/django-bbx/bbx/settings.py (done by patch)
+app/django-bbx/bbx/static/js/config.json (manually add userLang)
