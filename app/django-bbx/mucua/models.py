@@ -26,17 +26,17 @@ def update_mucuas_list(repository):
     u"""Atualiza a lista de mucuas disponivéis no repositório"""
     mucuas = get_available_mucuas(None, repository)
     for mucua in mucuas:
-        print ">>> Mucua description: " + mucua[1]
-        print ">>> Mucua uuid: " + mucua[0]
         mucua_description = str(mucua[1])
         mucua_uuid = str(mucua[0])
         try:
             mucua = Mucua.objects.get(description=mucua_description)
-            print "Vi a mucuaa"
+            logger.info("Vi a mucua " + mucua_description + 
+                        ", UUID: " + mucua_uuid)
         except Mucua.DoesNotExist:
             m = Mucua(description=mucua_description, uuid=mucua_uuid) 
             m.save()
-            print "Criei a mucua " + mucua_description
+            logger.info("Criei a mucua " + mucua_description + 
+                        ", UUID: " + mucua_uuid)
 
 
 # Helper function to map repository description to correct 
@@ -109,7 +109,7 @@ def get_available_mucuas(uuid=None, repository=None):
                        in json_repository_status['trusted repositories']])
 
     mucuas =  [(m[0], rpr(m[1].replace('[','').replace(']',''))) for m in mucuas]
-    logger.debug(u'Mucuas: %s' % mucuas)
+#    logger.debug(u'Mucuas: %s' % mucuas)
     return mucuas
 
 def get_mucua_info(uuid, repository=None):

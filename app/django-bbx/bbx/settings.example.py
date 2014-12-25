@@ -14,12 +14,30 @@ PROJECT_ROOT = os.path.realpath(
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = "/data/bbx/"
 
+## Broker settings.
+BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+
+# List of modules to import when celery starts.
+CELERY_IMPORTS = ('repository.tasks',)
+
+## Using the database to store task state and results.
+CELERY_RESULT_BACKEND = 'amqp'
+CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.   
+
 # Change this to the full path to your own repository
 REPOSITORY_DIR_NAME ="repositories"
 REPOSITORY_DIR = os.path.join(MEDIA_ROOT, REPOSITORY_DIR_NAME)
 MOCAMBOLA_DIR = "mocambolas"  # Nome da pasta onde estao os usuarios em .json
 DEFAULT_MUCUA = "dandara"
 DEFAULT_REPOSITORY = "mocambos"
+LOCALE_PATHS = (os.path.join(PROJECT_ROOT, 'locale'),)
+ugettext = lambda s: s
+LANGUAGES = [
+    ('en_US', ugettext('English')),
+    ('es_ES', ugettext('Spanish')),
+    ('pt_BR', ugettext('Brazilian Portuguese')),
+]
+USE_I18N = True
 
 POLICIES_DIR = os.path.join(PROJECT_ROOT, "policy")
 
@@ -133,6 +151,7 @@ AUTHENTICATION_BACKENDS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -150,7 +169,7 @@ TEMPLATE_DIRS = (
     # "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    PROJECT_ROOT + 'bbx/templates',
+    PROJECT_ROOT + '/bbx/templates',
 )
 
 INSTALLED_APPS = (
@@ -172,7 +191,9 @@ INSTALLED_APPS = (
     'tag',
     'repository',
     'mocambola',
+    'lang',
     'south',
+    'celery',
     'sorl.thumbnail',
 )
 

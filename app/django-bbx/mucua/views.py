@@ -5,7 +5,6 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.response import Response
 from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
 
-from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
 from mucua.models import Mucua, get_available_mucuas, get_default_mucua,get_mucua_from_UUID,get_mucua_info,get_mucua_disk
 from repository.models import Repository

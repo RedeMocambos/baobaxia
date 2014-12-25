@@ -27,7 +27,9 @@ define([
 	    console.log("home mucua");
 
 	    var repository = this.__getRepository(),
-	    mucua = this.__getMucua();
+		mucua = this.__getMucua(),
+		homeMucua = new HomeMucua(); 
+	    
 	    // TODO: verificar se mantem isso ou se cria view especifica para Network
 	    if (mucua == 'rede') {
 		BBXFunctions.renderCommon('rede');
@@ -36,7 +38,7 @@ define([
 	    }
 	    
 	    BBXFunctions.setNavigationVars(repository, mucua);
-	    var homeMucua = new HomeMucua(); 
+	    
 	    homeMucua.render();
 	},
 

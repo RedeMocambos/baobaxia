@@ -5,14 +5,14 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/repository/model',
-    'text!templates/repository/HomeRepository.html',
+    'text!/templates/' + BBX.userLang + '/repository/HomeRepository.html',
 ], function($, _, Backbone, BBXFunctions, MediaFunctions, RepositoryModel, HomeRepositoryTpl) {
     var HomeRepository = Backbone.View.extend({
 	el: "body",    
 	
 	render: function(username) {
 	    var config = $("body").data("bbx").config,
-	    data = {};
+		data = {};
 	    
 	    config.userData = BBXFunctions.getFromCookie('userData');
 	    data.config = config;

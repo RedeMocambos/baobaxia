@@ -54,6 +54,5 @@ require([
 	    }
 	    return oldSync(method, model, options);
 	}
-	
 	App.initialize();
 });

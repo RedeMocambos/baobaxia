@@ -22,18 +22,18 @@ html, body, #container {height: 100%; }
     max-width: 300px !important;
     margin-left: 75%;
     margin-right: 2px; 
-    margin-top: 78px;
     min-width: 200px;
     padding: 10px;    
-    background-color: #fff; 
     z-index: 20;
 }
+.sidebar-inner {    background-color: #fff; height: 100%; margin-top: 10px}
+
 #footer {clear: both; height: 40px; position: fixed; z-index: 10; background-color: #E1D2A0; width: 100%; bottom: -2px; border-top: #fff solid 2px; }
 .bbx #content,
 .mocambola #content,
 .mucua #content,
 .media #content,
-.rede #content { margin-bottom: 40px; margin-top: 170px; margin-left: 10px}
+.rede #content { margin-bottom: 40px; margin-top: 170px; margin-left: 60px}
 
 .mucua #content {text-align: right}
 a {text-decoration: none;}
@@ -54,6 +54,7 @@ a {text-decoration: none;}
 .posicoes {display: none}
 .home #header,
 .login #header {height: 295px; background: url('../images/home-header-repeat.png') repeat-x; }
+.logo {background-image: url('../images/logo.png')}
 
 .home #header #header-top,
 .login #header #header-top {background: url('../images/login-home-header.png') no-repeat scroll; width: 1137px; height: 295px; margin: 0 auto}
@@ -117,8 +118,8 @@ a {text-decoration: none;}
  */
 
 #user-profile {height: 50px}
-#sidebar #user-profile img {float: left; width: 45px; height: 45px}
-#sidebar #user-profile h4 {font-size: 12px; float: left; text-decoration: none; color: #D5C590 !important; margin: 0 auto; padding-top: 12px; padding-left: 8px}
+#sidebar #user-profile img {float: left; width: 45px; height: 45px; margin-top: 8px;}
+#sidebar #user-profile h4 {font-size: 12px; float: left; text-decoration: none; color: #D5C590 !important; margin: 0 auto; padding-top: 31px; padding-left: 8px}
 #sidebar #link-login a {color: #D5C590; font-size: 12px; font-weight: bold}
 #user-profile a.logout {font-size:11px; color:#D5C590; float: right; background-image: url(/images/logout.png); width: 37px; height: 18px}
 
@@ -139,7 +140,7 @@ a {text-decoration: none;}
 .destaques {clear: both}
 #content .media {clear: both}
 #content .media div {float: right;}
-.destaques h3.title {color: #fff; font-size: 26px; margin: 4px}
+.destaques h3.title {colr: #fff; font-size: 26px; margin: 4px}
 .media #buscador .media-display-type {display: none; }
 
 #header-bottom { color: #145B7A; font-weight: bold; font-size: 12px; }
@@ -194,13 +195,13 @@ a {text-decoration: none;}
 /*
  * media grid
   */
-.media-box {width: 192px; height: 175px; background: #f4efdd; margin: 3px; font-size: 11px; border-radius: 5px; padding: 6px; text-align: center}
+.media-box {width: 192px; height: 175px; background: #f4efdd; margin: 3px; font-size: 11px; border-radius: 5px; padding: 6px; text-align: center; overflow: hidden}
 .media-box .result-thumb {width: 192px; height: 130px; background: #000}
-.media-box .title {font-size: 11px }
+.media-box .title {font-size: 13px; font-weight: bold }
 .media-box .format_type { color: #aaa; text-transform: uppercase }
 .media-box .date {font-size: 10px }
 .media-box .format_type {padding: 6px; font-size: 10px}
-.media-box .origin {font-size: 10px; color: #aaa; padding-right: 10px }
+.media-box .origin {font-size: 10px; color: #aaa; padding-right: 10px; font-weight: bold; padding-top:2px }
 .media-box .license {color: #b96}
 .media-box a {color: #2E7E36}
 .media-box a:hover {color: #005500}
@@ -240,33 +241,36 @@ a {text-decoration: none;}
  * media view
  */
 #media-view {margin-left: 15px}
-.media #content {width: 70%}
+.media #content {width: 70%; float: left; margin-left: 60px}
 #media-view .content-title {font-size: 18px;}
 #media-view .title-bold {font-size: 18px; font-weight: bold}
 
-#media-view #link-edit {background-image: url(../images/edit-media.png); width: 51px; height: 21px; float:right; margin-right: 30px}
-#media-view #media-title {margin-left: 20px;}
+#media-view #link-edit {background-image: url(../images/edit-media.png); width: 51px; height: 21px; float: right;}
 #media-view #media-title h3 { color:#197299; font-size: 20px}
 
 #media-view #inner-content {margin-right: 30px }
 #media-view .block-1 {display: inline; width: 60%; min-width: 420px; padding-right: 2px}
 #media-view .block-1 .title {font-weight: bold; }
 
-#media-view .block-2 {display: inline; width:30%; min-width: 160px; max-width: 300px; background-color: #8cb689; border-radius: 8px; padding: 10px;}
-#media-view .block-2 p {margin: 0; padding-bottom: 5px}
-#media-view .block-2 .block-fields p {font-size: 17px; font-weight: bold}
-#media-view .block-2 .block-title {float: left; width: 25%; text-align: right; }
-#media-view .block-2 .block-fields {float: left; width: 70%; padding-left: 10px}
-#media-view .block-2 .blocks {float: left; width: 100%; border-top: 2px solid #fff }
-#media-view .block-2 .blocks .text {font-weight: normal; font-size: 12px; color: #296b7c}
+#media-view .block-2 table {margin-top: 30px9}
+#media-view .block-2 {display: inline; width:25%; min-width: 160px; max-width: 200px; background-color: #8cb689; border-radius: 8px; padding: 10px; margin: 86px 0 0 20px}
+#media-view .block-2 td {margin: 0; padding-bottom: 5px}
+#media-view .block-2 td {font-size: 11px; color: #fff}
+#media-view .block-2 .left {text-align: right}
+#media-view .block-2 .right {font-weight: bold; font-size: 12px}
 
-#media-view p {color: #fff; font-size: 17px}
-#media-view .media-image { border-radius: 8px; background-color: #f4efdd; padding: 8px; margin-right: 10px; width: 90%}
+#media-view .blocks { width: 100%; border-bottom: 1px solid #fff; margin-bottom: 16px; color:#000 }
+#media-view .blocks p.text {font-weight: normal; font-size: 14px; color: #000; line-height: 135%; padding: 5px}
+#media-view .blocks .title {font-size: 16px; font-weight: bold}
+
+#media-view p {color: #fff; font-size: 11px}
+#media-view .media-image { }
 #media-view .media-image img,
-#media-view .media-image video {background-color: #000; width: 85%;}
+#media-view .media-image video {background-color: #000; width: 96%; margin-top: 22px}
 #media-view .media-image .download,
 #media-view .blocks .download {color: #145B7A}
-#media-view #whereis a {display: inline-block}
+#media-view h3.quem-tem {margin-bottom: 4px; color: #fff}
+#media-view #whereis a {display: inline-block; border: 1px solid #ddd; background-color: #72a56e; padding: 2px; border-radius: 4px; margin-bottom: 4px; padding: 2px 4px 2px 4px}
 
 #media-view a {color: #fff}
 #media-view .solicit-copy a {color: #197299}
@@ -277,7 +281,7 @@ a {text-decoration: none;}
 .result-thumb .type {font-size: 10px; background-color: #666; color: #fff; float: right}
 
 #license {font-size: 11px}
-.license-image {width: 88px; height: 31px; margin: 2px }
+.license-image {width: 88px; height: 20px; margin: 2px }
 .license-gplv3 {background: url('/images/license-gplv3.png') no-repeat;}
 .license-gfdl {background: url('/images/license-gfdl.png') no-repeat;}
 .license-lgplv3 {background: url('/images/license-lgplv3.png') no-repeat;}
@@ -290,6 +294,18 @@ a {text-decoration: none;}
 .license-cc_sd {background: url('/images/license-cc_sd.png') no-repeat;}
 .license-cc_sd_nc {background: url('/images/license-cc_sd_nc.png') no-repeat;}
 
+/*
+ * media publish /edit
+*/
+#media_publish {padding-left: 20px;  }
+#media_publish input {width: 350px !important; padding: 4px; margin-top: 4px} 
+#media_publish textarea {width: 450px !important; padding: 4px} 
+/*
+ * media publish /edit
+*/
+#media_publish {padding-left: 20px;  }
+#media_publish input {width: 350px !important; padding: 4px; margin-top: 4px} 
+#media_publish textarea {width: 450px !important; padding: 4px} 
 /*
  * mocambola && mucua
  */

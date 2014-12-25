@@ -1,0 +1,11 @@
+{% load i18n %}
+<h3>{% trans "Mucuas" %}</h3>
+<p>&nbsp;</p>
+
+<% _.each(mucuas, function(mucua) { %>
+<div class="item-mucua <%=mucua.description%>">
+  <a href="<%=config.interfaceUrl%><%= config.MYREPOSITORY%>/<%=mucua.description%>/bbx/search">
+    <span><%= mucua.description %></span>
+  </a>
+</div>
+<% }) %>

@@ -283,10 +283,10 @@ def media_detail(request, repository, mucua, pk=None, format=None):
 
                     media.tags.add(tag)
 
-            return Response("updated media - OK",
+            return Response(_("updated media - OK"),
                             status=status.HTTP_201_CREATED)
         else:
-            return Response("error while creating media",
+            return Response(_("error while creating media"),
                             status=status.HTTP_400_BAD_REQUEST)
 
         if serializer.is_valid():
@@ -345,7 +345,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             serializer = MediaSerializer(media)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response("error while creating media",
+            return Response(_("error while creating media"),
                             status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
@@ -455,3 +455,16 @@ def media_where_is(request, repository, mucua, uuid):
     io = media.where_is()
     data = json.loads(io)
     return Response(data)
+
+@api_view(['GET'])
+#@renderer_classes((BrowsableAPIRenderer))
+def media_request_copy(request, repository, mucua, uuid):
+    try:
+        media = Media.objects.get(uuid=uuid)
+        media.request_copy()
+    except Media.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    return HttpResponseRedirect('/#' + repository +
+                                '/' + mucua +
+                                '/media/' + uuid )
+

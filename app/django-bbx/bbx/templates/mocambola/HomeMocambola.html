@@ -1,0 +1,14 @@
+{% load i18n %}
+<div id="mocambola-home" class="content-div">
+  <div id="mocambola-profile">
+    <img src="<%=mocambola.avatar%>" />
+    <h3 class="title"><%= mocambola.username %></h3>
+  </div>
+<% if (config.userData.username == mocambola.username) { %>
+  <div class="actions">
+    <h4 class="link">
+      <a href="#<%= config.repository %>/<%= config.mucua %>/media">{% trans "Publish new content" %}</a>
+    </h4>
+  </div>
+<% } %>
+</div>

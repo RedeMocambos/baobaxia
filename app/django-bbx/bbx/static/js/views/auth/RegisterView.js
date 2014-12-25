@@ -8,7 +8,7 @@ define([
     'modules/mucua/collection',
     'modules/mocambola/model',
     'views/auth/LoginView',
-    'text!templates/auth/Register.html',
+    'text!/templates/' + BBX.userLang + '/auth/Register.html',
 ], function($, _, Backbone, AuthFunctions, BBXFunctions, MucuaModel, MucuaCollection, MocambolaModel, LoginView, RegisterTpl){
     var RegisterView = Backbone.View.extend({
 	el: "body",
@@ -78,13 +78,14 @@ define([
 	    }, 50);
 	    
 	    var __getToken = function() {
-		var config = $("body").data("bbx").config;
+		var config = $("body").data("bbx").config,
+		    url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/mocambola/login",
+		    mocambola = new MocambolaModel([], {url: url});
+		
 		// remove cookie if it exists
 		if ($.cookie('csrftoken')) {
 		    $.removeCookie('csrftoken');
-		}
-		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/mocambola/login";
-		var mocambola = new MocambolaModel([], {url: url});
+		}		
 		mocambola.fetch({});
 	    };	    
 	}

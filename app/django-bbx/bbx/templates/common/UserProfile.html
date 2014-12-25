@@ -1,0 +1,10 @@
+{% load i18n %}
+<a href="<%=mocambolaUrl%>">
+  <img src="<%=avatar%>" />
+  <h4>
+    <% var usernameShort = username.match(/([a-zA-Z]*)\@/);
+       print(usernameShort[1]);
+       %>
+  </h4>
+</a>
+<a class="logout" href="/#logout"></a>

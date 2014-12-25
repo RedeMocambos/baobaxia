@@ -5,19 +5,21 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!templates/media/MediaView.html'
-], function($, _, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaViewTpl){
+    'text!/templates/' + BBX.userLang + '/media/MediaView.html',
+    'text!/templates/' + BBX.userLang + '/media/BackToSearch.html',
+    'text!/templates/' + BBX.userLang + '/media/MucuaHasFile.html',
+], function($, _, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaViewTpl, BackToSearchTpl, MucuaHasFileTpl){
     
     var MediaView = Backbone.View.extend({
 	
 	render: function(uuid){
 	    console.log("view media " + uuid);	    
 	    var config = $("body").data("bbx").config,
-	    media = '',
-	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
-	    urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis';
+		media = '',
+		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
+		urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis',
+		userData = BBXFunctions.getFromCookie('userData');
 	    
-	    var userData = BBXFunctions.getFromCookie('userData');
 	    if (userData) {
 		config.userData = userData;
 	    } else {
@@ -44,7 +46,8 @@ define([
 		data.media = data.medias[0];
 		data.config = config;
 		data.baseUrl = BBXFunctions.getDefaultHome();
-		$('#header-bottom').append("<div id='back-to-results'><a class='back-to-results' href='javascript: history.back(-1)'><img src='" + config.imagePath + "/voltar.png'> voltar para a busca</a></div>");
+		$('#header-bottom').append(_.template(BackToSearchTpl, data));
+		
 		$('#content').html(_.template(MediaViewTpl, data));
 		// TODO: add an event to monitor scroll
 		// if scroll reaches the end, load more content
@@ -59,7 +62,11 @@ define([
 		success: function() {
 		    var mucuas = dataWhereis.attributes.whereis;		    
 		    _.each(mucuas, function(mucua) {
-			$('#whereis').append('<a href="' + config.interfaceUrl + config.MYREPOSITORY + '/' + mucua.description + '">' + mucua.description + '</a>&nbsp;');
+			var data = {
+			    config: config,
+			    mucua: mucua
+			};
+			$('#whereis').append(_.template(MucuaHasFileTpl, data));
 		    });
 		}
 	    });

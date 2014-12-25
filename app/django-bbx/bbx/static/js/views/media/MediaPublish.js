@@ -6,18 +6,19 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!templates/media/MediaPublish.html'
+    'text!/templates/' + BBX.userLang + '/media/MediaPublish.html'
 ], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl){
     
     var MediaPublish = Backbone.View.extend({	
 	render: function(){
 	    var uploadFile = function() {
-		var config = $("body").data("bbx").config;
+		var config = $("body").data("bbx").config,
+		    // get media token
+		    url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/",
+		    mediaToken = new MediaModel([], {url: url});
+
 		console.log('upload');
 		
-		// get media token
-		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/";
-		mediaToken = new MediaModel([], {url: url});	    
 		mediaToken.fetch({
 		    success: function() {
 			var csrftoken = $.cookie('csrftoken');
@@ -51,14 +52,15 @@ define([
 	    
 	    var updateMedia = function(media) {
 		var config = $("body").data("bbx").config,
-		url = config.interfaceUrl + config.repository + "/" + config.mucua + "/media/" + media.uuid + '/edit';
+		    url = config.interfaceUrl + config.repository + "/" + config.mucua + "/media/" + media.uuid + '/edit';
+		
 		document.location.href = url;
 	    }
 
 	    var config = $("body").data("bbx").config,
-	    data = {},
-	    url = '',
-	    mediaToken = null;
+		data = {},
+		url = '',
+		mediaToken = null;
 	    
 	    // session user data
 	    config.userData = BBXFunctions.getFromCookie('userData');
@@ -89,9 +91,10 @@ define([
 	    $('#media_publish .bloco-2').hide();
 	    
 	    // form upload progress meter
-	    var bar = $('.bar');
-	    var percent = $('.percent');
-	    var status = $('#status');
+	    var bar = $('.bar'),
+		percent = $('.percent'),
+		status = $('#status');
+	    
 	    $('#media_file').change(function() {uploadFile()});
 	    
 	    $('#form_media_publish').ajaxForm({
@@ -124,7 +127,8 @@ define([
 	    });
 	    $('#media_file').on('change', function(el) {
 		var mime = document.getElementById('media_file').files[0].type,
-		type = MediaFunctions.getTypeByMime(mime);
+		    type = MediaFunctions.getTypeByMime(mime);
+		
 		$('#type').val(type);
 	    });
 	},

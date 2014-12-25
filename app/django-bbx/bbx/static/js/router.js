@@ -1,5 +1,19 @@
 var BBX = {};
 
+BBX.userLang = null,
+BBX.reMatches = null,
+BBX.reLang = /([a-zA-Z]{2})[\-\_]([a-zA-Z]{2})/;    
+
+if (typeof BBX.config === 'undefined') {
+    BBX.userLang = navigator.language || navigator.userLanguage;
+} else {
+    BBX.userLang = BBX.config.userLang;
+}
+// normalize language code from 'xx-xx', 'xx_xx' or whatelse to 'xx_XX'
+BBX.reMatches = BBX.userLang.match(BBX.reLang);
+// splicit public (?)
+BBX.userLang = BBX.reMatches[1] + '_' + BBX.reMatches[2].toUpperCase();
+
 define([
     'jquery', 
     'backbone',
@@ -93,9 +107,10 @@ define([
 	
 	logout: function(repository, mucua) {
 	    var repository = repository || '',
-	    mucua = mucua || '',
-	    urlRedirect = '#login',
-	    logoutView = new LogoutView();
+		mucua = mucua || '',
+		urlRedirect = '#login',
+		logoutView = new LogoutView();
+	    
 	    logoutView.doLogout();
 	    console.log('logout');
 	    
@@ -107,10 +122,11 @@ define([
 
 	register: function(repository, mucua) {
 	    var repository = repository || '',
-	    mucua = mucua || '';
+		mucua = mucua || '',
+		registerView = new RegisterView();
+	    
 	    console.log('register');
-
-	    var registerView = new RegisterView();
+	    
 	    registerView.render();
 	},
 	

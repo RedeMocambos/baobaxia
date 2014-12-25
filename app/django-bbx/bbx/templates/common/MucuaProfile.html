@@ -1,0 +1,12 @@
+{% load i18n %}
+<div><h3><%=mucua.description%></h3></div>
+<div><img id="mucua_image" src="<%=mucua.image %>"/></div>
+<div><%=mucua.note%></div>
+<div class="link"><a href="<%=mucua.url %>"><%=mucua.url%></a></div>
+<% if ((mucua.description === BBX.config.MYMUCUA) || (config.mucua.toLowerCase() === 'rede')) { %>
+<div class="storage bold">{% trans "Collection:" %}<%=mucua.storageSize%> <%= BBX.mucua.info.usedByAnnexUnit %></div>
+<% } %>
+<div class="more-info"><a href="">{% trans "more info" %}</a></div>
+<% if (config.mucua.toLowerCase() === 'rede' || config.mucua === '') { %>
+<div class="mucuas"><h3><a href="<%=config.interfaceUrl%><%=config.MYREPOSITORY %>/mucuas">{% trans "list of mucuas" %}</a></h3></div>
+<% } %>

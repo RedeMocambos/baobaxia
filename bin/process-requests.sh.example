@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Para rodar esse script a cada minuto digitar
+# crontab -e
+# e colocar a linha:
+# * * * * * /srv/bbx/bin/process-requests.sh
+
+. /srv/bbx/envs/bbx/bin/activate
+python /srv/bbx/baobaxia/app/django-bbx/manage.py process_requests mocambos `hostname`
+

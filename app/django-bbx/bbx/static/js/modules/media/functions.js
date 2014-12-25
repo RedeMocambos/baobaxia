@@ -16,15 +16,15 @@ define([
     'modules/media/model',
     'modules/media/collection',
     'modules/mucua/model',
-    'text!templates/media/MediaDestaquesMucua.html',
-    'text!templates/media/MediaNovidades.html',
-    'text!templates/media/MediaMocambola.html',
-    'text!templates/media/MediaRelated.html',
-    'text!templates/media/MediaResults.html',
-    'text!templates/media/MediaGrid.html',
-    'text!templates/media/MediaList.html',
-    'text!templates/common/ResultsMessage.html',
-    'text!templates/common/SearchTagsMenu.html'
+    'text!/templates/' + BBX.userLang + '/media/MediaDestaquesMucua.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaNovidades.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaMocambola.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaRelated.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaResults.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaGrid.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaList.html',
+    'text!/templates/' + BBX.userLang + '/common/ResultsMessage.html',
+    'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html'
 ], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, ResultsMessageTpl, SearchTagsMenuTpl){
     this.BBXFunctions = BBXFunctions;
     
@@ -39,11 +39,11 @@ define([
     
     var __parseResultsMessage = function(message) {
 	var target = target || '#result-string',
-	imageTag = '',
-	data = {
-	    config: __getConfig(),
-	    message: message
-	}
+	    imageTag = '',
+	    data = {
+		config: __getConfig(),
+		message: message
+	    }
 	
 	$(target).html(_.template(ResultsMessageTpl, data));	
     };    
@@ -54,17 +54,20 @@ define([
 	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + terms;
     }
 
-    var __parseMenuSearch = function(terms) {
-	var config = __getConfig(),
-	data = {},
-	terms = _.compact(terms), // remove any false value
-	terms_arr = [], 
-	terms_size = terms.length; 	
+    
+    /*
+     * clean terms by removing false or non-terms string from url
+     */
+    var __cleanTerms = function(terms) {
+	var terms = _.compact(terms), // remove any false value
+	    terms_size = terms.length,
+	    terms_arr = [],
+	    callback = callback || false;
 	
-	// check sortby & limit
+	// check sortby & limit	and remove sizes
 	if (terms.length > 0) {
 	    var term = '',
-	    t = 0;
+		t = 0;
 	    for (var t = 0; t < terms_size; t++) {
 		term = terms[t];
 		if (term == 'orderby' || term == 'limit') {
@@ -74,6 +77,13 @@ define([
 		}	    
 	    }
 	}
+	return terms_arr;
+    }
+    
+    var __parseMenuSearch = function(terms) {
+	var config = __getConfig(),
+	    data = {},
+	    terms_arr = __cleanTerms(terms);
 	
 	$("body").data("bbx").terms = terms;
 	$('#caixa_busca')
@@ -84,7 +94,8 @@ define([
 			       removeTag: function(el) {
 				   console.log('remove');
 				   var termRemove = $(el).children().children().html(),
-				   terms = config.subroute.split('bbx/search/')[1].replace(termRemove, '');
+				       terms = config.subroute.split('bbx/search/')[1].replace(termRemove, '');
+				   
 				   terms = terms.replace('//', '/');		   
 				   terms = (terms[terms.length -1] == '/') ? terms.substring(0, terms.length -1) : terms;
 				   
@@ -102,16 +113,17 @@ define([
 		console.log('enter');
 		
 		var textext = $(e.target).textext()[0],
-		terms = textext.hiddenInput().val(),
-		terms_str = '';
+		    terms = textext.hiddenInput().val(),
+		    terms_str = '';
+		
 		terms_str = terms.match(/\[(.*)\]/)[1].replace(/"/g, '').replace(/,/g, '/');
 		window.location = __parseUrlSearch(terms_str);
 	    })
 	    .bind('removeTag', function(tag) {
 		console.log('removeTag: ' + tag);
-	    });	
+	    });
     }
-
+       
     var setUserPrefs = function() {
 	var userPrefs = {'name': 'userPrefs',
 			 'values': {}
@@ -130,10 +142,10 @@ define([
      */
     var showMediaBy = function(type, target, skipCookie) {
 	var target = target || '.media-results .media',
-	type = type || '',
-	skipCookie = skipCookie || false,
-	data = $('body').data('bbx').data,
-	valid_types = ['list', 'grid'];
+	    type = type || '',
+	    skipCookie = skipCookie || false,
+	    data = $('body').data('bbx').data,
+	    valid_types = ['list', 'grid'];
 	
 	if (typeof BBXFunctions === 'undefined') {
 	    var BBXFunctions = window.BBXFunctions;
@@ -167,10 +179,10 @@ define([
 	    // get ordering; default: name
 	    // TODO: invert arrow according to order type (asc|desc)
 	    var orderby = 'name',
-	    orderbyType = 'asc',
-	    url = Backbone.history.location.href,
-	    matchesOrderby = url.match('orderby/([a-zA-Z]*)/'),
-	    matchesOrderbyType = url.match('orderby/[a-zA-Z]*/([asc|desc]*)[/]*');
+		orderbyType = 'asc',
+		url = Backbone.history.location.href,
+		matchesOrderby = url.match('orderby/([a-zA-Z]*)/'),
+		matchesOrderbyType = url.match('orderby/[a-zA-Z]*/([asc|desc]*)[/]*');
 	    
 	    if (matchesOrderby) {
 		orderby = matchesOrderby[1];
@@ -258,7 +270,8 @@ define([
 
     var getMedia = function(url, callback, params) {
 	var params = params || {},
-	media = new MediaModel([], {url: url});
+	    media = new MediaModel([], {url: url});
+	
 	$('#content').append('<div class="loading-content"><img src="images/buscando.gif" /></div>');	
 	media.fetch({
 	    success: function() {
@@ -266,15 +279,14 @@ define([
 		var mediaData = {
 		    formatDate: function(date) {
 			var newDate = '',
-			re = /^(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)[\.0-9]*Z$/,
-			matches = date.match(re);
+			    re = /^(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)[\.0-9]*Z$/,
+			    matches = date.match(re);
+			
 			return matches[3] + '/' + matches[2] + '/' + matches[1];
 		    }
 		};
-		var medias = {},
-		mediaLoad = [],
-		urlMedia = '';
-
+		var medias = {};
+		
 		$('#back-to-results').remove();
 
 		if (!_.isEmpty(media.attributes) ) {
@@ -283,28 +295,8 @@ define([
 		    } else {
 			medias = media.attributes;
 		    }
-		    
-		    _.each(medias, function(mediaItem) {
-			if (mediaItem.type === 'imagem') {
-			    if (mediaItem.is_local === true) {
-				url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + mediaItem.uuid + '/' + params.width + 'x' + params.height + '.' + mediaItem.format;
-				mediaLoad[mediaItem.uuid] = new MediaModel([], {url: url});
-				mediaLoad[mediaItem.uuid].fetch({
-				    success: function() {
-					mediaItem.url = mediaLoad[mediaItem.uuid].attributes.url;
-					$('#media-' + mediaItem.uuid).removeClass('image-tmp')
-					$('#media-' + mediaItem.uuid).attr('src', mediaItem.url);
-					if (params.width !== '00') {
-					    $('#media-' + mediaItem.uuid).attr('width', params.width);
-					} 
-					if (params.height !== '00') {
-					    $('#media-' + mediaItem.uuid).attr('height', params.height);
-					}
-				    }
-				});
-			    }
-			}
-		    });		    
+		    mediaData.params = params;
+		    mediaData.parseThumb = __parseThumb;
 		} else {
 		    // no content found
 		    medias = {};
@@ -317,8 +309,8 @@ define([
 		if (typeof callback == 'function') {
 		    // execute callback
 		    callback(mediaData);
-		    var mediaLength = _.size(mediaData.medias);
-		    var message = "";
+		    var mediaLength = _.size(mediaData.medias),
+		    message = "";
 		    
 		    if (mediaLength > 1) {
 			message = "Exibindo " + _.size(mediaData.medias) + " resultados" ;
@@ -332,8 +324,30 @@ define([
 		}
 	    }
 	});
-    }		   
+    }
 
+    var __parseThumb = function(media, params) {
+	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + media.uuid + '/' + params.width + 'x' + params.height + '.' + media.format,
+	    mediaLoad = [];
+	
+	mediaLoad[media.uuid] = new MediaModel([], {url: url});
+	mediaLoad[media.uuid].fetch({
+ 	    success: function() {
+		media.url = mediaLoad[media.uuid].attributes.url;
+		$('#media-' + media.uuid).removeClass('image-tmp')
+		$('#media-' + media.uuid).attr('src', media.url);
+		
+		if (params.width !== '00') {
+  		    $('#media-' + media.uuid).attr('width', params.width);
+		} 
+		
+		if (params.height !== '00') {
+		    $('#media-' + media.uuid).attr('height', params.height);
+		}
+	    }
+	});
+    }
+    
     var getTagCloud = function(el) {
 	/*
 	  
@@ -352,8 +366,9 @@ define([
 
     var getMediaByLimit = function(el, limit) {
 	var config = __getConfig(),
-	limit = limit || '',
-	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/';
+	    limit = limit || '',
+	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/';
+	
 	if (limit !== '') {
 	    url += 'limit/' + limit;
 	}
@@ -370,9 +385,9 @@ define([
     
     var getMediaByMucua = function(el, limit) {
 	var config = __getConfig(),
-	defaultLimit = 4,
-	limit = limit || defaultLimit,
-	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/limit/' + limit ;
+	    defaultLimit = 4,
+	    limit = limit || defaultLimit,
+	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/limit/' + limit ;
 	
 	getMedia(url, function(data){
 	    __parseMenuSearch();
@@ -386,9 +401,10 @@ define([
 
     var getMediaByNovidades = function(el, limit) {
 	var config = __getConfig(),
-	defaultLimit = 4,
-	limit = limit || defaultLimit,
-	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/orderby/date/desc/limit/' + limit;
+	    defaultLimit = 4,
+	    limit = limit || defaultLimit,
+	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/orderby/date/desc/limit/' + limit;
+	
 	console.log('getMediaByNovidades');
 	
 	getMedia(url, function(data){
@@ -405,7 +421,7 @@ define([
 
     var getMediaRelated = function(uuid) {
 	var config = __getConfig(),
-	url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/related';
+	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/related';
 	
 	getMedia(url, function(data){
 	    $('#content').append(_.template(MediaRelatedTpl));
@@ -420,8 +436,8 @@ define([
 
     var getMediaByMocambola = function(origin, username, limit) {
 	var config = __getConfig(),
-	url = '',
-	limit = limit || '';
+	    url = '',
+	    limit = limit || '';
 	
 	if (limit !== '') {
 	    limit = 'limit/' + limit; 
@@ -468,10 +484,10 @@ define([
 	console.log(url);
 	getMedia(url, function(data) {
 	    var resultCount,
-	    messageString = "",
-	    terms = {},
-	    config = $("body").data("bbx").config,	    
-	    terms = url.match(/search\/(.*)$/)[1].split('/');
+		messageString = "",
+		terms = {},
+		config = $("body").data("bbx").config,	    
+		terms = url.match(/search\/(.*)$/)[1].split('/');
 	    
 	    __parseMenuSearch(terms);
 	    
@@ -521,7 +537,8 @@ define([
      */
     var changeMediaLimit = function(limit, urlApi) {
 	var url = Backbone.history.location.href,
-	urlApi = urlApi || BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/';
+	    urlApi = urlApi || BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/';
+	
 	console.log('change media limit');
 	console.log(urlApi);
 	if (url.match('limit')) {
@@ -533,11 +550,11 @@ define([
     }
 
     var mediaSearchSort = function(field) {
-	var url = Backbone.history.location.href;
-	matches = '',
-	reUrl = '',
-	matches = null,
-	ordering_type = '/asc';
+	var url = Backbone.history.location.href,
+	    matches = '',
+	    reUrl = '',
+	    matches = null,
+	    ordering_type = '/asc';
 	
 	if (!url.match('bbx/search')) {
 	    //http://namaste/#mocambos/namaste/limit/100
@@ -614,6 +631,7 @@ define([
 	getMediaLicenses: getMediaLicenses,
 	getTypeByMime: getTypeByMime,
 	mediaSearchSort: mediaSearchSort,
-	getTagCloud: getTagCloud
+	getTagCloud: getTagCloud,
+	__cleanTerms: __cleanTerms	
     }
 });

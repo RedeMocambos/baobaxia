@@ -2,13 +2,13 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'text!templates/common/Header.html',
-    'text!templates/common/Menu.html',
+    'text!/templates/' + BBX.userLang + '/common/Header.html',
+    'text!/templates/' + BBX.userLang + '/common/Menu.html',
 ], function($, _, Backbone, Header, MenuTpl){
     var HeaderView = Backbone.View.extend({
 	render: function(data) {
 	    var data = data || {},
-	    config = $("body").data("bbx").config;
+		config = $("body").data("bbx").config;
 	    
 	    data.currentUrl = Backbone.history.fragment;	    
 	    data.homeUrl = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA;

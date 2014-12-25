@@ -16,8 +16,9 @@ from django.template.defaultfilters import slugify
 from django.utils.functional import lazy
 
 from tag.models import Tag
-from bbx.settings import REPOSITORY_DIR
+from bbx.settings import REPOSITORY_DIR, DEFAULT_MUCUA
 from bbx.utils import logger
+from repository.tasks import git_annex_get
 
 try:
     from django.utils.encoding import force_unicode  # NOQA
@@ -51,6 +52,7 @@ def get_file_path(instance):
     return os.path.join(REPOSITORY_DIR, get_media_path(instance))
 
 def get_media_path(instance):
+    # FIX: se mudar a data quebra o path
     if instance.date == '':
         t = datetime.now
         date = t.strftime("%y/%m/%d/")
@@ -142,6 +144,7 @@ class Media(models.Model):
         _('is requested'),
         help_text=_('True if media content is awaiting a local copy'),
         default=False)
+    # FIX: request_code desnessesario.. usando o uuid mesmo
     request_code = models.CharField(max_length=100, editable=False, blank=True)
     num_copies = models.IntegerField(
         _('number of copies'), default=1, blank=True,
@@ -180,7 +183,7 @@ class Media(models.Model):
         return self.format
 
     # FIX (Nao pega na primeira save)
-    def _set_is_local(self):
+    def set_is_local(self):
         self.is_local = os.path.isfile(os.path.join(get_file_path(self),
                                                     self.get_file_name()))
 
@@ -198,8 +201,53 @@ class Media(models.Model):
     def get_tags(self):
         return self.tags
 
+    def request_copy(self):
+        u"""
+        Gera um pedido de copia local do media
+
+        Os pedidos tem um codigo uuid e são gravados em 
+        /repository/mucua/requests/uuid
+
+        O arquivo atualmente contem somente o caminho para o media no
+        repositorio.
+
+        """
+        self.set_is_local()
+        if not self.is_local:
+            self.is_requested = True
+            self.save()
+            try:
+                requests_path = os.path.join(REPOSITORY_DIR, self.get_repository(), 
+                                                DEFAULT_MUCUA,
+                                                'requests')
+                if not os.path.exists(requests_path):
+                    os.makedirs(requests_path)
+                
+                request_filename = os.path.join(requests_path, self.uuid)
+                logger.info("REQUESTING: " + request_filename)
+                request_file = open(request_filename, 'a')
+                request_file.write(self.media_file.path)
+                request_file.close
+                # TODO: Need to git add
+                logger.debug("ADDING REQUEST: " + os.path.basename(request_filename))
+                logger.debug("ADDED ON: " + os.path.dirname(request_filename))
+                from repository.models import git_add
+                git_add(os.path.basename(request_filename), os.path.dirname(request_filename))
+                
+            except IOError:
+                logger.info(u'Alo! I can\'t write request file!')
+            
+                logger.debug("get_file_path: " + get_file_path(self))
+                logger.debug("media_file.name: " + os.path.basename(self.media_file.name))
+        
+            async_result = git_annex_get.delay(get_file_path(self), os.path.basename(self.media_file.name))
+            #logger.debug(async_result.get)
+            #logger.debug(async_result.info)
+
+
+
     def save(self, *args, **kwargs):
-        self._set_is_local()
+        self.set_is_local()
         if self.pk is not None:
             self._set_num_copies()
         self.url = self.get_url()
@@ -210,6 +258,10 @@ class Media(models.Model):
 
 
 class TagPolicyDoesNotExist(exceptions.Exception):
+    def __init__(self, args=None):
+        self.args = args
+
+class MediaDoesNotExist(exceptions.Exception):
     def __init__(self, args=None):
         self.args = args
 

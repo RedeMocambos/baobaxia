@@ -1,0 +1,14 @@
+{% load i18n %}
+<div id="sidebar">
+  <% if (_.isEmpty(config.profile)) { %><div id="link-login"><a class="" href='#login'>{% trans "do login" %}</a></div><% } %>
+  <div id="user-profile"></div>
+  <div class="sidebar-inner">
+    <div id="place-profile"></div>
+    <div id="cloud">
+      <div class="term"><a href="">{% trans "cloud" %}</a></div>
+      <div class="term"><a href="">{% trans "cloud" %}</a></div>
+      <div class="term"><a href="">{% trans "cloud" %}</a></div>
+      <div class="term"><a href="">{% trans "cloud" %}</a></div>
+    </div>
+  </div>
+</div>

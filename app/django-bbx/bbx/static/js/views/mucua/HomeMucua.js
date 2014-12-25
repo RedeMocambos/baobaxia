@@ -7,16 +7,17 @@ define([
     'modules/media/collection',
     'modules/media/functions',
     'modules/mocambola/model',
-    'text!templates/common/UserProfile.html',
-    'text!templates/common/MucuaProfile.html',
-    'text!templates/mucua/HomeMucua.html',
+    'text!/templates/' + BBX.userLang + '/common/UserProfile.html',
+    'text!/templates/' + BBX.userLang + '/common/MucuaProfile.html',
+    'text!/templates/' + BBX.userLang + '/mucua/HomeMucua.html',
 ], function($, _, Backbone, MucuaModel, MediaModel, MediaCollection, MediaFunctions, MocambolaModel, UserProfileTpl, MucuaProfileTpl, HomeMucuaTpl) {
     var MucuaView = Backbone.View.extend({
 	el: "body",
 	
 	render: function() {
 	    var config = BBX.config,
-	    urlMucua = config.apiUrl +  '/mucua/by_name/' + config.mucua;
+		urlMucua = config.apiUrl +  '/mucua/by_name/' + config.mucua;
+	    
 	    console.log('render mucua');
 	    
 	    // start mucua DOM field
