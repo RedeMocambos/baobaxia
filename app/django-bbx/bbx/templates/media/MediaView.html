@@ -72,6 +72,7 @@
 	<% if (media.type === 'imagem') { %>
 	<a href="<%= media.url %>">
 	  <img id="media-<%= media.uuid %>" alt="imagem" />
+	  <% parseThumb(media, params); %>
 	</a>
 	<% } else if (media.type == 'video') { %>
 	<video controls src="<%= media.url %>" />

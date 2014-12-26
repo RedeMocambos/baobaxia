@@ -140,7 +140,7 @@ a {text-decoration: none;}
 .destaques {clear: both}
 #content .media {clear: both}
 #content .media div {float: right;}
-.destaques h3.title {colr: #fff; font-size: 26px; margin: 4px}
+.destaques h3.title {color: #fff; font-size: 26px; margin: 4px}
 .media #buscador .media-display-type {display: none; }
 
 #header-bottom { color: #145B7A; font-weight: bold; font-size: 12px; }
@@ -252,7 +252,7 @@ a {text-decoration: none;}
 #media-view .block-1 {display: inline; width: 60%; min-width: 420px; padding-right: 2px}
 #media-view .block-1 .title {font-weight: bold; }
 
-#media-view .block-2 table {margin-top: 30px9}
+#media-view .block-2 table {margin-top: 30px}
 #media-view .block-2 {display: inline; width:25%; min-width: 160px; max-width: 200px; background-color: #8cb689; border-radius: 8px; padding: 10px; margin: 86px 0 0 20px}
 #media-view .block-2 td {margin: 0; padding-bottom: 5px}
 #media-view .block-2 td {font-size: 11px; color: #fff}

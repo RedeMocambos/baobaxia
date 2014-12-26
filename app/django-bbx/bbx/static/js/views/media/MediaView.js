@@ -49,11 +49,6 @@ define([
 		$('#header-bottom').append(_.template(BackToSearchTpl, data));
 		
 		$('#content').html(_.template(MediaViewTpl, data));
-		// TODO: add an event to monitor scroll
-		// if scroll reaches the end, load more content
-		//$('body').on('scroll', function() {
-		//		    console.log('scroll');
-		//});
 	    }, {'width': '400', 'height': '00' });
 	    
 	    // who has the file
