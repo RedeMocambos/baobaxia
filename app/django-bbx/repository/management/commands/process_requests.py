@@ -27,7 +27,11 @@ class Command(BaseCommand):
             os.makedirs(requests_path)
 
         for lmucua in linked_mucuas:
-            src_files = os.listdir(os.path.join(REPOSITORY_DIR, repository, lmucua, "requests"))
+            lmucua_dir = os.path.join(REPOSITORY_DIR, repository, lmucua, "requests")
+            if not os.path.isdir(lmucua_dir):
+                os.mkdir(lmucua_dir)
+            
+            src_files = os.listdir(lmucua_dir)
             for file_name in src_files:
                 full_file_name = os.path.join(src, file_name)
                 if (os.path.isfile(full_file_name)):
