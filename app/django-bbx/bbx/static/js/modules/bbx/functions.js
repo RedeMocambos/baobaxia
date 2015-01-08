@@ -257,10 +257,16 @@ define([
 		    }
 		    BBX.network = networkData;
 		}
-		
-		networkSize = mucua.attributes['network size'].match(reStripUnit);
+
+		// TODO: fix
+		// workaround to prevent error (not a bugfix!)
+		if (typeof mucua.attributes['network size'] === 'undefined') {
+		    networkSize = 0;
+		} else {
+		    networkSize = mucua.attributes['network size'].match(reStripUnit)[1];
+		}
 		BBX.network.info = { 
-		    'network_size': networkSize[1]
+		    'network_size': networkSize
 		};
 		
 		// set mucua variables from API
@@ -271,8 +277,22 @@ define([
 		mucuaData.demanded = 0; // TODO: dynamic var
 		
 		total = mucuaData.totalDiskSpace.match(reStripUnit);
+		// workaround to prevent error (not a bugfix!)
+		if (_.isNull(total)) {
+		    total = ['', 0, 0];
+		}
+		
 		usedByOther = mucuaData.usedByOther.match(reStripUnit);
+		// workaround to prevent error (not a bugfix!)
+		if (_.isNull(usedByOther)) {
+		    usedByOther = ['', 0, ''];
+		}
+
 		usedByAnnex = mucuaData.usedByAnnex.match(reStripUnit);
+		// workaround to prevent error (not a bugfix!)
+		if (_.isNull(usedByAnnex)) {
+		    usedByAnnex = ['', 0, ''];
+		}
 		
 		// split values from regexp
 		mucuaData.total = total[1];
