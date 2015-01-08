@@ -464,7 +464,5 @@ def media_request_copy(request, repository, mucua, uuid):
         media.request_copy()
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    return HttpResponseRedirect('/#' + repository +
-                                '/' + mucua +
-                                '/media/' + uuid )
 
+    return Response("Requested media of uuid " + uuid + " of mucua " + mucua.upper())
