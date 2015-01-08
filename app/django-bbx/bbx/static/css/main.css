@@ -263,19 +263,23 @@ a {text-decoration: none;}
 #media-view .blocks p.text {font-weight: normal; font-size: 14px; color: #000; line-height: 135%; padding: 5px}
 #media-view .blocks .title {font-size: 16px; font-weight: bold}
 
-#media-view p {color: #fff; font-size: 11px}
+#media-view .content-div p {color: #fff; font-size: 11px}
 #media-view .media-image { }
 #media-view .media-image img,
-#media-view .media-image video {background-color: #000; width: 96%; margin-top: 22px}
+#media-view .media-image video {background-color: #000; margin-top: 22px}
+#media-view .media-image video {width: 96%}
 #media-view .media-image .download,
 #media-view .blocks .download {color: #145B7A}
 #media-view h3.quem-tem {margin-bottom: 4px; color: #fff}
 #media-view #whereis a {display: inline-block; border: 1px solid #ddd; background-color: #72a56e; padding: 2px; border-radius: 4px; margin-bottom: 4px; padding: 2px 4px 2px 4px}
 
 #media-view a {color: #fff}
-#media-view .solicit-copy a {color: #197299}
-#media-view .solicit-copy .image {background-image: url('/images/solicitar.png'); width: 17px; height: 15px; display: inline-block; }
-#media-view .solicit-copy .image:hover {background-image: url('/images/solicitar-over.png'); cursor: pointer}
+#media-view .request-copy span {cursor: pointer}
+#media-view .request-copy,
+#media-view .requested-copy {color: #197299}
+#media-view .request-copy .image {background-image: url('/images/solicitar.png'); width: 17px; height: 15px; display: inline-block; }
+#media-view .requested-copy .image {background-image: url('/images/solicitar-demanded.png'); width: 17px; height: 15px; display: inline-block; }
+#media-view .request-copy .image:hover {background-image: url('/images/solicitar-over.png'); cursor: pointer}
 #media-view .tags a {color: #fff; font-weight: bold }
 #media-view .uuid {color:#666; font-size: 10px }
 .result-thumb .type {font-size: 10px; background-color: #666; color: #fff; float: right}

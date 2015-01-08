@@ -23,9 +23,10 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaResults.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGrid.html',
     'text!/templates/' + BBX.userLang + '/media/MediaList.html',
+    'text!/templates/' + BBX.userLang + '/media/MessageRequest.html',
     'text!/templates/' + BBX.userLang + '/common/ResultsMessage.html',
     'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html'
-], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, ResultsMessageTpl, SearchTagsMenuTpl){
+], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl){
     this.BBXFunctions = BBXFunctions;
     
     var init = function() {
@@ -334,15 +335,15 @@ define([
 	mediaLoad[media.uuid].fetch({
  	    success: function() {
 		media.url = mediaLoad[media.uuid].attributes.url;
-		$('#media-' + media.uuid).removeClass('image-tmp')
-		$('#media-' + media.uuid).attr('src', media.url);
-		
-		if (params.width !== '00') {
-  		    $('#media-' + media.uuid).attr('width', params.width);
-		} 
-		
-		if (params.height !== '00') {
-		    $('#media-' + media.uuid).attr('height', params.height);
+		var tmpImage = new Image();
+		tmpImage.src = media.url;
+		tmpImage.onload = function() {
+		    $('#media-link').prepend('<img id="media-' + media.uuid + '" src="' + media.url + '" />');
+		    
+		    var width = (params.width !== '00' && params.width < tmpImage.naturalWidth) ? params.width : tmpImage.naturalWidth;
+		    var height = (params.height !== '00' && params.height < tmpImage.naturalHeight) ? params.height : tmpImage.naturalHeight;
+  		    $('#media-' + media.uuid).attr('width', width);
+		    $('#media-' + media.uuid).attr('height', height);
 		}
 	    }
 	});
@@ -549,6 +550,29 @@ define([
 	window.location.replace(url);
     }
 
+    var requestCopy = function(uuid) {
+	console.log('content ' + uuid + ' requested');
+	
+	var urlRequest = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + uuid + '/request',
+	    requestedCopy = new MediaModel([], {url: urlRequest});
+	
+	requestedCopy.fetch({
+	    success: function() {
+		var data = {
+		    media: {
+			is_requested: true
+		    }
+		}
+		$('#message-request').html(_.template(MessageRequestTpl, data));
+		$('.request-copy').addClass('requested-copy').removeClass('request-copy');
+	    }
+	})
+    }
+    
+    var bindRequest = function(uuid) {
+	$('.request-copy').on('click', function() { requestCopy(uuid) });   
+    }
+
     var mediaSearchSort = function(field) {
 	var url = Backbone.history.location.href,
 	    matches = '',
@@ -630,6 +654,8 @@ define([
 	getMediaTypes: getMediaTypes,
 	getMediaLicenses: getMediaLicenses,
 	getTypeByMime: getTypeByMime,
+	bindRequest: bindRequest,
+	requestCopy: requestCopy,
 	mediaSearchSort: mediaSearchSort,
 	getTagCloud: getTagCloud,
 	__cleanTerms: __cleanTerms	
