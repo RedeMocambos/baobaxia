@@ -338,8 +338,13 @@ define([
 		var tmpImage = new Image();
 		tmpImage.src = media.url;
 		tmpImage.onload = function() {
-		    $('#media-link').prepend('<img id="media-' + media.uuid + '" src="' + media.url + '" />');
-		    
+		    if ($('#media-' + media.uuid).length) {
+			$('#media-' + media.uuid).removeClass('image-tmp');
+			$('#media-' + media.uuid).attr('src', media.url)
+			
+		    } else {
+			$('#media-image-container').prepend('<img id="media-' + media.uuid + '" src="' + media.url + '" />');
+		    }
 		    var width = (params.width !== '00' && params.width < tmpImage.naturalWidth) ? params.width : tmpImage.naturalWidth;
 		    var height = (params.height !== '00' && params.height < tmpImage.naturalHeight) ? params.height : tmpImage.naturalHeight;
   		    $('#media-' + media.uuid).attr('width', width);
