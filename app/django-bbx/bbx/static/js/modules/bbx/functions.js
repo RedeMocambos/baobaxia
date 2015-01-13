@@ -442,6 +442,12 @@ define([
 	    } else {
 		mucuaData.mucua = BBX.mucua;
 		mucuaData.config = config;
+		var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/' + mucuaData.mucua.uuid}),
+		    urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid,
+		    mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
+			$('#mucua_image').attr('src', imageSrc);
+		    });
+		
 		$('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
 	    }
 	}
