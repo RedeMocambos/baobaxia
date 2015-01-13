@@ -165,7 +165,7 @@ class Media(models.Model):
 
     def get_file_name(self):
         if self.pk is None:
-            return (slugify(self.get_name()) + '-' + str(self.uuid[:5]) + '.' +
+            return (slugify(self.get_name())[:60] + '-' + str(self.uuid[:5]) + '.' +
                     self.format)
         else:
             return os.path.basename(self.media_file.name)
