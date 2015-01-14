@@ -1,6 +1,6 @@
 git pull github master
 . /srv/bbx/envs/bbx/bin/activate
-pip install celery
+pip install -Iv celery==3.1.14
 sudo apt-get install rabbitmq-server
 sudo cp /srv/bbx/baobaxia/conf/supervisor/celeryd /etc/supervisor/conf.d/celeryd.conf
  cp /srv/bbx/baobaxia/bin/process-requests.sh.example /srv/bbx/bin/process-requests.sh
