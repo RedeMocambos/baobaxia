@@ -6,6 +6,8 @@ from datetime import datetime
 import exceptions
 from importlib import import_module
 import subprocess
+import json
+import re
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -187,16 +189,27 @@ class Media(models.Model):
         self.is_local = os.path.isfile(os.path.join(get_file_path(self),
                                                     self.get_file_name()))
 
-    def _set_num_copies(self):        
+    def _set_num_copies(self):
         from repository.models import git_annex_where_is
-        import json
+        
         data = git_annex_where_is(self)
         whereis = json.loads(data)
         self.num_copies = len(whereis[u'whereis'])
 
     def where_is(self):
         from repository.models import git_annex_where_is
-        return git_annex_where_is(self)
+        
+        data = git_annex_where_is(self)
+        whereis = json.loads(data)
+        
+        index = 0
+        for item in whereis['whereis']:
+            # strip [ or ]  (prevent errors of getting mucuas address like [dpadua])
+            mucua_name = re.sub("[\[\]]", "", item['description'])
+            whereis['whereis'][index]['description'] = mucua_name
+            index += 1
+        
+        return whereis
 
     def get_tags(self):
         return self.tags
