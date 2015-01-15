@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core.context_processors import csrf
 from django.template import Template, RequestContext
+from django.utils.translation import ugettext_lazy as _
 
 from media.models import Media, generate_UUID
 from tag.models import Tag
