@@ -70,8 +70,8 @@
       <% if (media.is_local) { %>
       <div class="media-image">
 	<% if (media.type === 'imagem') { %>
-	<a href="<%= media.url %>">
-	  <img id="media-<%= media.uuid %>" alt="imagem" />
+	<a href="<%= media.url %>" id="media-image-container">
+	  <% parseThumb(media, params); %>
 	</a>
 	<% } else if (media.type == 'video') { %>
 	<video controls src="<%= media.url %>" />
@@ -90,29 +90,26 @@
       </div>
       <% } %>
       
-      </div>   
-
-      <% if (media.is_local) { %>
-      <div class="blocks">
-	<% if (media.type !='arquivo') { %>
-	<a href="<%= media.url %>" class="download">{% trans "download" %}</a>
-	<% } %>
-      </div>
-      <% } %>
+    </div>   
       
-      <% if (!media.is_local) { %>
-      <div class="blocks clear-both solicit-copy">
-	<p class="solicit-copy">
-	  <a href="<%= '/api/' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/request">
-	    <span class="title-bold">{% trans "request local copy" %}</span>
-	    <span class="image"></span>
-	  </a>
-	</p>
-      </div>   
-      <% } else { %>
+    <% if (media.is_local) { %>
+    <div class="blocks">
+      <% if (media.type !=='arquivo') { %>
+      <a href="<%= media.url %>" class="download">{% trans "download" %}</a>
       <p class="">
-	{% trans "Local content" %}
+      {% trans "Local content" %}
       </p>
+      <% } %>
+    </div>
+    <% } %>
+    <% if (!media.is_local) { %>
+    <div class="blocks clear-both request<% if (media.is_requested === true) { %>ed<%} %>-copy">
+      <div value="<%= media.uuid %>">
+        <span id="message-request" class="title-bold">
+        </span>
+        <span class="image"></span>
+      </div>
+      </div>
       <% } %>
       <p class="uuid">{% trans "UUID:" %} <%= media.uuid %></p>
     </div>
