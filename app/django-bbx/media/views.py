@@ -452,9 +452,8 @@ def media_where_is(request, repository, mucua, uuid):
         media = Media.objects.get(uuid=uuid)
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    io = media.where_is()
-    data = json.loads(io)
-    return Response(data)
+    
+    return Response(media.where_is())
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
