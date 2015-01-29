@@ -213,6 +213,25 @@ class Media(models.Model):
 
     def get_tags(self):
         return self.tags
+    
+
+    def drop_copy(self):
+        u"""
+        Remove a copia local do media
+
+        O media é preservado se tiver um pedido pendente em 
+        /repository/mucua/requests/
+
+        """
+        requests_path = os.path.join(REPOSITORY_DIR, self.get_repository(),
+                                     DEFAULT_MUCUA,
+                                     'requests')
+        if self.uuid not in os.listdir(requests_path):
+            from repository.models import git_annex_drop
+            self.is_requested = False
+            git_annex_drop(self)
+            self.save()
+        
 
     def request_copy(self):
         u"""
