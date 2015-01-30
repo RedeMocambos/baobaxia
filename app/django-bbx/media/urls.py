@@ -7,7 +7,8 @@ urlpatterns = patterns(
         '(?P<width>[0-9]{2,4})x(?P<height>[0-9]{2,4})\.(?P<format_type>[a-zA-Z]{3,4})$', 'show_image'),   
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/url$', 'media_url'),   
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/whereis$', 'media_where_is'),   
-    url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/request$', 'media_request_copy'),   
+    url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/request$', 'media_request_copy'),
+    url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/token', 'media_token'),
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/last/' +
         '(?P<qtd>[\d]*)$', 'media_last'),
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/last',

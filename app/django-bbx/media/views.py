@@ -237,6 +237,8 @@ def media_detail(request, repository, mucua, pk=None, format=None):
     author = request.user
 
     if pk:
+        # get media
+        
         try:
             media = Media.objects.get(uuid=pk)
         except Media.DoesNotExist:
@@ -244,18 +246,15 @@ def media_detail(request, repository, mucua, pk=None, format=None):
 
     if request.method == 'GET':
         if pk == '':
-            # acessa para inicializar tela de publicaocao de conteudo / gera
-            # token
-            c = RequestContext(request, {'autoescape': False})
-            c.update(csrf(request))
-            t = Template('{ "csrftoken": "{{ csrf_token  }}" }')
-            return HttpResponse(t.render(c), mimetype=u'application/json')
+            media_token(request, repository, mucua)
 
         if pk != '':
             serializer = MediaSerializer(media)
             return Response(serializer.data)
 
     elif request.method == 'PUT':
+        # update media
+        
         if pk == '':
             return HttpResponseRedirect(
                 redirect_base_url + repository.name + '/' +
@@ -317,19 +316,27 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                       name=request.DATA['name'],
                       note=request.DATA['note'],
                       type=request.DATA['type'],
-                      format=request.FILES['media_file'].name.split('.')[-1].lower(),
                       license=request.DATA['license'],
                       date=(request.DATA['date'] if request.DATA['date'] !=
                             '' else datetime.now()),
-                      media_file=request.FILES['media_file'],
                       uuid=generate_UUID()
                       )
-
+        
+        if request.FILES.getlist('media_file') :
+            # multiple upload            
+            for filename, file in request.FILES.iteritems():
+                media.format=request.FILES[filename].name.split('.')[-1].lower()
+                media.media_file=request.FILES[filename]
+        
+        else:        
+            # single upload            
+            format=request.FILES['media_file'].name.split('.')[-1].lower(),
+            media_file=request.FILES['media_file'],
+                                  
         media.save()
         if media.id:
             # get tags by list or separated by ','
-            tags = (request.DATA['tags'] if iter(request.DATA['tags'])
-                    else request.DATA['tags'].split(','))
+            tags = request.DATA['tags'].split(',')
             for tag_name in tags:
                 try:
                     if tag_name.find(':') > 0:
@@ -348,7 +355,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
         else:
             return Response(_("error while creating media"),
                             status=status.HTTP_400_BAD_REQUEST)
-
+        
     elif request.method == 'DELETE':
 
         media.delete()
@@ -377,6 +384,16 @@ def media_last(request, repository, mucua, limit=5):
     # serializa e da saida
     serializer = MediaSerializer(medias, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def media_token(request, repository, mucua):
+    # acessa para inicializar tela de publicaocao de conteudo / gera
+    # token
+    c = RequestContext(request, {'autoescape': False})
+    c.update(csrf(request))
+    t = Template('{ "csrftoken": "{{ csrf_token  }}" }')
+    return HttpResponse(t.render(c), mimetype=u'application/json')
 
 
 @api_view(['GET'])
