@@ -63,7 +63,7 @@ def get_latest_media(repository=DEFAULT_REPOSITORY):
     try:
         last_sync_mark = open(
             os.path.join(repository_dir, current_repository.name,
-                         'last_sync.txt'), 'r+')
+                         'lastSync.txt'), 'r+')
         last_sync = last_sync_mark.readline()
         last_sync = last_sync.replace("'", "")
     except IOError:
