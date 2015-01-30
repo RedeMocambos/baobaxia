@@ -1,0 +1,60 @@
+{% load i18n %}
+<!-- begin of media_gallery -->
+<div id="media_gallery">
+  <h3><%= pageTitle %></h3>
+  <form action="" method="post" enctype="multipart/form-data" id="fileupload">  
+    <!-- begin of media-gallery -->    
+    <div id="media-gallery-form" class="edit">  
+
+      <!-- gallery name -->
+      <div>
+	<input type="hidden" name="csrfmiddlewaretoken" id="csrfmiddlewaretoken" value="" />
+	<input type="hidden" name="repository" id="repository" value="<%= media.repository %>">
+	<input type="hidden" name="author" id="author" value="<%= media.author %>">
+	<input type="hidden" name="format" id="format" value="<%= media.format %>">
+	<input type="hidden" name="uuid" id="uuid" value="<%= media.uuid %>">
+	<input type="hidden" name="date" id="date" value="<%= media.date %>"/>
+	<input type="hidden" name="note" id="note" value="<%= media.note %>"/>
+	<input type="hidden" name="type" id="type" value="<%= media.type %>"/>
+	
+	<span>{% trans "Gallery name (tags)" %}</span><br/>
+	<input type="input" name="tags" id="tags"><br/>
+	
+	<span class="title">{% trans "Title of medias:" %}</span><br/>
+	<input type="text" id="name" name="name">
+      </div>
+
+      <!-- license -->
+      <div class="license"><span class="title">{% trans "License" %}</span><br/>
+	<select name="license" id="license">
+	  <% _.each(licenses, function(value, key) { %>
+	  <option value="<%= key %>" <% if (media.license == key) { %>selected<% } %>><%= value %></option>
+	  <% }) %>
+	</select>
+      </div>
+
+      <div id="license_image" class="license-<%= media.license %>"></div>
+
+      <!-- file type -->
+      <div class="type"><span class="title">{% trans "File type" %}</span><br/>
+	  <select name="type" id="media_type" <% if (page == 'MediaUpdate') { %>disabled<% } %>>
+	    <% _.each(types, function(value, key) { %>
+	    <option value="<%= key %>" <% if (media.type == key) { %>selected<% } %>><%= value %></option>
+	    <% }) %>
+	  </select>
+      </div>
+
+      <!-- file upload -->      
+      <div id="media_file_input" class="file-upload">
+	<input id="media_file" type="file" name="media_file" multiple>
+      </div>
+
+      <div id="messages">
+      </div>
+      
+    </div>
+    <!-- end of media-gallery-form -->
+  </form>
+  
+</div>
+<!-- end of media_gallery -->

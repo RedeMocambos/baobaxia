@@ -70,7 +70,7 @@
       <% if (media.is_local) { %>
       <div class="media-image">
 	<% if (media.type === 'imagem') { %>
-	<a href="<%= media.url %>" id="media-image-container">
+	<a href="<%= media.url %>" class="media-image-container">
 	  <% parseThumb(media, params); %>
 	</a>
 	<% } else if (media.type == 'video') { %>

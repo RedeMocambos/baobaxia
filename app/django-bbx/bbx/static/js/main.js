@@ -21,7 +21,7 @@ require.config({
 	    deps: ['textext'],
 	    exports: ['textext.tags']
 	},
-    },
+   },
     paths: {
 	jquery: 'lib/jquery-min',
 	jquery_cookie: 'lib/jquery.cookie',
@@ -38,7 +38,10 @@ require.config({
 	textext_ajax: 'lib/textext/textext.plugin.ajax',
 	textext_tags: 'lib/textext/textext.plugin.tags',
         json: 'lib/require/json',
-        text: 'lib/require/text',	
+        text: 'lib/require/text',
+	jquery_ui: 'lib/jquery.ui.widget',
+	fileupload_iframe_transport: 'lib/jquery.iframe-transport',
+	fileupload: 'lib/jquery.fileupload',
     },
     waitSeconds: 200
 });

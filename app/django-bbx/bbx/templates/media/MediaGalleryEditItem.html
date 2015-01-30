@@ -1,0 +1,52 @@
+{% load i18n %}
+<tr>
+  
+  <!-- thumb -->
+  <td class="thumb">
+    <% if (media.type === 'imagem') { %>
+    <a href="<%= media.url %>" class="media-image-container">
+      <img id="media-<%= media.uuid %>" class="image-tmp" src="images/icon-imagem.png" />
+      <% parseThumb(media, params); %>
+    </a>
+    <% } else if (media.type == 'video') { %>
+    <video controls src="<%= media.url %>" />
+    <% } else if (media.type == 'audio') { %>
+    <audio controls src="<%= media.url %>" />
+    <% } else if (media.type ='arquivo') { %>
+    <a href="<%= media.url %>" class="download">download</a>
+    <% } %>
+  </td>
+  
+  <!-- name -->
+  <td class="name">
+    <input type="hidden" name="csrfmiddlewaretoken" id="csrfmiddlewaretoken" value="" />
+    <input type="hidden" name="repository" id="repository" value="<%= media.repository %>">
+    <input type="hidden" name="format" id="format" value="<%= media.format %>">
+    <input type="hidden" name="uuid" id="uuid" value="<%= media.uuid %>">    
+    
+    <input type="text" id="name" name="name">
+  </td>
+
+  <!-- date -->
+  <td class="date">
+    <input type="text" name="date" id="date" value="<%= media.date %>"/>
+  </td>
+
+  <!-- license -->  
+  <td class="license">
+    <div class="license">
+      <select name="license" id="license">
+	<% _.each(licenses, function(value, key) { %>
+	<option value="<%= key %>" <% if (media.license == key) { %>selected<% } %>><%= value %></option>
+	<% }) %>
+	</select>
+      <div id="license_image" class="license-<%= media.license %>"></div>
+  </td>
+
+  <!-- tags -->  
+  <td class="tags">
+    <textarea name="tags" id="tags"><% _.each(media.tags, function(tagName) { %><%= tagName %> <% }); %></textarea>
+  </td>
+  
+</tr>
+     

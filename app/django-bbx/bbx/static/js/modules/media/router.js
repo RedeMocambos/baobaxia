@@ -7,10 +7,14 @@ define([
     'modules/media/collection',
     'views/media/MediaView', 
     'views/media/MediaPublish',
+    'views/media/MediaGalleryCreate',
+    'views/media/MediaGalleryEdit',
     'views/media/MediaUpdate',
-], function($, Backbone, Backbone_Subroute, BBXFunctions, MediaModel, MediaCollection, MediaViewView, MediaPublishView, MediaUpdateView){
+], function($, Backbone, Backbone_Subroute, BBXFunctions, MediaModel, MediaCollection, MediaViewView, MediaPublishView, MediaGalleryCreateView, MediaGalleryEditView, MediaUpdateView){
     var Router = Backbone.SubRoute.extend({
 	routes: {
+	    'gallery': 'gallery_create',
+	    'gallery/:tags/edit': 'gallery_edit',
 	    '': 'publish',
 	    '*': 'publish',
 	    ':uuid': 'view',
@@ -55,6 +59,35 @@ define([
 	    mediaPublishView.render();
 	},
 
+	gallery_create: function() {
+	    console.log("create gallery");
+	    
+	    var repository = this.__getRepository(),
+		mucua = this.__getMucua(),
+		mediaGalleryCreateView = new MediaGalleryCreateView();
+	    
+	    BBXFunctions.renderCommon(repository, mucua);
+	    BBXFunctions.setNavigationVars(repository, mucua);
+	    BBXFunctions.renderCommon('media');
+	    
+	    mediaGalleryCreateView.render();	    
+	},
+
+	gallery_edit: function(subroute) {
+	    console.log("gallery edit");
+	    
+	    var repository = this.__getRepository(),
+		mucua = this.__getMucua(),
+		mediaGalleryEditView = new MediaGalleryEditView();
+	    
+	    BBXFunctions.renderCommon(repository, mucua);
+	    BBXFunctions.setNavigationVars(repository, mucua);
+	    BBXFunctions.renderCommon('media');
+	    
+	    mediaGalleryEditView.render(subroute);	    
+	    
+	},
+	    
 	update: function(uuid) {
 	    console.log("media edit/update");
 	    

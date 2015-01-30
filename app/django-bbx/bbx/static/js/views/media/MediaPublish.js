@@ -14,7 +14,7 @@ define([
 	    var uploadFile = function() {
 		var config = $("body").data("bbx").config,
 		    // get media token
-		    url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/",
+		    url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/token",
 		    mediaToken = new MediaModel([], {url: url});
 
 		console.log('upload');

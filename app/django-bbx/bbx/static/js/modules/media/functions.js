@@ -25,8 +25,10 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaList.html',
     'text!/templates/' + BBX.userLang + '/media/MessageRequest.html',
     'text!/templates/' + BBX.userLang + '/common/ResultsMessage.html',
-    'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html'
-], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl){
+    'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEdit.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html'
+], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl){
     this.BBXFunctions = BBXFunctions;
     
     var init = function() {
@@ -297,7 +299,7 @@ define([
 			medias = media.attributes;
 		    }
 		    mediaData.params = params;
-		    mediaData.parseThumb = __parseThumb;
+		    mediaData.parseThumb = parseThumb;
 		} else {
 		    // no content found
 		    medias = {};
@@ -327,7 +329,7 @@ define([
 	});
     }
 
-    var __parseThumb = function(media, params) {
+    var parseThumb = function(media, params) {
 	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + media.uuid + '/' + params.width + 'x' + params.height + '.' + media.format,
 	    mediaLoad = [];
 	
@@ -343,7 +345,7 @@ define([
 			$('#media-' + media.uuid).attr('src', media.url)
 			
 		    } else {
-			$('#media-image-container').prepend('<img id="media-' + media.uuid + '" src="' + media.url + '" />');
+			$('.media-image-container').prepend('<img id="media-' + media.uuid + '" src="' + media.url + '" />');
 		    }
 		    var width = (params.width !== '00' && params.width < tmpImage.naturalWidth) ? params.width : tmpImage.naturalWidth;
 		    var height = (params.height !== '00' && params.height < tmpImage.naturalHeight) ? params.height : tmpImage.naturalHeight;
@@ -479,6 +481,33 @@ define([
 		$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
 	    }
 	}, {'width': 190, 'height': 132 });
+    };
+
+    var getMediaGallery= function(url, limit) {
+	var limit = limit || '';
+	
+	if (limit !== '') {
+	    url += '/limit/' + limit;
+	}
+	
+	getMedia(url, function(data) {
+	    var resultCount,
+		messageString = "",
+		terms = {},
+		config = $("body").data("bbx").config,	    
+		terms = url.match(/search\/(.*)$/)[1].split('/');
+	    
+	    data.pageTitle = "Gallery edit";
+	    data.types = getMediaTypes(),
+	    data.licenses = getMediaLicenses();
+	    data.parseThumb = parseThumb;	    
+	    
+	    $('#content').html(_.template(MediaGalleryEditTpl, data));
+	    _.each(data.medias, function(media) {
+		data.media = media;
+		$('#media-gallery-edit-form tbody').append(_.template(MediaGalleryEditItemTpl, data));
+	    });
+	}, {'width': 190, 'height': 132 });	    
     };
     
     var getMediaSearch = function(url, limit) {
@@ -650,6 +679,7 @@ define([
 	__getConfig: __getConfig,
 	showMediaBy: showMediaBy,
 	getMedia: getMedia,
+	getMediaGallery: getMediaGallery,
 	getMediaByLimit: getMediaByLimit,
 	getMediaByMucua: getMediaByMucua,
 	getMediaByNovidades: getMediaByNovidades,
@@ -663,6 +693,7 @@ define([
 	requestCopy: requestCopy,
 	mediaSearchSort: mediaSearchSort,
 	getTagCloud: getTagCloud,
-	__cleanTerms: __cleanTerms	
+	__cleanTerms: __cleanTerms,
+	parseThumb: parseThumb
     }
 });

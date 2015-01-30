@@ -299,18 +299,6 @@ a {text-decoration: none;}
 .license-cc_sd_nc {background: url('/images/license-cc_sd_nc.png') no-repeat;}
 
 /*
- * media publish /edit
-*/
-#media_publish {padding-left: 20px;  }
-#media_publish input {width: 350px !important; padding: 4px; margin-top: 4px} 
-#media_publish textarea {width: 450px !important; padding: 4px} 
-/*
- * media publish /edit
-*/
-#media_publish {padding-left: 20px;  }
-#media_publish input {width: 350px !important; padding: 4px; margin-top: 4px} 
-#media_publish textarea {width: 450px !important; padding: 4px} 
-/*
  * mocambola && mucua
  */
 #mocambola-home #mocambola-profile h3,
@@ -349,7 +337,10 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 /*
  * media publish
  */
-#media_publish {text-align: left}
+/*
+ * media publish /edit
+*/
+#media_publish {text-align: left; padding-left: 20px; }
 #media_publish .title {color: #145B7A; font-size: 18px}
 #media_publish .uuid {color:#666 }
 #media_publish .media_file {font-size: 10px}
@@ -359,14 +350,29 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media_publish #dados_gerais, 
 #media_publish #tags_area, 
 #media_publish input,
-#media_publish textarea {padding-top: 3px; width: 206px; border: 2px solid #88A7B5; border-radius: 8px}
-.MediaPublish .bloco-1 .tags {display: none}
+#media_publish input {width: 350px !important; padding: 4px; margin-top: 4px} 
+#media_publish textarea {width: 450px !important; padding: 4px; padding-top: 3px; width: 206px; border: 2px solid #88A7B5; border-radius: 8px}
 #media_publish .button-nav, #media_update .button-nav {cursor: pointer; font-size: 16px; background-color: #B5A570; text-align: center; width: 150px; float: right; padding: 8px; border-radius: 4px; border: 2px solid #958555; margin: 2px }
 #media_publish #note {height: 120px}
 #media_publish .bloco-1 {float: left;}
 #media_publish .bloco-2 {float: left; padding-left: 10px}
 #media_publish .buttons {clear: both}
 .media .buttons h3.message {color: #145B7A; text-align: right}
+.MediaPublish .bloco-1 .tags {display: none}
+
+/*
+ * media gallery
+ */
+
+#media_gallery {padding: 4px}
+#media_gallery-edit input {width: 180px}
+#media_gallery #media_file_input {display: none}
+#media_gallery #messages span {font-size: 12px; color: #999}
+
+#media-gallery-edit-form table {border-colapse: colapse}
+#media-gallery-edit-form thead td {background-color: #eee;}
+#media-gallery-edit-form thead td span {font-weight: bold; font-size: 14px}
+#media-gallery-edit-form td {border-style: none; border-top: 1px solid #ccc; padding: 2px; margin: 0;}
 
 /* form progress meter */
 .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
