@@ -368,11 +368,19 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media_gallery-edit input {width: 180px}
 #media_gallery #media_file_input {display: none}
 #media_gallery #messages span {font-size: 12px; color: #999}
+#media_gallery #progress .bar {height: 18px; background: green; width: 100px}
 
-#media-gallery-edit-form table {border-colapse: colapse}
-#media-gallery-edit-form thead td {background-color: #eee;}
-#media-gallery-edit-form thead td span {font-weight: bold; font-size: 14px}
-#media-gallery-edit-form td {border-style: none; border-top: 1px solid #ccc; padding: 2px; margin: 0;}
+#media_gallery-edit {padding: 4px}
+#media-gallery-edit table {border-colapse: colapse}
+#media-gallery-edit thead td {background-color: #eee}
+#media-gallery-edit thead td span {font-weight: bold; font-size: 13px}
+#media-gallery-edit thead td span.title {font-size: 15px}
+#media-gallery-edit input,
+#media-gallery-edit select {font-size: 10px}
+#media-gallery-edit .edit-link {font-size: 10px; color:#999}
+#media-gallery-edit td {border-style: none; border-top: 1px solid #ccc; padding: 2px; margin: 0;}
+#media-gallery-edit .save-all {background-image: url('../images/save-all.png'); width: 27px; height: 25px; cursor: pointer}
+#media-gallery-edit .save-media-item {background-image: url('../images/save-pq.png'); width: 20px; height: 20px; cursor: pointer }
 
 /* form progress meter */
 .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }

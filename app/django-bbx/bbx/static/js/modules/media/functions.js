@@ -27,8 +27,9 @@ define([
     'text!/templates/' + BBX.userLang + '/common/ResultsMessage.html',
     'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEdit.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html'
-], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl){
+    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html'
+], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl){
     this.BBXFunctions = BBXFunctions;
     
     var init = function() {
@@ -491,6 +492,32 @@ define([
 	}
 	
 	getMedia(url, function(data) {
+	    var __getFormData = function(uuid) {
+		var fields = {},
+		    className = '.' + uuid,
+		    media = {};
+		
+		$(className).each(function() {
+		    var fieldName = this.name.replace('-' + uuid, '');
+		    fields[fieldName] = this.value;
+		});
+		media = {
+		    name: fields.name,
+		    uuid: fields.uuid,
+		    origin: fields.origin,
+		    author: fields.author,
+		    repository: fields.repository,
+		    tags: fields.tags,
+		    license: fields.license,
+		    date: fields.date,
+		    type: fields.type,
+		    note: fields.note,		
+		    media_file: fields.media_file
+		}
+		return media;
+	    }
+	    
+	    
 	    var resultCount,
 		messageString = "",
 		terms = {},
@@ -500,14 +527,53 @@ define([
 	    data.pageTitle = "Gallery edit";
 	    data.types = getMediaTypes(),
 	    data.licenses = getMediaLicenses();
-	    data.parseThumb = parseThumb;	    
+	    data.parseThumb = parseThumb;
+	    data.baseUrlEdit = config.interfaceUrl + config.repository + '/' + config.mucua + '/media/',
 	    
 	    $('#content').html(_.template(MediaGalleryEditTpl, data));
 	    _.each(data.medias, function(media) {
 		data.media = media;
-		$('#media-gallery-edit-form tbody').append(_.template(MediaGalleryEditItemTpl, data));
+		$('#media-gallery-edit tbody').append(_.template(MediaGalleryEditItemTpl, data));
 	    });
-	}, {'width': 190, 'height': 132 });	    
+
+	    // bind events filling
+	    $('.all-name').keyup(function() {
+		$('.name').val($('.all-name').val());
+	    });
+	    $('.all-date').keyup(function() {
+		$('.date').val($('.all-date').val());
+	    });
+	    $('.all-tags').keyup(function() {
+		$('.tags').val($('.all-tags').val());
+	    });
+
+	    $('.save-all').click(function() {
+		console.log('save all');
+	    });	    
+	    
+	    $('.save-media-item').click(function(el) {
+		console.log('save item');
+		var id = el.currentTarget.id.replace('uuid-', ''),
+		    urlUpdateItem = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + id,
+		    mediaData = __getFormData(id),
+		    media = null,
+		    options = {};
+		
+		media = new MediaModel([mediaData], {url: urlUpdateItem});
+		options.beforeSend = function(xhr){
+		    xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
+		}
+		console.log('try to save');
+		//HACK para passar o objeto corretamente
+		media.attributes =  _.clone(media.attributes[0]);
+		Backbone.sync('update', media, options).done(function(){
+		    
+		    $(el.currentTarget).append(MediaUpdatedMessageTpl);
+		    setTimeout(function(){$('.save-media-item h3.message').fadeOut(2000)}, 2000);
+		});		    
+	    });
+	    
+	}, {'width': 130, 'height': 90 });	    
     };
     
     var getMediaSearch = function(url, limit) {

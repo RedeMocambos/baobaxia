@@ -4,20 +4,53 @@
   <h3><%= pageTitle %></h3>
   
   <div id="media-gallery-edit-form">
+    <form action="" method="post" enctype="multipart/form-data" id="fileupload">  
     <table>
       <thead>
 	<tr>
-	  <td class="thumb"><span>{% trans "Thumbnail" %}</span></td>
-	  <td class="name"><span>{% trans "Name of media" %}</span></td>
-	  <td class="date"><span>{% trans "Date" %}</span></td>
-	  <td class="license"><span>{% trans "License" %}</span></td>
-	  <td class="tags"><span>{% trans "Tags" %}</span></td>
+	  <td class="head-thumb"><span>{% trans "Thumbnail" %}</span></td>
+	  <td class="head-name"><span>{% trans "Name of media" %}</span></td>
+	  <td class="head-date"><span>{% trans "Date" %}</span></td>
+	  <td class="head-license"><span>{% trans "License" %}</span></td>
+	  <td class="head-tags"><span>{% trans "Tags" %}</span></td>
+	  <td class="head-update"><span>{% trans "Save" %}</span></td>
+	</tr>
+	<tr>
+	  <td>
+	    <span class="title">{% trans "Multiple edit" %}</span> <br/>
+	    <span>{% trans "(override particular changes)" %}</span>
+	  </td>
+	  
+	  <td>
+	    <input type="text" name="all-name" class="all-name"/>
+	  </td>
+	  
+	  <td>
+	    <input type="text" name="all-date" class="all-date" value=""/>
+	  </td>
+	  
+	  <td>
+	    <select class="all-license" name="license">
+	      <% _.each(licenses, function(value, key) { %>
+	      <option value="<%= key %>"><%= value %></option>
+	      <% }) %>
+	    </select>
+	  </td>
+	  
+	  <td>
+	    <textarea name="all-tags" class="all-tags"></textarea>
+	  </td>
+	  
+	  <td>
+	    <div class="save-all"></div>
+	  </td>
 	</tr>
       </thead>
       <tbody>
 	<!-- content goes here -->
       </tbody>
     </table>
+    </form>
   </div>
 </div>
 <!-- end of media-publish -->

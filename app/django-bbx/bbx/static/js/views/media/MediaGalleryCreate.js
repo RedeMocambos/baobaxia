@@ -59,16 +59,27 @@ define([
 		    dataType: 'json',
 		    url: url,
 		    
-		    done: function (e, media) {
-			$('#messages').append('<span>Media inserted: ' + media.result.uuid + '</span><br/>');
+		    done: function(e, data) {
+			$('#messages').append('<span>Media inserted: ' + data.result.uuid + '</span><br/>');
 			var overallProgress = $('#fileupload').fileupload('progress');
-			console.log(overallProgress);
 			if (overallProgress.loaded === overallProgress.total) {
 			    var terms = $('#tags').val().replace(',', '/'),
 				gallery_url = config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/media/gallery/' + terms + '/edit';
 			    
 			    window.location.replace(gallery_url);
 			}
+		    },
+
+		    progressall: function (e, data) {
+			var progress = parseInt(data.loaded / data.total * 100, 10);
+			$('#progress .bar').css(
+			    'width',
+			    progress + '%'
+			);
+		    },
+		    
+		    error: function() {
+			console.log('error at upload');
 		    }
 		});
 	    }

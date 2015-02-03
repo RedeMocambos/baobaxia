@@ -19,34 +19,44 @@
   
   <!-- name -->
   <td class="name">
-    <input type="hidden" name="csrfmiddlewaretoken" id="csrfmiddlewaretoken" value="" />
-    <input type="hidden" name="repository" id="repository" value="<%= media.repository %>">
-    <input type="hidden" name="format" id="format" value="<%= media.format %>">
-    <input type="hidden" name="uuid" id="uuid" value="<%= media.uuid %>">    
+    <input type="hidden" name="csrfmiddlewaretoken" id="csrfmiddlewaretoken-<%= media.uuid %>" value="" class="<%= media.uuid %>" />
+    <input type="hidden" name="repository-<%= media.uuid %>" value="<%= media.repository %>" class="<%= media.uuid %>" />
+    <input type="hidden" name="origin-<%= media.uuid %>" value="<%= media.origin %>" class="<%= media.uuid %>" />
+    <input type="hidden" name="format-<%= media.uuid %>" value="<%= media.format %>" class="<%= media.uuid %>">
+    <input type="hidden" name="type-<%= media.uuid %>" value="<%= media.type %>" class="<%= media.uuid %>">
+    <input type="hidden" name="author-<%= media.uuid %>" value="<%= media.author %>" class="<%= media.uuid %>">
+    <input type="hidden" name="uuid-<%= media.uuid %>" value="<%= media.uuid %>" class="<%= media.uuid %>" />
+    <input type="hidden" name="note-<%= media.uuid %>" value="<%= media.note %>" class="<%= media.uuid %>" />
+    <input type="hidden" name="media_file-<%= media.uuid %>" value="<%= media.media_file %>" class="<%= media.media_file %> <%= media.uuid %>" /><br/>
     
-    <input type="text" id="name" name="name">
+    <input type="text" name="name-<%= media.uuid %>" value="<%= media.name %>" class="name <%= media.uuid %>" /><br/>
+    <span class="edit-link">
+      <a href="<% print (baseUrlEdit + media.uuid + '/edit') %>">{% trans "edit media" %}</a>
+    </span>
   </td>
 
   <!-- date -->
   <td class="date">
-    <input type="text" name="date" id="date" value="<%= media.date %>"/>
+    <input type="text" name="date-<%= media.uuid %>" class="date <%= media.uuid %>" value="<%= media.date %>"/>
   </td>
 
   <!-- license -->  
   <td class="license">
     <div class="license">
-      <select name="license" id="license">
+      <select name="license-<%= media.uuid %>" class="license <%= media.uuid %>">
 	<% _.each(licenses, function(value, key) { %>
 	<option value="<%= key %>" <% if (media.license == key) { %>selected<% } %>><%= value %></option>
 	<% }) %>
 	</select>
-      <div id="license_image" class="license-<%= media.license %>"></div>
   </td>
 
   <!-- tags -->  
   <td class="tags">
-    <textarea name="tags" id="tags"><% _.each(media.tags, function(tagName) { %><%= tagName %> <% }); %></textarea>
+    <textarea name="tags-<%= media.uuid %>" class="tags <%= media.uuid %>"><% _.each(media.tags, function(tagName) { %><%= tagName %> <% }); %></textarea>
   </td>
-  
+ 
+  <td>
+    <div class="save-media-item" id="uuid-<%= media.uuid %>"></div>
+  </td>
 </tr>
      

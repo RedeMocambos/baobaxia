@@ -17,7 +17,7 @@ define([
 	render: function(subroute){
 	    var config = $("body").data("bbx").config,
 		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute,
-		urlToken = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/token",
+		urlToken = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/token",
 		mediaToken = new MediaModel([], {url: urlToken});
 	    
 	    BBXFunctions.renderSidebar();
