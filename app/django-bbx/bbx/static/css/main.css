@@ -111,7 +111,7 @@ a {text-decoration: none;}
 #usage-content .usage-bar .the-bar .used {background-color: #36a; height: 9px; border-right: 1px solid #fff}
 #usage-content .usage-bar .the-bar .used-other {background-color: #999; height: 9px; border-right: 1px solid #fff}
 #usage-content .usage-bar .the-bar .demanded {background-color: #c33; height: 9px}
-#usage-content .total {width: 100px; color: #385; padding-left: 6px; }
+#usage-content .total {width: 50px; color: #385; padding-left: 6px; }
 
 /*
  * sidebar
