@@ -2,7 +2,6 @@
 #
 . /srv/bbx/envs/bbx/bin/activate
 cd /srv/bbx/baobaxia/app/django-bbx
-django-admin.py makemessages -a
 django-admin.py compilemessages
 python /srv/bbx/baobaxia/app/django-bbx/manage.py update_templates
 python /srv/bbx/baobaxia/app/django-bbx/manage.py collectstatic --noinput
