@@ -576,7 +576,7 @@ define([
 		
 		mediaData.uuid = uuid;
 		
-		__updateMedia(mediaData, function() {
+		__updateMedia(mediaData, function(ok) {
 		    var message = '',
 			elem = '#uuid-' + uuid;
 		    
