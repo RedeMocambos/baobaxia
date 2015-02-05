@@ -15,7 +15,13 @@ define([
     'modules/bbx/functions',
     'json!config.json',
     'modules/mocambola/model',
-], function($, _, Backbone, BBXFunctions, Config, MocambolaModel){
+    'text!/templates/' + BBX.userLang + '/auth/LoginOk.html',
+    'text!/templates/' + BBX.userLang + '/auth/LoginFailed.html',
+    'text!/templates/' + BBX.userLang + '/auth/PasswordMustMatch.html',
+    'text!/templates/' + BBX.userLang + '/auth/FillUser.html',
+    'text!/templates/' + BBX.userLang + '/auth/FillPassword.html',
+    'text!/templates/' + BBX.userLang + '/auth/UserExists.html',
+], function($, _, Backbone, BBXFunctions, Config, MocambolaModel, LoginOkTpl, LoginFailedTpl, PasswordMustMatchTpl, FillUserTpl, FillPasswordTpl, UserExistsTpl){
     
     var init = function() {	
 	AuthFunctions = this;
@@ -49,7 +55,7 @@ define([
 		    $('#message-area').html(userData.errorMessage);
 		    $("body").data("bbx").loginError = userData.errorMessage;
 		} else {
-		    $('#message-area').html('login bem sucedido!');
+		    $('#message-area').html(LoginOkTpl);
 		    $("body").data("bbx").userData = userData;
 		}
 	    });		
@@ -121,8 +127,8 @@ define([
 	    success: function() {
 		// if user exists, raises error
 		if (mocambola.attributes.error === false) {
-		    var message = "Usuário já cadastrado!";
-		    $("#message-area").html("<li>" + message + "</li>");
+		    var message = UserExistsTpl;
+		    $("#message-area").html(UserExistsTpl);
 		} else {
 		    // if not exists, continue and register the user
 		    mocambola = new MocambolaModel(registerData, 					       
@@ -130,14 +136,9 @@ define([
 		    mocambola.save()
 			.always(function(userData) {
 			    if (userData.error === true) {
-				var message = "Erro ao criar usuário " + registerData.username;
-				$('#message-area').html(userData.errorMessage);				    
+				$('#message-area').html(UserCreationErrorTpl);				    
 			    } else {
-				var message = "Usuário " + registerData.username + " criado com sucesso.";
-				$("#message-area").html("<li>" + message + "</li>");
-
 				$("body").data("bbx").userData = userData;
-				console.log(userData);
 				doLogin(userData);
 			    }
 			})		
@@ -158,22 +159,21 @@ define([
 	
 	// data check
 	if (postData.password !== postData.password2) {
-	    messageArray.push("As senhas não conferem!");		
+	    messageArray.push(PasswordMustMatchTpl);
 	}
 	if (postData.username === '') {
-	    messageArray.push("Preencha o usuário");
+	    messageArray.push(FillUserTpl);
 	}
 	if (postData.password === '') {
-	    messageArray.push("Preencha a senha");
+	    messageArray.push(FillPasswordTpl);
 	}
 	
 	if (!_.isEmpty(messageArray)) {
 	    _.each(messageArray, function(message) {
-		$("#message-area").append("<li>" + message + "</li>");
+		$("#message-area").append(message);
 	    });
 	    return false;
 	} else {
-	    $("#message-area").html("<li>processando formulário...</li>");
 	    __checkUser(postData);		
 	}
     }

@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.core.context_processors import csrf
 from django.template import Template, RequestContext
+from django.utils.translation import ugettext as _
 
 from mocambola.serializers import UserSerializer
 from bbx.auth import FileBackend
@@ -27,7 +28,7 @@ def mocambola_detail(request, repository, mucua, mocambola):
     except User.DoesNotExist:
         response_data = {
             'error': True,
-            'errorMessage': 'Usuario inexistente.',
+            'errorMessage': _('User don\t exists')
         }
             
         return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
@@ -69,13 +70,15 @@ def login(request):
                 serializer = UserSerializer(user)
                 return Response(serializer.data)
             else:
-                response_data = {'errorMessage': 'Usuario inexistente.'}
-                return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+                response_data = {
+                    'errorMessage': _('User don\'t exists: ')
+                }
+            return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
         else:
             response_data = {
                 'error': True,
-                'errorMessage': 'Usuario ou senha invalid@s.',
-                }
+                'errorMessage': _('Invalid user or password')
+            }
             
             return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
 

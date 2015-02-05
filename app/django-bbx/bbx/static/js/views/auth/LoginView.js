@@ -20,11 +20,7 @@ define([
 	events: {
 	    "click .submit": "doLogin",
 	    "keyup #password": "__checkKeyPress"
-	    // TODO: get ENTER type on password field
 	},
-	
-	// problema: eventos duplicados atrapalham qdo carrega de novo!
-	//	    this.delegateEvents(".submit", "click", "doLogin");
 	
 	__checkKeyPress: function(e) {
 	    if (e.keyCode == 13) {

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-05 10:16-0200\n"
+"POT-Creation-Date: 2015-02-05 19:38-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgstr "Usuári@"
 msgid "logged in"
 msgstr "logado"
 
-#: bbx/auth.py:75 mocambola/views.py:66
+#: bbx/auth.py:75 mocambola/views.py:67
 msgid "Exception caught, UserDoesNotExist"
 msgstr "Exeção pega, UserDoesNotExist"
 
@@ -53,6 +53,22 @@ msgstr "Português do Brasil"
 #: bbx/templates/admin/base_site.html:4 bbx/templates/admin/base_site.html:7
 msgid "Baobaxia Garden"
 msgstr "Quintal do Baobáxia"
+
+#: bbx/templates/auth/FillPassword.html:2
+msgid "Fill password"
+msgstr "Preencha a senha"
+
+#: bbx/templates/auth/FillUser.html:2
+msgid "Fill username field!"
+msgstr "Preencha o nome de usuári@"
+
+#: bbx/templates/auth/LoginFailed.html:2
+msgid "Login failed!"
+msgstr "Login falhou!"
+
+#: bbx/templates/auth/LoginOk.html:2
+msgid "Login done."
+msgstr "Login feito."
 
 #: bbx/templates/auth/LoginTemplate.html:22
 msgid "Mocambola"
@@ -80,6 +96,10 @@ msgstr "perdi minha senha"
 msgid "register"
 msgstr "registrar"
 
+#: bbx/templates/auth/PasswordMustMatch.html:2
+msgid "Passwords must match"
+msgstr "Senhas não batem"
+
 #: bbx/templates/auth/Register.html:19
 msgid "Registering new user"
 msgstr "Registrando novo usuário"
@@ -99,6 +119,14 @@ msgstr "Senha"
 #: bbx/templates/auth/Register.html:49
 msgid "Password, again"
 msgstr "Senha, novamente"
+
+#: bbx/templates/auth/UserCreationError.html:2
+msgid "Could not create user!"
+msgstr ""
+
+#: bbx/templates/auth/UserExists.html:2
+msgid "User already exists!"
+msgstr "Usuári@ já existe!"
 
 #: bbx/templates/common/Footer.html:2
 msgid "Footer"
@@ -120,7 +148,7 @@ msgstr "ver como grade"
 msgid "view as list"
 msgstr "ver como lista"
 
-#: bbx/templates/common/Header.html:13
+#: bbx/templates/common/Header.html:18
 #: bbx/templates/media/MediaGalleryEdit.html:20
 msgid "Multiple edit"
 msgstr "Edição múltipla"
@@ -401,6 +429,10 @@ msgstr "Subir arquivo"
 msgid "related content"
 msgstr "conteúdo relacionado"
 
+#: bbx/templates/media/MediaUpdateErrorMessage.html:2
+msgid "Error while updating media!"
+msgstr "Erro ao atualizar a mídia!"
+
 #: bbx/templates/media/MediaUpdatedMessage.html:2
 msgid "Media updated!"
 msgstr "Mídia atualizada!"
@@ -569,6 +601,26 @@ msgstr "mídia atualizada - OK"
 msgid "error while creating media"
 msgstr "erro ao criar a mídia"
 
+#: media/views.py:485
+msgid "Requested media of uuid %uuid of mucua %mucua"
+msgstr "Mídia de uuid %uuid requisitada da mucua %mucua"
+
+#: media/views.py:496
+msgid "Dropped media of uuid %s of mucua %uuid of mucua %mucua "
+msgstr "Removida mídia de uuid %uuid da mucua %mucua "
+
+#: mocambola/views.py:31
+msgid "User don\t exists"
+msgstr "Usuári@ não existe: "
+
+#: mocambola/views.py:74
+msgid "User don't exists: "
+msgstr "Usuári@ não existe: "
+
+#: mocambola/views.py:80
+msgid "Invalid user or password"
+msgstr "Usuári@ ou senha inválida"
+
 #: mucua/models.py:234
 msgid "Mucua enraizada em "
 msgstr "Mucua enraizada em "
@@ -585,6 +637,16 @@ msgstr "A mucua esta já enraizada em "
 #, python-format
 msgid "Acessing mucuas in repository: %s"
 msgstr "Acessando mucuas no repositório: %s"
+
+#: mucua/views.py:41 mucua/views.py:65 mucua/views.py:77 mucua/views.py:132
+#: mucua/views.py:143 mucua/views.py:154
+msgid "Mucua not found"
+msgstr "Mucua não encontrada"
+
+#: mucua/views.py:146
+#, python-format
+msgid "Group %s deleted"
+msgstr "Grupo %s apagado"
 
 #: repository/models.py:340
 msgid "Repository name taken from available repositories"

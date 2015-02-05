@@ -38,7 +38,7 @@ def mucua_list(request, repository=None):
             try:
                 mucua = Mucua.objects.get(description=mucua_description)
             except Mucua.DoesNotExist:
-                return Response("Mucua not found")
+                return Response(_("Mucua not found"))
 
             if mucua:
                 mucuas_list.append(mucua)
@@ -62,8 +62,7 @@ def mucua_get_by_name(request, name, repository=None):
     try:     
         mucua = Mucua.objects.get(description=name)
     except:
-        print "not found: ", 
-        return Response("Mucua not found")
+        return Response(_("Mucua not found"))
     
     serializer = MucuaSerializer(mucua, many=False)
     
@@ -75,8 +74,7 @@ def mucua_get_info(request, uuid, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
     except Mucua.DoesNotExist:
-        print "not found: ", uuid
-        return Response("Mucua not found")
+        return Response(_("Mucua not found"))
 
     if mucua.description != DEFAULT_MUCUA:
         return Response("Error: git annex can only get details from local mucua.")
@@ -131,8 +129,7 @@ def mucua_get_groups(request, uuid=None, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
     except:
-        print "not found: ", 
-        return Response("Mucua not found")
+        return Response(_("Mucua not found"))
     
     io = mucua.get_groups(repository)
     return Response(io)
@@ -143,11 +140,10 @@ def mucua_del_group(request, uuid, group, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
     except:
-        print "not found: ", 
-        return Response("Mucua not found")
+        return Response(_("Mucua not found"))
     
     mucua.del_group(group, repository)
-    return Response("Group " + group + " deleted")
+    return Response(_("Group %s deleted" % group))
 
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
@@ -155,8 +151,7 @@ def mucua_add_group(request, uuid, group, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
     except:
-        print "not found: ", 
-        return Response("Mucua not found")
+        return Response(_("Mucua not found"))
     
     mucua.add_group(group, repository)
-    return Response("Group " + group + " added")
+    return Response("Group %s added" % group)

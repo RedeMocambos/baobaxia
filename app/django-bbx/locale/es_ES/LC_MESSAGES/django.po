@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-05 10:16-0200\n"
+"POT-Creation-Date: 2015-02-05 19:38-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 msgid "logged in"
 msgstr ""
 
-#: bbx/auth.py:75 mocambola/views.py:66
+#: bbx/auth.py:75 mocambola/views.py:67
 msgid "Exception caught, UserDoesNotExist"
 msgstr ""
 
@@ -51,6 +51,22 @@ msgstr ""
 
 #: bbx/templates/admin/base_site.html:4 bbx/templates/admin/base_site.html:7
 msgid "Baobaxia Garden"
+msgstr ""
+
+#: bbx/templates/auth/FillPassword.html:2
+msgid "Fill password"
+msgstr ""
+
+#: bbx/templates/auth/FillUser.html:2
+msgid "Fill username field!"
+msgstr ""
+
+#: bbx/templates/auth/LoginFailed.html:2
+msgid "Login failed!"
+msgstr ""
+
+#: bbx/templates/auth/LoginOk.html:2
+msgid "Login done."
 msgstr ""
 
 #: bbx/templates/auth/LoginTemplate.html:22
@@ -79,6 +95,10 @@ msgstr ""
 msgid "register"
 msgstr ""
 
+#: bbx/templates/auth/PasswordMustMatch.html:2
+msgid "Passwords must match"
+msgstr ""
+
 #: bbx/templates/auth/Register.html:19
 msgid "Registering new user"
 msgstr ""
@@ -97,6 +117,14 @@ msgstr ""
 
 #: bbx/templates/auth/Register.html:49
 msgid "Password, again"
+msgstr ""
+
+#: bbx/templates/auth/UserCreationError.html:2
+msgid "Could not create user!"
+msgstr ""
+
+#: bbx/templates/auth/UserExists.html:2
+msgid "User already exists!"
 msgstr ""
 
 #: bbx/templates/common/Footer.html:2
@@ -119,7 +147,7 @@ msgstr ""
 msgid "view as list"
 msgstr ""
 
-#: bbx/templates/common/Header.html:13
+#: bbx/templates/common/Header.html:18
 #: bbx/templates/media/MediaGalleryEdit.html:20
 msgid "Multiple edit"
 msgstr ""
@@ -387,6 +415,10 @@ msgstr ""
 msgid "related content"
 msgstr ""
 
+#: bbx/templates/media/MediaUpdateErrorMessage.html:2
+msgid "Error while updating media!"
+msgstr ""
+
 #: bbx/templates/media/MediaUpdatedMessage.html:2
 msgid "Media updated!"
 msgstr ""
@@ -555,6 +587,26 @@ msgstr ""
 msgid "error while creating media"
 msgstr ""
 
+#: media/views.py:485
+msgid "Requested media of uuid %uuid of mucua %mucua"
+msgstr ""
+
+#: media/views.py:496
+msgid "Dropped media of uuid %s of mucua %uuid of mucua %mucua "
+msgstr ""
+
+#: mocambola/views.py:31
+msgid "User don\t exists"
+msgstr ""
+
+#: mocambola/views.py:74
+msgid "User don't exists: "
+msgstr ""
+
+#: mocambola/views.py:80
+msgid "Invalid user or password"
+msgstr ""
+
 #: mucua/models.py:234
 msgid "Mucua enraizada em "
 msgstr ""
@@ -570,6 +622,16 @@ msgstr ""
 #: mucua/views.py:21
 #, python-format
 msgid "Acessing mucuas in repository: %s"
+msgstr ""
+
+#: mucua/views.py:41 mucua/views.py:65 mucua/views.py:77 mucua/views.py:132
+#: mucua/views.py:143 mucua/views.py:154
+msgid "Mucua not found"
+msgstr ""
+
+#: mucua/views.py:146
+#, python-format
+msgid "Group %s deleted"
 msgstr ""
 
 #: repository/models.py:340

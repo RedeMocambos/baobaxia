@@ -9,9 +9,9 @@
       <% parseThumb(media, params); %>
     </a>
     <% } else if (media.type == 'video') { %>
-    <video controls src="<%= media.url %>" />
+    <video controls src="<%= media.url %>" width="150" />
     <% } else if (media.type == 'audio') { %>
-    <audio controls src="<%= media.url %>" />
+    <audio controls src="<%= media.url %>" width="150" />
     <% } else if (media.type ='arquivo') { %>
     <a href="<%= media.url %>" class="download">download</a>
     <% } %>

@@ -482,7 +482,7 @@ def media_request_copy(request, repository, mucua, uuid):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response("Requested media of uuid " + uuid + " of mucua " + mucua.upper())
+    return Response(_("Requested media of uuid %uuid of mucua %mucua" % (uuid) (mucua.upper())))
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
@@ -493,4 +493,4 @@ def media_drop_copy(request, repository, mucua, uuid):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response("Dropped media of uuid " + uuid + " of mucua " + mucua.upper())
+    return Response(_("Dropped media of uuid %s of mucua %uuid of mucua %mucua " % (uuid) (mucua.upper())))

@@ -161,7 +161,6 @@ a {text-decoration: none;}
  * destaques mucua 
  */
 .mucua .box {background: rgba(136, 167, 181, 0.2); width: 440px; height: 430px; display: inline-block; text-align: left; border-radius: 4px; padding: 8px }
-.mucua .box div {float: none}
 
 /*
  * media list
@@ -378,7 +377,8 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media-gallery-edit input,
 #media-gallery-edit select {font-size: 10px}
 #media-gallery-edit .edit-link {font-size: 10px; color:#999}
-#media-gallery-edit td {border-style: none; border-top: 1px solid #ccc; padding: 2px; margin: 0;}
+#media-gallery-edit td {border-style: none; border-top: 1px solid #ccc; padding: 4px; margin: 2px; height: 115px; text-align: center }
+#media-gallery-edit td.head-thumb {width: 150px}
 #media-gallery-edit .save-all {background-image: url('../images/save-all.png'); width: 27px; height: 25px; cursor: pointer}
 #media-gallery-edit .save-media-item {background-image: url('../images/save-pq.png'); width: 20px; height: 20px; cursor: pointer; }
 #media-gallery-edit .save-media-item div {font-size: 10px; padding-top: 22px }
