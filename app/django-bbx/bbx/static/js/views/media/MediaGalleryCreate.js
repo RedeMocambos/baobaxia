@@ -83,6 +83,10 @@ define([
 		    }
 		});
 	    }
+
+	    var handleTags = function() {
+		$('#tags').val($('#tags').val().replace(' ', ','));
+	    }
 	    
 	    // session user data
 	    config.userData = BBXFunctions.getFromCookie('userData');
@@ -101,7 +105,8 @@ define([
 	    data.media.author = config.userData.username;
 	    
 	    $('#content').html(_.template(MediaGalleryCreateTpl, data));
-	    
+
+	    $('#tags').keyup(function() { handleTags() });	    
 	    // on select type of file, prepare upload
 	    $('#media_type').change(function() { prepareUpload() });	    
 	}

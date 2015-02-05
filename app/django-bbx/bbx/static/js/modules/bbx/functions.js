@@ -48,7 +48,7 @@ define([
      * @return {Bool} if there's a session opened
      */
     var isLogged = function() {
-	if (this.getFromCookie('userData')) {
+	if (getFromCookie('userData')) {
 	    // TODO: add some session check	   
 	    return true;
 	} else { 
@@ -149,6 +149,7 @@ define([
 	    config = $("body").data("bbx").config;
 	
 	data.config = config;
+	data.isLogged = this.isLogged;
 	
 	$('body').removeClass().addClass(name);
 	if (config.mucua == config.MYMUCUA) {
@@ -346,11 +347,11 @@ define([
 	    networkData = {};
 	
 	console.log('render sidebar');
-	if (this.isLogged() &&
+	if (isLogged() &&
 	    ((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() == "")) {
-	    var userData = this.getFromCookie('userData');
+	    var userData = getFromCookie('userData');
 	    userData.mocambolaUrl = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/mocambola/' + userData.username
-	    userData.avatar = this.getAvatar();
+	    userData.avatar = getAvatar();
 	    if ($('#link-login')) {
 		$('#link-login').remove();
 	    }
