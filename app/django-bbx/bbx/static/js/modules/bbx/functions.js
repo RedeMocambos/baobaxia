@@ -164,8 +164,41 @@ define([
 	    $('#footer').before(_.template(SidebarTpl, data));
 	}
 	
-	$('#content').html('');	
-	var headerView = new HeaderView();
+	$('#content').html('');
+	
+	// parse terms for general use at BBX.terms
+	var terms = /^\/{1}(.*)$/.exec(BBX.config.subroute.replace('bbx/search','')),
+	    has_order = false,
+	    has_limit = false,
+	    terms_arr = [];
+	
+	data.isEditable = false;
+	
+	// url filter for edit content
+	if (terms)  {
+            if (terms[1] !== '') {
+		terms = terms[1];
+		
+		has_order = terms.indexOf('/orderby'),
+		has_limit = terms.indexOf('/limit');
+		
+		if (has_order > 0) {
+		    terms = terms.slice(0, has_order);
+		} else if (has_order < 0 && has_limit > 0) {
+		    terms = terms.slice(0, has_limit);
+		}
+		terms_arr = terms.split('/');		
+	    }	    
+	} 
+	
+	BBX.terms = terms_arr;
+	
+	// only allow mass edit only if has some term
+	if (terms_arr.length > 0) {
+	    data.isEditable = true;
+	}
+	
+	var headerView = new HeaderView(data);
 	if (isLogged) {
 	    // get cookie data if has visit any mucuas
 	    // 
