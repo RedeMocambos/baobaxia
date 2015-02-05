@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-03 21:52-0200\n"
+"POT-Creation-Date: 2015-02-05 10:16-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,6 +107,23 @@ msgstr "Rodapé"
 #: bbx/templates/common/Header.html:4
 msgid "Header"
 msgstr "Cabeçalho"
+
+#: bbx/templates/common/Header.html:10
+msgid "list all"
+msgstr "listar tudo"
+
+#: bbx/templates/common/Header.html:11
+msgid "view as grid"
+msgstr "ver como grade"
+
+#: bbx/templates/common/Header.html:12
+msgid "view as list"
+msgstr "ver como lista"
+
+#: bbx/templates/common/Header.html:13
+#: bbx/templates/media/MediaGalleryEdit.html:20
+msgid "Multiple edit"
+msgstr "Edição múltipla"
 
 #: bbx/templates/common/Menu.html:3
 msgid "Menu"
@@ -214,6 +231,10 @@ msgstr "voltar para a busca"
 msgid "mucua highlights"
 msgstr "destaques da mucua"
 
+#: bbx/templates/media/MediaGalleryCreate.html:4
+msgid "Create new gallery"
+msgstr "Publicar nova galeria"
+
 #: bbx/templates/media/MediaGalleryCreate.html:20
 msgid "Gallery name (tags)"
 msgstr "Nome da galeria (tags)"
@@ -233,6 +254,10 @@ msgstr "Licença"
 #: bbx/templates/media/MediaPublish.html:17
 msgid "File type"
 msgstr "Tipo de arquivo"
+
+#: bbx/templates/media/MediaGalleryEdit.html:4
+msgid "Edit gallery"
+msgstr "Editar galeria"
 
 #: bbx/templates/media/MediaGalleryEdit.html:11
 msgid "Thumbnail"
@@ -255,10 +280,6 @@ msgstr "Tags"
 #: bbx/templates/media/MediaGalleryEdit.html:16
 msgid "Save"
 msgstr "Salvar"
-
-#: bbx/templates/media/MediaGalleryEdit.html:20
-msgid "Multiple edit"
-msgstr "Edição múltipla"
 
 #: bbx/templates/media/MediaGalleryEdit.html:21
 msgid "(override particular changes)"

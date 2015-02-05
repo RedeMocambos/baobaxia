@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-03 21:52-0200\n"
+"POT-Creation-Date: 2015-02-05 10:16-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,6 +107,23 @@ msgstr ""
 msgid "Header"
 msgstr ""
 
+#: bbx/templates/common/Header.html:10
+msgid "list all"
+msgstr ""
+
+#: bbx/templates/common/Header.html:11
+msgid "view as grid"
+msgstr ""
+
+#: bbx/templates/common/Header.html:12
+msgid "view as list"
+msgstr ""
+
+#: bbx/templates/common/Header.html:13
+#: bbx/templates/media/MediaGalleryEdit.html:20
+msgid "Multiple edit"
+msgstr ""
+
 #: bbx/templates/common/Menu.html:3
 msgid "Menu"
 msgstr ""
@@ -200,6 +217,10 @@ msgstr ""
 msgid "mucua highlights"
 msgstr ""
 
+#: bbx/templates/media/MediaGalleryCreate.html:4
+msgid "Create new gallery"
+msgstr ""
+
 #: bbx/templates/media/MediaGalleryCreate.html:20
 msgid "Gallery name (tags)"
 msgstr ""
@@ -218,6 +239,10 @@ msgstr ""
 #: bbx/templates/media/MediaGalleryCreate.html:39
 #: bbx/templates/media/MediaPublish.html:17
 msgid "File type"
+msgstr ""
+
+#: bbx/templates/media/MediaGalleryEdit.html:4
+msgid "Edit gallery"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:11
@@ -240,10 +265,6 @@ msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:16
 msgid "Save"
-msgstr ""
-
-#: bbx/templates/media/MediaGalleryEdit.html:20
-msgid "Multiple edit"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:21
