@@ -138,14 +138,14 @@ a {text-decoration: none;}
  */
 .media #content {background-color: #fff; border-radius: 5px;}
 .destaques {clear: both}
-#content .media {clear: both; float: right}
-#content .media div {float: left}
+#content .media {text-align: right}
 .destaques h3.title {color: #fff; font-size: 26px; margin: 4px}
 .media #buscador .media-display-type {display: none; }
 
 #header-bottom { color: #145B7A; font-weight: bold; font-size: 12px; }
 #header #header-results {float: left;}
 #header .media-display-type div {margin: 0; padding: 0; margin-right: 15px; float: right }
+#header .media-display-type .multiple-edit {background: url(/images/multiple-edit.png); width: 19px; height: 17px; cursor: pointer}
 #header .media-display-type .grid {background: url(/images/grid-off.png); width: 17px; height: 17px; cursor: pointer}
 #header .media-display-type .list {background: url(/images/list-off.png); width: 17px; height: 17px; cursor: pointer}
 #header .media-display-type .all {background: url(/images/all-off.png); width: 17px; height: 17px; cursor: pointer}
@@ -195,8 +195,8 @@ a {text-decoration: none;}
 /*
  * media grid
   */
-.media-box {width: 192px; height: 175px; background: #f4efdd; margin: 3px; font-size: 11px; border-radius: 5px; padding: 6px; text-align: center; overflow: hidden}
-.media-box .result-thumb {width: 192px; height: 130px; background: #000}
+.media-box {display: inline-block; width: 192px; height: 175px; background: #f4efdd; margin: 3px; font-size: 11px; border-radius: 5px; padding: 6px; text-align: center; overflow: hidden}
+.media-box .result-thumb {width: 192px; height: 130px; background: #000; float: left}
 .media-box .title {font-size: 13px; font-weight: bold }
 .media-box .format_type { color: #aaa; text-transform: uppercase }
 .media-box .date {font-size: 10px }
@@ -212,7 +212,7 @@ a {text-decoration: none;}
 .media-box .image img.image-tmp { width: 20px; height: 16px; margin-right: 85px; margin-top: 50px}
 .media-box .image img.arquivo { width: 16px; height: 18px}
 .media-box .edit {position: absolute; margin-top: -2px; margin-left: 175px; padding-bottom: 1px; padding-left: 3px; background-color: #F4EFDD; border-radius: 4px; z-index: 1}
-.media-box .icon-media {margin-right: 46px; margin-top: 55px; width: 100px}
+.media-box .icon-media {margin-top: 55px; width: 100%}
 
 /*
  * busca
