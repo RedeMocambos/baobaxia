@@ -28,8 +28,9 @@ define([
     'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEdit.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html'
-], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl){
+    'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
+], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
     this.BBXFunctions = BBXFunctions;
     
     var init = function() {
@@ -310,7 +311,7 @@ define([
 		mediaData.medias = medias;
 		
 		// callback / altera
-		if (typeof callback == 'function') {
+		if (typeof callback === 'function') {
 		    // execute callback
 		    callback(mediaData);
 		    var mediaLength = _.size(mediaData.medias),
@@ -549,32 +550,75 @@ define([
 
 	    $('.save-all').click(function() {
 		console.log('save all');
-	    });	    
-	    
+		var uuidObjects = $('.uuid'),
+		    mediaData = {};
+		
+		_.each(uuidObjects, function(uuid) {
+		    uuid = uuid.value;
+		    mediaData = __getFormData(uuid);
+		    
+		    __updateMedia(mediaData, function(ok) {
+			var message = '',
+			    elem = '#uuid-' + uuid;
+			message = (ok) ? MediaUpdatedMessageTpl : MediaUpdateErrorMessageTpl;		
+			$(elem).append(message);
+			setTimeout(function(){
+			    $(elem + ' div').fadeOut(1000)
+			}, 2000);		 			
+		    });
+		});
+	    });		
+
 	    $('.save-media-item').click(function(el) {
 		console.log('save item');
-		var id = el.currentTarget.id.replace('uuid-', ''),
-		    urlUpdateItem = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + id,
-		    mediaData = __getFormData(id),
-		    media = null,
-		    options = {};
+		var uuid = el.currentTarget.id.replace('uuid-', ''),
+		    mediaData = __getFormData(uuid);
 		
-		media = new MediaModel([mediaData], {url: urlUpdateItem});
-		options.beforeSend = function(xhr){
-		    xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
-		}
-		console.log('try to save');
-		//HACK para passar o objeto corretamente
-		media.attributes =  _.clone(media.attributes[0]);
-		Backbone.sync('update', media, options).done(function(){
+		mediaData.uuid = uuid;
+		
+		__updateMedia(mediaData, function() {
+		    var message = '',
+			elem = '#uuid-' + uuid;
 		    
-		    $(el.currentTarget).append(MediaUpdatedMessageTpl);
-		    setTimeout(function(){$('.save-media-item h3.message').fadeOut(2000)}, 2000);
-		});		    
+		    message = (ok) ? MediaUpdatedMessageTpl : MediaUpdateErrorMessageTpl;		
+		    $(elem).append(message);
+		    setTimeout(function(){
+			$(elem + ' div').fadeOut(1000)
+		    }, 2000);		 
+		});
 	    });
 	    
 	}, {'width': 130, 'height': 90 });	    
     };
+    
+    
+    var __updateMedia = function(mediaData, callback) {
+	var callback = callback || false,
+	    media = null,
+	    options = {},	
+	    config = $("body").data("bbx").config,
+	    urlUpdateItem = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + mediaData.uuid;    
+	
+	media = new MediaModel([mediaData], {url: urlUpdateItem});
+	options.beforeSend = function(xhr){
+	    xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
+	}
+	console.log('updating media ' + mediaData.uuid);
+	
+	//HACK para passar o objeto corretamente
+	media.attributes =  _.clone(media.attributes[0]);
+	Backbone.sync('update', media, options)
+	    .done(function(){
+		if (typeof callback === 'function') {
+		    callback(true);
+		};
+	    })
+	    .error(function(){
+		if (typeof callback === 'function') {
+		    callback(false);
+		};
+	    });
+    }
     
     var getMediaSearch = function(url, limit) {
 	var limit = limit || '';

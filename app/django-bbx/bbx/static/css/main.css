@@ -380,7 +380,8 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media-gallery-edit .edit-link {font-size: 10px; color:#999}
 #media-gallery-edit td {border-style: none; border-top: 1px solid #ccc; padding: 2px; margin: 0;}
 #media-gallery-edit .save-all {background-image: url('../images/save-all.png'); width: 27px; height: 25px; cursor: pointer}
-#media-gallery-edit .save-media-item {background-image: url('../images/save-pq.png'); width: 20px; height: 20px; cursor: pointer }
+#media-gallery-edit .save-media-item {background-image: url('../images/save-pq.png'); width: 20px; height: 20px; cursor: pointer; }
+#media-gallery-edit .save-media-item div {font-size: 10px; padding-top: 22px }
 
 /* form progress meter */
 .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
