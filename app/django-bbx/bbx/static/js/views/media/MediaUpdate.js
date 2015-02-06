@@ -92,6 +92,9 @@ define([
 		    var compiledTpl = _.template(MediaPublishTpl, data);
 		    $('#content').html(compiledTpl);  
 		    
+		    $('#origin').append("<option value='" + media.attributes.origin + "'>" + media.attributes.origin + "</option>");
+		    $('#origin').attr('disabled', true);
+		    
 		    var csrftoken = $.cookie('csrftoken');
 		    $('#csrfmiddlewaretoken').attr('value', csrftoken);
 		    

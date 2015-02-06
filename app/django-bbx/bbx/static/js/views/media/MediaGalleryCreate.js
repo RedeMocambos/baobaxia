@@ -64,7 +64,7 @@ define([
 			var overallProgress = $('#fileupload').fileupload('progress');
 			if (overallProgress.loaded === overallProgress.total) {
 			    var terms = $('#tags').val().replace(',', '/'),
-				gallery_url = config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/media/gallery/' + terms + '/edit';
+				gallery_url = config.interfaceUrl + config.MYREPOSITORY + '/' + data.result.origin + '/media/gallery/' + terms + '/edit';
 			    
 			    window.location.replace(gallery_url);
 			}

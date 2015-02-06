@@ -8,6 +8,11 @@
     <!-- begin of media-update -->    
     <div id="media-update" class="edit">
       <div class="bloco-1">
+	<p class="origin"><span class="title">{% trans "Origin" %}</span></br>
+	  <select name="origin" id="origin">
+	  </select>	  
+	</p>
+
 	<p class="name"><span class="title">{% trans "Title:" %}</span><br/>
 	  <input type="text" name="name" id="name" value="<%= media.name %>"></p>
 	<p class="tags"><span class="title">{% trans "Tags:" %}</span> <br/>
@@ -54,7 +59,6 @@
       <div class="bloco-2">
 	<input type="hidden" name="repository" id="repository" value="<%= media.repository %>">
 	<input type="hidden" name="author" id="author" value="<%= media.author %>">
-	<input type="hidden" name="origin" id="origin" value="<%= media.origin %>">
 	<input type="hidden" name="format" id="format" value="<%= media.format %>">
 	<input type="hidden" name="uuid" id="uuid" value="<%= media.uuid %>">
 

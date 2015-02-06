@@ -6,8 +6,10 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
+    'modules/mucua/model',
+    'modules/mucua/collection',
     'text!/templates/' + BBX.userLang + '/media/MediaPublish.html'
-], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl){
+], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaPublishTpl){
     
     var MediaPublish = Backbone.View.extend({	
 	render: function(){
@@ -25,6 +27,7 @@ define([
 			$('#csrfmiddlewaretoken').attr('value', csrftoken);
 		    }
 		});
+
 		fields = {};
 		$('#form_media_publish :input').each(function() {
 		    fields[this.name] = this.value;
@@ -57,11 +60,20 @@ define([
 		document.location.href = url;
 	    }
 
+	    var __parseOrigin = function(mucuaList) {
+		_.each(mucuaList, function(mucua) {
+		    $('#origin').append("<option value='" + mucua.description + "'>" + mucua.description + "</option>");
+		    
+		});
+		$('select[name="origin"]').find('option:contains("' + BBX.config.MYMUCUA + '")').attr("selected",true);
+	    }
+	    
 	    var config = $("body").data("bbx").config,
 		data = {},
 		url = '',
-		mediaToken = null;
-	    
+		mediaToken = null,
+		mucuas = null;
+	    	    
 	    // session user data
 	    config.userData = BBXFunctions.getFromCookie('userData');
 	    
@@ -89,6 +101,29 @@ define([
 	    
 	    $('#content').html(_.template(MediaPublishTpl, data));
 	    $('#media_publish .bloco-2').hide();
+
+	    // try to get mucuas list
+	    if (typeof BBX.mucuaList === 'undefined') {
+		mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.MYREPOSITORY + '/mucuas'});
+		mucuas.fetch({
+		    success: function() {
+			var mucuasLength = mucuas.models.length;
+			BBX.mucuaList = [];
+			for (var m = 0; m < mucuasLength; m++) {
+			    var mucua = mucuas.models[m].attributes;
+			    BBX.mucuaList.push(mucua);
+			}
+		    }
+		});
+	    }
+	    
+	    var getMucuas = setInterval(function() {
+		if (typeof BBX.mucuaList !== 'undefined') {		  
+		    __parseOAOrigin(BBX.mucuaList);
+		    
+		    clearInterval(getMucuas);
+		} 
+	    }, 50);
 	    
 	    // form upload progress meter
 	    var bar = $('.bar'),

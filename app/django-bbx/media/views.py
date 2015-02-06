@@ -309,7 +309,12 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             author = User.objects.get(username=author)
         except User.DoesNotExist:
             author = User.objects.get(username=request.user)
-
+    
+        try:
+            mucua = Mucua.objects.get(description=request.DATA['origin'])
+        except Mucua.DoesNotExist:
+            mucua = Mucua.objects.get(description=DEFAULT_MUCUA)
+        
         media = Media(repository=repository,
                       origin=mucua,
                       author=author,

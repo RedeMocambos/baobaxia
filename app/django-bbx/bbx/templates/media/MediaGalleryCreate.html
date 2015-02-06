@@ -16,6 +16,11 @@
 	<input type="hidden" name="date" id="date" value="<%= media.date %>"/>
 	<input type="hidden" name="note" id="note" value="<%= media.note %>"/>
 	<input type="hidden" name="type" id="type" value="<%= media.type %>"/>
+
+	<span class="title">{% trans "Origin" %}</span></br>
+	<select name="origin" id="origin">
+	</select><br/>
+	
 	
 	<span>{% trans "Gallery name (tags)" %}</span><br/>
 	<input type="input" name="tags" id="tags"><br/>
