@@ -53,58 +53,91 @@ define([
 	$(target).html(_.template(ResultsMessageTpl, data));	
     };    
 
-    var __parseUrlSearch = function(terms) {
+    var __parseUrlSearch = function(tags) {
 	var config = __getConfig();
-	terms = terms.replace(/\s/g, '\/');
-	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + terms;
+	   
+	if (_.isArray(tags)) {
+	    tags = tags.join('/');
+	}
+	console.log(tags);
+
+	// remove last and first char if is a /
+	tags = (tags[tags.length -1] === '/') ? tags.substring(0, tags.length -1) : tags;
+	while (tags[0] === '/') {
+	    tags = (tags[0] === '/') ? tags.substring(1, tags.length) : tags;
+	}
+	tags = tags.replace('//', '/');
+	
+	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + tags;
     }
 
-    
+
     /*
-     * clean terms by removing false or non-terms string from url
+     * get tags from url
      */
-    var __cleanTerms = function(terms) {
-	var terms = _.compact(terms), // remove any false value
-	    terms_size = terms.length,
-	    terms_arr = [],
-	    callback = callback || false;
+    var __getTagsFromUrl = function() {
+	var url_has_order = false,
+	    url_has_limit = false,
+	    url_is_search = false,
+	    url_is_gallery = false,
+	    tags = [],
+	    current_url = Backbone.history.fragment;
+
 	
-	// check sortby & limit	and remove sizes
-	if (terms.length > 0) {
-	    var term = '',
-		t = 0;
-	    for (var t = 0; t < terms_size; t++) {
-		term = terms[t];
-		if (term == 'orderby' || term == 'limit') {
-		    t = terms_size;
-		} else {
-		    terms_arr.push(term);
-		}	    
-	    }
+	url_is_search = current_url.indexOf('bbx/search');
+	url_is_gallery = current_url.indexOf('gallery');
+	url_has_order = current_url.indexOf('/orderby');
+	url_has_limit = current_url.indexOf('/limit');
+	
+	// remove order & limit of url
+	if (url_has_order > 0) {
+	    current_url = current_url.slice(0, url_has_order);
+	} else if (url_has_order < 0 && url_has_limit > 0) {
+	    current_url = current_url.slice(0, url_has_limit);
 	}
-	return terms_arr;
+	
+	// identify type of url
+	if (url_is_search > 0) {
+	    current_url = current_url.split('bbx/search/');
+	    if (typeof current_url[1] !== 'undefined') {
+		tags = current_url[1];
+	    }
+	} else if (url_is_gallery > 0) {
+	    tags = current_url.split('gallery/')[1];
+	    if (current_url.match('edit')) {
+		tags = tags.split('/edit')[0];
+	    }
+	} else {
+	    // other kind of url
+	}
+
+	if (_.isString(tags)) {
+	    tags = tags.split('/');
+	}
+
+	tags = _.compact(tags);
+
+	return tags;
     }
+    
     
     var __parseMenuSearch = function(terms) {
 	var config = __getConfig(),
 	    data = {},
-	    terms_arr = __cleanTerms(terms);
+	    tags_arr = __getTagsFromUrl(),
+	    tags_str = tags_arr.join('/');
 	
-	$("body").data("bbx").terms = terms;
 	$('#caixa_busca')
 	    .textext({ plugins: 'tags',
-		       tagsItems: terms_arr,
+		       tagsItems: tags_arr,
 		       ext: {
 			   tags: {
 			       removeTag: function(el) {
 				   console.log('remove');
-				   var termRemove = $(el).children().children().html(),
-				       terms = config.subroute.split('bbx/search/')[1].replace(termRemove, '');
+				   var tagRemove = $(el).children().children().html(),
+				       tags = tags_str.replace(tagRemove, '');
 				   
-				   terms = terms.replace('//', '/');		   
-				   terms = (terms[terms.length -1] == '/') ? terms.substring(0, terms.length -1) : terms;
-				   
-				   window.location = __parseUrlSearch(terms);
+				   window.location = __parseUrlSearch(tags);
 			       }
 			   }
 		       }
@@ -118,11 +151,11 @@ define([
 		console.log('enter');
 		
 		var textext = $(e.target).textext()[0],
-		    terms = textext.hiddenInput().val(),
-		    terms_str = '';
-		
-		terms_str = terms.match(/\[(.*)\]/)[1].replace(/"/g, '').replace(/,/g, '/');
-		window.location = __parseUrlSearch(terms_str);
+		    tags = textext.hiddenInput().val(),
+		    tags_str = '';
+		    
+		tags_str = tags.match(/\[(.*)\]/)[1].replace(/"/g, '').replace(/,/g, '/');
+		window.location = __parseUrlSearch(tags_str);
 	    })
 	    .bind('removeTag', function(tag) {
 		console.log('removeTag: ' + tag);
@@ -631,10 +664,9 @@ define([
 	    var resultCount,
 		messageString = "",
 		terms = {},
-		config = $("body").data("bbx").config,	    
-		terms = url.match(/search\/(.*)$/)[1].split('/');
+		config = $("body").data("bbx").config;
 	    
-	    __parseMenuSearch(terms);
+	    __parseMenuSearch();
 	    
 	    // parse result message
 	    if (!_.isEmpty(data.medias)) {
@@ -803,7 +835,7 @@ define([
 	requestCopy: requestCopy,
 	mediaSearchSort: mediaSearchSort,
 	getTagCloud: getTagCloud,
-	__cleanTerms: __cleanTerms,
+	__getTagsFromUrl: __getTagsFromUrl,
 	parseThumb: parseThumb
     }
 });

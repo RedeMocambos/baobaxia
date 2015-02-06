@@ -13,7 +13,7 @@
     <% if (isLogged()) {
          if (isEditable) {
        %>
-    <a href="<%= Backbone.history.location.href.replace('bbx/search', 'media/gallery') %>/edit" alt="{% trans 'Multiple edit' %}"><div class="multiple-edit"></div></a>
+    <a href="<%= BBX.config.interfaceUrl %><%= BBX.config.repository %>/<%= BBX.config.mucua %>/media/gallery/<% print(BBX.tags.join('/')) %>/edit" alt="{% trans 'Multiple edit' %}"><div class="multiple-edit"></div></a>
     <%   }
        } %>
     

@@ -12,11 +12,8 @@ define([
 	render: function(data) {
 	    console.log('buscador');
 	    var config = $("body").data("bbx").config,
-		tags = BBX.config.subroute.split('bbx/search/');
+		tags = MediaFunctions.__getTagsFromUrl();
 
-	    // add tag classes for functional tags style
-	    tags = MediaFunctions.__cleanTerms(tags)
-	    
 	    _.each(tags, function(tag) {
 		$("body").addClass(tag);	  
 	    });
