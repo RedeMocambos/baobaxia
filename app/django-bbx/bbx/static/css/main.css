@@ -138,7 +138,7 @@ a {text-decoration: none;}
  */
 .media #content {background-color: #fff; border-radius: 5px;}
 .destaques {clear: both}
-#content .media {text-align: right}
+#content .media {text-align: right; clear: both}
 .destaques h3.title {color: #fff; font-size: 26px; margin: 4px}
 .media #buscador .media-display-type {display: none; }
 
