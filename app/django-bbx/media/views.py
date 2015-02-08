@@ -92,9 +92,10 @@ def media_list(request, repository, mucua, args=None, format=None):
         limiting_params = []
         if (args.find('limit') != -1):
             limiting_params.append(int(args.split('limit/')[1]))
-            args = args.split('limit/')[0]
+            args = args.split('limit/')[0]            
         else:
             limiting_params.append(int(default_limit))
+
         
         """ if passed, get ordering rules """
         ordering_sql = ''
@@ -487,7 +488,7 @@ def media_request_copy(request, repository, mucua, uuid):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response(_("Requested media of uuid %uuid of mucua %mucua" % (uuid) (mucua.upper())))
+    return Response(_(u"Requested media of uuid %s") % uuid)
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
@@ -498,4 +499,4 @@ def media_drop_copy(request, repository, mucua, uuid):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response(_("Dropped media of uuid %s of mucua %uuid of mucua %mucua " % (uuid) (mucua.upper())))
+    return Response(_(u"Dropped media of uuid %s" % uuid))
