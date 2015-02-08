@@ -259,15 +259,17 @@ define([
 		BBX.mucua.info = mucua.attributes;
 		if (typeof BBX.network === 'undefined') {
 		    var networkData = {
-			note: 'REDE',
-			image: '/images/rede.png',
-			description: '',
-			note: config.repository,
-			url: '#' + config.repository
+			mucua: {
+			    note: 'REDE',
+			    image: '/images/rede.png',
+			    description: '',
+			    note: config.repository,
+			    url: '#' + config.repository
+			}
 		    }
 		    BBX.network = networkData;
 		}
-
+		
 		// TODO: fix
 		// workaround to prevent error (not a bugfix!)
 		if (typeof mucua.attributes['network size'] === 'undefined') {
@@ -275,9 +277,11 @@ define([
 		} else {
 		    networkSize = mucua.attributes['network size'].match(reStripUnit)[1];
 		}
-		BBX.network.info = { 
-		    'network_size': networkSize
-		};
+		if (typeof BBX.network.info === 'undefined') {
+		    BBX.network.info = { 
+			'network_size': networkSize
+		    };
+		}
 		
 		// set mucua variables from API
 		mucuaData.totalDiskSpace = String(BBX.mucua.info['total disk space'])
@@ -349,11 +353,9 @@ define([
     /**
      *
      */
-    var renderSidebar = function(pageType) {
-	var page = page || '',
-	    config = $("body").data("bbx").config,
-	    mucuaData = {},
-	    networkData = {};
+    var renderSidebar = function() {
+	var config = $("body").data("bbx").config,
+	    mucuaData = {};
 	
 	console.log('render sidebar');
 	if (isLogged() &&
@@ -366,35 +368,42 @@ define([
 	    }
 	    $('#user-profile').html(_.template(UserProfileTpl, userData));
 	}
-	
-	// if accessing the 'rede' tab, prepare networkData
+
+	// fetch network data
 	if (config.mucua === 'rede' || config.mucua === '') {
-	    // if data not set at global, fill object
-	    if (typeof BBX.network === 'undefined') {
-		networkData = {
-		    mucua: {
-			note: 'REDE',
-			image: '/images/rede.png',
-			description: '',
-			note: config.repository,
-			url: '#' + config.repository,
-		    }
-		}
-	    } else {
-		networkData.mucua = BBX.network;
-	    }
 	    
-	    var networkResourcesLoad = setInterval(function() {
-		// if network not set at global, fetch data
-		if (typeof BBX.network !== 'undefined') { 
-		    if (typeof BBX.network.storageSize === 'undefined') {
-			networkData.mucua.storageSize = BBX.network.info.network_size;
-			BBX.network = networkData.mucua;	
+	    if (typeof BBX.mucua === 'undefined') {
+		// fetch mucua data
+		var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.MYMUCUA});
+		mucua.fetch({
+		    success: function() {
+			BBX.mucua = mucua.attributes;
 		    }
-		    networkData.config = config;
-		    $('#place-profile').html(_.template(MucuaProfileTpl, networkData));
-		    $('#mucua_image').attr('src', networkData.mucua.image);
-		    clearInterval(networkResourcesLoad);
+		});
+	    }
+
+	    var mucuaLoad = setInterval(function() {
+		if (typeof BBX.mucua !== 'undefined') {
+		    if (typeof BBX.network === 'undefined') {
+			__getMucuaResources(BBX.mucua.uuid);
+		    }		    
+		    clearInterval(mucuaLoad)
+		}
+	    }, 100);
+	    
+	    // when data is loaded, fill data
+	    var networkResourcesLoad = setInterval(function() {
+		if (typeof BBX.network !== 'undefined') {
+		    if (typeof BBX.network.info !== 'undefined') {
+			if (typeof BBX.network.info.network_size !== 'undefined') {
+			    var networkData = BBX.network;
+			    networkData.mucua.storageSize = BBX.network.info.network_size;
+			    networkData.config = config;
+			    $('#place-profile').html(_.template(MucuaProfileTpl, networkData));
+			    $('#mucua_image').attr('src', networkData.mucua.image);
+			    clearInterval(networkResourcesLoad);
+			}
+		    }
 		}
 	    }, 100);
 						   
@@ -440,7 +449,7 @@ define([
 				// check if that mucua has an image
 				var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid,
 				    mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
-				    $('#mucua_image').attr('src', imageSrc);
+					$('#mucua_image').attr('src', imageSrc);
 				});
 				BBX.mucua = mucuaData.mucua;			
 				
