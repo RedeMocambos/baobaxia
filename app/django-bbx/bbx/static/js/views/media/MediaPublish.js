@@ -119,7 +119,7 @@ define([
 	    
 	    var getMucuas = setInterval(function() {
 		if (typeof BBX.mucuaList !== 'undefined') {		  
-		    __parseOAOrigin(BBX.mucuaList);
+		    __parseOrigin(BBX.mucuaList);
 		    
 		    clearInterval(getMucuas);
 		} 
