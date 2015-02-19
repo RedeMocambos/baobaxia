@@ -241,7 +241,8 @@ define([
 	    $('thead td.type a').on('click', function(){ mediaSearchSort('type')});
 	    $('thead td.num_copies a').on('click', function(){ mediaSearchSort('num_copies')});
 	    $('thead td.is_local a').on('click', function(){ mediaSearchSort('is_local')});
-
+	    $('thead td.status a').on('click', function(){ mediaSearchSort('is_local,is_requested', true)});
+	    
 	    break;
 	}
 	_.each(valid_types, function (type_name) {
@@ -749,12 +750,16 @@ define([
 	$('.request-copy').on('click', function() { requestCopy(uuid) });   
     }
 
-    var mediaSearchSort = function(field) {
-	var url = Backbone.history.location.href,
+    var mediaSearchSort = function(field, multiple) {
+	var multiple = multiple || false,
+	    url = Backbone.history.location.href,
 	    matches = '',
 	    reUrl = '',
 	    matches = null,
 	    ordering_type = '/asc';
+
+	console.log('::::::::::::::::');
+	console.log(url);
 	
 	if (!url.match('bbx/search')) {
 	    //http://namaste/#mocambos/namaste/limit/100
@@ -767,25 +772,49 @@ define([
 	    }
 	}
 	
-	__check_ordering = function(url) {
-	    if (url.match('asc')) {
-		return '/desc';
-	    } else if (url.match('desc')) {
-		return '/asc';
+	__check_ordering = function(url, multiple) {
+	    var multiple = multiple || false;
+
+	    if (!multiple) {
+		if (url.match('/asc')) {
+		    return '/desc';
+		} else if (url.match('/desc')) {
+		    return '/asc';
+		} else {
+		    return '/asc';
+		}
 	    } else {
-		return '/asc'
+		if (url.indexOf('/asc') !== url.lastIndexOf('/asc') && url.indexOf('/asc') !== -1) {
+		    return '/desc';
+		} else if (url.indexOf('/desc') !== url.lastIndexOf('/desc') && url.indexOf('/desc') !== -1) {
+		    return '/asc';
+		} else {
+		    return '/asc';
+		}
+	    } 
+	}
+	
+	if (multiple) {
+	    field = field.split(',');
+	    if (field.length <= 1) {
+		multiple = false;
 	    }
 	}
-
+	
 	// bbx/search/quiabo/orderby/is_local/limit/100
 	if (url.match('/orderby/') && url.match('/limit/')) {
 	    console.log('order && limit');
 	    reUrl = 'orderby\/(.*)\/limit';
 	    matches = url.match(reUrl);
 	    old_field = matches[1];
-	    ordering_type = (old_field == field + ordering_type) ? __check_ordering(url) : ordering_type;
 	    
-	    url = url.replace(old_field, field + ordering_type);
+	    if (!multiple) {
+		ordering_type = (old_field == field + ordering_type) ? __check_ordering(url) : ordering_type;
+		url = url.replace(old_field, field + ordering_type);
+	    } else {
+		ordering_type = (field[0] + ordering_type + '/' + field[1] + ordering_type) ? __check_ordering(url, true) : ordering_type;
+		url = url.replace(old_field, field[0] + ordering_type + '/' + field[1] + ordering_type);
+	    }
 	    
         // bbx/search/quiabo/orderby/is_local
 	} else if (url.match('/orderby/') && !url.match('/limit/')) {
@@ -793,24 +822,39 @@ define([
 	    reUrl = 'orderby\/(.*)$';
 	    matches = url.match(reUrl);
 	    old_field = matches[1];
-	    
-	    ordering_type = (old_field == field + ordering_type) ? __check_ordering(url) : ordering_type;
-	    url = url.replace(old_field, field + ordering_type);
-	    
+
+	    if (!multiple) {
+		ordering_type = (old_field == field + ordering_type) ? __check_ordering(url) : ordering_type;
+		url = url.replace(old_field, field + ordering_type);
+	    } else {
+		ordering_type = (field[0] + ordering_type + '/' + field[1] + ordering_type) ? __check_ordering(url, true) : ordering_type;
+		url = url.replace(old_field, field[0] + ordering_type + '/' + field[1] + ordering_type);
+	    }
+	    	    
 	// bbx/search/quiabo/limit/100
 	} else if (url.match('/limit/')) {
 	    console.log('limit');
 	    reUrl = '(.*)\/limit\/(.*)';
 	    matches = url.match(reUrl);
-	    
-	    ordering_type = __check_ordering(url);
 
-	    url = matches[1] + '/orderby/' + field + ordering_type + '/limit/' + matches[2];
+	    if (!multiple) {
+		ordering_type = __check_ordering(url);
+		url = matches[1] + '/orderby/' + field + ordering_type + '/limit/' + matches[2];
+	    } else {
+		ordering_type = __check_ordering(url, true);
+		url = matches[1] + '/orderby/' + field[0] + ordering_type + '/' + field[1] + ordering_type + '/limit/' + matches[2];
+	    }
+	    
+	    
 	// bbx/search
 	} else {
-	    console.log('else');
-	    ordering_type = __check_ordering(url);
-	    url += '/orderby/' + field + ordering_type;
+	    if (!multiple) {
+		ordering_type = __check_ordering(url);
+		url += '/orderby/' + field + ordering_type;
+	    } else {
+		ordering_type = __check_ordering(url, true);
+		url += '/orderby/' + field[0] + ordering_type + '/' + field[1] + ordering_type;
+	    }
 	}
 	
 	window.location.replace(url);

@@ -11,6 +11,7 @@
       <td class="type"><a>{% trans "type" %}<br/><div class="orderby_asc"></div></a></td>
       <td class="num_copies"><a>{% trans "copies" %}<br/><div class="orderby_asc"></div></a></td>
       <td class="is_local"><a>{% trans "is local?" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="status"><a>{% trans "status" %}<br/><div class="orderby_asc"></div></a></td>
     </tr>
   </thead>
   <tbody>
@@ -43,12 +44,20 @@
 	<span><%= media.num_copies %></span>
       </td>
       <td class="is_local">
-	  <% if(media.is_local) { %>
-	  <span class="local">{% trans "yes" %}</span>	  
-	  <% } else { %>
-	  <span class="not_local">{% trans "no" %}</span>	  
-	  <% } %>
-	</span>
+	<% if(media.is_local) { %>
+	<span class="local">{% trans "yes" %}</span>	  
+	<% } else { %>
+	<span class="not_local">{% trans "no" %}</span>	  
+	<% } %>
+      </td>
+      <td class="status">
+	<% if (media.is_requested) { %>
+	<span class="requested">{% trans "requested" %}</span>
+	<% } else if (!media.is_requested && media.is_local) { %>
+	<span class="local">{% trans "is_local" %}</span>
+	<% } else { %>
+	<span class="not_local">{% trans "remote" %}</span>
+	<% } %>
       </td>
     </tr>
     <% }) %>

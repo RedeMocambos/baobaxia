@@ -117,9 +117,9 @@ a {text-decoration: none;}
  * sidebar
  */
 
-#user-profile {height: 50px}
-#sidebar #user-profile img {float: left; width: 45px; height: 45px; margin-top: 8px;}
-#sidebar #user-profile h4 {font-size: 12px; float: left; text-decoration: none; color: #D5C590 !important; margin: 0 auto; padding-top: 31px; padding-left: 8px}
+#user-profile {height: 50px; }
+#sidebar #user-profile img {float: left; width: 45px; height: 45px; margin-top: 8px}
+#sidebar #user-profile h4 {font-size: 12px; float: left; text-decoration: none; color: #D9C994 !important; margin: 0 auto; padding-top: 31px; padding-left: 8px;}
 #sidebar #link-login a {color: #D5C590; font-size: 12px; font-weight: bold}
 #user-profile a.logout {font-size:11px; color:#D5C590; float: right; background-image: url(/images/logout.png); width: 37px; height: 18px}
 
@@ -141,6 +141,7 @@ a {text-decoration: none;}
 #content .media {text-align: right; clear: both}
 .destaques h3.title {color: #fff; font-size: 26px; margin: 4px}
 .media #buscador .media-display-type {display: none; }
+#destaques-mucua .content-div {float: none}
 
 #header-bottom { color: #145B7A; font-weight: bold; font-size: 12px; }
 #header #header-results {float: left;}
@@ -167,7 +168,6 @@ a {text-decoration: none;}
  */
 #medias-length {display: none; margin-top: 10px}
 .bbx #medias-length {display: block }
-#media-results div.media-list {margin-left: 4%}
 #content .media-list table {width: 100%; font-size: 12px; text-align: center}
 #content .media-list thead td {font-weight: bold; font-size: 15px; text-align: center !important }
 #content .media-list thead a {cursor: pointer }
@@ -188,6 +188,10 @@ a {text-decoration: none;}
 #content .media-list tbody td.is_local {width: 4%; color: #34A700; font-weight: bold }
 .is_local .local {color: #34a700}
 .is_local .not_local {color: #a73400}
+td.status {font-weight: bold}
+.status .local {color: #34a700}
+.status .not_local {color: #a73400}
+.status .requested {color: #a7a700}
 #content .media .media-line a {color: #145B7A; text-align: left}
 .media-line td .icon-type {width: 21px; height: 21px; float: none !important}
 
@@ -204,11 +208,11 @@ a {text-decoration: none;}
 .media-box .license {color: #b96}
 .media-box a {color: #2E7E36}
 .media-box a:hover {color: #005500}
-.media-box .image {float: left}
+.media-box .image {float: left; width: 100%}
 .media-box .image img,
 .media-box .image audio,
 .media-box .image video {width: 192px; height: 130px;} 
-.media-box .image img.image-tmp { width: 20px; height: 16px; margin-right: 85px; margin-top: 50px}
+.media-box .image img.image-tmp { width: 20px; height: 16px; margin-top: 50px}
 .media-box .image img.arquivo { width: 16px; height: 18px}
 .media-box .edit {position: absolute; margin-top: -2px; margin-left: 175px; padding-bottom: 1px; padding-left: 3px; background-color: #F4EFDD; border-radius: 4px; z-index: 1}
 .media-box .icon-media {margin-top: 55px; width: 100%}
