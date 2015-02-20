@@ -193,8 +193,11 @@ class Media(models.Model):
         from repository.models import git_annex_where_is
         
         data = git_annex_where_is(self)
-        whereis = json.loads(data)
-        self.num_copies = len(whereis[u'whereis'])
+        try:
+            whereis = json.loads(data)
+            self.num_copies = len(whereis[u'whereis'])
+        except ValueError:
+            self.num_copies = 1
 
     def where_is(self):
         from repository.models import git_annex_where_is
@@ -280,7 +283,7 @@ class Media(models.Model):
 
     def save(self, *args, **kwargs):
         self.set_is_local()
-        if self.pk is not None:
+        if self.pk is not None and self.pk is not "":
             self._set_num_copies()
         self.url = self.get_url()
         super(Media, self).save(*args, **kwargs)

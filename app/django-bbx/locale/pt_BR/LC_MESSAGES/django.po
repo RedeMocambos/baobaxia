@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-19 12:57-0200\n"
+"POT-Creation-Date: 2015-02-20 16:51-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -287,6 +287,14 @@ msgstr "Licença"
 #: bbx/templates/media/MediaPublish.html:22
 msgid "File type"
 msgstr "Tipo de arquivo"
+
+#: bbx/templates/media/MediaGalleryCreateErrorMessage.html:2
+msgid "Error while inserting media: "
+msgstr "Erro ao criar a mídia: "
+
+#: bbx/templates/media/MediaGalleryCreateMessage.html:2
+msgid "Media inserted: "
+msgstr "Mídia inserida: "
 
 #: bbx/templates/media/MediaGalleryEdit.html:4
 msgid "Edit gallery"

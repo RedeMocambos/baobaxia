@@ -367,11 +367,12 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
  * media gallery
  */
 
-#media_gallery {padding: 4px}
+#media_gallery {padding: 10px}
 #media_gallery-edit input {width: 180px}
 #media_gallery #media_file_input {display: none}
 #media_gallery #messages span {font-size: 12px; color: #999}
 #media_gallery #progress .bar {height: 18px; background: green; width: 100px}
+#media_gallery #messages span.error {color: #ff4433; font-size: 12px}
 
 #media_gallery-edit {padding: 4px}
 #media-gallery-edit table {border-colapse: colapse}
