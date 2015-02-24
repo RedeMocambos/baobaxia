@@ -30,7 +30,7 @@ class MediaFileSerializer(serializers.ModelSerializer):
         model = Media
         fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
                   'format', 'license', 'media_file', 'url', 'origin',
-                  'repository', 'tags')
+                  'repository')
         depth = 1
 
     def getJSON(self):
