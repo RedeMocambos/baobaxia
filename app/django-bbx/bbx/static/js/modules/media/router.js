@@ -14,7 +14,7 @@ define([
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    'gallery': 'gallery_create',
-	    'gallery/:tags/edit': 'gallery_edit',
+	    'gallery/*tags/edit': 'gallery_edit',
 	    '': 'publish',
 	    '*': 'publish',
 	    ':uuid': 'view',
