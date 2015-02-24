@@ -14,12 +14,13 @@ define([
 ], function($, _, JQueryForm, Backbone, FileUpload, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryEditTpl, MediaGalleryEditItemTpl){
     
     var MediaGalleryEdit = Backbone.View.extend({	
-	render: function(subroute){
+	render: function(subroute, limit){
 	    var config = $("body").data("bbx").config,
-		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute,
+		limit = (limit) ? '/limit/' + limit : '',
+		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute + limit,
 		urlToken = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/token",
 		mediaToken = new MediaModel([], {url: urlToken});
-	    
+	    console.log(url);
 	    BBXFunctions.renderSidebar();
 	    MediaFunctions.getMediaGallery(url);
 	    BBXFunctions.renderUsage();
