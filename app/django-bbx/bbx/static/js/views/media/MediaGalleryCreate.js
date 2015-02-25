@@ -11,8 +11,10 @@ define([
     'modules/mucua/collection',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreate.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEdit.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html'
-], function($, _, JQueryForm, Backbone, FileUpload, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryCreateTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl){
+    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateErrorMessage.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage.html'
+], function($, _, JQueryForm, Backbone, FileUpload, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryCreateTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaGalleryCreateErrorMessageTpl, MediaGalleryCreateMessageTpl){
     
     var MediaGalleryCreate = Backbone.View.extend({	
 	render: function(){
@@ -59,12 +61,17 @@ define([
 		    dataType: 'json',
 		    url: url,
 		    
-		    done: function(e, data) {
-			$('#messages').append('<span>Media inserted: ' + data.result.uuid + '</span><br/>');
+		    done: function(e, dataResult) {
+			var data = {
+			    media: {
+				uuid: dataResult.result.uuid
+			    }
+			};
+			$('#messages').append(_.template(MediaGalleryCreateMessageTpl, data));
 			var overallProgress = $('#fileupload').fileupload('progress');
 			if (overallProgress.loaded === overallProgress.total) {
 			    var terms = $('#tags').val().replace(',', '/'),
-				gallery_url = config.interfaceUrl + config.MYREPOSITORY + '/' + data.result.origin + '/media/gallery/' + terms + '/edit';
+				gallery_url = config.interfaceUrl + config.MYREPOSITORY + '/' + dataResult.result.origin + '/media/gallery/' + terms + '/edit';
 			    
 			    window.location.replace(gallery_url);
 			}
@@ -78,7 +85,12 @@ define([
 			);
 		    },
 		    
-		    error: function() {
+		    error: function(jqXHR, textStatus, errorThrown) {
+			var data = {
+			    errorMessage: textStatus,
+			    errorThrown: errorThrown
+			};
+			$('#messages').append(_.template(MediaGalleryCreateErrorMessageTpl, data));
 			console.log('error at upload');
 		    }
 		});

@@ -14,7 +14,7 @@ define([
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    'gallery': 'gallery_create',
-	    'gallery/:tags/edit': 'gallery_edit',
+	    'gallery/*tags/edit': 'gallery_edit',
 	    '': 'publish',
 	    '*': 'publish',
 	    ':uuid': 'view',
@@ -78,13 +78,20 @@ define([
 	    
 	    var repository = this.__getRepository(),
 		mucua = this.__getMucua(),
-		mediaGalleryEditView = new MediaGalleryEditView();
+		mediaGalleryEditView = new MediaGalleryEditView(),
+		limit = '';
 	    
 	    BBXFunctions.renderCommon(repository, mucua);
 	    BBXFunctions.setNavigationVars(repository, mucua);
 	    BBXFunctions.renderCommon('media');
 	    
-	    mediaGalleryEditView.render(subroute);	    
+	    if (subroute.match('limit')) {
+		var matches = subroute.split('/limit/');
+		subroute = matches[0];
+		limit = matches[1];
+	    }
+	    
+	    mediaGalleryEditView.render(subroute, limit);	    
 	    
 	},
 	    

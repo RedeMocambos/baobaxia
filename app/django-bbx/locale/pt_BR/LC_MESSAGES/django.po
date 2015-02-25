@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-05 19:38-0200\n"
+"POT-Creation-Date: 2015-02-20 16:51-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -148,7 +147,7 @@ msgstr "ver como grade"
 msgid "view as list"
 msgstr "ver como lista"
 
-#: bbx/templates/common/Header.html:18
+#: bbx/templates/common/Header.html:16
 #: bbx/templates/media/MediaGalleryEdit.html:20
 msgid "Multiple edit"
 msgstr "Edição múltipla"
@@ -264,24 +263,38 @@ msgid "Create new gallery"
 msgstr "Publicar nova galeria"
 
 #: bbx/templates/media/MediaGalleryCreate.html:20
+#: bbx/templates/media/MediaPublish.html:11
+#: bbx/templates/media/MediaPublish.html:76
+msgid "Origin"
+msgstr "Origem"
+
+#: bbx/templates/media/MediaGalleryCreate.html:25
 msgid "Gallery name (tags)"
 msgstr "Nome da galeria (tags)"
 
-#: bbx/templates/media/MediaGalleryCreate.html:23
+#: bbx/templates/media/MediaGalleryCreate.html:28
 msgid "Title of medias:"
 msgstr "Título das mídias"
 
-#: bbx/templates/media/MediaGalleryCreate.html:28
+#: bbx/templates/media/MediaGalleryCreate.html:33
 #: bbx/templates/media/MediaGalleryEdit.html:14
-#: bbx/templates/media/MediaPublish.html:78
+#: bbx/templates/media/MediaPublish.html:82
 #: bbx/templates/media/MediaView.html:38
 msgid "License"
 msgstr "Licença"
 
-#: bbx/templates/media/MediaGalleryCreate.html:39
-#: bbx/templates/media/MediaPublish.html:17
+#: bbx/templates/media/MediaGalleryCreate.html:44
+#: bbx/templates/media/MediaPublish.html:22
 msgid "File type"
 msgstr "Tipo de arquivo"
+
+#: bbx/templates/media/MediaGalleryCreateErrorMessage.html:2
+msgid "Error while inserting media: "
+msgstr "Erro ao criar a mídia: "
+
+#: bbx/templates/media/MediaGalleryCreateMessage.html:2
+msgid "Media inserted: "
+msgstr "Mídia inserida: "
 
 #: bbx/templates/media/MediaGalleryEdit.html:4
 msgid "Edit gallery"
@@ -296,7 +309,7 @@ msgid "Name of media"
 msgstr "Nome da mídia"
 
 #: bbx/templates/media/MediaGalleryEdit.html:13
-#: bbx/templates/media/MediaPublish.html:67
+#: bbx/templates/media/MediaPublish.html:71
 #: bbx/templates/media/MediaView.html:22
 msgid "Date"
 msgstr "Data"
@@ -358,13 +371,29 @@ msgstr "cópias"
 msgid "is local?"
 msgstr "é local?"
 
-#: bbx/templates/media/MediaList.html:47
+#: bbx/templates/media/MediaList.html:14
+msgid "status"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:48
 msgid "yes"
 msgstr "sim"
 
-#: bbx/templates/media/MediaList.html:49
+#: bbx/templates/media/MediaList.html:50
 msgid "no"
 msgstr "não"
+
+#: bbx/templates/media/MediaList.html:55
+msgid "requested"
+msgstr "requisitado"
+
+#: bbx/templates/media/MediaList.html:57
+msgid "is_local"
+msgstr "local"
+
+#: bbx/templates/media/MediaList.html:59
+msgid "remote"
+msgstr "remoto"
 
 #: bbx/templates/media/MediaMocambola.html:4
 msgid "content published by mocambola"
@@ -374,54 +403,50 @@ msgstr "conteúdo publicado pel@ mocambola"
 msgid "new content"
 msgstr "novo conteúdo"
 
-#: bbx/templates/media/MediaPublish.html:11
+#: bbx/templates/media/MediaPublish.html:16
 msgid "Title:"
 msgstr "Título:"
 
-#: bbx/templates/media/MediaPublish.html:13
+#: bbx/templates/media/MediaPublish.html:18
 msgid "Tags:"
 msgstr "Tags:"
 
-#: bbx/templates/media/MediaPublish.html:30
+#: bbx/templates/media/MediaPublish.html:35
 #: bbx/templates/media/MediaView.html:84
 msgid "No preview available"
 msgstr "Sem visualização disponível"
 
-#: bbx/templates/media/MediaPublish.html:48
+#: bbx/templates/media/MediaPublish.html:53
 #: bbx/templates/media/MediaView.html:114
 msgid "UUID:"
 msgstr "UUID:"
 
-#: bbx/templates/media/MediaPublish.html:62
+#: bbx/templates/media/MediaPublish.html:66
 msgid "Author"
 msgstr "Author"
 
-#: bbx/templates/media/MediaPublish.html:72
-msgid "Origin"
-msgstr "Origem"
-
-#: bbx/templates/media/MediaPublish.html:76
+#: bbx/templates/media/MediaPublish.html:80
 #: bbx/templates/media/MediaView.html:30
 msgid "Format"
 msgstr "Formato"
 
-#: bbx/templates/media/MediaPublish.html:86
+#: bbx/templates/media/MediaPublish.html:90
 msgid "Availability"
 msgstr "Disponibilidade"
 
-#: bbx/templates/media/MediaPublish.html:88
+#: bbx/templates/media/MediaPublish.html:92
 msgid "Description"
 msgstr "Descrição"
 
-#: bbx/templates/media/MediaPublish.html:99
+#: bbx/templates/media/MediaPublish.html:103
 msgid "View media"
 msgstr "Ver mídia"
 
-#: bbx/templates/media/MediaPublish.html:106
+#: bbx/templates/media/MediaPublish.html:110
 msgid "Update"
 msgstr "Atualizar"
 
-#: bbx/templates/media/MediaPublish.html:106
+#: bbx/templates/media/MediaPublish.html:110
 msgid "Upload file"
 msgstr "Subir arquivo"
 
@@ -593,21 +618,21 @@ msgstr "Nova mídia criada"
 msgid "Revision is"
 msgstr "Revisão é"
 
-#: media/views.py:286
+#: media/views.py:287
 msgid "updated media - OK"
 msgstr "mídia atualizada - OK"
 
-#: media/views.py:289 media/views.py:356
+#: media/views.py:290 media/views.py:362
 msgid "error while creating media"
 msgstr "erro ao criar a mídia"
 
-#: media/views.py:485
-msgid "Requested media of uuid %uuid of mucua %mucua"
-msgstr "Mídia de uuid %uuid requisitada da mucua %mucua"
+#: media/views.py:491
+msgid "Requested media of uuid %s"
+msgstr "Mídia de uuid %uuid requisitada"
 
-#: media/views.py:496
-msgid "Dropped media of uuid %s of mucua %uuid of mucua %mucua "
-msgstr "Removida mídia de uuid %uuid da mucua %mucua "
+#: media/views.py:502
+msgid "Dropped media of uuid %s"
+msgstr "Removida mídia de uuid %uuid"
 
 #: mocambola/views.py:31
 msgid "User don\t exists"

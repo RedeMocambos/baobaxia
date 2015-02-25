@@ -91,10 +91,11 @@ def media_list(request, repository, mucua, args=None, format=None):
         default_limit = 20
         limiting_params = []
         if (args.find('limit') != -1):
-            limiting_params.append(int(args.split('limit/')[1]))
-            args = args.split('limit/')[0]            
+            limiting_params = args.split('limit/')[1].split('/')
+            limiting_params = [ int(x) for x in limiting_params ]
+            args = args.split('limit/')[0]
         else:
-            limiting_params.append(int(default_limit))
+            limiting_params.append(default_limit)
 
         
         """ if passed, get ordering rules """
@@ -193,10 +194,14 @@ def media_list(request, repository, mucua, args=None, format=None):
         LEFT JOIN mucua_mucua mu \
           ON mu.id = m.origin_id \
         WHERE (" + origin_sql + " repository_id = ? ) " + term_sql + "  \
-        ORDER BY " + ordering_sql + "  \
-        LIMIT ?"
-        sql = sql.decode('utf-8')
+        ORDER BY " + ordering_sql
+
+        if len(limiting_params) == 1:
+            sql += " LIMIT ?"
+        else:
+            sql += " LIMIT ?,?"
         
+        sql = sql.decode('utf-8')
         params.extend(limiting_params)
         medias = Media.objects.raw(sql, params)
         
