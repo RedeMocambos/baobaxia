@@ -8,7 +8,9 @@ define([
     'modules/media/functions',
     'modules/media/model',
     'text!/templates/' + BBX.userLang + '/media/MediaPublish.html',
-], function($, _, jQueryCookie, jQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl){
+    'text!/templates/' + BBX.userLang + '/media/MediaConfirmRemoveMessage.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaRemoveMessage.html',
+], function($, _, jQueryCookie, jQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
     var MediaUpdate = Backbone.View.extend({
 	
 	__getFormData: function() {
@@ -105,6 +107,24 @@ define([
 		    $('#view-media').on('click', function() { 
 			window.location.href = urlMediaView;
 		    });
+		    $('#delete-media').on('click', function() {
+			var deleteMedia = confirm(MediaConfirmRemoveMessageTpl);
+			if (deleteMedia) {
+			    var urlDelete = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid + '/remove',
+				mediaDelete = new MediaModel([], {url: urlDelete}),
+				urlRedirect = config.interfaceUrl + config.repository + '/' +  config.mucua + '/bbx/search';
+			    
+			    mediaDelete.fetch({
+				success: function() {
+				    $('.buttons').prepend(MediaRemoveMessageTpl);
+				    setTimeout(function(){
+					window.location.href = urlRedirect;
+				    }, 2000);
+				}
+			    });
+			}	
+		    });
+		    
 		}
 	    });
 	},
