@@ -22,6 +22,7 @@ from bbx.settings import REPOSITORY_DIR, DEFAULT_MUCUA
 from bbx.utils import logger
 from repository.tasks import git_annex_get
 
+
 try:
     from django.utils.encoding import force_unicode  # NOQA
 except ImportError:
@@ -275,8 +276,6 @@ class Media(models.Model):
             async_result = git_annex_get.delay(get_file_path(self), os.path.basename(self.media_file.name))
             #logger.debug(async_result.get)
             #logger.debug(async_result.info)
-
-
 
     def save(self, *args, **kwargs):
         self.set_is_local()

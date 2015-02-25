@@ -8,6 +8,7 @@ urlpatterns = patterns(
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/url$', 'media_url'),   
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/whereis$', 'media_where_is'),   
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/drop$', 'media_drop_copy'),   
+    url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/remove$', 'media_remove'),   
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/request$', 'media_request_copy'),
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/token', 'media_token'),
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/last/' +

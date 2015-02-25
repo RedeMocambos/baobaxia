@@ -10,7 +10,7 @@ import exceptions
 
 from django.db import models
 from django.conf import settings
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
@@ -45,9 +45,28 @@ def git_media_post_save(instance, **kwargs):
                get_file_path(instance),
                os.path.join(mediapath, mediadata))
 
+# Connecting to Media signal
+@receiver(pre_delete, sender=Media)
+def git_media_post_delete(instance, **kwargs):
+    u"""Intercepta o sinal de *pre_delete* de objetos multimedia (*media*) e
+    remove o objeto do banco e do repositório."""
+    mediapath = get_file_path(instance)+'/'
+    mediadata = os.path.splitext(instance.get_file_name())[0] + '.json'
+    if os.path.isfile(os.path.join(mediapath, mediadata)): 
+        git_rm(mediadata, mediapath)
+    git_annex_drop(instance)
+    if os.path.isfile(os.path.join(mediapath, instance.get_file_name())):
+        git_rm(instance.get_file_name(), mediapath)
+    git_commit(instance.get_file_name(),
+               instance.author.username,
+               instance.author.email,
+               get_file_path(instance),
+               os.path.join(mediapath, mediadata))
+
 
 def get_default_repository():
     return Repository.objects.get(name=DEFAULT_REPOSITORY)
+
 
 def get_available_repositories():
     return Repository.objects.all()
@@ -82,7 +101,54 @@ def get_latest_media(repository=DEFAULT_REPOSITORY):
 
     cwd = os.path.join(repository_dir, current_repository.name)
     p1 = subprocess.Popen(
-        ['git', 'diff', '--pretty=format:', '--name-only', 'HEAD', last_sync],
+        ['git', 'diff', '--diff-filter=AM', '--pretty=format:', '--name-only', 'HEAD',
+         last_sync], cwd=cwd, stdout=PIPE
+    )
+    p2 = subprocess.Popen(["sort"], stdin=p1.stdout, stdout=PIPE)
+    p3 = subprocess.Popen(["uniq"], stdin=p2.stdout, stdout=PIPE)
+    p4 = subprocess.Popen(["grep", "json"], stdin=p3.stdout, stdout=PIPE)
+    p5 = subprocess.Popen(["grep", "-v", "mocambola"],
+                          stdin=p4.stdout, stdout=PIPE)
+    output, error = p5.communicate()
+    updated = [line.strip('\n') for line in output.splitlines()]
+    logger.info("Updated:\n%s", updated)
+    deleted = [line.strip('\n') for line in get_deleted_media()]
+    logger.info("Deleted:\n%s", deleted)
+    return list(set(updated) - set(deleted))
+
+
+def get_deleted_media(repository=DEFAULT_REPOSITORY):
+    u"""Retorna uma lista de caminhos dos medias removidos do repositório,
+    desde a ultima sincronização (last_sync)."""
+    try:
+        current_repository = Repository.objects.get(
+            name=repository)
+    except Repository.DoesNotExist:
+        return []
+    try:
+        last_sync_mark = open(
+            os.path.join(repository_dir, current_repository.name,
+                         'lastSync.txt'), 'r+')
+        last_sync = last_sync_mark.readline()
+        last_sync = last_sync.replace("'", "")
+    except IOError:
+        cwd = os.path.join(repository_dir, current_repository.name)
+        p1 = subprocess.Popen(['git', 'rev-list', 'HEAD'],
+                              cwd=cwd, stdout=PIPE)
+        p2 = subprocess.Popen(['tail', '-n 1'],
+                              stdin=p1.stdout, stdout=PIPE)
+        output, error = p2.communicate()
+        last_sync = output.rstrip()
+        #  Este é um exemplo do comando para pegar os ultimos medias
+        #  deletados desde last_sync 
+        #  git log --diff-filter=D --name-only
+        #  d703a3dfa2c7ca7c7d2e318833bf935..HEAD | grep json | sort | uniq |
+        #  grep -v mocambolas
+
+
+    cwd = os.path.join(repository_dir, current_repository.name)
+    p1 = subprocess.Popen(
+        ['git', 'log', '--diff-filter=D', '--name-only', last_sync+'..HEAD'],
         cwd=cwd, stdout=PIPE
     )
     p2 = subprocess.Popen(["sort"], stdin=p1.stdout, stdout=PIPE)
@@ -91,8 +157,7 @@ def get_latest_media(repository=DEFAULT_REPOSITORY):
     p5 = subprocess.Popen(["grep", "-v", "mocambola"],
                           stdin=p4.stdout, stdout=PIPE)
     output, error = p5.communicate()
-    return output
-
+    return [line.strip('\n') for line in output.splitlines()]
 
 def _get_available_folders(path):
     u"""Retorna a lista das pastas/repositórios"""
@@ -397,3 +462,32 @@ class RepositoryDoesNotExists(exceptions.Exception):
     def __init__(self, args=None):
         self.args = args
 
+
+def remove_deleted_media(repository=get_default_repository().name):
+    """Remove os midias no Django a partir do log do git."""
+    try:
+        repository = Repository.objects.get(
+            name=repository)
+    except Repository.DoesNotExist:
+        return None
+
+    logger.info(u">>> %s" % _('CLEANING'))
+    logger.info(u"%s: %s" % (_('Repository'),  repository))
+
+    from media.models import Media
+
+    try:
+        for deleted_media in get_deleted_media(repository):
+            logger.info(u"%s: %s" % (_('Deleting media'), serialized_media))
+            
+            try:
+                media = Media.objects.get(media_file=deleted_media)
+                media.delete()
+                logger.info(u"%s" % _('Media deleted.'))
+                
+            except Media.DoesNotExist:
+                #dumpclean(data)
+                logger.info(u"%s" % _('Media doesn\'t exist'))
+
+    except CommandError:
+        pass

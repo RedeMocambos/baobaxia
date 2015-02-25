@@ -500,3 +500,15 @@ def media_drop_copy(request, repository, mucua, uuid):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     return Response(_(u"Dropped media of uuid %s" % uuid))
+
+
+@api_view(['GET'])
+#@renderer_classes((BrowsableAPIRenderer))
+def media_remove(request, repository, mucua, uuid):
+    try:
+        media = Media.objects.get(uuid=uuid)
+        media.delete()
+    except Media.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    return Response(_(u"Removed media of uuid %s" % uuid))

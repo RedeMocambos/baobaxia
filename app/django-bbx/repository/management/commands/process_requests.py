@@ -33,7 +33,7 @@ class Command(BaseCommand):
             
             src_files = os.listdir(lmucua_dir)
             for file_name in src_files:
-                full_file_name = os.path.join(src, file_name)
+                full_file_name = os.path.join(lmucua_dir, file_name)
                 if (os.path.isfile(full_file_name)):
                     shutil.copy(full_file_name, requests_path)
                     # TODO: Need to git add

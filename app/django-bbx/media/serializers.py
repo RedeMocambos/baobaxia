@@ -143,43 +143,42 @@ def create_objects_from_files(repository=get_default_repository().name):
 
     logger.info(u">>> %s" % _('DESERIALIZING'))
     logger.info(u"%s: %s" % (_('Repository'),  repository))
-    logger.debug(u"%s \n %s" % (_('List of media found in repository..'), get_latest_media(repository).splitlines()))
+    #logger.debug(u"%s \n %s" % (_('List of media found in repository..'), get_latest_media(repository)))
     try:
-        for serialized_media in get_latest_media(repository).splitlines():
+        for serialized_media in get_latest_media(repository):
             logger.info(u"%s: %s" % (_('Serialized Media'), serialized_media))
             media_json_file_path = os.path.join(REPOSITORY_DIR,
                                                 repository.name,
                                                 serialized_media)
-            media_json_file = open(media_json_file_path)
-            data = JSONParser().parse(media_json_file)
-            
-            try:
-                media = Media.objects.get(uuid=data["uuid"])
-                serializer = MediaSerializer(media, data=data, partial=True)
-                print serializer.is_valid()
-                print serializer.errors
-                serializer.object.save()            
-                logger.info(u"%s" % _('This media already exist. Updated.'))
+            if os.path.isfile(media_json_file_path):
+                media_json_file = open(media_json_file_path)
+                data = JSONParser().parse(media_json_file)
                 
-            except Media.DoesNotExist:
-                #dumpclean(data)
-                serializer = MediaSerializer(data=data)
-                print serializer.is_valid()
-                print serializer.errors
-                serializer.object.save()
-                logger.info(u"%s" % _('New media created'))
-            
+                try:
+                    media = Media.objects.get(uuid=data["uuid"])
+                    serializer = MediaSerializer(media, data=data, partial=True)
+                    print serializer.is_valid()
+                    print serializer.errors
+                    serializer.object.save()            
+                    logger.info(u"%s" % _('This media already exist. Updated.'))
+                except Media.DoesNotExist:
+                    serializer = MediaSerializer(data=data)
+                    print serializer.is_valid()
+                    print serializer.errors
+                    serializer.object.save()
+                    logger.info(u"%s" % _('New media created'))
 
-            # Atualiza o arquivo lastSyncMark
-            path = os.path.join(REPOSITORY_DIR, repository.name)
-            output = subprocess.check_output(
-                ["git", "log", "--pretty=format:'%H'", "-n 1"],
-                cwd=path)
-            logger.debug(u"%s: %s" % (_('Revision is'), output))
-            logger.info('<<<')
-            last_sync_mark = open(os.path.join(path, 'lastSync.txt'), 'w+')
-            last_sync_mark.write(output)
-            last_sync_mark.close()
+        # Atualiza o arquivo lastSyncMark
+        path = os.path.join(REPOSITORY_DIR, repository.name)
+        output = subprocess.check_output(
+            ["git", "log", "--pretty=format:'%H'", "-n 1"],
+            cwd=path)
+        logger.debug(u"%s: %s" % (_('Revision is'), output))
+        logger.info('<<<')
+        last_sync_mark = open(os.path.join(path, 'lastSync.txt'), 'w+')
+        last_sync_mark.write(output)
+        last_sync_mark.close()
 
     except CommandError:
         pass
+
