@@ -61,7 +61,7 @@ def git_media_post_delete(instance, **kwargs):
                    instance.author.username,
                    instance.author.email,
                    get_file_path(instance),
-                   os.path.join(mediapath, mediadata))
+                   instance.get_repository())
 
 
 def get_default_repository():
