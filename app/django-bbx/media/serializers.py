@@ -168,17 +168,6 @@ def create_objects_from_files(repository=get_default_repository().name):
                     serializer.object.save()
                     logger.info(u"%s" % _('New media created'))
 
-        # Atualiza o arquivo lastSyncMark
-        path = os.path.join(REPOSITORY_DIR, repository.name)
-        output = subprocess.check_output(
-            ["git", "log", "--pretty=format:'%H'", "-n 1"],
-            cwd=path)
-        logger.debug(u"%s: %s" % (_('Revision is'), output))
-        logger.info('<<<')
-        last_sync_mark = open(os.path.join(path, 'lastSync.txt'), 'w+')
-        last_sync_mark.write(output)
-        last_sync_mark.close()
-
     except CommandError:
         pass
 

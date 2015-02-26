@@ -53,15 +53,15 @@ def git_media_post_delete(instance, **kwargs):
     mediapath = get_file_path(instance)+'/'
     mediadata = os.path.splitext(instance.get_file_name())[0] + '.json'
     if os.path.isfile(os.path.join(mediapath, mediadata)): 
+        git_annex_drop(instance)    
         git_rm(mediadata, mediapath)
-    git_annex_drop(instance)
     if os.path.isfile(os.path.join(mediapath, instance.get_file_name())):
         git_rm(instance.get_file_name(), mediapath)
-    git_commit(instance.get_file_name(),
-               instance.author.username,
-               instance.author.email,
-               get_file_path(instance),
-               os.path.join(mediapath, mediadata))
+        git_commit(instance.get_file_name(),
+                   instance.author.username,
+                   instance.author.email,
+                   get_file_path(instance),
+                   os.path.join(mediapath, mediadata))
 
 
 def get_default_repository():
@@ -478,16 +478,19 @@ def remove_deleted_media(repository=get_default_repository().name):
 
     try:
         for deleted_media in get_deleted_media(repository):
-            logger.info(u"%s: %s" % (_('Deleting media'), serialized_media))
+            logger.info(u"%s: %s" % (_('Deleting media'), deleted_media))
             
             try:
-                media = Media.objects.get(media_file=deleted_media)
-                media.delete()
+                fingerprint = os.path.join(repository_dir, repository.get_name(),
+                                           os.path.splitext(deleted_media)[0])
+                logger.info(u"%s: %s" % (_('Fingerprint'), fingerprint))
+                media = Media.objects.filter(media_file__startswith=fingerprint)
+                media[0].delete()
                 logger.info(u"%s" % _('Media deleted.'))
                 
-            except Media.DoesNotExist:
-                #dumpclean(data)
+            except (Media.DoesNotExist, IndexError):
                 logger.info(u"%s" % _('Media doesn\'t exist'))
 
-    except CommandError:
-        pass
+    except Media.DoesNotExist:
+        logger.info(u"%s" % _('Delete problem'))
+
