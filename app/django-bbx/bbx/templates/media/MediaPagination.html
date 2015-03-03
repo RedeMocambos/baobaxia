@@ -21,10 +21,7 @@ for (var page = 1; page <= totalPages; page++) { %>
       nextHtml = '<a class="next" href="' + urlNext + '">{% trans "next" %}</a>';
     } else {
       nextHtml = '';
-    }
-    console.log(urlNext);
-    console.log(urlBack);
-	       
+    }	       
     if (backPage > 0) {
       var backLimit = ((page - 1) * itensPerPage) - itensPerPage + 1,
       backOffset = itensPerPage,		       

@@ -9,7 +9,7 @@ define([
 	el: "body",    
 
 	render: function(subroute) {
-	    var config = $("body").data("bbx").config,
+	    var config = BBX.config,
 		url = config.apiUrl + '/rede/bbx/search/' + subroute;
 	    
 	    BBXFunctions.renderUsage();

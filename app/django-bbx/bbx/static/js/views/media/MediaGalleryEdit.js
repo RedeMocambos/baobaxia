@@ -15,7 +15,7 @@ define([
     
     var MediaGalleryEdit = Backbone.View.extend({	
 	render: function(subroute, limit){
-	    var config = $("body").data("bbx").config,
+	    var config = BBX.config,
 		limit = (limit) ? '/limit/' + limit : '',
 		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute + limit,
 		urlToken = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/token",

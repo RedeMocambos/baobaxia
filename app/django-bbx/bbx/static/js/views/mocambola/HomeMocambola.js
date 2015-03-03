@@ -11,7 +11,7 @@ define([
 	el: "body",    
 
 	__getMocambola: function(username, limit) {
-	    var config = $("body").data("bbx").config,
+	    var config = BBX.config,
 	    limit = limit || '',
 	    url = '',
 	    mocambola = null;
@@ -25,13 +25,13 @@ define([
 	    mocambola.fetch({
 		success: function() {
 		    var data = {};
-		    $("body").data("bbx").mocambola = mocambola.attributes;
+		    BBX.mocambola = mocambola.attributes;
 		}
 	    });
 	},
 
 	render: function(username, limit) {
-	    var config = $("body").data("bbx").config,
+	    var config = BBX.config,
 	    data = {},
 	    limit = limit || '';
 	    
@@ -43,14 +43,14 @@ define([
 	    this.__getMocambola(username);
 	    var mocambolaDOM = '';
 	    var getMocambolaLoad = setInterval(function() {
-		mocambolaDOM = $("body").data("bbx").mocambola;
+		mocambolaDOM = BBX.mocambola;
 		if ((typeof mocambolaDOM !== 'undefined') && (mocambolaDOM !== '')) {
 		    data.mocambola = mocambolaDOM;
 		    
 		    data.mocambola.avatar = BBXFunctions.getAvatar();
 		    $('#content').html(_.template(HomeMocambolaTpl, data));
 		    MediaFunctions.getMediaByMocambola('all', username, limit);
-		    $("body").data("bbx").mocambola = '';
+		    BBX.mocambola = '';
 		    clearInterval(getMocambolaLoad);
 		}
 	    }, 50);

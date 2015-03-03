@@ -11,7 +11,7 @@ define([
     var BuscadorView = Backbone.View.extend({
 	render: function(data) {
 	    console.log('buscador');
-	    var config = $("body").data("bbx").config,
+	    var config = BBX.config,
 		tags = MediaFunctions.__getTagsFromUrl();
 
 	    _.each(tags, function(tag) {

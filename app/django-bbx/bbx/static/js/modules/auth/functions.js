@@ -28,7 +28,7 @@ define([
     }
 
     var __getConfig = function() {
-	return $("body").data("bbx").config;
+	return BBX.config;
     }
 
     var __prepareLoginData = function() { 
@@ -53,17 +53,17 @@ define([
 	    .always(function(userData) {
 		if (userData.error === true) {
 		    $('#message-area').html(userData.errorMessage);
-		    $("body").data("bbx").loginError = userData.errorMessage;
+		    BBX.loginError = userData.errorMessage;
 		} else {
 		    $('#message-area').html(LoginOkTpl);
-		    $("body").data("bbx").userData = userData;
+		    BBX.config.userData = userData;
 		}
 	    });		
     }
 	
     var __getDefaultHome = function() {
 	// MAYBE, this should be a configurable field
-	var config = $("body").data("bbx"),
+	var config = BBX.config,
 	url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA;
 	return url;
     }
@@ -88,21 +88,20 @@ define([
 	//timeout nessa parte de baixo
 	var loginOK = setInterval(function() {
 	    var userData = {'name': 'userData',
-			    'values': $("body").data("bbx").userData
+			    'values': BBX.config.userData
 			   }
-	    
 	    if (typeof userData.values !== 'undefined') {
 		// set cookie that expires in one day
 		BBXFunctions.addToCookie(userData);
-		$('body').data('bbx').userData = '';
+		BBX.config.userData = userData;
 		
 		// redirect
 		$('#content').html('');
 		window.location.href = urlRedirect;
 		clearInterval(loginOK);
-	    } else if ($("body").data("bbx").loginError) {
+	    } else if (BBX.loginError) {
 		console.log('login falhou');
-		$("body").data("bbx").loginError = false;		    
+		BBX.loginError = false;		    
 		clearInterval(loginOK);
 	    }
 	}, 50);
@@ -112,7 +111,7 @@ define([
 	if ($.cookie('sessionBBX')) {
 	    $.removeCookie('sessionBBX');
 	}
-	$("body").data("bbx").userData = undefined;
+	BBX.userData = undefined;
 	$('#header').html('');
 	$('#content').html('');
 	$('#sidebar').detach();
@@ -138,7 +137,7 @@ define([
 			    if (userData.error === true) {
 				$('#message-area').html(UserCreationErrorTpl);				    
 			    } else {
-				$("body").data("bbx").userData = userData;
+				BBX.config.userData = userData;
 				doLogin(userData);
 			    }
 			})		

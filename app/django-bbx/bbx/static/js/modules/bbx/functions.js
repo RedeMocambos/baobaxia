@@ -19,26 +19,15 @@ define([
     'modules/mucua/model',
     'modules/repository/model',
     'modules/media/functions',
-    'json!config.json',
     'text!/templates/' + BBX.userLang + '/common/Content.html',
     'text!/templates/' + BBX.userLang + '/common/Sidebar.html',
     'text!/templates/' + BBX.userLang + '/common/UsageBar.html',
     'text!/templates/' + BBX.userLang + '/common/UserProfile.html',
     'text!/templates/' + BBX.userLang + '/common/MucuaProfile.html'
-], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
+], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
     
     var init = function() {	
-	if (typeof $("body").data("bbx") === 'undefined') {
-	    $("body").data("bbx", 
-			   {
-			       configLoaded: false
-			   });
-	}
-	
-	var configLoaded = $("body").data("bbx").configLoaded;
-	if (configLoaded === false) {
-	    __setConfig(DefaultConfig);
-	}
+	__setConfig(BBX.config);
 	BBXFunctions = this;
     }
     
@@ -118,7 +107,7 @@ define([
      */
     var getDefaultHome = function() {
 	// MAYBE, this should be a configurable field
-	var config = $("body").data("bbx").config,
+	var config = BBX.config,
 	    url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/bbx/search';
 	return url;
     }
@@ -146,7 +135,7 @@ define([
      */
     var renderCommon = function(name) {
 	var data = {},
-	    config = $("body").data("bbx").config,
+	    config = BBX.config,
 	    tags = [];
 	
 	data.config = config;
@@ -222,7 +211,7 @@ define([
 	    
 	    if (loadMucua === true) {
 		// load mucua
-		var config = $("body").data("bbx").config,
+		var config = __getConfig(),
 		mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.MYMUCUA});
 		mucua.fetch({
 		    success: function() {
@@ -241,7 +230,7 @@ define([
     }
     
     var __getMucuaResources = function(uuid) {
-	var config = $("body").data("bbx").config,
+	var config = __getConfig(),
 	    url = config.apiUrl + '/mucua/' + uuid + '/info',
 	    mucua = {};
 	
@@ -354,7 +343,7 @@ define([
      *
      */
     var renderSidebar = function() {
-	var config = $("body").data("bbx").config,
+	var config = __getConfig(),
 	    mucuaData = {};
 	
 	console.log('render sidebar');
@@ -528,7 +517,7 @@ define([
      * @return {None} don't return values
      */
     var __getMyMucua = function() {
-	var config = $("body").data("bbx").config;
+	var config = BBX.config;
 	if (typeof config.MYMUCUA === 'undefined') {
 	    var myMucua = new MucuaModel([], {url: config.apiUrl + '/mucua/'});
 	    myMucua.fetch({
@@ -547,7 +536,7 @@ define([
      * @return {None} don't return values (only by jQuery)
      */
     var __getDefaultRepository = function() {
-	var config = $("body").data("bbx").config;
+	var config = BBX.config;
 	if (typeof config.MYREPOSITORY === 'undefined') {
 	    var defaultRepository = new RepositoryModel([], {url: config.apiUrl + '/repository/'});
 	    defaultRepository.fetch({
@@ -565,7 +554,7 @@ define([
      * @return {None} don't return values (only by jQuery)
      */
     var __getRepositories = function() {
-	var config = $("body").data("bbx").config;
+	var config = BBX.config;
 	
 	// TODO: puxar lista real de repositorios
 	//var listRepositories = new RepositoryModel([], {url: Config.apiUrl + '/repository/list'});
@@ -583,8 +572,6 @@ define([
 	var jsConfig = jsConfig || '',
 	    config = jsConfig;
 	
-	$("body").data("bbx").config = jsConfig;
-	
 	__getMyMucua();
 	__getDefaultRepository();
 	__getRepositories();	
@@ -595,12 +582,15 @@ define([
 		typeof config.MYREPOSITORY !== 'undefined' &&
 		typeof config.repositoriesList !== 'undefined') {	
 		console.log('configs loaded!');
-		$("body").data("bbx").configLoaded = true;
 		BBX.config = config;
 		
 		clearInterval(loadData);
 	    }
 	}, 50);	    
+    }
+
+    var __getConfig = function() {
+	return BBX.config;
     }
 
     var setNavigationVars = function(repository, mucua, subroute) {
@@ -611,7 +601,7 @@ define([
 	    matchMedia = '',
 	    matchSearch = '',
 	    matchMocambola = '',
-	    config = $("body").data("bbx").config,
+	    config = __getConfig(),
 	    currentPage = Backbone.history.location.href;
 	
 	config.repository = repository;
@@ -647,12 +637,9 @@ define([
 	    }
 	}
 	
-	// 
 	if (config.subroute == '') {
 	    config.subroute = 'bbx/search';
-	}
-	
-	$("body").data("bbx").config = config;
+	}	
     }
 
     // static format: day/month/year

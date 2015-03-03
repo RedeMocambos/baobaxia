@@ -22,7 +22,7 @@ define([
 	},
 	
 	render: function() {
-	    var config = $("body").data("bbx").config,
+	    var config = BBX.config,
 		url = config.apiUrl + '/' + config.repository + '/mucuas',
 		mucuas = new MucuaModel([], {url: url}),
 		data = {};

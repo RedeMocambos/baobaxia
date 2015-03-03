@@ -49,7 +49,7 @@ define([
 	},
 
 	__updateMedia: function() {
-	    var config = $("body").data("bbx").config,   
+	    var config = BBX.config,   
 	    mediaData = getFormData(),
 	    media = null,
 	    options = {},
@@ -72,7 +72,7 @@ define([
 	    updateMedia = this.__updateMedia;
 	    
 	    // comeca acao da funcao render
-	    var config = $("body").data("bbx").config,   
+	    var config = BBX.config,   
 	    urlApi = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid,
 	    urlMediaView = config.interfaceUrl + config.repository + '/' +  config.mucua + '/media/' + uuid;
 	    BBXFunctions.renderSidebar();

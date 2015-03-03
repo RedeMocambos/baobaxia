@@ -40,7 +40,7 @@ define([
     }
 
     var __getConfig = function() {
-	return $("body").data("bbx").config;
+	return BBX.config;
     }
     
     var __parseResultsMessage = function(message) {
@@ -183,7 +183,7 @@ define([
 	var target = target || '.media-results .media',
 	    type = type || '',
 	    skipCookie = skipCookie || false,
-	    data = $('body').data('bbx').data,
+	    data = BBX.data,
 	    valid_types = ['list', 'grid'];
 	
 	if (typeof BBXFunctions === 'undefined') {
@@ -471,7 +471,7 @@ define([
 	    $(el).html(_.template(MediaDestaquesMucuaTpl));
 	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
 	    
-	    $('body').data('bbx').data = data;
+	    BBX.data = data;
 	    showMediaBy('grid', '#destaques-mucua .media');
 	}, {'width': 190, 'height': 132 });
     };
@@ -487,7 +487,7 @@ define([
 	    $(el).append(_.template(MediaDestaquesMucuaTpl));
 	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
 	    
-	    $('body').data('bbx').data = data;
+	    BBX.data = data;
 	    showMediaBy('grid', '#destaques-mucua .media', true);
 	}, {'width': 190, 'height': 132 });
     };
@@ -505,7 +505,7 @@ define([
 	    data.message = 'Nenhuma novidade em ' + config.mucua + '.';
 
 	    // TODO: quando tem mais de um bloco de dados (ex: ultimas novidades E conteudo destacado), pensar em como guardar duas ou mais listas de media
-	    $('body').data('bbx').data = data;
+	    BBX.data = data;
 	    showMediaBy('grid', '#novidades-mucua .media', true);
 	    //$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
 	    //$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
@@ -520,7 +520,7 @@ define([
 	    $('#content').append(_.template(MediaRelatedTpl));
 	    data.message = 'Nenhuma media relacionada encontrada.';
 
-	    $('body').data('bbx').data = data;
+	    BBX.data = data;
 	    showMediaBy('', '#media-related .media');
 	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
 	    $('.media-display-type .list').on('click', function(){ showByList()});	    
@@ -546,7 +546,7 @@ define([
 	    $('#content').append(_.template(MediaMocambolaTpl));
 	    data.message = 'Mocambola ainda nao publicou nenhum conteudo.';
 	    
-	    $('body').data('bbx').data = data;
+	    BBX.data = data;
 	    showMediaBy('', '#media-mocambola .media');
 
 	    if (url.match('limit')) {
@@ -605,7 +605,7 @@ define([
 	    var resultCount,
 		messageString = "",
 		terms = {},
-		config = $("body").data("bbx").config,	    
+		config = BBX.config,	    
 		terms = url.match(/search\/(.*)$/)[1].split('/');
 	    
 	    data.pageTitle = "Gallery edit";
@@ -679,7 +679,7 @@ define([
 	var callback = callback || false,
 	    media = null,
 	    options = {},	
-	    config = $("body").data("bbx").config,
+	    config = BBX.config,
 	    urlUpdateItem = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + mediaData.uuid;    
 	
 	media = new MediaModel([mediaData], {url: urlUpdateItem});
@@ -713,7 +713,7 @@ define([
 	    var resultCount,
 		messageString = "",
 		terms = {},
-		config = $("body").data("bbx").config;
+		config = BBX.config;
 	    
 	    __parseMenuSearch();
 	    
@@ -729,7 +729,7 @@ define([
 	    $('#content').html(_.template(MediaResultsTpl));
 	    data.message = 'Nenhuma media encontrada para essa busca';
 	    
-	    $('body').data('bbx').data = data;
+	    BBX.data = data;
 	    showMediaBy('', '#media-results .media');
 	    
 	    if (url.match('limit')) {

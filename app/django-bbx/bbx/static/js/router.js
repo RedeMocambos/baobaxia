@@ -1,19 +1,15 @@
-var BBX = {};
-
-BBX.userLang = null,
-BBX.reMatches = null,
-BBX.reLang = /([a-zA-Z]{2})[\-\_]([a-zA-Z]{2})/;    
-
-if (typeof BBX.config === 'undefined') {
-    BBX.userLang = navigator.language || navigator.userLanguage;
-} else {
-    BBX.userLang = BBX.config.userLang;
-}
-// normalize language code from 'xx-xx', 'xx_xx' or whatelse to 'xx_XX'
-BBX.reMatches = BBX.userLang.match(BBX.reLang);
-// splicit public (?)
-BBX.userLang = BBX.reMatches[1] + '_' + BBX.reMatches[2].toUpperCase();
-
+/***
+ * Roteador geral da interface
+ *
+ * - gerencia rotas recebidas pelo navegador e direciona para funções
+ * /[repositório]/[mucua]/[subrota] => chama funcao 'funcao_que_cuida_da_subrota()'
+ * 
+ * - Para algumas rotas, o roteador faz a função de controlador,
+ * já renderizando páginas, como a página de Login.
+ *
+ * - Para outras rotas mais numerosas, é chamado um roteador local do módulo. 
+ * Como exemplo, o módulo de media, ou todo o conteúdo relacionado a media.
+ */
 define([
     'jquery', 
     'backbone',
@@ -72,15 +68,10 @@ define([
 	    var indexView = new IndexView();
 	    indexView.render();
 	    
-	    var loadConfigs = setInterval(function() {
-		if ($("body").data("bbx").configLoaded === true) {
-		    var config = $("body").data("bbx").config,
-		    urlRedirect = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA;
-		    
-		    window.location.href = urlRedirect;
-		    clearInterval(loadConfigs);
-		}
-	    }, 50);  
+	    var config = BBX.config,
+		urlRedirect = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA;
+	    
+	    window.location.href = urlRedirect;
 	},
 	
 	sobre: function() {
@@ -182,15 +173,10 @@ define([
     var initialize = function(){
 	BBXFunctions.init();
 	// waits for bbx init() in order to load navigation and routing
-	var loadConfigs = setInterval(function() {
-	    if ($("body").data("bbx").configLoaded === true) {
-		new App.Router();
-		if (Backbone.history.handlers.length !== true) {
-		    Backbone.history.start();
-		}		
-		clearInterval(loadConfigs);		
-	    }
-	}, 30);
+	new App.Router();
+	if (Backbone.history.handlers.length !== true) {
+	    Backbone.history.start();
+	}		
     };
 
     return {

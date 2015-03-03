@@ -14,7 +14,7 @@ define([
     var MediaPublish = Backbone.View.extend({	
 	render: function(){
 	    var uploadFile = function() {
-		var config = $("body").data("bbx").config,
+		var config = BBX.config,
 		    // get media token
 		    url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/token",
 		    mediaToken = new MediaModel([], {url: url});
@@ -54,7 +54,7 @@ define([
 	    };
 	    
 	    var updateMedia = function(media) {
-		var config = $("body").data("bbx").config,
+		var config = BBX.config,
 		    url = config.interfaceUrl + config.repository + "/" + config.mucua + "/media/" + media.uuid + '/edit';
 		
 		document.location.href = url;
@@ -68,7 +68,7 @@ define([
 		$('select[name="origin"]').find('option:contains("' + BBX.config.MYMUCUA + '")').attr("selected",true);
 	    }
 	    
-	    var config = $("body").data("bbx").config,
+	    var config = BBX.config,
 		data = {},
 		url = '',
 		mediaToken = null,

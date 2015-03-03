@@ -19,7 +19,7 @@ define([
     var MediaGalleryCreate = Backbone.View.extend({	
 	render: function(){
 	    var data = {},
-		config = $("body").data("bbx").config,
+		config = BBX.config,
 		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/",
 		urlToken = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/token",
 		mediaToken = new MediaModel([], {url: urlToken}),
