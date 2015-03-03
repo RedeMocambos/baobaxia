@@ -362,8 +362,12 @@ define([
 	    success: function() {
 		var mediaData = {},
 		    medias = {};
-
-		parsePagination(url, limit, offset);
+		
+		// parse pagination only at search pages
+		if (url.match('/search')) {
+		    parsePagination(url, limit, offset);
+		}
+		
 		$('#content .loading-content').remove();
 		mediaData = {
 		    formatDate: function(date) {
