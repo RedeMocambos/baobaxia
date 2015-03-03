@@ -188,7 +188,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         if return_count:
             sql = "SELECT \
             m.id, \
-            count(m.uuid) as count "
+            count(DISTINCT m.uuid) as count "
 
         else :
             sql = "SELECT DISTINCT \
