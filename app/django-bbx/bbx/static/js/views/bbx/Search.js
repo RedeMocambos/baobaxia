@@ -10,10 +10,15 @@ define([
 
 	render: function(subroute) {
 	    var config = $("body").data("bbx").config,
-		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute;
+		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute,
+		limit = (subroute.match('limit/')) ? subroute.split('limit/')[1] : null;
 
+	    if (url.match('limit/')) {
+		url = url.split('/limit/')[0];
+	    }
+	    
 	    BBXFunctions.renderSidebar();
-	    MediaFunctions.getMediaSearch(url);
+	    MediaFunctions.getMediaSearch(url, limit);
 	    BBXFunctions.renderUsage();
 
 	    var focus = setInterval(function() {

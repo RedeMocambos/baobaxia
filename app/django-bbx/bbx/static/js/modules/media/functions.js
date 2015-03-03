@@ -23,6 +23,7 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaResults.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGrid.html',
     'text!/templates/' + BBX.userLang + '/media/MediaList.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaPagination.html',
     'text!/templates/' + BBX.userLang + '/media/MessageRequest.html',
     'text!/templates/' + BBX.userLang + '/common/ResultsMessage.html',
     'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html',
@@ -30,7 +31,7 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
-], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
+], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
     this.BBXFunctions = BBXFunctions;
     
     var init = function() {
@@ -256,6 +257,31 @@ define([
 	window.scrollTo(0, 0);
     }
 
+
+    var parsePagination = function(url, limit, offset) {
+	var limit = limit || 1,
+	    offset = offset || 20,
+	    config = __getConfig(),
+	    urlApi = url.split('/limit')[0] + '/count' || url + '/count',
+	    urlInterface = Backbone.history.location.href.split('/limit')[0],
+	    pagination = {
+		'totalMedia': null,
+		'itensPerPage': 20,
+		'limit': limit,
+		'offset': offset,
+		'totalPages': null,
+		'url': urlInterface
+	    },
+	    media = new MediaModel([], {url: urlApi});
+	media.fetch({
+	    success: function() {
+		pagination.totalMedia = media.attributes.count;
+		pagination.totalPages = Math.ceil(pagination.totalMedia / pagination.itensPerPage);
+		BBX.mediaPagination = pagination;
+		$('#pagination-top').html(_.template(MediaPaginationTpl, BBX.mediaPagination));
+	    }
+	});		    
+    }
     
     var getMediaTypes = function() {
 	return {
@@ -309,13 +335,37 @@ define([
 
     var getMedia = function(url, callback, params) {
 	var params = params || {},
-	    media = new MediaModel([], {url: url});
+	    media = new MediaModel([], {url: url}),
+	    limit = url.match('limit'),
+	    offset = null,
+	    pagination = null;
 	
-	$('#content').append('<div class="loading-content"><img src="images/buscando.gif" /></div>');	
+	// TODO: #122 - move to a separated function
+	// extract limit and offset
+	if (limit) {
+	    limit = url.split('limit/');
+	    if (typeof limit[1] !== 'undefined') {
+		limit = limit[1];
+		offset = limit.split('/');
+		if (typeof offset[1] !== 'undefined') {
+		    limit = parseInt(offset[0]);
+		    offset = parseInt(offset[1]);
+		} else {
+		    limit = parseInt(limit);
+		    offset = null;
+		}
+	    }
+	}
+		
+	$('#content').append('<div class="loading-content"><img src="images/buscando.gif" /></div>');
 	media.fetch({
 	    success: function() {
+		var mediaData = {},
+		    medias = {};
+
+		parsePagination(url, limit, offset);
 		$('#content .loading-content').remove();
-		var mediaData = {
+		mediaData = {
 		    formatDate: function(date) {
 			var newDate = '',
 			    re = /^(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)[\.0-9]*Z$/,
@@ -324,7 +374,6 @@ define([
 			return matches[3] + '/' + matches[2] + '/' + matches[1];
 		    }
 		};
-		var medias = {};
 		
 		$('#back-to-results').remove();
 
@@ -656,11 +705,10 @@ define([
     
     var getMediaSearch = function(url, limit) {
 	var limit = limit || '';
-	
 	if (limit !== '') {
 	    url += '/limit/' + limit;
 	}
-	console.log(url);
+	
 	getMedia(url, function(data) {
 	    var resultCount,
 		messageString = "",
@@ -758,9 +806,6 @@ define([
 	    matches = null,
 	    ordering_type = '/asc';
 
-	console.log('::::::::::::::::');
-	console.log(url);
-	
 	if (!url.match('bbx/search')) {
 	    //http://namaste/#mocambos/namaste/limit/100
 	    matches = url.match('(.*)/limit/(.*)$');
@@ -880,6 +925,7 @@ define([
 	mediaSearchSort: mediaSearchSort,
 	getTagCloud: getTagCloud,
 	__getTagsFromUrl: __getTagsFromUrl,
-	parseThumb: parseThumb
+	parseThumb: parseThumb,
+	parsePagination: parsePagination
     }
 });

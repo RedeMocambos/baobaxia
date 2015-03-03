@@ -1,4 +1,9 @@
 {% load i18n %}
+<%
+   if (config.subroute.match('limit')) {
+   config.subroute = config.subroute.split('/limit')[0];
+   }
+   %>
 <div id="menu">
   <p class="posicoes">{% trans "Menu" %}</p>
   <ul class="menu-itens">
