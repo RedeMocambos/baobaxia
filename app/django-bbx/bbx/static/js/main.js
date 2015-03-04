@@ -13,6 +13,10 @@ require.config({
 	'textext.core': {
 	    exports: ['textext']
 	},
+	'textext.ajax': {
+	    deps: ['textext'],
+	    exports: ['textext.ajax']
+	},
 	'textext.clear': {
 	    deps: ['textext'],
 	    exports: ['textext.clear']

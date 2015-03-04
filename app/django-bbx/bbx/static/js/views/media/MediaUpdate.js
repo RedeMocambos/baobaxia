@@ -14,7 +14,7 @@ define([
     var MediaUpdate = Backbone.View.extend({
 	
 	__getFormData: function() {
-	    var media = $('body').data('bbx').media,
+	    var media = BBX.media,
 	    fields = {};
 	    
 	    $('#form_media_publish :input').each(function() {
@@ -90,7 +90,7 @@ define([
 			page: 'MediaUpdate',
 			pageTitle: 'Editar conteúdo'
 		    }
-		    $('body').data('bbx').media = media;
+		    BBX.media = media;
 		    var compiledTpl = _.template(MediaPublishTpl, data);
 		    $('#content').html(compiledTpl);  
 		    

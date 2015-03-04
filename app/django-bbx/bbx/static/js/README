@@ -8,10 +8,11 @@ http://weblog.bocoup.com/organizing-your-backbone-js-application-with-modules/
 
 ------------------------------------------------------------------------------
 
-index.html	-> carregamento inicial
+index.html	-> carregamento inicial. Define variáveis principais e depois
+		carrega aplicação backbone/require.js
 
 ---
-js/app.js       -> inicializa a aplicacao e carrega o router 
+js/app.js       -> inicializa a aplicacao backbone e carrega o router 
 js/config.js	-> configurações gerais da interface
 js/main.js	-> define caminhos das libs para o require.js
 js/router.js	-> rotas principais
@@ -41,6 +42,11 @@ ex de templates:
 
 [django-app]/bbx/templates/media/MediaSearch.html
 [django-app]/bbx/templates/media/MediaResults.html
+
+Templates gerados irão para 
+[django-app]/bbx/static/templates/[lang_code]
+[django-app]/bbx/static/templates/pt_BR/LC_MESSAGES/media/MediaSearch.html
+[django-app]/bbx/static/templates/en_US/LC_MESSAGES/mocambola/HomeMocambola.html
 
 ---
 css/		-> pasta para arquivos css

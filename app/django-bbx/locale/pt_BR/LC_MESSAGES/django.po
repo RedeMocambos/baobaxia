@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-01 18:15-0300\n"
+"POT-Creation-Date: 2015-03-03 17:31-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -153,11 +153,11 @@ msgstr "ver como lista"
 msgid "Multiple edit"
 msgstr "Edição múltipla"
 
-#: bbx/templates/common/Menu.html:3
+#: bbx/templates/common/Menu.html:8
 msgid "Menu"
 msgstr "Menu"
 
-#: bbx/templates/common/Menu.html:9
+#: bbx/templates/common/Menu.html:14
 msgid "NETWORK"
 msgstr "REDE"
 
@@ -408,17 +408,15 @@ msgstr "conteúdo publicado pel@ mocambola"
 msgid "new content"
 msgstr "novo conteúdo"
 
-#: bbx/templates/media/MediaPagination.html:15
-#: bbx/templates/media/MediaPagination.html:18
+#: bbx/templates/media/MediaPagination.html:21
 msgid "next"
 msgstr "avançar"
 
-#: bbx/templates/media/MediaPagination.html:22
-#: bbx/templates/media/MediaPagination.html:24
+#: bbx/templates/media/MediaPagination.html:29
 msgid "back"
 msgstr "anterior"
 
-#: bbx/templates/media/MediaPagination.html:39
+#: bbx/templates/media/MediaPagination.html:47
 msgid "total:"
 msgstr "total:"
 
@@ -646,16 +644,19 @@ msgid "error while creating media"
 msgstr "erro ao criar a mídia"
 
 #: media/views.py:517
-msgid "Requested media of uuid %s"
+#, fuzzy, python-format
+msgid "Requested media of uuid %(uuid)s"
 msgstr "Mídia de uuid %uuid requisitada"
 
 #: media/views.py:528
-msgid "Dropped media of uuid %s"
+#, fuzzy, python-format
+msgid "Dropped media of uuid %(uuid)s"
 msgstr "Removida mídia de uuid %uuid"
 
 #: media/views.py:540
-msgid "Removed media of uuid %s"
-msgstr "Mídia de uuid %uuid requisitada"
+#, fuzzy, python-format
+msgid "Removed media of uuid %(uuid)s"
+msgstr "Mídia de uuid %(uuid)s requisitada"
 
 #: mocambola/views.py:31
 msgid "User don\t exists"

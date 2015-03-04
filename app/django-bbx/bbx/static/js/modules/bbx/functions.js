@@ -581,9 +581,7 @@ define([
 	    if (typeof config.MYMUCUA !== 'undefined' &&
 		typeof config.MYREPOSITORY !== 'undefined' &&
 		typeof config.repositoriesList !== 'undefined') {	
-		console.log('configs loaded!');
 		BBX.config = config;
-		
 		clearInterval(loadData);
 	    }
 	}, 50);	    
@@ -639,7 +637,7 @@ define([
 	
 	if (config.subroute == '') {
 	    config.subroute = 'bbx/search';
-	}	
+	}
     }
 
     // static format: day/month/year

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-01 18:15-0300\n"
+"POT-Creation-Date: 2015-03-03 17:31-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -153,11 +153,11 @@ msgstr ""
 msgid "Multiple edit"
 msgstr ""
 
-#: bbx/templates/common/Menu.html:3
+#: bbx/templates/common/Menu.html:8
 msgid "Menu"
 msgstr ""
 
-#: bbx/templates/common/Menu.html:9
+#: bbx/templates/common/Menu.html:14
 msgid "NETWORK"
 msgstr ""
 
@@ -395,17 +395,15 @@ msgstr ""
 msgid "new content"
 msgstr ""
 
-#: bbx/templates/media/MediaPagination.html:15
-#: bbx/templates/media/MediaPagination.html:18
+#: bbx/templates/media/MediaPagination.html:21
 msgid "next"
 msgstr ""
 
-#: bbx/templates/media/MediaPagination.html:22
-#: bbx/templates/media/MediaPagination.html:24
+#: bbx/templates/media/MediaPagination.html:29
 msgid "back"
 msgstr ""
 
-#: bbx/templates/media/MediaPagination.html:39
+#: bbx/templates/media/MediaPagination.html:47
 msgid "total:"
 msgstr ""
 
@@ -634,17 +632,17 @@ msgstr ""
 
 #: media/views.py:517
 #, python-format
-msgid "Requested media of uuid %s"
+msgid "Requested media of uuid %(uuid)s"
 msgstr ""
 
 #: media/views.py:528
 #, python-format
-msgid "Dropped media of uuid %s"
+msgid "Dropped media of uuid %(uuid)s"
 msgstr ""
 
 #: media/views.py:540
 #, python-format
-msgid "Removed media of uuid %s"
+msgid "Removed media of uuid %(uuid)s"
 msgstr ""
 
 #: mocambola/views.py:31

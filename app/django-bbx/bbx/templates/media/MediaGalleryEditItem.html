@@ -31,7 +31,7 @@
     
     <input type="text" name="name-<%= media.uuid %>" value="<%= media.name %>" class="name <%= media.uuid %>" /><br/>
     <span class="edit-link">
-      <a href="<% print (baseUrlEdit + media.uuid + '/edit') %>">{% trans "edit media" %}</a>
+      <a href="<% print(BBX.config.interfaceUrl + BBX.config.MYREPOSITORY + '/' + media.origin + '/media/' + media.uuid + '/edit') %>">{% trans "edit media" %}</a>
     </span>
   </td>
 

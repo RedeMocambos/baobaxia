@@ -154,7 +154,6 @@ define([
 		var textext = $(e.target).textext()[0],
 		    tags = textext.hiddenInput().val(),
 		    tags_str = '';
-		    
 		tags_str = tags.match(/\[(.*)\]/)[1].replace(/"/g, '').replace(/,/g, '/');
 		window.location = __parseUrlSearch(tags_str);
 	    })
