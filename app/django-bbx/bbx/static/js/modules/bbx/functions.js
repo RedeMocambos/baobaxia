@@ -568,7 +568,7 @@ define([
      * @return {None} don't return values (only by jQuery)
      */
     var __setConfig = function(jsConfig) {
-	// configuracoes padrao: config.json
+	// configuracoes padrao: config.js
 	var jsConfig = jsConfig || '',
 	    config = jsConfig;
 	

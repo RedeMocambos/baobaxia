@@ -52,6 +52,7 @@
 	<% } else { %> 
 	<p class="uuid">{% trans "UUID:" %} <%= media.uuid %></p>
 	<% } %>
+	<div id="messages"></div>	
       </div>
       <!-- end of bloco-1 -->
 
@@ -91,7 +92,6 @@
 	<br/>
 	<p class="note"><span class="title">{% trans "Description" %}</span><br/>
 	<textarea name="note" id="note"><%= media.note %></textarea>
-
       </div>
     <!-- end of bloco-2 -->    
 

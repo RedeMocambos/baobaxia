@@ -370,6 +370,7 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media_publish .buttons {clear: both}
 .media .buttons h3.message {color: #145B7A; text-align: right}
 .MediaPublish .bloco-1 .tags {display: none}
+#media_publish #messages .error-bar {background-color: #f99; height: 5px}
 
 /*
  * media gallery

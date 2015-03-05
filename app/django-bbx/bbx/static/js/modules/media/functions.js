@@ -284,7 +284,6 @@ define([
     
     var getMediaTypes = function() {
 	return {
-	    '': '',
 	    'audio': 'audio',
 	    'imagem': 'imagem',
 	    'video': 'video',
@@ -292,7 +291,7 @@ define([
 	}
     };
 
-    var getTypeByMime = function(mime) {	
+    var getValidMimeTypes = function() {
 	var valid_mimetypes = {
 	    'audio/ogg': 'audio',
 	    'audio/mpeg': 'audio',
@@ -304,14 +303,21 @@ define([
 	    'video/mp4': 'video',
 	    'video/webm': 'video',
 	    'application/pdf': 'arquivo'
-	},
-	type = 'arquivo';
-	
-	if (valid_mimetypes.hasOwnProperty(mime)) {
-	    type = valid_mimetypes[mime];
 	}
-	
-	return type;
+
+	return valid_mimetypes;
+    }
+
+    var getTypeByMime = function(mimetype) {
+	var valid_mimetypes = getValidMimeTypes(),
+	    type = null;
+
+	// se o arquivo não estiver listado nos mime type válidos, retorna false
+	if (valid_mimetypes.hasOwnProperty(mimetype)) {
+	    return valid_mimetypes[mimetype];
+	} else {
+	    return false;
+	}
     };
     
     var getMediaLicenses = function() {
@@ -922,6 +928,7 @@ define([
 	getMediaRelated: getMediaRelated,
 	getMediaTypes: getMediaTypes,
 	getMediaLicenses: getMediaLicenses,
+	getValidMimeTypes: getValidMimeTypes,
 	getTypeByMime: getTypeByMime,
 	bindRequest: bindRequest,
 	requestCopy: requestCopy,
