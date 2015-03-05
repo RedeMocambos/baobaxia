@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 17:31-0300\n"
+"POT-Creation-Date: 2015-03-05 16:31-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -269,7 +269,7 @@ msgstr "Publicar nova galeria"
 
 #: bbx/templates/media/MediaGalleryCreate.html:20
 #: bbx/templates/media/MediaPublish.html:11
-#: bbx/templates/media/MediaPublish.html:76
+#: bbx/templates/media/MediaPublish.html:77
 msgid "Origin"
 msgstr "Origem"
 
@@ -283,7 +283,7 @@ msgstr "Título das mídias"
 
 #: bbx/templates/media/MediaGalleryCreate.html:33
 #: bbx/templates/media/MediaGalleryEdit.html:14
-#: bbx/templates/media/MediaPublish.html:82
+#: bbx/templates/media/MediaPublish.html:83
 #: bbx/templates/media/MediaView.html:38
 msgid "License"
 msgstr "Licença"
@@ -314,7 +314,7 @@ msgid "Name of media"
 msgstr "Nome da mídia"
 
 #: bbx/templates/media/MediaGalleryEdit.html:13
-#: bbx/templates/media/MediaPublish.html:71
+#: bbx/templates/media/MediaPublish.html:72
 #: bbx/templates/media/MediaView.html:22
 msgid "Date"
 msgstr "Data"
@@ -438,20 +438,20 @@ msgstr "Sem visualização disponível"
 msgid "UUID:"
 msgstr "UUID:"
 
-#: bbx/templates/media/MediaPublish.html:66
+#: bbx/templates/media/MediaPublish.html:67
 msgid "Author"
 msgstr "Author"
 
-#: bbx/templates/media/MediaPublish.html:80
+#: bbx/templates/media/MediaPublish.html:81
 #: bbx/templates/media/MediaView.html:30
 msgid "Format"
 msgstr "Formato"
 
-#: bbx/templates/media/MediaPublish.html:90
+#: bbx/templates/media/MediaPublish.html:91
 msgid "Availability"
 msgstr "Disponibilidade"
 
-#: bbx/templates/media/MediaPublish.html:92
+#: bbx/templates/media/MediaPublish.html:93
 msgid "Description"
 msgstr "Descrição"
 
@@ -470,6 +470,18 @@ msgstr "Atualizar"
 #: bbx/templates/media/MediaPublish.html:115
 msgid "Upload file"
 msgstr "Subir arquivo"
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:3
+msgid "Invalid file type!"
+msgstr "Tipo de arquivo inválido!"
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:4
+msgid "Format is currently unsupported: "
+msgstr "Por enquanto, esse formato não é suportado: "
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:5
+msgid "Please add one of the following ones:"
+msgstr "Favor adicionar um dos seguintes tipos:"
 
 #: bbx/templates/media/MediaRelated.html:3
 msgid "related content"
@@ -644,17 +656,14 @@ msgid "error while creating media"
 msgstr "erro ao criar a mídia"
 
 #: media/views.py:517
-#, fuzzy, python-format
 msgid "Requested media of uuid %(uuid)s"
 msgstr "Mídia de uuid %uuid requisitada"
 
 #: media/views.py:528
-#, fuzzy, python-format
 msgid "Dropped media of uuid %(uuid)s"
 msgstr "Removida mídia de uuid %uuid"
 
 #: media/views.py:540
-#, fuzzy, python-format
 msgid "Removed media of uuid %(uuid)s"
 msgstr "Mídia de uuid %(uuid)s requisitada"
 

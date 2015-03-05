@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 17:31-0300\n"
+"POT-Creation-Date: 2015-03-05 16:31-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -256,7 +256,7 @@ msgstr ""
 
 #: bbx/templates/media/MediaGalleryCreate.html:20
 #: bbx/templates/media/MediaPublish.html:11
-#: bbx/templates/media/MediaPublish.html:76
+#: bbx/templates/media/MediaPublish.html:77
 msgid "Origin"
 msgstr ""
 
@@ -270,7 +270,7 @@ msgstr ""
 
 #: bbx/templates/media/MediaGalleryCreate.html:33
 #: bbx/templates/media/MediaGalleryEdit.html:14
-#: bbx/templates/media/MediaPublish.html:82
+#: bbx/templates/media/MediaPublish.html:83
 #: bbx/templates/media/MediaView.html:38
 msgid "License"
 msgstr ""
@@ -301,7 +301,7 @@ msgid "Name of media"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:13
-#: bbx/templates/media/MediaPublish.html:71
+#: bbx/templates/media/MediaPublish.html:72
 #: bbx/templates/media/MediaView.html:22
 msgid "Date"
 msgstr ""
@@ -425,20 +425,20 @@ msgstr ""
 msgid "UUID:"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:66
+#: bbx/templates/media/MediaPublish.html:67
 msgid "Author"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:80
+#: bbx/templates/media/MediaPublish.html:81
 #: bbx/templates/media/MediaView.html:30
 msgid "Format"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:90
+#: bbx/templates/media/MediaPublish.html:91
 msgid "Availability"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:92
+#: bbx/templates/media/MediaPublish.html:93
 msgid "Description"
 msgstr ""
 
@@ -456,6 +456,18 @@ msgstr ""
 
 #: bbx/templates/media/MediaPublish.html:115
 msgid "Upload file"
+msgstr ""
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:3
+msgid "Invalid file type!"
+msgstr ""
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:4
+msgid "Format is currently unsupported: "
+msgstr ""
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:5
+msgid "Please add one of the following ones:"
 msgstr ""
 
 #: bbx/templates/media/MediaRelated.html:3
