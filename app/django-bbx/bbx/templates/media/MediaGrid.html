@@ -38,12 +38,13 @@
     <% } %>
     
   </div>
-  <span class="title">    
-    <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
-      <% var strSize = 35; print(media.name.substring(0, strSize) + ((media.name.length > strSize) ? '...' : '')) %>
-    </a>
-  </span>
-  <br/>
+  <div class="title">
+    <span>    
+      <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+	<% var strSize = 35; print(media.name.substring(0, strSize) + ((media.name.length > strSize) ? '...' : '')) %>
+      </a>
+    </span>
+  </div>
   <div style="float:right;" class="origin">
     <span><%= media.origin %></span>
   </div>

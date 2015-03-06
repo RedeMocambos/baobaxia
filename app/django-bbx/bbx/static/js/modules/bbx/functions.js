@@ -389,7 +389,7 @@ define([
 			    networkData.mucua.storageSize = BBX.network.info.network_size;
 			    networkData.config = config;
 			    $('#place-profile').html(_.template(MucuaProfileTpl, networkData));
-			    $('#mucua_image').attr('src', networkData.mucua.image);
+			    $('#place-profile #mucua_image').attr('src', networkData.mucua.image);
 			    clearInterval(networkResourcesLoad);
 			}
 		    }

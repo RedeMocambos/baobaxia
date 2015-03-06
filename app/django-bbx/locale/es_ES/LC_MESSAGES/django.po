@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-05 16:31-0300\n"
+"POT-Creation-Date: 2015-03-06 19:31-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -158,7 +158,7 @@ msgid "Menu"
 msgstr ""
 
 #: bbx/templates/common/Menu.html:14
-msgid "NETWORK"
+msgid "network"
 msgstr ""
 
 #: bbx/templates/common/MucuaProfile.html:7

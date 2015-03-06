@@ -5,7 +5,8 @@
 <% _.each(mucuas, function(mucua) { %>
 <div class="item-mucua <%=mucua.description%>">
   <a href="<%=config.interfaceUrl%><%= config.MYREPOSITORY%>/<%=mucua.description%>/bbx/search">
-    <span><%= mucua.description %></span>
+    <img id="mucua_image" src="/images/ponto-azul.png" style="width: 45px; height: 45px" />
+    <br/><span><%= mucua.description %></span>
   </a>
 </div>
 <% }) %>

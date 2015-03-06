@@ -16,7 +16,7 @@ define([
 		mucuaModel  = new MucuaModel(),
 		mucuaImageSrc = mucuaModel.getImage(urlMucuaImage, function(imageSrc){
 		    var el = 'item-mucua ' + mucua.description;
-		    $('.' + mucua.description + ' a').prepend('<img id="mucua_image" src="' + imageSrc + '" />');
+		    $('.' + mucua.description + ' #mucua_image').attr('src', imageSrc);
 		}, "/images/avatar-default.png", 45, 45);
 	    
 	},

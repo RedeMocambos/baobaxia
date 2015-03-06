@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-05 16:31-0300\n"
+"POT-Creation-Date: 2015-03-06 19:31-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -158,8 +158,8 @@ msgid "Menu"
 msgstr "Menu"
 
 #: bbx/templates/common/Menu.html:14
-msgid "NETWORK"
-msgstr "REDE"
+msgid "network"
+msgstr "rede"
 
 #: bbx/templates/common/MucuaProfile.html:7
 msgid "Collection:"
@@ -757,6 +757,9 @@ msgstr "Problema ao remover mídia"
 #: repository/management/commands/bbxsync.py:46
 msgid "Revision is"
 msgstr "Revisão é"
+
+#~ msgid "NETWORK"
+#~ msgstr "REDE"
 
 #~ msgid "List of media found in repository.."
 #~ msgstr "Lista das mídias encontradas no repositório..."

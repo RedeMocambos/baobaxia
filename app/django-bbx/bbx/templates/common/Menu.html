@@ -11,7 +11,7 @@
  %>"><a href="#<%= config.MYREPOSITORY %>/<%= config.MYMUCUA %>/<%= config.subroute %>"><%= config.MYMUCUA %></a></li>
     <li class="<% matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/); 
 	       if (currentUrl.match(/rede/) || config.mucua === 'rede') {%>current<% }%>">
-      <a href="#<%= config.repository %>/rede/<%= config.subroute %>">{% trans "NETWORK" %}</a></li>
+      <a href="#<%= config.repository %>/rede/<%= config.subroute %>">{% trans "network" %}</a></li>
     <% if (!currentUrl.match(/rede/) && config.mucua != config.MYMUCUA && config.mucua != 'rede' ) { %>
     <li class="current"><a href="#<%= config.repository %>/<%= config.mucua %>/<%= config.subroute %>"><%= config.mucua %></a></li>    <% } %>
     <% _.each(lastVisitedMucuas, function(mucuaName, i) {
