@@ -1,0 +1,25 @@
+Saravá, Alo!
+
+Bem vind@s no código do Baobáxia.. pode mergulhar em cada pasta e
+arquivo. Normalmente os arquivos são textuais portanto podem ser
+abertos com qualquer editor de texto, como gedit, libreoffice, emacs,
+vi. No meio do código colocamos dicas, histórias, devaneios e poesias.. 
+
+.
+├── app/django-bbx/		Codigo do Baobaxia 
+├── AUTHORS.txt			Galera do NPDD
+├── _bbx_INTRODUCAO.txt		Este arquivo
+├── bin				Script de gestao e manutençao
+├── clean.sh			Para reinstalar o bbx
+├── conf			Exemplos de configuraçao
+├── doc				Documentaçao
+├── INSTALL			Dicas de instalaçao
+├── install.sh			Script de instalaçao
+├── LICENSE.txt			Liçenca 
+├── README			Leia me
+├── TODO			A fazer
+└── upgrade			Info sobre atualizaçao do baobaxia
+
+
+
+
