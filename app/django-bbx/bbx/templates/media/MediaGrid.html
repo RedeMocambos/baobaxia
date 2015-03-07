@@ -1,4 +1,5 @@
 {% load i18n %}
+<% if (!_.isEmpty(medias)) { %>
 <% _.each(medias, function(media) { %>
 <div class="media-box <%= media.type %> <% _.each(media.tags, function(tagName) { %><%= tagName %> <% }); %>">
   <div class="result-thumb">
@@ -14,8 +15,10 @@
     <% if (media.is_local) { %>
     <div class="image is_local <% if (media.type == 'arquivo') { %>icon-media<% } %>">
       <% if (media.type == 'imagem') { %>
-      <img id="media-<%= media.uuid %>" class="image-tmp" src="images/icon-imagem.png" />
+      <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+	<img id="media-<%= media.uuid %>" class="image-tmp" src="images/icon-imagem.png" />
 	<% parseThumb(media, params); %>
+      </a>
       <% } else if (media.type == 'video') { %>
       <video preload="metadata" controls src="<%= media.url %>" />
       <% } else if (media.type == 'audio') { %>
@@ -27,18 +30,21 @@
       <% } %>
     </div>
     <% } else { %>
-    <div class="icon-media not_local">
-      <img alt="<%= media.type%>" src="images/icon-<%=media.type%>.png" /><br/>
-    </div>
+    <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+      <div class="icon-media not_local">
+	<img alt="<%= media.type%>" src="images/icon-<%=media.type%>.png" /><br/>
+      </div>
+    </a>
     <% } %>
     
   </div>
-  <span class="title">    
-    <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
-      <% var strSize = 35; print(media.name.substring(0, strSize) + ((media.name.length > strSize) ? '...' : '')) %>
-    </a>
-  </span>
-  <br/>
+  <div class="title">
+    <span>    
+      <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+	<% var strSize = 35; print(media.name.substring(0, strSize) + ((media.name.length > strSize) ? '...' : '')) %>
+      </a>
+    </span>
+  </div>
   <div style="float:right;" class="origin">
     <span><%= media.origin %></span>
   </div>
@@ -47,6 +53,9 @@
   </div>
 </div>
 <% }) %>
-<% if (_.isEmpty(medias)) { %>
+<!-- tem que conseguir count do total de resultados e resultados com limite e offset -->
+<!-- se tiver mais media que o limite mínimo -->
+<!-- paginacao -->
+<% } else if (_.isEmpty(medias)) { %>
 <h4 class="message"><%= message %></h4>
 <% } %>

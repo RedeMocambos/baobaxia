@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-25 11:56-0300\n"
+"POT-Creation-Date: 2015-03-06 19:31-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -153,13 +153,13 @@ msgstr "ver como lista"
 msgid "Multiple edit"
 msgstr "Edição múltipla"
 
-#: bbx/templates/common/Menu.html:3
+#: bbx/templates/common/Menu.html:8
 msgid "Menu"
 msgstr "Menu"
 
-#: bbx/templates/common/Menu.html:9
-msgid "NETWORK"
-msgstr "REDE"
+#: bbx/templates/common/Menu.html:14
+msgid "network"
+msgstr "rede"
 
 #: bbx/templates/common/MucuaProfile.html:7
 msgid "Collection:"
@@ -269,7 +269,7 @@ msgstr "Publicar nova galeria"
 
 #: bbx/templates/media/MediaGalleryCreate.html:20
 #: bbx/templates/media/MediaPublish.html:11
-#: bbx/templates/media/MediaPublish.html:76
+#: bbx/templates/media/MediaPublish.html:77
 msgid "Origin"
 msgstr "Origem"
 
@@ -283,7 +283,7 @@ msgstr "Título das mídias"
 
 #: bbx/templates/media/MediaGalleryCreate.html:33
 #: bbx/templates/media/MediaGalleryEdit.html:14
-#: bbx/templates/media/MediaPublish.html:82
+#: bbx/templates/media/MediaPublish.html:83
 #: bbx/templates/media/MediaView.html:38
 msgid "License"
 msgstr "Licença"
@@ -314,7 +314,7 @@ msgid "Name of media"
 msgstr "Nome da mídia"
 
 #: bbx/templates/media/MediaGalleryEdit.html:13
-#: bbx/templates/media/MediaPublish.html:71
+#: bbx/templates/media/MediaPublish.html:72
 #: bbx/templates/media/MediaView.html:22
 msgid "Date"
 msgstr "Data"
@@ -335,7 +335,7 @@ msgstr "(sobrescreve mudanças particulares)"
 msgid "edit media"
 msgstr "editar mídia"
 
-#: bbx/templates/media/MediaGrid.html:25 bbx/templates/media/MediaView.html:98
+#: bbx/templates/media/MediaGrid.html:28 bbx/templates/media/MediaView.html:98
 msgid "download"
 msgstr "baixar"
 
@@ -408,6 +408,18 @@ msgstr "conteúdo publicado pel@ mocambola"
 msgid "new content"
 msgstr "novo conteúdo"
 
+#: bbx/templates/media/MediaPagination.html:21
+msgid "next"
+msgstr "avançar"
+
+#: bbx/templates/media/MediaPagination.html:29
+msgid "back"
+msgstr "anterior"
+
+#: bbx/templates/media/MediaPagination.html:47
+msgid "total:"
+msgstr "total:"
+
 #: bbx/templates/media/MediaPublish.html:16
 msgid "Title:"
 msgstr "Título:"
@@ -426,20 +438,20 @@ msgstr "Sem visualização disponível"
 msgid "UUID:"
 msgstr "UUID:"
 
-#: bbx/templates/media/MediaPublish.html:66
+#: bbx/templates/media/MediaPublish.html:67
 msgid "Author"
 msgstr "Author"
 
-#: bbx/templates/media/MediaPublish.html:80
+#: bbx/templates/media/MediaPublish.html:81
 #: bbx/templates/media/MediaView.html:30
 msgid "Format"
 msgstr "Formato"
 
-#: bbx/templates/media/MediaPublish.html:90
+#: bbx/templates/media/MediaPublish.html:91
 msgid "Availability"
 msgstr "Disponibilidade"
 
-#: bbx/templates/media/MediaPublish.html:92
+#: bbx/templates/media/MediaPublish.html:93
 msgid "Description"
 msgstr "Descrição"
 
@@ -458,6 +470,18 @@ msgstr "Atualizar"
 #: bbx/templates/media/MediaPublish.html:115
 msgid "Upload file"
 msgstr "Subir arquivo"
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:3
+msgid "Invalid file type!"
+msgstr "Tipo de arquivo inválido!"
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:4
+msgid "Format is currently unsupported: "
+msgstr "Por enquanto, esse formato não é suportado: "
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:5
+msgid "Please add one of the following ones:"
+msgstr "Favor adicionar um dos seguintes tipos:"
 
 #: bbx/templates/media/MediaRelated.html:3
 msgid "related content"
@@ -623,29 +647,25 @@ msgstr "Essa mídia já existe. Atualizada."
 msgid "New media created"
 msgstr "Nova mídia criada"
 
-#: media/serializers.py:176 repository/management/commands/bbxsync.py:46
-msgid "Revision is"
-msgstr "Revisão é"
-
-#: media/views.py:292
+#: media/views.py:313
 msgid "updated media - OK"
 msgstr "mídia atualizada - OK"
 
-#: media/views.py:295 media/views.py:367
+#: media/views.py:316 media/views.py:388
 msgid "error while creating media"
 msgstr "erro ao criar a mídia"
 
-#: media/views.py:496
-msgid "Requested media of uuid %s"
+#: media/views.py:517
+msgid "Requested media of uuid %(uuid)s"
 msgstr "Mídia de uuid %uuid requisitada"
 
-#: media/views.py:507
-msgid "Dropped media of uuid %s"
+#: media/views.py:528
+msgid "Dropped media of uuid %(uuid)s"
 msgstr "Removida mídia de uuid %uuid"
 
-#: media/views.py:519
-msgid "Removed media of uuid %s"
-msgstr "Mídia de uuid %uuid requisitada"
+#: media/views.py:540
+msgid "Removed media of uuid %(uuid)s"
+msgstr "Mídia de uuid %(uuid)s requisitada"
 
 #: mocambola/views.py:31
 msgid "User don\t exists"
@@ -719,12 +739,27 @@ msgid "Deleting media"
 msgstr "Apagando mídia"
 
 #: repository/models.py:486
+msgid "Fingerprint"
+msgstr "Impressão digital"
+
+#: repository/models.py:489
 msgid "Media deleted."
 msgstr "Mídia apagada!"
 
-#: repository/models.py:490
+#: repository/models.py:492
 msgid "Media doesn't exist"
 msgstr "Mídia não existe"
+
+#: repository/models.py:495
+msgid "Delete problem"
+msgstr "Problema ao remover mídia"
+
+#: repository/management/commands/bbxsync.py:46
+msgid "Revision is"
+msgstr "Revisão é"
+
+#~ msgid "NETWORK"
+#~ msgstr "REDE"
 
 #~ msgid "List of media found in repository.."
 #~ msgstr "Lista das mídias encontradas no repositório..."

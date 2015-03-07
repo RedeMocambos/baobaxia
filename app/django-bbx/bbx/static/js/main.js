@@ -10,16 +10,16 @@ require.config({
 	    deps: ['lodash', 'jquery'],
 	    exports: 'Backbone'
 	},
-	'textext.core': {
-	    exports: ['textext']
+	jquery: {
+	    exports: '$'
 	},
-	'textext.clear': {
-	    deps: ['textext'],
-	    exports: ['textext.clear']
+	'textext': {
+	    deps: ['jquery'],
+	    exports: ['$.fn.textext']
 	},
-	'textext.tags': {
+	'textext_tags': {
 	    deps: ['textext'],
-	    exports: ['textext.tags']
+	    exports: ['$.fn.textext.tags']
 	},
    },
     paths: {
@@ -35,7 +35,6 @@ require.config({
 	backbone_subroute: 'lib/backbone.subroute.min',
 	tagcloud: 'lib/jquery.tagcloud',
 	textext: 'lib/textext/textext.core',
-	textext_ajax: 'lib/textext/textext.plugin.ajax',
 	textext_tags: 'lib/textext/textext.plugin.tags',
         json: 'lib/require/json',
         text: 'lib/require/text',

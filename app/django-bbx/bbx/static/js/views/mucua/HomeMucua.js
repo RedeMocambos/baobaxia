@@ -21,8 +21,8 @@ define([
 	    console.log('render mucua');
 	    
 	    // start mucua DOM field
-	    $("body").data("bbx").mucua = {};
-	    $("body").data("bbx").media = {};	    
+	    BBX.mucua = {};
+	    BBX.media = {};	    
 	    BBXFunctions.renderSidebar();
 	    BBXFunctions.renderUsage();
 	    $('.media-display-type').remove();

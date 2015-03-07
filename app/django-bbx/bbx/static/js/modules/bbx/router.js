@@ -31,7 +31,7 @@ define([
 	search: function(subroute) {
 	    var subroute = subroute || '',
 		completeSubroute = '',
-		config = $("body").data("bbx").config,
+		config = BBX.config,
 		repository = this.__getRepository(),
 		mucua = this.__getMucua(),
 		search = new Search();

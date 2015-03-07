@@ -15,7 +15,7 @@ define([
 	
 	render: function(uuid){
 	    console.log("view media " + uuid);	    
-	    var config = $("body").data("bbx").config,
+	    var config = BBX.config,
 		media = '',
 		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
 		urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis',

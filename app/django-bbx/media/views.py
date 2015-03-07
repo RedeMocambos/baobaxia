@@ -87,6 +87,12 @@ def media_list(request, repository, mucua, args=None, format=None):
 
         """ TODO: move default_limit to configurable place """
         params = []
+        return_count = False
+
+        # se passado na url, retorna apenas listagem (count como palavra reservada)
+        if (args.find('count') != -1):
+            args = args.split('count')[0]
+            return_count = True
         
         default_limit = 20
         limiting_params = []
@@ -178,12 +184,19 @@ def media_list(request, repository, mucua, args=None, format=None):
                     
         if (len(term_sql) > 0):
             term_sql = ' AND (' + term_sql + ')'
-                            
-        sql = "SELECT DISTINCT \
-          m.*, \
-          u.username AS _author, \
-          mu.description AS _origin \
-        FROM \
+
+        if return_count:
+            sql = "SELECT \
+            m.id, \
+            count(DISTINCT m.uuid) as count "
+
+        else :
+            sql = "SELECT DISTINCT \
+            m.*, \
+            u.username AS _author, \
+            mu.description AS _origin "
+        
+        sql += "FROM \
           media_media m \
         LEFT JOIN media_media_tags mt \
           ON m.id = mt.media_id \
@@ -193,8 +206,10 @@ def media_list(request, repository, mucua, args=None, format=None):
           ON u.id = m.author_id  \
         LEFT JOIN mucua_mucua mu \
           ON mu.id = m.origin_id \
-        WHERE (" + origin_sql + " repository_id = ? ) " + term_sql + "  \
-        ORDER BY " + ordering_sql
+        WHERE (" + origin_sql + " repository_id = ? ) " + term_sql
+
+        if not return_count:
+            sql += "ORDER BY " + ordering_sql
 
         if len(limiting_params) == 1:
             sql += " LIMIT ?"
@@ -210,9 +225,15 @@ def media_list(request, repository, mucua, args=None, format=None):
         """
         
         # serializa e da saida
-        serializer = MediaSerializer(medias, many=True)
+        if (return_count):
+            response_count = {
+                'count': medias[0].count
+            }
+            return HttpResponse(json.dumps(response_count), mimetype=u'application/json')
         
-        return Response(serializer.data)
+        else:
+            serializer = MediaSerializer(medias, many=True)
+            return Response(serializer.data)
 
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
@@ -493,7 +514,7 @@ def media_request_copy(request, repository, mucua, uuid):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response(_(u"Requested media of uuid %s") % uuid)
+    return Response(_(u"Requested media of uuid %(uuid)s") % {'uuid': uuid})
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
@@ -504,7 +525,7 @@ def media_drop_copy(request, repository, mucua, uuid):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response(_(u"Dropped media of uuid %s" % uuid))
+    return Response(_(u"Dropped media of uuid %(uuid)s") % {'uuid': uuid})
 
 
 @api_view(['GET'])
@@ -516,4 +537,4 @@ def media_remove(request, repository, mucua, uuid):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response(_(u"Removed media of uuid %s" % uuid))
+    return Response(_(u"Removed media of uuid %(uuid)s") % {'uuid': uuid})

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-25 11:56-0300\n"
+"POT-Creation-Date: 2015-03-06 19:31-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -153,12 +153,12 @@ msgstr ""
 msgid "Multiple edit"
 msgstr ""
 
-#: bbx/templates/common/Menu.html:3
+#: bbx/templates/common/Menu.html:8
 msgid "Menu"
 msgstr ""
 
-#: bbx/templates/common/Menu.html:9
-msgid "NETWORK"
+#: bbx/templates/common/Menu.html:14
+msgid "network"
 msgstr ""
 
 #: bbx/templates/common/MucuaProfile.html:7
@@ -256,7 +256,7 @@ msgstr ""
 
 #: bbx/templates/media/MediaGalleryCreate.html:20
 #: bbx/templates/media/MediaPublish.html:11
-#: bbx/templates/media/MediaPublish.html:76
+#: bbx/templates/media/MediaPublish.html:77
 msgid "Origin"
 msgstr ""
 
@@ -270,7 +270,7 @@ msgstr ""
 
 #: bbx/templates/media/MediaGalleryCreate.html:33
 #: bbx/templates/media/MediaGalleryEdit.html:14
-#: bbx/templates/media/MediaPublish.html:82
+#: bbx/templates/media/MediaPublish.html:83
 #: bbx/templates/media/MediaView.html:38
 msgid "License"
 msgstr ""
@@ -301,7 +301,7 @@ msgid "Name of media"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:13
-#: bbx/templates/media/MediaPublish.html:71
+#: bbx/templates/media/MediaPublish.html:72
 #: bbx/templates/media/MediaView.html:22
 msgid "Date"
 msgstr ""
@@ -322,7 +322,7 @@ msgstr ""
 msgid "edit media"
 msgstr ""
 
-#: bbx/templates/media/MediaGrid.html:25 bbx/templates/media/MediaView.html:98
+#: bbx/templates/media/MediaGrid.html:28 bbx/templates/media/MediaView.html:98
 msgid "download"
 msgstr ""
 
@@ -395,6 +395,18 @@ msgstr ""
 msgid "new content"
 msgstr ""
 
+#: bbx/templates/media/MediaPagination.html:21
+msgid "next"
+msgstr ""
+
+#: bbx/templates/media/MediaPagination.html:29
+msgid "back"
+msgstr ""
+
+#: bbx/templates/media/MediaPagination.html:47
+msgid "total:"
+msgstr ""
+
 #: bbx/templates/media/MediaPublish.html:16
 msgid "Title:"
 msgstr ""
@@ -413,20 +425,20 @@ msgstr ""
 msgid "UUID:"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:66
+#: bbx/templates/media/MediaPublish.html:67
 msgid "Author"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:80
+#: bbx/templates/media/MediaPublish.html:81
 #: bbx/templates/media/MediaView.html:30
 msgid "Format"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:90
+#: bbx/templates/media/MediaPublish.html:91
 msgid "Availability"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:92
+#: bbx/templates/media/MediaPublish.html:93
 msgid "Description"
 msgstr ""
 
@@ -444,6 +456,18 @@ msgstr ""
 
 #: bbx/templates/media/MediaPublish.html:115
 msgid "Upload file"
+msgstr ""
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:3
+msgid "Invalid file type!"
+msgstr ""
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:4
+msgid "Format is currently unsupported: "
+msgstr ""
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:5
+msgid "Please add one of the following ones:"
 msgstr ""
 
 #: bbx/templates/media/MediaRelated.html:3
@@ -610,31 +634,27 @@ msgstr ""
 msgid "New media created"
 msgstr ""
 
-#: media/serializers.py:176 repository/management/commands/bbxsync.py:46
-msgid "Revision is"
-msgstr ""
-
-#: media/views.py:292
+#: media/views.py:313
 msgid "updated media - OK"
 msgstr ""
 
-#: media/views.py:295 media/views.py:367
+#: media/views.py:316 media/views.py:388
 msgid "error while creating media"
 msgstr ""
 
-#: media/views.py:496
+#: media/views.py:517
 #, python-format
-msgid "Requested media of uuid %s"
+msgid "Requested media of uuid %(uuid)s"
 msgstr ""
 
-#: media/views.py:507
+#: media/views.py:528
 #, python-format
-msgid "Dropped media of uuid %s"
+msgid "Dropped media of uuid %(uuid)s"
 msgstr ""
 
-#: media/views.py:519
+#: media/views.py:540
 #, python-format
-msgid "Removed media of uuid %s"
+msgid "Removed media of uuid %(uuid)s"
 msgstr ""
 
 #: mocambola/views.py:31
@@ -709,9 +729,21 @@ msgid "Deleting media"
 msgstr ""
 
 #: repository/models.py:486
+msgid "Fingerprint"
+msgstr ""
+
+#: repository/models.py:489
 msgid "Media deleted."
 msgstr ""
 
-#: repository/models.py:490
+#: repository/models.py:492
 msgid "Media doesn't exist"
+msgstr ""
+
+#: repository/models.py:495
+msgid "Delete problem"
+msgstr ""
+
+#: repository/management/commands/bbxsync.py:46
+msgid "Revision is"
 msgstr ""

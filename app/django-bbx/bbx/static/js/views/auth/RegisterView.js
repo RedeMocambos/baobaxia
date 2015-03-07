@@ -40,45 +40,36 @@ define([
 		$('#content').html(compiledContent);
 	    }
 	    
-	    var loadedData = setInterval(function() {
-		var configLoaded = $("body").data("bbx").configLoaded,
-		config = $("body").data("bbx").config;		
-		
-		// when all configs are loaded, load mucuas
-		if (configLoaded) {
-		    // get mucuas 
-		    var mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.MYREPOSITORY + '/mucuas'});
-		    mucuas.fetch({
-			success: function() {
-			    var mucuasLength = mucuas.models.length,
-			    mucuaList = [],
-			    data = {};
-			    $("body").data("bbx").config.mucuaList = [];
-			    
-			    for (var m = 0; m < mucuasLength; m++) {
-				var mucuaName = mucuas.models[m].attributes;
-				mucuaList.push(mucuaName);
-			    }
-			    // set mucua list
-			    $("body").data("bbx").config.mucuaList = mucuaList;
-			    
-			    var data = {
-				defaultRepository: config.repository,
-				mucuaList: mucuaList,
-				myMucua: config.MYMUCUA,
-				repositoryList: config.repositoriesList
-			    }
-			    __parseTemplate(data);			    
-			    __getToken();			    
-			}
-		    });
+	    var config = BBX.config;
+	    // get mucuas 
+	    var mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.MYREPOSITORY + '/mucuas'});
+	    mucuas.fetch({
+		success: function() {
+		    var mucuasLength = mucuas.models.length,
+			mucuaList = [],
+			data = {};
+		    BBX.config.mucuaList = [];
 		    
-		    clearInterval(loadedData);
+		    for (var m = 0; m < mucuasLength; m++) {
+			var mucuaName = mucuas.models[m].attributes;
+			mucuaList.push(mucuaName);
+		    }
+		    // set mucua list
+		    BBX.config.mucuaList = mucuaList;
+		    
+		    var data = {
+			defaultRepository: config.repository,
+			mucuaList: mucuaList,
+			myMucua: config.MYMUCUA,
+			repositoryList: config.repositoriesList
+		    }
+		    __parseTemplate(data);			    
+		    __getToken();			    
 		}
-	    }, 50);
+	    });
 	    
 	    var __getToken = function() {
-		var config = $("body").data("bbx").config,
+		var config = BBX.config,
 		    url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/mocambola/login",
 		    mocambola = new MocambolaModel([], {url: url});
 		

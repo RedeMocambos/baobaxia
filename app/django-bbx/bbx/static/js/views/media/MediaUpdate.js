@@ -14,7 +14,7 @@ define([
     var MediaUpdate = Backbone.View.extend({
 	
 	__getFormData: function() {
-	    var media = $('body').data('bbx').media,
+	    var media = BBX.media,
 	    fields = {};
 	    
 	    $('#form_media_publish :input').each(function() {
@@ -49,7 +49,7 @@ define([
 	},
 
 	__updateMedia: function() {
-	    var config = $("body").data("bbx").config,   
+	    var config = BBX.config,   
 	    mediaData = getFormData(),
 	    media = null,
 	    options = {},
@@ -72,7 +72,7 @@ define([
 	    updateMedia = this.__updateMedia;
 	    
 	    // comeca acao da funcao render
-	    var config = $("body").data("bbx").config,   
+	    var config = BBX.config,   
 	    urlApi = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid,
 	    urlMediaView = config.interfaceUrl + config.repository + '/' +  config.mucua + '/media/' + uuid;
 	    BBXFunctions.renderSidebar();
@@ -90,7 +90,7 @@ define([
 			page: 'MediaUpdate',
 			pageTitle: 'Editar conteúdo'
 		    }
-		    $('body').data('bbx').media = media;
+		    BBX.media = media;
 		    var compiledTpl = _.template(MediaPublishTpl, data);
 		    $('#content').html(compiledTpl);  
 		    

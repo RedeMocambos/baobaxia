@@ -13,7 +13,6 @@ define([
     'lodash',
     'backbone',
     'modules/bbx/functions',
-    'json!config.json',
     'modules/mocambola/model',
     'text!/templates/' + BBX.userLang + '/auth/LoginOk.html',
     'text!/templates/' + BBX.userLang + '/auth/LoginFailed.html',
@@ -21,14 +20,14 @@ define([
     'text!/templates/' + BBX.userLang + '/auth/FillUser.html',
     'text!/templates/' + BBX.userLang + '/auth/FillPassword.html',
     'text!/templates/' + BBX.userLang + '/auth/UserExists.html',
-], function($, _, Backbone, BBXFunctions, Config, MocambolaModel, LoginOkTpl, LoginFailedTpl, PasswordMustMatchTpl, FillUserTpl, FillPasswordTpl, UserExistsTpl){
+], function($, _, Backbone, BBXFunctions, MocambolaModel, LoginOkTpl, LoginFailedTpl, PasswordMustMatchTpl, FillUserTpl, FillPasswordTpl, UserExistsTpl){
     
     var init = function() {	
 	AuthFunctions = this;
     }
 
     var __getConfig = function() {
-	return $("body").data("bbx").config;
+	return BBX.config;
     }
 
     var __prepareLoginData = function() { 
@@ -45,7 +44,7 @@ define([
     }
 	
     var __checkLogin = function(loginData) {
-	var url = Config.apiUrl + '/' + loginData.repository + '/' + loginData.mucua + '/mocambola/login';
+	var url = BBX.config.apiUrl + '/' + loginData.repository + '/' + loginData.mucua + '/mocambola/login';
 	//TODO: fazer check_login na API
 	var mocambola = new MocambolaModel(loginData, {url: url});
 	
@@ -53,17 +52,17 @@ define([
 	    .always(function(userData) {
 		if (userData.error === true) {
 		    $('#message-area').html(userData.errorMessage);
-		    $("body").data("bbx").loginError = userData.errorMessage;
+		    BBX.loginError = userData.errorMessage;
 		} else {
 		    $('#message-area').html(LoginOkTpl);
-		    $("body").data("bbx").userData = userData;
+		    BBX.config.userData = userData;
 		}
 	    });		
     }
 	
     var __getDefaultHome = function() {
 	// MAYBE, this should be a configurable field
-	var config = $("body").data("bbx"),
+	var config = BBX.config,
 	url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA;
 	return url;
     }
@@ -88,21 +87,20 @@ define([
 	//timeout nessa parte de baixo
 	var loginOK = setInterval(function() {
 	    var userData = {'name': 'userData',
-			    'values': $("body").data("bbx").userData
+			    'values': BBX.config.userData
 			   }
-	    
 	    if (typeof userData.values !== 'undefined') {
 		// set cookie that expires in one day
 		BBXFunctions.addToCookie(userData);
-		$('body').data('bbx').userData = '';
+		BBX.config.userData = userData;
 		
 		// redirect
 		$('#content').html('');
 		window.location.href = urlRedirect;
 		clearInterval(loginOK);
-	    } else if ($("body").data("bbx").loginError) {
+	    } else if (BBX.loginError) {
 		console.log('login falhou');
-		$("body").data("bbx").loginError = false;		    
+		BBX.loginError = false;		    
 		clearInterval(loginOK);
 	    }
 	}, 50);
@@ -112,7 +110,7 @@ define([
 	if ($.cookie('sessionBBX')) {
 	    $.removeCookie('sessionBBX');
 	}
-	$("body").data("bbx").userData = undefined;
+	BBX.userData = undefined;
 	$('#header').html('');
 	$('#content').html('');
 	$('#sidebar').detach();
@@ -122,7 +120,7 @@ define([
     var __checkUser = function(registerData) {
 	// verify if exists any user with that username
 	var mocambola = new MocambolaModel(registerData, 					       
-					   {url: Config.apiUrl + '/' + registerData.repository + '/' + registerData.mucua + '/mocambola/' + registerData.email});
+					   {url: BBx.config.apiUrl + '/' + registerData.repository + '/' + registerData.mucua + '/mocambola/' + registerData.email});
 	mocambola.fetch({
 	    success: function() {
 		// if user exists, raises error
@@ -132,13 +130,13 @@ define([
 		} else {
 		    // if not exists, continue and register the user
 		    mocambola = new MocambolaModel(registerData, 					       
-						   {url: Config.apiUrl + '/mocambola/register'});
+						   {url: BBX.config.apiUrl + '/mocambola/register'});
 		    mocambola.save()
 			.always(function(userData) {
 			    if (userData.error === true) {
 				$('#message-area').html(UserCreationErrorTpl);				    
 			    } else {
-				$("body").data("bbx").userData = userData;
+				BBX.config.userData = userData;
 				doLogin(userData);
 			    }
 			})		

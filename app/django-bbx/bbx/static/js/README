@@ -8,32 +8,50 @@ http://weblog.bocoup.com/organizing-your-backbone-js-application-with-modules/
 
 ------------------------------------------------------------------------------
 
-index.html	-> carregamento inicial
+index.html	-> carregamento inicial. Define variáveis principais e depois
+		carrega aplicação backbone/require.js
+
 ---
-js/app.js       -> inicializa a aplicacao e carrega o router 
+js/app.js       -> inicializa a aplicacao backbone e carrega o router 
+js/config.js	-> configurações gerais da interface
 js/main.js	-> define caminhos das libs para o require.js
 js/router.js	-> rotas principais
+
 ---
 js/lib/         -> bibliotecas externas
 js/modules/     -> aonde sao colocados os componentes
+js/views/     	-> aonde sao colocadas as visualizações
+
 ---
 ex. de modulo:
 
 js/modules/media
 js/modules/media/model.js	    -> modelo
+js/modules/media/router.js	    -> rotas específicas de media
 js/modules/media/collection.js	    -> colecao de modelos
-js/modules/media/MediaView.js	    -> determinada view
-js/modules/media/MediaViewABC.js    -> outra view
+
 ---
+ex. de view:
+js/views/media/MediaView.js	    -> determinada view
+js/views/media/MediaViewABC.js    -> outra view
+
+---
+Templates estão fora da árvore, na árvore de templates do Django, de modo
+a conseguir dar o parse com a localização
 ex de templates:
-templates/media/
-templates/media/MediaSearch.html
-templates/media/MediaResults.html
----
-cache/		-> pasta para arquivos de cache da aplicacao
+
+[django-app]/bbx/templates/media/MediaSearch.html
+[django-app]/bbx/templates/media/MediaResults.html
+
+Templates gerados irão para 
+[django-app]/bbx/static/templates/[lang_code]
+[django-app]/bbx/static/templates/pt_BR/LC_MESSAGES/media/MediaSearch.html
+[django-app]/bbx/static/templates/en_US/LC_MESSAGES/mocambola/HomeMocambola.html
+
 ---
 css/		-> pasta para arquivos css
 css/main.css	-> principal arquivo css
 css/ie.css	-> css especifico
+
 ---
-images		-> pasta para imagens estáticas
+images		-> pasta para imagens estáticas (ícones, imagens, exceto conteúdo de media)

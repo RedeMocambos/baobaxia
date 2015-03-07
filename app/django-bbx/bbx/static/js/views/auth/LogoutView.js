@@ -17,7 +17,7 @@ define([
 		// (but the cookie is the),  user must refresh page
 		$.removeCookie('sessionBBX');
 	    }
-	    $("body").data("bbx").userData = undefined;
+	    BBX.config.userData = undefined;
 	    $('#header').html('');
 	    $('#content').html('');
 	    $('#sidebar').detach();

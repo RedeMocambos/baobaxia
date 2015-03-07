@@ -23,6 +23,7 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaResults.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGrid.html',
     'text!/templates/' + BBX.userLang + '/media/MediaList.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaPagination.html',
     'text!/templates/' + BBX.userLang + '/media/MessageRequest.html',
     'text!/templates/' + BBX.userLang + '/common/ResultsMessage.html',
     'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html',
@@ -30,7 +31,7 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
-], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
+], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
     this.BBXFunctions = BBXFunctions;
     
     var init = function() {
@@ -39,7 +40,7 @@ define([
     }
 
     var __getConfig = function() {
-	return $("body").data("bbx").config;
+	return BBX.config;
     }
     
     var __parseResultsMessage = function(message) {
@@ -153,7 +154,6 @@ define([
 		var textext = $(e.target).textext()[0],
 		    tags = textext.hiddenInput().val(),
 		    tags_str = '';
-		    
 		tags_str = tags.match(/\[(.*)\]/)[1].replace(/"/g, '').replace(/,/g, '/');
 		window.location = __parseUrlSearch(tags_str);
 	    })
@@ -182,7 +182,7 @@ define([
 	var target = target || '.media-results .media',
 	    type = type || '',
 	    skipCookie = skipCookie || false,
-	    data = $('body').data('bbx').data,
+	    data = BBX.data,
 	    valid_types = ['list', 'grid'];
 	
 	if (typeof BBXFunctions === 'undefined') {
@@ -256,10 +256,34 @@ define([
 	window.scrollTo(0, 0);
     }
 
+
+    var parsePagination = function(url, limit, offset) {
+	var limit = limit || 1,
+	    offset = offset || 20,
+	    config = __getConfig(),
+	    urlApi = url.split('/limit')[0] + '/count' || url + '/count',
+	    urlInterface = Backbone.history.location.href.split('/limit')[0],
+	    pagination = {
+		'totalMedia': null,
+		'itensPerPage': 20,
+		'limit': limit,
+		'offset': offset,
+		'totalPages': null,
+		'url': urlInterface
+	    },
+	    media = new MediaModel([], {url: urlApi});
+	media.fetch({
+	    success: function() {
+		pagination.totalMedia = media.attributes.count;
+		pagination.totalPages = Math.ceil(pagination.totalMedia / pagination.itensPerPage);
+		BBX.mediaPagination = pagination;
+		$('#pagination-top').html(_.template(MediaPaginationTpl, BBX.mediaPagination));
+	    }
+	});		    
+    }
     
     var getMediaTypes = function() {
 	return {
-	    '': '',
 	    'audio': 'audio',
 	    'imagem': 'imagem',
 	    'video': 'video',
@@ -267,7 +291,7 @@ define([
 	}
     };
 
-    var getTypeByMime = function(mime) {	
+    var getValidMimeTypes = function() {
 	var valid_mimetypes = {
 	    'audio/ogg': 'audio',
 	    'audio/mpeg': 'audio',
@@ -279,14 +303,21 @@ define([
 	    'video/mp4': 'video',
 	    'video/webm': 'video',
 	    'application/pdf': 'arquivo'
-	},
-	type = 'arquivo';
-	
-	if (valid_mimetypes.hasOwnProperty(mime)) {
-	    type = valid_mimetypes[mime];
 	}
-	
-	return type;
+
+	return valid_mimetypes;
+    }
+
+    var getTypeByMime = function(mimetype) {
+	var valid_mimetypes = getValidMimeTypes(),
+	    type = null;
+
+	// se o arquivo não estiver listado nos mime type válidos, retorna false
+	if (valid_mimetypes.hasOwnProperty(mimetype)) {
+	    return valid_mimetypes[mimetype];
+	} else {
+	    return false;
+	}
     };
     
     var getMediaLicenses = function() {
@@ -309,13 +340,41 @@ define([
 
     var getMedia = function(url, callback, params) {
 	var params = params || {},
-	    media = new MediaModel([], {url: url});
+	    media = new MediaModel([], {url: url}),
+	    limit = url.match('limit'),
+	    offset = null,
+	    pagination = null;
 	
-	$('#content').append('<div class="loading-content"><img src="images/buscando.gif" /></div>');	
+	// TODO: #122 - move to a separated function
+	// extract limit and offset
+	if (limit) {
+	    limit = url.split('limit/');
+	    if (typeof limit[1] !== 'undefined') {
+		limit = limit[1];
+		offset = limit.split('/');
+		if (typeof offset[1] !== 'undefined') {
+		    limit = parseInt(offset[0]);
+		    offset = parseInt(offset[1]);
+		} else {
+		    limit = parseInt(limit);
+		    offset = null;
+		}
+	    }
+	}
+		
+	$('#content').append('<div class="loading-content"><img src="images/buscando.gif" /></div>');
 	media.fetch({
 	    success: function() {
+		var mediaData = {},
+		    medias = {};
+		
+		// parse pagination only at search pages
+		if (url.match('/search')) {
+		    parsePagination(url, limit, offset);
+		}
+		
 		$('#content .loading-content').remove();
-		var mediaData = {
+		mediaData = {
 		    formatDate: function(date) {
 			var newDate = '',
 			    re = /^(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)[\.0-9]*Z$/,
@@ -324,7 +383,6 @@ define([
 			return matches[3] + '/' + matches[2] + '/' + matches[1];
 		    }
 		};
-		var medias = {};
 		
 		$('#back-to-results').remove();
 
@@ -422,7 +480,7 @@ define([
 	    $(el).html(_.template(MediaDestaquesMucuaTpl));
 	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
 	    
-	    $('body').data('bbx').data = data;
+	    BBX.data = data;
 	    showMediaBy('grid', '#destaques-mucua .media');
 	}, {'width': 190, 'height': 132 });
     };
@@ -438,7 +496,7 @@ define([
 	    $(el).append(_.template(MediaDestaquesMucuaTpl));
 	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
 	    
-	    $('body').data('bbx').data = data;
+	    BBX.data = data;
 	    showMediaBy('grid', '#destaques-mucua .media', true);
 	}, {'width': 190, 'height': 132 });
     };
@@ -456,7 +514,7 @@ define([
 	    data.message = 'Nenhuma novidade em ' + config.mucua + '.';
 
 	    // TODO: quando tem mais de um bloco de dados (ex: ultimas novidades E conteudo destacado), pensar em como guardar duas ou mais listas de media
-	    $('body').data('bbx').data = data;
+	    BBX.data = data;
 	    showMediaBy('grid', '#novidades-mucua .media', true);
 	    //$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
 	    //$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
@@ -471,7 +529,7 @@ define([
 	    $('#content').append(_.template(MediaRelatedTpl));
 	    data.message = 'Nenhuma media relacionada encontrada.';
 
-	    $('body').data('bbx').data = data;
+	    BBX.data = data;
 	    showMediaBy('', '#media-related .media');
 	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
 	    $('.media-display-type .list').on('click', function(){ showByList()});	    
@@ -497,7 +555,7 @@ define([
 	    $('#content').append(_.template(MediaMocambolaTpl));
 	    data.message = 'Mocambola ainda nao publicou nenhum conteudo.';
 	    
-	    $('body').data('bbx').data = data;
+	    BBX.data = data;
 	    showMediaBy('', '#media-mocambola .media');
 
 	    if (url.match('limit')) {
@@ -556,7 +614,7 @@ define([
 	    var resultCount,
 		messageString = "",
 		terms = {},
-		config = $("body").data("bbx").config,	    
+		config = BBX.config,	    
 		terms = url.match(/search\/(.*)$/)[1].split('/');
 	    
 	    data.pageTitle = "Gallery edit";
@@ -630,7 +688,7 @@ define([
 	var callback = callback || false,
 	    media = null,
 	    options = {},	
-	    config = $("body").data("bbx").config,
+	    config = BBX.config,
 	    urlUpdateItem = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + mediaData.uuid;    
 	
 	media = new MediaModel([mediaData], {url: urlUpdateItem});
@@ -656,16 +714,15 @@ define([
     
     var getMediaSearch = function(url, limit) {
 	var limit = limit || '';
-	
 	if (limit !== '') {
 	    url += '/limit/' + limit;
 	}
-	console.log(url);
+	
 	getMedia(url, function(data) {
 	    var resultCount,
 		messageString = "",
 		terms = {},
-		config = $("body").data("bbx").config;
+		config = BBX.config;
 	    
 	    __parseMenuSearch();
 	    
@@ -681,7 +738,7 @@ define([
 	    $('#content').html(_.template(MediaResultsTpl));
 	    data.message = 'Nenhuma media encontrada para essa busca';
 	    
-	    $('body').data('bbx').data = data;
+	    BBX.data = data;
 	    showMediaBy('', '#media-results .media');
 	    
 	    if (url.match('limit')) {
@@ -758,9 +815,6 @@ define([
 	    matches = null,
 	    ordering_type = '/asc';
 
-	console.log('::::::::::::::::');
-	console.log(url);
-	
 	if (!url.match('bbx/search')) {
 	    //http://namaste/#mocambos/namaste/limit/100
 	    matches = url.match('(.*)/limit/(.*)$');
@@ -874,12 +928,14 @@ define([
 	getMediaRelated: getMediaRelated,
 	getMediaTypes: getMediaTypes,
 	getMediaLicenses: getMediaLicenses,
+	getValidMimeTypes: getValidMimeTypes,
 	getTypeByMime: getTypeByMime,
 	bindRequest: bindRequest,
 	requestCopy: requestCopy,
 	mediaSearchSort: mediaSearchSort,
 	getTagCloud: getTagCloud,
 	__getTagsFromUrl: __getTagsFromUrl,
-	parseThumb: parseThumb
+	parseThumb: parseThumb,
+	parsePagination: parsePagination
     }
 });
