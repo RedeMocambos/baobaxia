@@ -224,7 +224,7 @@ define([
 		    }
 		});		
 	    } else {
-		__parseMucuaUsage(BBX.mucua.uuid);
+		__parseMucuaUsage(BBX.mucua);
 	    }
 	}
     }
@@ -324,16 +324,16 @@ define([
 	    mucua.uuid === '') { 
 	    return false;
 	}
-
 	if (typeof BBX.mucua.info === 'undefined') {	
 	    __getMucuaResources(mucua.uuid);
 	}
 	var mucuaResourcesLoad = setInterval(function() {
 	    if (typeof BBX.mucua.info !== 'undefined') {
-		//BBXFunctions.renderUsage(BBX.mucua);
-		var compiledUsage = _.template(UsageBarTpl, BBX.mucua.info);
-		$('#footer').html(compiledUsage);
-		clearInterval(mucuaResourcesLoad);
+		if (BBX.mucua.info.availableLocalDiskSpace !== 'undefined') {
+		    var compiledUsage = _.template(UsageBarTpl, BBX.mucua.info);
+		    $('#footer').html(compiledUsage);
+		    clearInterval(mucuaResourcesLoad);
+		}
 	    }
 	}, 100);	
     }
