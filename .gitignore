@@ -28,7 +28,7 @@ app/django-bbx/bbx/.database.sqlite
 app/django-bbx/bbx/settings.py
 
 ### bbx static ###
-app/django-bbx/bbx/static/js/config.json
+app/django-bbx/bbx/static/js/config.js
 
 app/django-bbx/bbx/static/templates/*
 
