@@ -54,7 +54,7 @@ define([
 	$(target).html(_.template(ResultsMessageTpl, data));	
     };    
 
-    var __parseUrlSearch = function(params) {
+    var __parseUrlSearch = function(tags) {
 	var config = __getConfig();
 	
 	if (_.isArray(tags)) {

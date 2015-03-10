@@ -428,7 +428,7 @@ def media_token(request, repository, mucua):
     return HttpResponse(t.render(c), mimetype=u'application/json')
 
 
-# TODO: implementar busca filtrando por usuário E tags
+# TODO: implementar busca filtrando por usuario E tags
 @api_view(['GET'])
 def media_by_mocambola(request, repository, mucua, username, limit=20):
     if mucua != 'all':
