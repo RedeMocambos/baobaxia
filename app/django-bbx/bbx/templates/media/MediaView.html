@@ -78,7 +78,7 @@
 	<% } else if (media.type == 'audio') { %>
 	<audio controls src="<%= media.url %>" />
 	<% } else if (media.type ='arquivo') { %>
-	<a href="<%= media.url %>" class="download">download</a>
+	<a href="<%= media.url %>" class="download" alt="{% trans "download" %}"><div class="download">&nbsp;</div>{% trans "download" %} </a>
 	<% } %>
       <% } else { %>
       {% trans "No preview available" %}
@@ -95,7 +95,7 @@
     <% if (media.is_local) { %>
     <div class="blocks">
       <% if (media.type !=='arquivo') { %>
-      <a href="<%= media.url %>" class="download">{% trans "download" %}</a>
+      <a href="<%= media.url %>" class="download" alt="{% trans "download" %}"><div class="download">&nbsp;</div>{% trans "download" %} </a>
       <p class="">
       {% trans "Local content" %}
       </p>

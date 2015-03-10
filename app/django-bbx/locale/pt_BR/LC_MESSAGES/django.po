@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-06 19:31-0300\n"
+"POT-Creation-Date: 2015-03-09 17:10-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -457,11 +457,11 @@ msgstr "Descrição"
 
 #: bbx/templates/media/MediaPublish.html:103
 msgid "Delete media"
-msgstr "Apagar mídia"
+msgstr "Apagar"
 
 #: bbx/templates/media/MediaPublish.html:108
 msgid "View media"
-msgstr "Ver mídia"
+msgstr "Visualizar"
 
 #: bbx/templates/media/MediaPublish.html:115
 msgid "Update"

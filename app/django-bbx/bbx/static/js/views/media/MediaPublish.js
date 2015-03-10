@@ -176,7 +176,6 @@ define([
 		console.log(MediaFunctions.getTypeByMime(mime_type));
 		if (MediaFunctions.getTypeByMime(mime_type)) {
 		    $("#messages").html("");
-		    console.log('1234');
 		    $('#type').val(type);
 		    return true;
 		} else {

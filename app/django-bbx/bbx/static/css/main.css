@@ -36,7 +36,7 @@ html, body, #container {height: 100%; }
 .rede #content { margin-bottom: 40px; margin-top: 170px; margin-left: 60px}
 
 .mucua #content {text-align: right}
-a {text-decoration: none;}
+a {text-decoration: none; color: #0E5E80}
 
 /*
  * general
@@ -201,7 +201,7 @@ td.status {font-weight: bold}
   */
 .media-box {display: inline-block; width: 192px; height: 175px; background: #f4efdd; margin: 3px; font-size: 11px; border-radius: 5px; padding: 10px; text-align: center; overflow: hidden}
 .media-box .result-thumb {width: 192px; height: 130px; background: #000; float: left}
-.media-box .title {font-size: 13px; font-weight: bold; padding-top: 4px; display: inline-block; line-height: 120% }
+.media-box .title {font-size: 13px; font-weight: bold; padding-top: 4px; display: inline-block; line-height: 120%; width: 100% }
 .media-box .format_type { color: #aaa; text-transform: uppercase }
 .media-box .date {font-size: 10px; padding-top: 4px }
 .media-box .format_type {padding: 6px; font-size: 10px}
@@ -224,7 +224,8 @@ td.status {font-weight: bold}
 #buscador {margin-left: 4%; width: 400px}
 #buscador .caixa_busca { border: 2px solid #fff; border-radius: 8px; padding-left: 8px; font-size: 18px; height: 26px; width: 400px }
 #buscador .menu-buscador {margin-top: 20px; display: inline-block; padding-left: 6px}
-#back-to-results {color: #197299; font-size: 16px; font-weight: bold; padding-top: 20px}
+#back-to-results {font-size: 16px; font-weight: bold; padding-top: 20px}
+#back-to-results a {color: #0e5e80;}
 .search-links {font-size: 16px; font-weight: bold; color: #fff}
 .loading-content {margin-left: 5%; margin-top: 5px}
 
@@ -235,9 +236,10 @@ td.status {font-weight: bold}
 .pagination a {color: #145b7a}
 .pagination #pagination-pages {padding-top: 8px}
 .pagination #pagination-buttons {width: 100%; height: 12px}
-.pagination #pagination-buttons h3 {font-weight: bold; padding-left: 50px; padding-right: 50px; margin: 0}
+.pagination #pagination-buttons h3 {font-weight: bold; margin: 0}
+#pagination-top {height: 40px}
+#pagination-buttons div {width: 105px }
 
-			       
 /*
  * functional tags
  */
@@ -281,7 +283,8 @@ td.status {font-weight: bold}
 #media-view .media-image video {background-color: #000; margin-top: 22px}
 #media-view .media-image video {width: 96%}
 #media-view .media-image .download,
-#media-view .blocks .download {color: #145B7A}
+#media-view .blocks .download {color: #0E5E80; display: inline-block;}
+#media-view .download div {width: 21px; height: 16px; background-image: url('/images/download.png'); background-repeat: no-repeat; }
 #media-view h3.quem-tem {margin-bottom: 4px; color: #fff}
 #media-view #whereis a {display: inline-block; border: 1px solid #ddd; background-color: #72a56e; padding: 2px; border-radius: 4px; margin-bottom: 4px; padding: 2px 4px 2px 4px}
 
@@ -364,7 +367,7 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media_publish input,
 #media_publish input {width: 350px !important; padding: 4px; margin-top: 4px} 
 #media_publish textarea {width: 450px !important; padding: 4px; padding-top: 3px; width: 206px; border: 2px solid #88A7B5; border-radius: 8px}
-#media_publish .button-nav, #media_update .button-nav {cursor: pointer; font-size: 16px; background-color: #B5A570; text-align: center; width: 150px; float: right; padding: 8px; border-radius: 4px; border: 2px solid #958555; margin: 2px }
+#media_publish .button-nav, #media_update .button-nav {cursor: pointer; font-size: 13px; background-color: #e1d2a0; text-align: center; width: 150px; height: 42px; float: right; padding: 8px; border-radius: 4px; border: 1px solid #b9a95a; margin: 2px; color: #0e5e80 }
 #media_publish #note {height: 120px}
 #media_publish .bloco-1 {float: left;}
 #media_publish .bloco-2 {float: left; padding-left: 10px}
