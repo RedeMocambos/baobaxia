@@ -85,6 +85,7 @@ def get_latest_media(repository=DEFAULT_REPOSITORY):
                          'lastSync.txt'), 'r+')
         last_sync = last_sync_mark.readline()
         last_sync = last_sync.replace("'", "")
+        print "Alterações a partir do commit: " + last_sync
     except IOError:
         cwd = os.path.join(repository_dir, current_repository.name)
         p1 = subprocess.Popen(['git', 'rev-list', 'HEAD'],
@@ -101,8 +102,8 @@ def get_latest_media(repository=DEFAULT_REPOSITORY):
 
     cwd = os.path.join(repository_dir, current_repository.name)
     p1 = subprocess.Popen(
-        ['git', 'diff', '--diff-filter=AM', '--pretty=format:', '--name-only', 'HEAD',
-         last_sync], cwd=cwd, stdout=PIPE
+        ['git', 'log', '--diff-filter=AM', '--pretty=format:', '--name-only', 
+         last_sync + '..HEAD'], cwd=cwd, stdout=PIPE
     )
     p2 = subprocess.Popen(["sort"], stdin=p1.stdout, stdout=PIPE)
     p3 = subprocess.Popen(["uniq"], stdin=p2.stdout, stdout=PIPE)
