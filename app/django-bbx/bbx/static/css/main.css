@@ -26,7 +26,7 @@ html, body, #container {height: 100%; }
     padding: 10px;    
     z-index: 20;
 }
-.sidebar-inner {background-color: #fff; height: 100%; margin-top: -1px}
+.sidebar-inner {background-color: #fff; height: 100%; margin-top: 4px}
 
 #footer {clear: both; height: 40px; position: fixed; z-index: 10; background-color: #E1D2A0; width: 100%; bottom: -2px; border-top: #fff solid 2px; }
 .bbx #content,
@@ -48,9 +48,9 @@ a {text-decoration: none; color: #0E5E80}
  * header
  */
 #header {width: 100%; height: 175px; background-color: #fff; position: fixed; z-index:10 }
-#header-top {background-image: url('../images/faixabanner.png'); background-repeat: repeat-x; height: 80px }
+#header-top {background: url('../images/faixabanner.png') repeat-x; height: 80px }
 #header-bottom { float:left; margin-left: 60px; width: 70%; height: 85px; border-bottom: 1px solid #fff; }
-#header-image {background-image: url('../images/cabecalho.png'); background-repeat: no-repeat; margin: 0 auto; height: 80px }
+#header-image {background: url('../images/cabecalho.png') no-repeat; margin: 0 auto; height: 80px }
 .posicoes {display: none}
 .home #header,
 .login #header {height: 295px; background: url('../images/home-header-repeat.png') repeat-x; }
@@ -118,7 +118,7 @@ a {text-decoration: none; color: #0E5E80}
  */
 
 #user-profile {height: 50px; }
-#sidebar #user-profile img {float: left; width: 45px; height: 45px; margin-top: 8px}
+#sidebar #user-profile img {float: left; margin-top: 8px}
 #sidebar #user-profile h4 {font-size: 12px; float: left; text-decoration: none; color: #D9C994 !important; margin: 0 auto; padding-top: 31px; padding-left: 8px;}
 #sidebar #link-login a {color: #D5C590; font-size: 12px; font-weight: bold}
 #user-profile a.logout {font-size:11px; color:#D5C590; float: right; background-image: url(/images/logout.png); width: 37px; height: 18px}
@@ -248,7 +248,7 @@ td.status {font-weight: bold}
 .imagem .result-thumb { background: #b5a788 }
 .arquivo .result-thumb { background: #88a7b5 }
 .arquivo .result-thumb div.image a {}
-.video .result-thumb .assist {background-image: url('/images/play.png'); background-repeat: no-repeat; width: 56px; height: 37px; float: left; margin: 35px; margin-top: 45px}
+.video .result-thumb .assist {background: url('/images/play.png') no-repeat; width: 56px; height: 37px; float: left; margin: 35px; margin-top: 45px}
 .audio .result-thumb .assist {}
 
 /*
@@ -284,7 +284,7 @@ td.status {font-weight: bold}
 #media-view .media-image video {width: 96%}
 #media-view .media-image .download,
 #media-view .blocks .download {color: #0E5E80; display: inline-block;}
-#media-view .download div {width: 21px; height: 16px; background-image: url('/images/download.png'); background-repeat: no-repeat; }
+#media-view .download div {width: 21px; height: 16px; background: url('/images/download.png') no-repeat; }
 #media-view h3.quem-tem {margin-bottom: 4px; color: #fff}
 #media-view #whereis a {display: inline-block; border: 1px solid #ddd; background-color: #72a56e; padding: 2px; border-radius: 4px; margin-bottom: 4px; padding: 2px 4px 2px 4px}
 
@@ -319,9 +319,10 @@ td.status {font-weight: bold}
 #mocambola-home #mocambola-profile h3,
 #mucua-home #mucua-profile h3 {color: #145B7A; font-size: 18px; float: left; padding-left: 8px}
 #mocambola-home #mocambola-profile img,
-#mucua-home #mucua-profile img {float: left; width: 45px; height: 45px}
+#mucua-home #mucua-profile img {float: left; background: #1175a0}
 #mocambola-home .actions {clear: both}
 #mocambola-home .actions h4.link a {color: #5EA933; font-size: 18px;}
+#mocambola-home .actions h4 .button {background: url('/images/add-content.png') no-repeat; width: 20px; height: 20px; display: inline-block}
 
 /*
  * repository
