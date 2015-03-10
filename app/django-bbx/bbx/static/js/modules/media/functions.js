@@ -54,9 +54,9 @@ define([
 	$(target).html(_.template(ResultsMessageTpl, data));	
     };    
 
-    var __parseUrlSearch = function(tags) {
+    var __parseUrlSearch = function(params) {
 	var config = __getConfig();
-	   
+	
 	if (_.isArray(tags)) {
 	    tags = tags.join('/');
 	}
@@ -552,6 +552,8 @@ define([
 	}
 	
 	getMedia(url, function(data){
+	    // TODO: implementar busca filtrando por mocambola
+	    __parseMenuSearch();
 	    $('#content').append(_.template(MediaMocambolaTpl));
 	    data.message = 'Mocambola ainda nao publicou nenhum conteudo.';
 	    
