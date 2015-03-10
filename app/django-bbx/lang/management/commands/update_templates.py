@@ -71,7 +71,8 @@ class Command(BaseCommand):
 
                     template_filename = os.path.join(module_folder, template_name)
                     print template_filename
-                    os.remove(template_filename)
+                    if os.path.isfile(template_filename):
+                        os.remove(template_filename)
                     f = open(template_filename, 'w')
                     f.write(template_content)
                     f.close()
