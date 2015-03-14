@@ -12,4 +12,5 @@ urlpatterns = patterns('',
                        url(r'^api/', include('repository.urls')),
                        url(r'^api/', include('mucua.urls')),
                        url(r'^api/', include('mocambola.urls')),
+                       url(r'^api/', include('tag.urls')),
                        )

@@ -3,9 +3,12 @@ from tag.models import Tag
 
 
 class TagSerializer(serializers.ModelSerializer):
+    tag_count = serializers.IntegerField(required=False)
+    
     class Meta:
+
         model = Tag
-        fields = ('id', 'namespace', 'note', 'name')
+        fields = ('name', 'tag_count')
 
     def restore_object(self, attrs, instance=None):
 
@@ -16,7 +19,7 @@ class TagSerializer(serializers.ModelSerializer):
             instance.note = attrs.get('namespace', instance.note)
             instance.name = attrs.get('name', instance.name)
 
-            return instance
-
+        return instance
+        
         # Create new instance
         return Tag(**attrs)
