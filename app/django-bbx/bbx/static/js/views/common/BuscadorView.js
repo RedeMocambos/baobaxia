@@ -2,11 +2,11 @@ define([
     'jquery', 
     'lodash',
     'backbone',
+    'textext',  
     'modules/media/functions',
     'text!/templates/' + BBX.userLang + '/common/Buscador.html',
-    'textext',  
     'textext_tags',
-], function($, _, Backbone, MediaFunctions, BuscadorTpl, Textext, TextextTags){
+], function($, _, Backbone, Textext, MediaFunctions, BuscadorTpl, TextextTags){
     var BuscadorView = Backbone.View.extend({
 	render: function(data) {
 	    console.log('buscador');

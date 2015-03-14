@@ -2,24 +2,23 @@
 // mapeia libs usadas, a serem chamadas pelo require
 
 require.config({
-    shin: {
+    shim: {
 	lodash: { 
 	    exports: '_'
 	},
 	backbone: {
-	    deps: ['lodash', 'jquery'],
+	    deps: ['jquery', 'lodash'],
 	    exports: 'Backbone'
 	},
 	jquery: {
 	    exports: '$'
 	},
-	'textext': {
+	textext: {
 	    deps: ['jquery'],
-	    exports: ['$.fn.textext']
+	    exports: '$.fn.textext'
 	},
-	'textext_tags': {
-	    deps: ['textext'],
-	    exports: ['$.fn.textext.tags']
+	textext_tags: {
+	    deps: ['jquery', 'textext']
 	},
    },
     paths: {
