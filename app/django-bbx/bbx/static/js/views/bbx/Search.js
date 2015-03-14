@@ -19,7 +19,7 @@ define([
 
 	    BBXFunctions.renderSidebar();
 	    MediaFunctions.getMediaSearch(url, limit);
-	    MediaFunctions.getTagCloudBySearch(subroute, '#cloud');
+	    MediaFunctions.getTagCloudBySearch('#cloud');
 	    BBXFunctions.renderUsage();
 
 	    var focus = setInterval(function() {

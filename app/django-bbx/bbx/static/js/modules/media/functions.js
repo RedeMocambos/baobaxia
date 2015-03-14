@@ -470,11 +470,12 @@ define([
 	});	
     }
 
-    var getTagCloudBySearch = function(search, el) {
+    var getTagCloudBySearch = function(el) {
 	console.log('tagcloud bysearch');
-	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/tags/' + search,
+	var tags = __getTagsFromUrl(),
+	    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/tags/' + tags,
 	    tag = new TagModel([], {url: url});
-
+	
 	tag.fetch({
 	    success: function() {
 		var data = {
