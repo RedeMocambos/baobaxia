@@ -12,10 +12,12 @@ define([
     'jquery', 
     'lodash',
     'backbone',
+    'tagcloud',
     'modules/bbx/functions',
     'modules/media/model',
     'modules/media/collection',
     'modules/mucua/model',
+    'modules/tag/model',
     'text!/templates/' + BBX.userLang + '/media/MediaDestaquesMucua.html',
     'text!/templates/' + BBX.userLang + '/media/MediaNovidades.html',
     'text!/templates/' + BBX.userLang + '/media/MediaMocambola.html',
@@ -27,11 +29,12 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MessageRequest.html',
     'text!/templates/' + BBX.userLang + '/common/ResultsMessage.html',
     'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html',
+    'text!/templates/' + BBX.userLang + '/common/TagCloud.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEdit.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
-], function($, _, Backbone, BBXFunctions, MediaModel, MediaCollection, MucuaModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
+], function($, _, Backbone, TaCloud, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
     this.BBXFunctions = BBXFunctions;
     
     var init = function() {
@@ -450,20 +453,51 @@ define([
 	});
     }
     
-    var getTagCloud = function(el) {
-	/*
-	  
-	  $.fn.tagcloud.defaults = {
-	  size: {start: 10, end: 16, unit: 'pt'},
-	  color: {start: '#fada53', end: '#fada53'}
-	  };
-	  
-	  $(function () {
-	  $('#tag_cloud a').tagcloud();
-	  });
-	  }
-	  });	 
-	*/   
+    var getTagCloudByMucua = function(mucua, el) {
+	console.log('tagcloud bymucua');
+	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + mucua + '/tags',
+	    tag = new TagModel([], {url: url});
+
+
+	tag.fetch({
+	    success: function() {
+		var data = {
+		    tags: tag.attributes
+		}
+		$(el).html(_.template(TagCloudTpl, data));		
+		__getTagCloud(el)
+	    }
+	});	
+    }
+
+    var getTagCloudBySearch = function(search, el) {
+	console.log('tagcloud bysearch');
+	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/tags/' + search,
+	    tag = new TagModel([], {url: url});
+
+	tag.fetch({
+	    success: function() {
+		var data = {
+		    tags: tag.attributes
+		}
+		$(el).html(_.template(TagCloudTpl, data));		
+		__getTagCloud(el)
+	    }
+	});	
+    }
+
+
+    var __getTagCloud = function(el) {	  
+	$.fn.tagcloud.defaults = {
+	    size: {start: 10, end: 16, unit: 'pt'},
+	    color: {start: '#88A7B5', end: '#145B7A'}
+	};
+	
+	$(function () {
+	    console.log(el)
+	    $(el + ' a').tagcloud();
+	});
+	   
     }
 
     var getMediaByLimit = function(el, limit) {
@@ -935,7 +969,8 @@ define([
 	bindRequest: bindRequest,
 	requestCopy: requestCopy,
 	mediaSearchSort: mediaSearchSort,
-	getTagCloud: getTagCloud,
+	getTagCloudBySearch: getTagCloudBySearch,
+	getTagCloudByMucua: getTagCloudByMucua,
 	__getTagsFromUrl: __getTagsFromUrl,
 	parseThumb: parseThumb,
 	parsePagination: parsePagination

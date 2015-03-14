@@ -31,8 +31,7 @@ define([
 	    MediaFunctions.getMediaByMucua('#content', 4);
 	    MediaFunctions.getMediaByNovidades('#content', 4);
 	    
-	    //TODO: get cloud
-	    MediaFunctions.getTagCloud('#sidebar');
+	    MediaFunctions.getTagCloudByMucua(config.mucua, '#cloud');
 	}
     });
     

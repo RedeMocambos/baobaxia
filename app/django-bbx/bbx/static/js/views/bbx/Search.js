@@ -16,9 +16,10 @@ define([
 	    if (url.match('limit/')) {
 		url = url.split('/limit/')[0];
 	    }
-	    
+
 	    BBXFunctions.renderSidebar();
 	    MediaFunctions.getMediaSearch(url, limit);
+	    MediaFunctions.getTagCloudBySearch(subroute, '#cloud');
 	    BBXFunctions.renderUsage();
 
 	    var focus = setInterval(function() {
