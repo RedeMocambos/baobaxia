@@ -656,16 +656,16 @@ msgid "error while creating media"
 msgstr "erro ao criar a mídia"
 
 #: media/views.py:517
-msgid "Requested media of uuid %(uuid)s"
-msgstr "Mídia de uuid %uuid requisitada"
+msgid "Requested media of uuid %s"
+msgstr "Mídia de uuid %s requisitada"
 
 #: media/views.py:528
-msgid "Dropped media of uuid %(uuid)s"
+msgid "Dropped media of uuid %s"
 msgstr "Removida mídia de uuid %uuid"
 
 #: media/views.py:540
-msgid "Removed media of uuid %(uuid)s"
-msgstr "Mídia de uuid %(uuid)s requisitada"
+msgid "Removed media of uuid %s"
+msgstr "Mídia de uuid %s requisitada"
 
 #: mocambola/views.py:31
 msgid "User don\t exists"
