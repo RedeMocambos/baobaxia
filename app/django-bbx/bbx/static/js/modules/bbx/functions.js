@@ -268,7 +268,8 @@ define([
 		}
 		if (typeof BBX.network.info === 'undefined') {
 		    BBX.network.info = { 
-			'network_size': networkSize
+			'network_size': networkSize,
+			
 		    };
 		}
 		
@@ -358,35 +359,37 @@ define([
 	    $('#user-profile').html(_.template(UserProfileTpl, userData));
 	}
 
-	// fetch network data
-	if (config.mucua === 'rede' || config.mucua === '') {
-	    
-	    if (typeof BBX.mucua === 'undefined') {
-		// fetch mucua data
-		var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.MYMUCUA});
-		mucua.fetch({
-		    success: function() {
-			BBX.mucua = mucua.attributes;
-		    }
-		});
-	    }
+	// busca dados básicos da mucua
 
-	    var mucuaLoad = setInterval(function() {
-		if (typeof BBX.mucua !== 'undefined') {
-		    if (typeof BBX.network === 'undefined') {
-			__getMucuaResources(BBX.mucua.uuid);
-		    }		    
-		    clearInterval(mucuaLoad)
+	// caso 1: nada carregado
+	if (typeof BBX.mucua === 'undefined') {
+	    var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.MYMUCUA});
+	    mucua.fetch({
+		success: function() {
+		    BBX.mucua = mucua.attributes;
+		    
+		    var mucuaLoad = setInterval(function() {
+			if (typeof BBX.mucua !== 'undefined') {
+			    if (typeof BBX.network === 'undefined') {
+				__getMucuaResources(BBX.mucua.uuid);
+			    }		    
+			    clearInterval(mucuaLoad)
+			}
+		    }, 100);		
 		}
-	    }, 100);
-	    
-	    // when data is loaded, fill data
+	    });
+	}
+
+	// REDE
+	if (config.mucua === 'rede' || config.mucua === '') {
+	    console.log('rede');
 	    var networkResourcesLoad = setInterval(function() {
 		if (typeof BBX.network !== 'undefined') {
 		    if (typeof BBX.network.info !== 'undefined') {
 			if (typeof BBX.network.info.network_size !== 'undefined') {
 			    var networkData = BBX.network;
 			    networkData.mucua.storageSize = BBX.network.info.network_size;
+			    networkData.mucua.usedByAnnexUnit = BBX.mucua.info.usedByAnnexUnit;
 			    networkData.config = config;
 			    $('#place-profile').html(_.template(MucuaProfileTpl, networkData));
 			    $('#place-profile #mucua_image').attr('src', networkData.mucua.image);
@@ -395,89 +398,68 @@ define([
 		    }
 		}
 	    }, 100);
-						   
-	// else - accessing mucua
 	} else {
-	    var loadNewMucua = false;	    
-	    // check if mucua has already been loaded
-	    if (typeof BBX.mucua === 'undefined') {
-		loadNewMucua = true;
-	    } else if (BBX.mucua) {
-		if (BBX.mucua.description !== config.mucua) {
-		    loadNewMucua = true;
-		}		    
-	    }
+	    // MUCUA
 	    
-	    if (loadNewMucua) {		
+	    console.log('mucua');
+	    console.log(config.mucua);
+	    
+	    if (config.mucua === config.MYMUCUA) {
+		// mucua local
+		var mucuaResourcesLoad = setInterval(function() {
+		    if (typeof BBX.mucua !== 'undefined') {
+			if (typeof BBX.mucua.info !== 'undefined') {
+			    mucuaData = {
+				mucua: BBX.mucua
+			    };	    
+			    
+			    mucuaData.config = config;
+			    mucuaData.mucua.storageSize = BBX.mucua.info.usedByAnnex;
+			    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
+			    
+			    // verifica se a mucua tem uma imagem / media com nome do seu uuid
+			    var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid,
+				mucuaImageSrc = '';
+			    
+			    if (typeof mucua === 'undefined') {
+				var mucua = new MucuaModel([]);
+			    }
+			    // carrega imagem
+			    mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
+				$('#mucua_image').attr('src', imageSrc);
+			    });
+			    clearInterval(mucuaResourcesLoad);
+			}
+		    }
+		}, 100);		
+	    } else {
+		// mucua de fora
+		
 		var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.mucua});
 		mucua.fetch({
 		    success: function() {
 			mucuaData = {
-			    mucua: mucua.attributes
+			    mucua: mucua.attributes,
+			    config: config
 			};
 			
 			// FAKE DATA
 			mucuaData.mucua.url = ''; // TODO: get from API
-			BBX.mucua = mucuaData.mucua;			
+			$('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
 			
-			// retrieve mucua info data
-			if (typeof BBX.mucua.info === 'undefined') {
-			    __getMucuaResources(mucuaData.mucua.uuid);
-			}
+			// carrega imagem
+			// verifica se a mucua tem uma imagem / media com nome do seu uuid
+			var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid,
+			    mucuaImageSrc = '';
 			
-			var mucuaResourcesLoad = setInterval(function() {
-			    if (typeof BBX.mucua.info !== 'undefined') {
-				if (BBX.mucua.description === BBX.config.MYMUCUA) {
-				    mucuaData.mucua.info = BBX.mucua.info;
-				}
-				mucuaData.config = config;
-				mucuaData.mucua.storageSize = mucuaData.mucua.info.usedByAnnex;
-				
-				$('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
-				
-				// check if that mucua has an image
-				var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid,
-				    mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
-					$('#mucua_image').attr('src', imageSrc);
-				});
-				BBX.mucua = mucuaData.mucua;			
-				
-				clearInterval(mucuaResourcesLoad);
-			    }
-			}, 100);
+			mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
+			    $('#mucua_image').attr('src', imageSrc);
+			});
 		    }
-		});	
-	    } else {
-		mucuaData.mucua = BBX.mucua;
-		mucuaData.config = config;
-		var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/' + mucuaData.mucua.uuid}),
-		    urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid,
-		    mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
-			$('#mucua_image').attr('src', imageSrc);
-		    });
-		if (typeof BBX.mucua.info === 'undefined') {
-		    // retrieve mucua info data
-		    if (typeof BBX.mucua.info === 'undefined') {
-			__getMucuaResources(mucuaData.mucua.uuid);
-		    }
-		    
-		    var mucuaResourcesLoad = setInterval(function() {
-			if (typeof BBX.mucua.info !== 'undefined') {
-			    if (BBX.mucua.description === BBX.config.MYMUCUA) {
-				mucuaData.mucua.info = BBX.mucua.info;
-			    }
-			    mucuaData.config = config;
-			    mucuaData.mucua.storageSize = mucuaData.mucua.info.usedByAnnex;
-			    BBX.mucua = mucuaData.mucua;			
-			    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
-			    clearInterval(mucuaResourcesLoad);			    
-			}			
-		    }, 100);		    
-		} else {
-		    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
-		}
+		});
+			 
 	    }
-	}
+	}	
     }
     
     var __getLastVisitedMucuas = function(config) {
