@@ -25,7 +25,12 @@ define([
     'text!/templates/' + BBX.userLang + '/common/UserProfile.html',
     'text!/templates/' + BBX.userLang + '/common/MucuaProfile.html'
 ], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
-    
+
+    /**
+     * init function of bbx functions
+     *
+     * @return {None}
+     */    
     var init = function() {	
 	__setConfig(BBX.config);
 	BBXFunctions = this;
@@ -46,6 +51,22 @@ define([
     }
 
     /**
+     * check if cookies are enabled
+     *
+     * @return {Bool} if cookies are enabled
+     *
+     */
+    var isCookiesEnabled = function() {
+	// TODO: improve cookie detection
+	if (!navigator.cookieEnabled) {
+	    console.log("Cookies not enabled, Baobaxia need cookies.");
+	    return false;
+	} else {
+	    return true;
+	}
+    }
+
+    /**
      * adds value to cookie
      *
      * @data {Object} input Object with data to be added (with the structure: {'name': 'nameOfProperty', 'values': {Object})
@@ -55,6 +76,10 @@ define([
 	var cookieData = {},
 	    serializedCookie = '',
 	    cookie = null;
+
+	if(!isCookiesEnabled) {
+	    return false;
+	}
 	
 	console.log('addToCookie()');
 	if ($.cookie('sessionBBX')) {
@@ -82,6 +107,11 @@ define([
      */
     var getFromCookie = function(key) {
 	var key = key || '*';
+	
+	if(!isCookiesEnabled) {
+	    return false;
+	}
+	
 	if ($.cookie('sessionBBX')) {
 	    var cookieData = $.parseJSON($.cookie('sessionBBX'));
 	    if (key == '*') {
@@ -129,11 +159,12 @@ define([
     }
     
     /**
-     * render common for internal pages at baobaxia
+     * render common elements for internal pages at baobaxia
      *
+     * @el {String} HTML Element identifier
      * @return [jQuery modify #header]
      */
-    var renderCommon = function(name) {
+    var renderCommon = function(el) {
 	var data = {},
 	    config = BBX.config,
 	    tags = [];
@@ -142,14 +173,14 @@ define([
 	data.isLogged = this.isLogged;
 	data.isEditable = false;
 	
-	$('body').removeClass().addClass(name);
+	$('body').removeClass().addClass(el);
 	if (config.mucua == config.MYMUCUA) {
 	    $('body').addClass('my-mucua');
 	} else {
 	    $('body').addClass('other-mucua');
 	}
-	data.lastVisitedMucuas = __getLastVisitedMucuas(config);
-	console.log('render common: ' + name);
+	data.lastVisitedMucuas = __getLastVisitedMucuas();
+	console.log('render common: ' + el);
 	if ($('#sidebar').html() == "" ||
 	    (typeof $('#sidebar').html() === "undefined")) {
 	    $('#footer').before(_.template(SidebarTpl, data));
@@ -179,7 +210,7 @@ define([
     /**
      * render usage bar at footer
      *
-     * @return [jquery modify #footer]
+     * @return {None} [jquery modify #footer]
      */
     var renderUsage = function() {
 	console.log('render usage');
@@ -228,7 +259,13 @@ define([
 	    }
 	}
     }
-    
+
+    /**
+     * get mucua aditional data resources at API
+     *
+     * @uuid {String} Mucua UUID
+     * @return {None} [jQuery modification]
+     */    
     var __getMucuaResources = function(uuid) {
 	var config = __getConfig(),
 	    url = config.apiUrl + '/mucua/' + uuid + '/info',
@@ -340,10 +377,11 @@ define([
 	    }
 	}, 100);	
     }
-
     
     /**
+     * render elements at sidebar
      *
+     * @return {None} [jQuery modification]
      */
     var renderSidebar = function() {
 	var config = __getConfig(),
@@ -485,10 +523,15 @@ define([
 	}	
     }
     
-    var __getLastVisitedMucuas = function(config) {
+    /**
+     * get last visited Mucua
+     *
+     * @return {Object} with list of last visited mucuas
+     */
+    var __getLastVisitedMucuas = function() {
 	// get last visited mucuas
-
-	var visitedMucuas = {'name': 'visitedMucuas', 
+	var config = __getConfig(),
+	visitedMucuas = {'name': 'visitedMucuas', 
 			     'values': []
 			    }
 	visitedMucuas.values = getFromCookie('visitedMucuas') || [];
@@ -530,7 +573,7 @@ define([
 	}
 	
 	addToCookie(visitedMucuas);
-	
+	console.log(visitedMucuas);
 	return visitedMucuas.values;
     }
 
@@ -611,10 +654,25 @@ define([
 	}, 50);	    
     }
 
+    
+    /**
+     * Get config data
+     *
+     * @return {Object} input object with config data
+     */
     var __getConfig = function() {
 	return BBX.config;
     }
-
+    
+    
+    /**
+     * Set navigation variables
+     *
+     * @repository {String} Repository name
+     * @mucua {String} Mucua name
+     * @subroute {String} Internal url subroute 
+     * @return {Object} input object with config data
+     */
     var setNavigationVars = function(repository, mucua, subroute) {
 	var subroute = subroute || '',
 	    reMedia = /^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/,  // padrao de uuid
@@ -676,9 +734,11 @@ define([
 	}
     }
     
+    // public functions are defined above
     return {
 	init: init,
 	isLogged: isLogged,
+	isCookiesEnabled: isCookiesEnabled,
 	getFromCookie: getFromCookie,
 	addToCookie: addToCookie,
 	getDefaultHome: getDefaultHome,
