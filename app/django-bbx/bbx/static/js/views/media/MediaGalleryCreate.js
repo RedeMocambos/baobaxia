@@ -32,7 +32,7 @@ define([
 	    mediaToken.fetch({
 		success: function() {
 		    var csrftoken = $.cookie('csrftoken');
-		    $('#csrfmiddlewaretoken').attr('value', csrftoken);		    
+		    $('#csrfmiddlewaretoken').prop('value', csrftoken);		    
 		}
 	    });
 
@@ -47,7 +47,7 @@ define([
 			BBX.mucuaList.push(mucua);
 			$('#origin').append("<option value='" + mucua.description + "'>" + mucua.description + "</option>");
 		    }
-		    $('select[name="origin"]').find('option:contains("' + BBX.config.MYMUCUA + '")').attr("selected",true);
+		    $('select[name="origin"]').find('option:contains("' + BBX.config.MYMUCUA + '")').prop("selected",true);
 
 		    
 		}

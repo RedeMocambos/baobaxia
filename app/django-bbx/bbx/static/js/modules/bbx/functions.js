@@ -238,40 +238,15 @@ define([
 	mucua.fetch({
 	    success: function() {
 		var mucuaData = {},
-		reStripUnit = /^([0-9\.]+)([\w]*)/,
-		total = '',
-		usedByOther = '',
-		usedByAnnex = '',
-		networkSize = '';
+		    reStripUnit = /^([0-9\.]+)([\w]*)/,
+		    total = '',
+		    usedByOther = '',
+		    usedByAnnex = '',
+		    usedByAnnexUnit = '',
+		    networkSize = '';
 		
 		// set mucua info to global variable
-		BBX.mucua.info = mucua.attributes;
-		if (typeof BBX.network === 'undefined') {
-		    var networkData = {
-			mucua: {
-			    note: 'REDE',
-			    image: '/images/rede.png',
-			    description: '',
-			    note: config.repository,
-			    url: '#' + config.repository
-			}
-		    }
-		    BBX.network = networkData;
-		}
-		
-		// TODO: fix
-		// workaround to prevent error (not a bugfix!)
-		if (typeof mucua.attributes['network size'] === 'undefined') {
-		    networkSize = 0;
-		} else {
-		    networkSize = mucua.attributes['network size'].match(reStripUnit)[1];
-		}
-		if (typeof BBX.network.info === 'undefined') {
-		    BBX.network.info = { 
-			'network_size': networkSize,
-			
-		    };
-		}
+		BBX.mucua.info = mucua.attributes;		
 		
 		// set mucua variables from API
 		mucuaData.totalDiskSpace = String(BBX.mucua.info['total disk space'])
@@ -311,7 +286,34 @@ define([
 		mucuaData.usedByAnnexPercent = parseFloat(parseFloat(mucuaData.usedByAnnex) / parseFloat(mucuaData.total) * 100).toFixed(1);
 		mucuaData.availableLocalDiskSpacePercent = parseFloat(parseFloat(mucuaData.availableLocalDiskSpace) / parseFloat(mucuaData.total) * 100).toFixed(1);
 		mucuaData.demandedPercent = parseFloat(parseFloat(mucuaData.demanded) / parseFloat(mucuaData.total) * 100).toFixed(1);
-			
+
+		// network data
+		if (typeof BBX.network === 'undefined') {
+		    var networkData = {
+			mucua: {
+			    note: 'rede',
+			    image: '/images/rede.png',
+			    description: 'rede',
+			    note: config.repository,
+			    url: '#' + config.repository
+			},
+		    }
+		    BBX.network = networkData;
+		}		
+		
+		// TODO: fix
+		// workaround to prevent error (not a bugfix!)
+		if (typeof mucua.attributes['network size'] === 'undefined') {
+		    networkSize = 0;
+		} else {
+		    networkSize = mucua.attributes['network size'].match(reStripUnit)[1];
+		}
+		if (typeof BBX.network.info === 'undefined') {
+		    BBX.network.info = { 
+			'network_size': networkSize,
+			'usedByAnnexUnit': mucuaData.usedByAnnexUnit
+		    };
+		}	
 		BBX.mucua.info = mucuaData;
 	    }
 	});
@@ -345,7 +347,8 @@ define([
      */
     var renderSidebar = function() {
 	var config = __getConfig(),
-	    mucuaData = {};
+	    mucuaData = {},
+	    loadMucua = false;
 	
 	console.log('render sidebar');
 	if (isLogged() &&
@@ -360,9 +363,22 @@ define([
 	}
 
 	// busca dados básicos da mucua
+	// carrega quando:
+	// - nao tem nada
+	// - mucua
 
+	if (typeof BBX.mucua === 'undefined' || _.isEmpty(BBX.mucua)) {
+	    loadMucua = true;
+	} else if (_.isObject(BBX.mucua)) {
+	    if (typeof BBX.mucua.uuid === 'undefined') {		    
+		loadMucua = true;
+	    } else {
+		loadMucua = false;
+	    }
+	}
+	
 	// caso 1: nada carregado
-	if (typeof BBX.mucua === 'undefined') {
+	if (loadMucua) {	    
 	    var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.MYMUCUA});
 	    mucua.fetch({
 		success: function() {
@@ -389,31 +405,36 @@ define([
 			if (typeof BBX.network.info.network_size !== 'undefined') {
 			    var networkData = BBX.network;
 			    networkData.mucua.storageSize = BBX.network.info.network_size;
-			    networkData.mucua.usedByAnnexUnit = BBX.mucua.info.usedByAnnexUnit;
+			    networkData.usedByAnnexUnit = BBX.network.info.usedByAnnexUnit;
 			    networkData.config = config;
+			    
 			    $('#place-profile').html(_.template(MucuaProfileTpl, networkData));
-			    $('#place-profile #mucua_image').attr('src', networkData.mucua.image);
+			    console.log(networkData.mucua.image);
+			    $('#place-profile #mucua_image').prop('src', networkData.mucua.image);
+			    
 			    clearInterval(networkResourcesLoad);
 			}
 		    }
 		}
-	    }, 100);
+	    }, 1000);
 	} else {
 	    // MUCUA
 	    
 	    console.log('mucua');
 	    console.log(config.mucua);
-	    
-	    if (config.mucua === config.MYMUCUA) {
-		// mucua local
-		var mucuaResourcesLoad = setInterval(function() {
-		    if (typeof BBX.mucua !== 'undefined') {
-			if (typeof BBX.mucua.info !== 'undefined') {
+
+	    var mucuaResourcesLoad = setInterval(function() {
+		if (typeof BBX.mucua !== 'undefined') {
+		    if (typeof BBX.mucua.info !== 'undefined') {
+			console.log(BBX.mucua.info.usedByAnnexUnit);
+			if (config.mucua === config.MYMUCUA) {
+			    // mucua local
 			    mucuaData = {
-				mucua: BBX.mucua
+				mucua: BBX.mucua,
+				usedByAnnexUnit: BBX.mucua.info.usedByAnnexUnit,
+				config: config
 			    };	    
 			    
-			    mucuaData.config = config;
 			    mucuaData.mucua.storageSize = BBX.mucua.info.usedByAnnex;
 			    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
 			    
@@ -426,39 +447,41 @@ define([
 			    }
 			    // carrega imagem
 			    mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
-				$('#mucua_image').attr('src', imageSrc);
+				$('#mucua_image').prop('src', imageSrc);
 			    });
-			    clearInterval(mucuaResourcesLoad);
+			    
+			} else {
+			    
+			    // mucua de fora
+			    
+			    var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.mucua});
+			    mucua.fetch({
+				success: function() {
+				    mucuaData = {
+					mucua: mucua.attributes,
+					usedByAnnexUnit: BBX.mucua.info.usedByAnnexUnit,					
+					config: config					
+				    };
+				    
+				    // FAKE DATA
+				    mucuaData.mucua.url = ''; // TODO: get from API
+				    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
+				    
+				    // carrega imagem
+				    // verifica se a mucua tem uma imagem / media com nome do seu uuid
+				    var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid,
+					mucuaImageSrc = '';
+				    
+				    mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
+					$('#mucua_image').prop('src', imageSrc);
+				    });
+				}
+			    });  
 			}
+			clearInterval(mucuaResourcesLoad);
 		    }
-		}, 100);		
-	    } else {
-		// mucua de fora
-		
-		var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.mucua});
-		mucua.fetch({
-		    success: function() {
-			mucuaData = {
-			    mucua: mucua.attributes,
-			    config: config
-			};
-			
-			// FAKE DATA
-			mucuaData.mucua.url = ''; // TODO: get from API
-			$('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
-			
-			// carrega imagem
-			// verifica se a mucua tem uma imagem / media com nome do seu uuid
-			var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid,
-			    mucuaImageSrc = '';
-			
-			mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
-			    $('#mucua_image').attr('src', imageSrc);
-			});
-		    }
-		});
-			 
-	    }
+		}
+	    }, 100);		
 	}	
     }
     

@@ -25,7 +25,7 @@ define([
 		mediaToken.fetch({
 		    success: function() {
 			var csrftoken = $.cookie('csrftoken');
-			$('#csrfmiddlewaretoken').attr('value', csrftoken);
+			$('#csrfmiddlewaretoken').prop('value', csrftoken);
 		    }
 		});
 
@@ -49,7 +49,7 @@ define([
 		    media_file: fields['media_file'].value
 		}
 		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/";
-		$('#form_media_publish').attr('action', url);
+		$('#form_media_publish').prop('action', url);
 		
 		var media = new MediaModel([], {url: url});
 	    };
@@ -66,7 +66,7 @@ define([
 		    $('#origin').append("<option value='" + mucua.description + "'>" + mucua.description + "</option>");
 		    
 		});
-		$('select[name="origin"]').find('option:contains("' + BBX.config.MYMUCUA + '")').attr("selected",true);
+		$('select[name="origin"]').find('option:contains("' + BBX.config.MYMUCUA + '")').prop("selected",true);
 	    }
 	    
 	    var config = BBX.config,

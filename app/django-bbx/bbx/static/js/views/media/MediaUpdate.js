@@ -43,7 +43,7 @@ define([
 		l = $(this);
 		if (!_.isEmpty(l.val())) {
 		    var license = 'license-' + l.val();
-		    $('#license_image').attr('class', license);
+		    $('#license_image').prop('class', license);
 		}
 	    });		
 	},
@@ -61,7 +61,7 @@ define([
 	    //HACK para passar o objeto corretamente
 	    media.attributes =  _.clone(media.attributes[0]);
 	    Backbone.sync('update', media, options).done(function(){
-		$('#media-update-image').attr('src', 'images/saved.png');
+		$('#media-update-image').prop('src', 'images/saved.png');
 	    });	    
 	},
 	
@@ -94,10 +94,10 @@ define([
 		    $('#content').html(compiledTpl);  
 		    
 		    $('#origin').append("<option value='" + media.attributes.origin + "'>" + media.attributes.origin + "</option>");
-		    $('#origin').attr('disabled', true);
+		    $('#origin').prop('disabled', true);
 		    
 		    var csrftoken = $.cookie('csrftoken');
-		    $('#csrfmiddlewaretoken').attr('value', csrftoken);
+		    $('#csrfmiddlewaretoken').prop('value', csrftoken);
 		    
 		    // eventos		  
 		    $('#license').on('change', swapLicense);

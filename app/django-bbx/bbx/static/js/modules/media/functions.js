@@ -439,15 +439,15 @@ define([
 		tmpImage.onload = function() {
 		    if ($('#media-' + media.uuid).length) {
 			$('#media-' + media.uuid).removeClass('image-tmp');
-			$('#media-' + media.uuid).attr('src', media.url)
+			$('#media-' + media.uuid).prop('src', media.url)
 			
 		    } else {
 			$('.media-image-container').prepend('<img id="media-' + media.uuid + '" src="' + media.url + '" />');
 		    }
 		    var width = (params.width !== '00' && params.width < tmpImage.naturalWidth) ? params.width : tmpImage.naturalWidth;
 		    var height = (params.height !== '00' && params.height < tmpImage.naturalHeight) ? params.height : tmpImage.naturalHeight;
-  		    $('#media-' + media.uuid).attr('width', width);
-		    $('#media-' + media.uuid).attr('height', height);
+  		    $('#media-' + media.uuid).prop('width', width);
+		    $('#media-' + media.uuid).prop('height', height);
 		}
 	    }
 	});
@@ -771,7 +771,7 @@ define([
 		messageString = "Nenhum resultado";
 	    }	    
 	    
-	    $('#imagem-busca').attr('src', config.imagePath + '/buscar.png');
+	    $('#imagem-busca').prop('src', config.imagePath + '/buscar.png');
 	    $('#content').html(_.template(MediaResultsTpl));
 	    data.message = 'Nenhuma media encontrada para essa busca';
 	    

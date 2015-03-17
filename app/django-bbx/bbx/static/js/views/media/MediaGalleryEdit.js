@@ -29,7 +29,7 @@ define([
 	    mediaToken.fetch({
 		success: function() {
 		    var csrftoken = $.cookie('csrftoken');
-		    $('#csrfmiddlewaretoken').attr('value', csrftoken);		    
+		    $('#csrfmiddlewaretoken').prop('value', csrftoken);		    
 		}
 	    });
 	}
