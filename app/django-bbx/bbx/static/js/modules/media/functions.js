@@ -63,8 +63,7 @@ define([
 	if (_.isArray(tags)) {
 	    tags = tags.join('/');
 	}
-	console.log(tags);
-
+	
 	// remove last and first char if is a /
 	tags = (tags[tags.length -1] === '/') ? tags.substring(0, tags.length -1) : tags;
 	while (tags[0] === '/') {
@@ -85,8 +84,7 @@ define([
 	    url_is_search = false,
 	    url_is_gallery = false,
 	    tags = [],
-	    current_url = Backbone.history.fragment;
-
+	    current_url = decodeURI(Backbone.history.fragment);
 	
 	url_is_search = current_url.indexOf('bbx/search');
 	url_is_gallery = current_url.indexOf('gallery');
@@ -495,7 +493,6 @@ define([
 	};
 	
 	$(function () {
-	    console.log(el)
 	    $(el + ' a').tagcloud();
 	});
 	   
@@ -812,7 +809,6 @@ define([
 	    urlApi = urlApi || BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/';
 	
 	console.log('change media limit');
-	console.log(urlApi);
 	if (url.match('limit')) {
 	    url = url.split('/limit')[0];
 	} else {
