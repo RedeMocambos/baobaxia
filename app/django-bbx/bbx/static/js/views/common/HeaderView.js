@@ -15,7 +15,6 @@ define([
 	    $('#header').html(_.template(Header, data));
 	    if ($('#menu').html() == "" ||
 		(typeof $('#menu').html() === "undefined")) {
-		data.config = config;
 		
 		$('#header-top').append(_.template(MenuTpl, data));
 	    }
