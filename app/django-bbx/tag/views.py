@@ -46,6 +46,23 @@ def mucua_tags(request, repository, mucua):
 @api_view(['GET'])
 def search_tags(request, repository, mucua, args):
     """
+    busca tags a partir de uma string / fragmento    
+    """
+    # limpa url e pega argumentos
+    args = args.split('/sort')[0]
+    args = args.split('/limit')[0]
+    args = args.split('/')
+    
+    for tag in args:
+        tags = Tag.objects.all().filter(name__contains = tag)
+    
+    serializer = TagSerializer(tags, many=True)
+    return Response(serializer.data)
+        
+
+@api_view(['GET'])
+def search_related_tags(request, repository, mucua, args):
+    """
     a partir de um termo, buscar termos relacionados
     
     2 queries:

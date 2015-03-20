@@ -3,13 +3,16 @@ from tag.models import Tag
 
 
 class TagSerializer(serializers.ModelSerializer):
-    tag_count = serializers.IntegerField(required=False)
+    tag_count = serializers.SerializerMethodField('get_tag_count')
     
     class Meta:
 
         model = Tag
         fields = ('name', 'tag_count')
 
+    def get_tag_count(self, obj):
+        return getattr(obj, 'tag_count', None)
+    
     def restore_object(self, attrs, instance=None):
 
         if instance:
