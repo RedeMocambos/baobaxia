@@ -36,16 +36,32 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
 ], function($, _, Backbone, TaCloud, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
     this.BBXFunctions = BBXFunctions;
-    
+
+    /**
+     * inicializa funções de media
+     *
+     * @return {None} [Nenhum retorno, somente define variáveis]
+     */
     var init = function() {
 	this.functions = {};
 	this.functions.BBXFunctions = BBXFunctions;
     }
 
+    /**
+     * retorna configuracoes gerais
+     *
+     * @return {Object} Objeto de configurações
+     */    
     var __getConfig = function() {
 	return BBX.config;
     }
-    
+
+    /**
+     * dá saída de mensagem de restultados
+     *
+     * @message {String} String de mensagem
+     * @return {None} [Conteúdo definido pelo jquery]
+     */    
     var __parseResultsMessage = function(message) {
 	var target = target || '#result-string',
 	    imageTag = '',
@@ -57,6 +73,12 @@ define([
 	$(target).html(_.template(ResultsMessageTpl, data));	
     };    
 
+    /**
+     * define url de busca
+     *
+     * @tags {Array} Array de tags/termos
+     * @return {String} String URL com busca a partir das tags recebidas
+     */        
     var __parseUrlSearch = function(tags) {
 	var config = __getConfig();
 	
@@ -74,10 +96,11 @@ define([
 	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + tags;
     }
 
-
-    /*
-     * get tags from url
-     */
+    /**
+     * retorna tags a partir da url
+     *
+     * @return {Array} Array de tags/termos
+     */        
     var __getTagsFromUrl = function() {
 	var url_has_order = false,
 	    url_has_limit = false,
@@ -122,8 +145,12 @@ define([
 	return tags;
     }
     
-    
-    var __parseMenuSearch = function(terms) {
+    /**
+     * da saída do menu de busca
+     *
+     * @return {None} [Conteúdo definido pelo jquery]
+     */    
+    var __parseMenuSearch = function() {
 	var config = __getConfig(),
 	    data = {},
 	    tags_arr = __getTagsFromUrl(),
@@ -162,7 +189,12 @@ define([
 		console.log('removeTag: ' + tag);
 	    });
     }
-       
+
+    /**
+     * define preferencias de usuário
+     *
+     * @return {Object} Objeto com preferências do usuário
+     */    
     var setUserPrefs = function() {
 	var userPrefs = {'name': 'userPrefs',
 			 'values': {}
@@ -173,11 +205,11 @@ define([
     }
 
     /**
-     * change media results view
+     * exibir medias por um critério dado
      *
-     * @type {String} string of type, of a predefined list of types
-     * @target {String} string of DOM class/id mapping
-     * @skipCookie {Bool} bool if user don't want to set user preferences with this value
+     * @type {String} String do tipo, de uma lista predefinida de tipos
+     * @target {String} string do elemento HTML DOM (classe/id)
+     * @skipCookie {Bool} booleano se usuário não quiser setar preferencias de usuário com esse valor
      */
     var showMediaBy = function(type, target, skipCookie) {
 	var target = target || '.media-results .media',
@@ -257,7 +289,13 @@ define([
 	window.scrollTo(0, 0);
     }
 
-
+    /**
+     * dá saída da paginação de busca
+     *
+     * @url {String} String URL da busca para chamada de API
+     * @limt {Integer} Integer com limit
+     * @offset {Integer} Integer com offset
+     */
     var parsePagination = function(url, limit, offset) {
 	var limit = limit || 1,
 	    offset = offset || 20,
@@ -282,7 +320,12 @@ define([
 	    }
 	});		    
     }
-    
+
+    /**
+     * retorna tipos de mídia aceitos
+     *
+     * @return {Object} Objeto de tipos de arquivos aceitos
+     */    
     var getMediaTypes = function() {
 	return {
 	    'audio': 'audio',
@@ -292,6 +335,11 @@ define([
 	}
     };
 
+    /**
+     * retorna tipos mime validos
+     *
+     * @return {Object} Tipos mime validos
+     */    
     var getValidMimeTypes = function() {
 	var valid_mimetypes = {
 	    'audio/ogg': 'audio',
@@ -309,6 +357,12 @@ define([
 	return valid_mimetypes;
     }
 
+    /**
+     * retorna tipos por mime
+     *
+     * @mimetype {String} Mimetype
+     * @return {Bool} Booleano se o valor é válido ou não
+     */        
     var getTypeByMime = function(mimetype) {
 	var valid_mimetypes = getValidMimeTypes(),
 	    type = null;
@@ -321,7 +375,13 @@ define([
 	}
     };
     
+    /**
+     * retorna tipos de licenças de mídia
+     *
+     * @return {Object} Objeto com todas as licenças aceitas
+     */
     var getMediaLicenses = function() {
+	// TODO: buscar licenças da API
 	return {
 	    '': '',
 	    'gplv3': 'gpl v3 - gnu general public license',
@@ -339,6 +399,14 @@ define([
 	}
     };
 
+    /**
+     * busca mídias, genérico
+     * 
+     * @url {String} Url API
+     * @callback {function} Função de callback
+     * @params {Object} Parâmetros gerais
+     * @return {None} [conteúdo setado pelo jQuery]
+     */
     var getMedia = function(url, callback, params) {
 	var params = params || {},
 	    media = new MediaModel([], {url: url}),
@@ -424,6 +492,13 @@ define([
 	});
     }
 
+    /**
+     * dá saída de thumbnails
+     *
+     * @media {Object} Objeto mídia
+     * @params {Object} Parâmetros (altura, largura)
+     * @return {None} [Saída dada pelo jquery]
+     */
     var parseThumb = function(media, params) {
 	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + media.uuid + '/' + params.width + 'x' + params.height + '.' + media.format,
 	    mediaLoad = [];
@@ -450,7 +525,106 @@ define([
 	    }
 	});
     }
+
+    /**
+     * Função para equalizar histograma para lista de tags
+     *
+     * NAO FUNCIONA AINDA
+     * 
+     * @data {Object} Objeto com lista de tags e tag_count
+     * @return {Object} Objeto com lista equalizada de tags
+     */
+    var equalizeTags = function(data) {
+	var start = new Date().getTime();
+	
+	var equalizedData = _.sortBy(_.values(data.tags), 'tag_count');
+	    minValue = _.first(equalizedData).tag_count;
+	    maxValue = _.last(equalizedData).tag_count;
+	amplitude = _.parseInt((maxValue + minValue) / 2);
+	totalClasses = null;
+	maxClasses = 10;
+	intervaloMedio =  null;
+	okClasses = [];
+	    somaTagCount = 0;
+
+	var listaContagem = [];
+
+	// listaContagem[numero_de_medias_com_a_tag] = numero_tags;
+	// listaContagem["1 ocorrencia"] = 20	
+	_.each(equalizedData, function(tag) {
+	    var ocorrencias = tag.tag_count;
+	    console.log('ocorrencia: ' + ocorrencias);
+	    
+	    if (typeof listaContagem[ocorrencias] === 'undefined') {
+		console.log('cria: '+ ocorrencias);
+		// cria novo registro
+		listaContagem.push(ocorrencias);
+		listaContagem[ocorrencias] = 1;
+	    } else {
+		listaContagem[ocorrencias] = listaContagem[ocorrencias] + 1;
+		console.log('adicionou');
+		console.log(listaContagem[ocorrencias]);
+	    }
+	    console.log(listaContagem);
+	    
+	});
+	//listaContagem = _.sortBy(listaContagem);
+	totalClasses = Object.keys(listaContagem).length;
+	intervaloMedio = (minValue + maxValue) / totalClasses;
+	
+	//console.log(equalizedData);	
+	console.log(minValue);
+	console.log(maxValue);
+	console.log(totalClasses);
+	console.log(listaContagem);
+	console.log(somaTagCount);
+	
+	// tem que fazer duas coisas:
+	// diminuir o número de classes ao máximo
+	// diminuir os valores de cada classe a um número equalizado
+	
+	// primeiro caso:
+	// número de classes menor que máximo de classes
+	// normalizar maiores classes às menores
+	if (totalClasses <= totalClasses) {
+	    for (c = 1; c <= maxClasses; c++) {
+		var tmpTag = listaContagem[c];
+		
+		// se for menor, que c * intervaloMedioo
+		if (tmpTag <= c*intervaloMedio) {
+		    console.log(intervaloMedio);
+		    /*
+		    console.log('-----------');
+		    console.log(tmpTag);
+		    console.log('c: ' + c);
+		    console.log(c*intervaloMedio);
+		    */
+		    okClasses.push(tmpTag);
+		} else {
+		    okClasses.push(c*intervaloMedio);
+		}
+	    }
+	} else if (totalClasses > maxClasses) {
+	    // precisa diminuir o número de classes
+	    //for (var c = 1; c < maxClasses; c++) {
+		
+	    //}	    
+	}
+	console.log(okClasses);
+	var end = new Date().getTime();
+	var time = end - start;
+	console.log('Execution time: ' + time + 'ms');
+	
+	return data;
+    }
     
+    /**
+     * retorna nuvem de tags de uma mucua dada
+     * 
+     * @mucua {String} Nome da Mucua 
+     * @el {String} Elemento HTML
+     * @return {None} [conteúdo definido pelo jQuery]
+     */
     var getTagCloudByMucua = function(mucua, el) {
 	console.log('tagcloud bymucua');
 	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + mucua + '/tags',
@@ -462,12 +636,20 @@ define([
 		var data = {
 		    tags: tag.attributes
 		}
+		//data = equalizeTags(data);
+		
 		$(el).html(_.template(TagCloudTpl, data));		
 		__getTagCloud(el)
 	    }
 	});	
     }
 
+    /**
+     * retorna nuvem de tags a partir de uma busca
+     * 
+     * @el {String} Elemento HTML alvo
+     * @return {None} [conteúdo definido pelo jQuery]
+     */
     var getTagCloudBySearch = function(el) {
 	console.log('tagcloud bysearch');
 	var tags = __getTagsFromUrl(),
@@ -479,13 +661,20 @@ define([
 		var data = {
 		    tags: tag.attributes
 		}
+		data = equalizeTags(data);
+		
 		$(el).html(_.template(TagCloudTpl, data));		
 		__getTagCloud(el)
 	    }
 	});	
     }
 
-
+    /**
+     * retorna nuvem de tags e ativa biblioteca tagcloud
+     * 
+     * @el {String} Elemento HTML alvo
+     * @return {None} [conteúdo definido pelo jQuery]
+     */
     var __getTagCloud = function(el) {	  
 	$.fn.tagcloud.defaults = {
 	    size: {start: 10, end: 16, unit: 'pt'},
@@ -498,6 +687,13 @@ define([
 	   
     }
 
+    /**
+     * busca mídias passando limite
+     * 
+     * @el {String} Elemento HTML alvo
+     * @limit {Integer} Limite da busca
+     * @return {None} [conteúdo definido pelo jQuery]
+     */
     var getMediaByLimit = function(el, limit) {
 	var config = __getConfig(),
 	    limit = limit || '',
@@ -516,7 +712,14 @@ define([
 	    showMediaBy('grid', '#destaques-mucua .media');
 	}, {'width': 190, 'height': 132 });
     };
-    
+
+    /**
+     * busca mídias por mucua com limite
+     * 
+     * @el {String} Elemento HTML alvo
+     * @limit {Integer} Limite da busca
+     * @return {None} [conteúdo definido pelo jQuery]
+     */    
     var getMediaByMucua = function(el, limit) {
 	var config = __getConfig(),
 	    defaultLimit = 4,
@@ -533,6 +736,13 @@ define([
 	}, {'width': 190, 'height': 132 });
     };
 
+    /**
+     * busca últimas mídias adicionadas, com limite
+     * 
+     * @el {String} Elemento HTML alvo
+     * @limit {Integer} Limite da busca
+     * @return {None} [conteúdo definido pelo jQuery]
+     */
     var getMediaByNovidades = function(el, limit) {
 	var config = __getConfig(),
 	    defaultLimit = 4,
@@ -553,9 +763,17 @@ define([
 	}, {'width': 190, 'height': 132 });
     };
 
-    var getMediaRelated = function(uuid) {
+    /**
+     * busca mídias relacionadas, com limite
+     * 
+     * @uuid {String} UUID da mídia
+     * @limit {Integer} Limite da busca
+     * @return {None} [conteúdo definido pelo jQuery]
+     */
+    var getMediaRelated = function(uuid, limit) {
 	var config = __getConfig(),
-	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/related';
+	    limit = limit || defaultLimit,
+	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/related' + '/' + limit;
 	
 	getMedia(url, function(data){
 	    $('#content').append(_.template(MediaRelatedTpl));
@@ -568,6 +786,14 @@ define([
 	});
     };
 
+    /**
+     * busca mídias por mocambola, com limite
+     * 
+     * @origin {String} mucua de origem
+     * @username {String} usuário
+     * @limit {Integer} Limite da busca
+     * @return {None} [conteúdo definido pelo jQuery]
+     */
     var getMediaByMocambola = function(origin, username, limit) {
 	var config = __getConfig(),
 	    url = '',
@@ -611,6 +837,14 @@ define([
 	}, {'width': 190, 'height': 132 });
     };
 
+    /**
+     * busca galeria de mídia, com limite
+     * 
+     * @url {String} URL da API
+     * @limit {Integer} Limite da busca
+     * @return {None} [conteúdo definido pelo jQuery]
+     */
+    // TODO: alterar funcao para contemplar VIEW e EDIT (atualmente só VIEW)
     var getMediaGallery= function(url, limit) {
 	var limit = limit || '';
 	
@@ -717,7 +951,13 @@ define([
 	}, {'width': 130, 'height': 90 });	    
     };
     
-    
+    /**
+     * atualiza mídia
+     * 
+     * @mediaData {Object} Objeto com elementos de formulário do mídia
+     * @callback {function} Função de execução
+     * @return {None} [conteúdo definido pelo jQuery]
+     */    
     var __updateMedia = function(mediaData, callback) {
 	var callback = callback || false,
 	    media = null,
@@ -745,7 +985,14 @@ define([
 		};
 	    });
     }
-    
+
+    /**
+     * retorna busca
+     * 
+     * @url {String} URL da API
+     * @limit {Integer} Limite
+     * @return {None} [conteúdo definido pelo jQuery]
+     */    
     var getMediaSearch = function(url, limit) {
 	var limit = limit || '';
 	if (limit !== '') {
@@ -796,13 +1043,12 @@ define([
 	}, {'width': 190, 'height': 132 });
     };
        
-    /* 
-     * changeMediaLimit
+    /** 
+     * altera limite de mídia
      *
-     * @limit {integer} number of objects to limit the query
-     * @urlApi {string} optional string for passing urlApi; by default it's the bbx/search url
-     * @return {void} return action is changing url
-     
+     * @limit {Integer} limite da query
+     * @urlApi {String} string opcional para passar como urlApi; por padrão é 'bbx/search'
+     * @return {None} altera url do navegador
      */
     var changeMediaLimit = function(limit, urlApi) {
 	var url = Backbone.history.location.href,
@@ -817,6 +1063,12 @@ define([
 	window.location.replace(url);
     }
 
+    /** 
+     * requisitar cópia
+     *
+     * @uuid {String} UUID do conteúdo solicitado
+     * @return {None} [conteúdo definido pelo jQuery]
+     */
     var requestCopy = function(uuid) {
 	console.log('content ' + uuid + ' requested');
 	
@@ -836,10 +1088,23 @@ define([
 	})
     }
     
+    /**
+     * ativa botão de requisição
+     *
+     * @uuid {String} UUID do conteúdo atual
+     * @return {None} [conteúdo definido pelo jQuery]
+     */
     var bindRequest = function(uuid) {
 	$('.request-copy').on('click', function() { requestCopy(uuid) });   
     }
 
+    /** 
+     * altera ordenamento dos conteúdos
+     *
+     * @field {String} Nome do campo
+     * @multiple {Bool} Booleano, se for mais de um campo
+     * @return {None} [conteúdo definido pelo jQuery]
+     */    
     var mediaSearchSort = function(field, multiple) {
 	var multiple = multiple || false,
 	    url = Backbone.history.location.href,
@@ -946,7 +1211,8 @@ define([
 	
 	window.location.replace(url);
     }
-    
+
+    // funções públicas são definidas abaixo
     return {
 	init: init,
 	__getConfig: __getConfig,
