@@ -17,7 +17,16 @@ require.config({
 	    deps: ['jquery'],
 	    exports: '$.fn.textext'
 	},
+	textext_ajax: {
+	    deps: ['jquery', 'textext']
+	},
+	textext_filter: {
+	    deps: ['jquery', 'textext']
+	},
 	textext_tags: {
+	    deps: ['jquery', 'textext']
+	},
+	textext_autocomplete: {
 	    deps: ['jquery', 'textext']
 	},
    },
@@ -35,6 +44,9 @@ require.config({
 	tagcloud: 'lib/jquery.tagcloud',
 	textext: 'lib/textext/textext.core',
 	textext_tags: 'lib/textext/textext.plugin.tags',
+	textext_ajax: 'lib/textext/textext.plugin.ajax',
+	textext_filter: 'lib/textext/textext.plugin.filter',
+	textext_autocomplete: 'lib/textext/textext.plugin.autocomplete',
         json: 'lib/require/json',
         text: 'lib/require/text',
 	jquery_ui: 'lib/jquery.ui.widget',

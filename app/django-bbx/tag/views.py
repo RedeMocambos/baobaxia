@@ -67,9 +67,9 @@ def search_tags(request, repository, mucua, args):
         tags = Tag.objects.all().filter(name__contains = tag)
     
     if args_q != None:
-        response_data = {'tags': []}
+        response_data = []
         for t in tags:
-            response_data['tags'].append(t.name)
+            response_data.append(t.name) 
         return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
     else:
         serializer = TagSerializer(tags, many=True)

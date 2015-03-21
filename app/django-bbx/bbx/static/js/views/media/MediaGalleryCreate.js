@@ -4,6 +4,10 @@ define([
     'jquery_form',
     'backbone',
     'fileupload',
+    'textext',
+    'textext_ajax',
+    'textext_autocomplete',
+    'textext_filter',
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
@@ -14,7 +18,7 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateErrorMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage.html'
-], function($, _, JQueryForm, Backbone, FileUpload, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryCreateTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaGalleryCreateErrorMessageTpl, MediaGalleryCreateMessageTpl){
+], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, TextextFilter, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryCreateTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaGalleryCreateErrorMessageTpl, MediaGalleryCreateMessageTpl){
     
     var MediaGalleryCreate = Backbone.View.extend({	
 	render: function(){
@@ -55,6 +59,13 @@ define([
 	    
 	    var prepareUpload = function() {
 		console.log('prepare upload');
+
+		// checa se titulo e tags foram preenchidos
+		if ($('#tags').val() === '' || $('#tags').val() === '' ) {
+		}
+		
+		    
+		return false;
 		
 		$('#media_file_input').show();
 		$('#fileupload').fileupload({
@@ -95,10 +106,6 @@ define([
 		    }
 		});
 	    }
-
-	    var handleTags = function() {
-		$('#tags').val($('#tags').val().replace(' ', ','));
-	    }
 	    
 	    // session user data
 	    config.userData = BBXFunctions.getFromCookie('userData');
@@ -115,10 +122,21 @@ define([
 	    data.media.origin = config.MYMUCUA;
 	    data.media.repository = config.MYREPOSITORY;
 	    data.media.author = config.userData.username;
-	    
-	    $('#content').html(_.template(MediaGalleryCreateTpl, data));
 
-	    $('#tags').keyup(function() { handleTags() });	    
+	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');
+	    $('#content').html(_.template(MediaGalleryCreateTpl, data));
+	    
+	    // tags
+	    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
+	    $('#tags')
+	        .textext({
+		    plugins : 'autocomplete filter tags ajax',
+		    ajax : {
+			url : urlApiTags,
+			dataType : 'json'
+		    }
+		})
+	    
 	    // on select type of file, prepare upload
 	    $('#media_type').change(function() { prepareUpload() });	    
 	}
