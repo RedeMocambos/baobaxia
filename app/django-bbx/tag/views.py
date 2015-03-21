@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from os import path
+import json
 
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
@@ -48,6 +49,15 @@ def search_tags(request, repository, mucua, args):
     """
     busca tags a partir de uma string / fragmento    
     """
+    logger.info(mucua)
+    logger.info(args)
+
+    # hack pra funcionar autocomplete
+    # recebe também urls como /[repo]/[mucua]/tags/search/?q=[args]
+    args_q = request.GET.get('q')
+    if args_q != None:
+        args = args_q
+    
     # limpa url e pega argumentos
     args = args.split('/sort')[0]
     args = args.split('/limit')[0]
@@ -56,9 +66,14 @@ def search_tags(request, repository, mucua, args):
     for tag in args:
         tags = Tag.objects.all().filter(name__contains = tag)
     
-    serializer = TagSerializer(tags, many=True)
-    return Response(serializer.data)
-        
+    if args_q != None:
+        response_data = {'tags': []}
+        for t in tags:
+            response_data['tags'].append(t.name)
+        return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+    else:
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)
 
 @api_view(['GET'])
 def search_related_tags(request, repository, mucua, args):
