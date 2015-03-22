@@ -3,7 +3,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 0;
-  position: relative;
+  position: absolute;
   z-index: 3;
   background: #fff;
   border: 1px solid #9daccc;
@@ -14,7 +14,6 @@
   display: none;
   overflow-x: hidden;
   overflow-y: auto;
-  top: 0 !important;
 }
 .text-core .text-wrap .text-dropdown.text-position-below {
   margin-top: 1px;

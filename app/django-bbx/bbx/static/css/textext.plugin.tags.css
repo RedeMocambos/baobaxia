@@ -1,20 +1,27 @@
+.text-button {
+    margin-top:-50px;
+}
+
+#buscador .text-core .text-wrap .text-tags {
+    margin-top: -34px;
+}
+
 .text-core .text-wrap .text-tags {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   position: absolute;
   width: 100%;
-  height: 22px;
+  height: 100%;
   padding: 3px 35px 3px 3px;
   cursor: text;
-  cursor: text;
-  margin-top: -34px;
+  z-index: 2;
 }
 .text-core .text-wrap .text-tags.text-tags-on-top {
   z-index: 2;
 }
 .text-core .text-wrap .text-tags .text-tag {
-  float: left;
+    display: inline-block;
 }
 .text-core .text-wrap .text-tags .text-tag .text-button {
   -webkit-border-radius: 2px;
@@ -24,6 +31,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   position: relative;
+  float: left;
   border: 1px solid #9daccc;
   background: #2E7E36;
   color: #fff;
@@ -36,7 +44,7 @@
 }
 .text-remove {
   position: absolute;
-  display: block;
+  display: inline;
   width: 13px;
   height: 16px;
   background: url("/images/trash-white.png") no-repeat; 
@@ -44,7 +52,7 @@
   margin-top: 2px;
 }
 
-.text-tag .text-remove {
+.texttag .text-remove {
     display: none
 }
 .text-tag:hover .text-remove {

@@ -3,14 +3,17 @@ define([
     'lodash',
     'jquery_cookie',
     'jquery_form',
-    'backbone', 
+    'backbone',
+    'textext',
+    'textext_ajax',
+    'textext_autocomplete',
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
     'text!/templates/' + BBX.userLang + '/media/MediaPublish.html',
     'text!/templates/' + BBX.userLang + '/media/MediaConfirmRemoveMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaRemoveMessage.html',
-], function($, _, jQueryCookie, jQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
+], function($, _, jQueryCookie, jQueryForm, Backbone, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
     var MediaUpdate = Backbone.View.extend({
 	
 	__getFormData: function() {
@@ -20,7 +23,6 @@ define([
 	    $('#form_media_publish :input').each(function() {
 		fields[this.name] = this.value;
 	    });
-	    
 	    // TODO: adicionar tags separadas (patrimonio, publico) a tags
 	    media = {
 		name: fields.name,
@@ -35,6 +37,9 @@ define([
 		note: fields.note,		
 		media_file: $('#mediafile-original').html()
 	    }
+	    // HaCK para pegar tags no formato correto
+	    media.tags = media.tags.substring(1, media.tags.length -1).replace(/\"/g,'');
+	    
 	    return media;
 	},
 
@@ -60,9 +65,11 @@ define([
 	    };
 	    //HACK para passar o objeto corretamente
 	    media.attributes =  _.clone(media.attributes[0]);
+	    console.log(media.attributes);
+
 	    Backbone.sync('update', media, options).done(function(){
 		$('#media-update-image').prop('src', 'images/saved.png');
-	    });	    
+	    });
 	},
 	
 	render: function(uuid){
@@ -91,13 +98,27 @@ define([
 		    }
 		    BBX.media = media;
 		    var compiledTpl = _.template(MediaPublishTpl, data);
-		    $('#content').html(compiledTpl);  
 		    
+		    $('#content').html(compiledTpl);  
 		    $('#origin').append("<option value='" + media.attributes.origin + "'>" + media.attributes.origin + "</option>");
 		    $('#origin').prop('disabled', true);
 		    
 		    var csrftoken = $.cookie('csrftoken');
 		    $('#csrfmiddlewaretoken').prop('value', csrftoken);
+
+		    $('head').append('<link rel="stylesheet" href="/css/textext.core.css" type="text/css" />');		    
+		    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');		    
+		    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
+		    var tags_arr = media.attributes.tags,
+			tags_str = tags_arr.join('/');
+		    $('#tags').textext({
+			plugins : 'tags autocomplete ajax',
+			tagsItems: tags_arr,
+			ajax : {
+			    url : urlApiTags,
+			    dataType : 'json'
+			},
+		    })
 		    
 		    // eventos		  
 		    $('#license').on('change', swapLicense);

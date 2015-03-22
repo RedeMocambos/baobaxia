@@ -661,7 +661,7 @@ define([
 		var data = {
 		    tags: tag.attributes
 		}
-		data = equalizeTags(data);
+		//data = equalizeTags(data);
 		
 		$(el).html(_.template(TagCloudTpl, data));		
 		__getTagCloud(el)
