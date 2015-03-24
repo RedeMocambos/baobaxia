@@ -1,0 +1,8 @@
+{
+    "description": "Tag funcional exemplo",
+    "levels": {
+	"interface": false,
+	"distribution": false,
+	"custom": false
+    }
+}

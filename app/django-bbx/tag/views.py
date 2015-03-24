@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-from os import path
+import os
 import json
 
 from rest_framework import status
@@ -128,3 +127,35 @@ def search_related_tags(request, repository, mucua, args):
     serializer = TagSerializer(tags, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def check_functional_tags(request, tags):
+    """
+    verifica se existem tags funcionais para as tags passadas
+    e que tipo são
+
+    caso verdadeiro, retorna as funcionalidades
+    """
+    response_data = {}
+    functional_tags_folder = os.path.join(os.path.dirname(__file__), 'functional_tags')
+    
+    tags = tags.split('/')
+    for tag in tags:
+        if os.path.isdir(os.path.join(functional_tags_folder, tag)):
+            if os.path.isfile(os.path.join(functional_tags_folder, tag, tag + '.json')):
+                descriptor = os.path.join(functional_tags_folder, tag, tag + '.json')
+                with open(descriptor) as json_data:
+                    content = json.load(json_data)
+                    json_data.close()
+
+                response_data[tag] = {}
+                response_data[tag]['description'] = content['description']
+                response_data[tag]['levels'] = content['levels']
+            else:
+                response_data[tag] = {}
+                response_data[tag]['error'] = 'Functional tag\'s json descriptor not provided!'
+        else:
+            logger.info('no functionalities for tag: ' +  tag)
+    
+
+    
+    return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
