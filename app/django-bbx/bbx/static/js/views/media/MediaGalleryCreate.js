@@ -30,6 +30,7 @@ define([
 
 	    BBXFunctions.renderSidebar();
 	    BBXFunctions.renderUsage();
+	    MediaFunctions.__parseMenuSearch();
 	    
 	    // get token
 	    mediaToken.fetch({

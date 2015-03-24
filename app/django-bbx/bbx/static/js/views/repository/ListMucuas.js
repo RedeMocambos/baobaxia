@@ -31,6 +31,7 @@ define([
 	    data.config = config;
 	    
 	    BBXFunctions.renderSidebar();
+	    MediaFunctions.__parseMenuSearch();
 	    mucuas.parseMucuaImage = this.parseMucuaImage;
 	    mucuas.fetch({
 		success: function() {

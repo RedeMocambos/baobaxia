@@ -102,6 +102,7 @@ define([
 		    }
 		    BBX.media = media;
 		    var compiledTpl = _.template(MediaPublishTpl, data);
+		    MediaFunctions.__parseMenuSearch();
 		    
 		    $('#content').html(compiledTpl);  
 		    $('#origin').append("<option value='" + media.attributes.origin + "'>" + media.attributes.origin + "</option>");

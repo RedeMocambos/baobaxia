@@ -1240,6 +1240,7 @@ define([
 	getTagCloudBySearch: getTagCloudBySearch,
 	getTagCloudByMucua: getTagCloudByMucua,
 	__getTagsFromUrl: __getTagsFromUrl,
+	__parseMenuSearch: __parseMenuSearch,
 	parseThumb: parseThumb,
 	parsePagination: parsePagination
     }

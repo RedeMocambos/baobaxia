@@ -101,6 +101,8 @@ define([
 	    data.media.type = '';		
 	    
 	    $('#content').html(_.template(MediaPublishTpl, data));
+	    MediaFunctions.__parseMenuSearch();
+	    
 	    $('#media_publish .bloco-2').hide();
 
 	    // try to get mucuas list
