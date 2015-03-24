@@ -49,7 +49,6 @@ require.config({
 	textext_autocomplete: 'lib/textext/textext.plugin.autocomplete',
         json: 'lib/require/json',
         text: 'lib/require/text',
-	jquery_ui: 'lib/jquery.ui.widget',
 	fileupload_iframe_transport: 'lib/jquery.iframe-transport',
 	fileupload: 'lib/jquery.fileupload',
     },

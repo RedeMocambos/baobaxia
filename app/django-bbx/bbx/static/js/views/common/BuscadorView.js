@@ -2,11 +2,10 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'textext',  
-    'modules/media/functions',
+     'modules/media/functions',
     'text!/templates/' + BBX.userLang + '/common/Buscador.html',
     'textext_tags',
-], function($, _, Backbone, Textext, MediaFunctions, BuscadorTpl, TextextTags){
+], function($, _, Backbone, MediaFunctions, BuscadorTpl, TextextTags){
     var BuscadorView = Backbone.View.extend({
 	render: function(data) {
 	    console.log('buscador');
@@ -20,7 +19,10 @@ define([
 	    if ($('#buscador').html() == "" ||
 		(typeof $('#buscador').html() === "undefined")) {
 		$('#header-bottom').prepend(_.template(BuscadorTpl, data));
+		$('head').append('<link rel="stylesheet" href="/css/textext.core.css" type="text/css" />');		    
 		$('head').append('<link rel="stylesheet" href="/css/textext.plugin.tags.css" type="text/css" />');
+		$('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');		    
+
 	    }
 	}
     });

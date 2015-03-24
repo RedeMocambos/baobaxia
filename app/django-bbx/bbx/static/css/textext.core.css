@@ -4,6 +4,8 @@
 .text-core .text-wrap {
   background: #fff;
   position: absolute;
+  border-radius: 8px;
+
 }
 .text-core .text-wrap textarea,
 .text-core .text-wrap input {
@@ -21,9 +23,15 @@
   background: none;
   overflow: hidden;
   margin: 0;
-  padding: 3px 5px 4px 5px;
+  padding: 2px 20px 2px 6px;
+  margin: 0 2px 2px 0;
   white-space: nowrap;
-  font: 11px "lucida grande", tahoma, verdana, arial, sans-serif;
   line-height: 13px;
-  height: auto;
+  font: 17px "lucida grande", tahoma, verdana, arial, sans-serif;
+  font-weight: bold;
+}
+
+#buscador .text-core .text-wrap .text-tags {
+    height: 34px;
+    width: 450px;
 }

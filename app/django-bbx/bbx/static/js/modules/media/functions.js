@@ -13,6 +13,9 @@ define([
     'lodash',
     'backbone',
     'tagcloud',
+    'textext',
+    'textext_ajax',
+    'textext_autocomplete',
     'modules/bbx/functions',
     'modules/media/model',
     'modules/media/collection',
@@ -34,7 +37,7 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
-], function($, _, Backbone, TaCloud, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
+], function($, _, Backbone, TagCloud, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
     this.BBXFunctions = BBXFunctions;
 
     /**
@@ -85,7 +88,6 @@ define([
 	if (_.isArray(tags)) {
 	    tags = tags.join('/');
 	}
-	
 	// remove last and first char if is a /
 	tags = (tags[tags.length -1] === '/') ? tags.substring(0, tags.length -1) : tags;
 	while (tags[0] === '/') {
@@ -154,8 +156,9 @@ define([
 	var config = __getConfig(),
 	    data = {},
 	    tags_arr = __getTagsFromUrl(),
-	    tags_str = tags_arr.join('/');
-	
+	    tags_str = tags_arr.join('/'),
+	    urlApiTags = config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
+
 	$('#caixa_busca')
 	    .textext({ plugins: 'tags',
 		       tagsItems: tags_arr,
@@ -188,6 +191,7 @@ define([
 	    .bind('removeTag', function(tag) {
 		console.log('removeTag: ' + tag);
 	    });
+	
     }
 
     /**
@@ -253,7 +257,7 @@ define([
 		orderbyType = 'asc',
 		url = Backbone.history.location.href,
 		matchesOrderby = url.match('orderby/([a-zA-Z]*)/'),
-		matchesOrderbyType = url.match('orderby/[a-zA-Z]*/([asc|desc]*)[/]*');
+ 		matchesOrderbyType = url.match('orderby/[a-zA-Z]*/([asc|desc]*)[/]*');
 	    
 	    if (matchesOrderby) {
 		orderby = matchesOrderby[1];
@@ -853,6 +857,7 @@ define([
 	}
 	
 	getMedia(url, function(data) {
+	    __parseMenuSearch();	    
 	    var __getFormData = function(uuid) {
 		var fields = {},
 		    className = '.' + uuid,

@@ -1,32 +1,22 @@
-.text-button {
-    margin-top:-50px;
-}
-
-#buscador .text-core .text-wrap .text-tags {
-    margin-top: -34px;
-}
-
 .text-core .text-wrap .text-tags {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   position: absolute;
   width: 100%;
-  height: 60px;
+  height: 100%;
   padding: 3px 35px 3px 3px;
   cursor: text;
-  z-index: 2;
 }
 .text-core .text-wrap .text-tags.text-tags-on-top {
   z-index: 2;
 }
 .text-core .text-wrap .text-tags .text-tag {
-    display: inline-block;
+  float: left;
 }
 .text-core .text-wrap .text-tags .text-tag .text-button {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
-  border-radius: 6px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -38,10 +28,19 @@
   padding: 2px 20px 2px 6px;
   margin: 0 2px 2px 0;
   cursor: pointer;
-  height: 27px;
-  font: 17px "lucida grande", tahoma, verdana, arial, sans-serif;
+  border-radius: 6px;
+   font: 17px "lucida grande", tahoma, verdana, arial, sans-serif;
   font-weight: bold;
 }
+
+#media_gallery .text-core .text-wrap .text-tags .text-tag .text-button,
+#media_publish .text-core .text-wrap .text-tags .text-tag .text-button {
+    font-size: 15px;
+    font-weight: normal;
+    height: 22px;
+    padding-top: 0;
+}
+
 .text-remove {
   position: absolute;
   display: inline;

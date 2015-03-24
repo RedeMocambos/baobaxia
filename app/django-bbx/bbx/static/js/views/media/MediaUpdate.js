@@ -82,6 +82,10 @@ define([
 	    urlApi = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid,
 	    urlMediaView = config.interfaceUrl + config.repository + '/' +  config.mucua + '/media/' + uuid;
 	    BBXFunctions.renderSidebar();
+
+	    $('head').append('<link rel="stylesheet" href="/css/textext.core.css" type="text/css" />');		    
+	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.tags.css" type="text/css" />');
+	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');		    
 	    
 	    var media = new MediaModel([], {url: urlApi});
 	    media.fetch({
@@ -105,9 +109,7 @@ define([
 		    
 		    var csrftoken = $.cookie('csrftoken');
 		    $('#csrfmiddlewaretoken').prop('value', csrftoken);
-
-		    $('head').append('<link rel="stylesheet" href="/css/textext.core.css" type="text/css" />');		    
-		    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');		    
+		    
 		    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
 		    var tags_arr = media.attributes.tags,
 			tags_str = tags_arr.join('/');
@@ -118,7 +120,7 @@ define([
 			    url : urlApiTags,
 			    dataType : 'json'
 			},
-		    })
+		    });
 		    
 		    // eventos		  
 		    $('#license').on('change', swapLicense);

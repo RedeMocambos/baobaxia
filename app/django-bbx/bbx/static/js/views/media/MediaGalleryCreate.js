@@ -7,7 +7,6 @@ define([
     'textext',
     'textext_ajax',
     'textext_autocomplete',
-    'textext_filter',
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
@@ -18,7 +17,7 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateErrorMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage.html'
-], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, TextextFilter, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryCreateTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaGalleryCreateErrorMessageTpl, MediaGalleryCreateMessageTpl){
+], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryCreateTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaGalleryCreateErrorMessageTpl, MediaGalleryCreateMessageTpl){
     
     var MediaGalleryCreate = Backbone.View.extend({	
 	render: function(){
@@ -128,15 +127,15 @@ define([
 	    
 	    // tags
 	    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
+	    
 	    $('#tags')
 	        .textext({
-		    plugins : 'autocomplete filter tags ajax',
+		    plugins : 'autocomplete tags ajax',
 		    ajax : {
 			url : urlApiTags,
 			dataType : 'json'
 		    }
 		})
-	    
 	    // on select type of file, prepare upload
 	    $('#media_type').change(function() { prepareUpload() });	    
 	}
