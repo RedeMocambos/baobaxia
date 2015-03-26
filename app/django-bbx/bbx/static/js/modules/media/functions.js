@@ -13,6 +13,9 @@ define([
     'lodash',
     'backbone',
     'tagcloud',
+    'fancybox',
+    'fancybox_buttons',
+    'fancybox_media',
     'textext',
     'textext_ajax',
     'textext_autocomplete',
@@ -37,7 +40,7 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
-], function($, _, Backbone, TagCloud, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
+], function($, _, Backbone, TagCloud, Fancybox, FancyboxButtons, FancyboxMedia, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
     this.BBXFunctions = BBXFunctions;
 
     /**
@@ -243,6 +246,20 @@ define([
 	switch(type) {
 	case 'grid':
 	    $(target).html(_.template(MediaGridTpl, data));
+	    $('head').append('<link rel="stylesheet" href="/css/jquery.fancybox.css" type="text/css" />');
+	    $('head').append('<link rel="stylesheet" href="/css/jquery.fancybox-buttons.css" type="text/css" />');
+	    
+	    $('.fancybox-button').fancybox({
+		prevEffect: 'none',
+		nextEffect: 'none',
+		closeBtn: false,
+		helpers: {
+		    title: { type : 'inside' },
+		    buttons: {},
+		    media: {}
+		}
+	    });
+	    
 	    break;
 	case 'list':
 	    $(target).html(_.template(MediaListTpl, data));

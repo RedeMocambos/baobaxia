@@ -15,10 +15,11 @@
     <% if (media.is_local) { %>
     <div class="image is_local <% if (media.type == 'arquivo') { %>icon-media<% } %>">
       <% if (media.type == 'imagem') { %>
-      <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+      <!-- fancybox -->
+      <a class="fancybox-button" rel="fancybox-button" href="<%= media.url %>" title="<%= media.title %>">
 	<img id="media-<%= media.uuid %>" class="image-tmp" src="images/icon-imagem.png" />
 	<% parseThumb(media, params); %>
-      </a>
+	</a>
       <% } else if (media.type == 'video') { %>
       <video preload="metadata" controls src="<%= media.url %>" />
       <% } else if (media.type == 'audio') { %>
