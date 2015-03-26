@@ -175,13 +175,9 @@ define([
 		       }
 		     })
 	    .bind('tagClick', function(e, tag, value, callback) {
-		console.log('tag click');
-		
 		window.location = __parseUrlSearch(value);
 	    })
 	    .bind('enterKeyPress', function(e) {
-		console.log('enter');
-		
 		var textext = $(e.target).textext()[0],
 		    tags = textext.hiddenInput().val(),
 		    tags_str = '';
