@@ -16,12 +16,14 @@
     <div class="image is_local <% if (media.type == 'arquivo') { %>icon-media<% } %>">
       <% if (media.type == 'imagem') { %>
       <!-- fancybox -->
-      <a class="fancybox-button" rel="fancybox-button" href="<%= media.url %>" title="<%= media.title %>">
+      <a class="fancybox-button" rel="fancybox-button" data-fancybox-type="image" data-fancybox-group="galeria" href="<%= media.url %>" title="<%= media.title %>">
 	<img id="media-<%= media.uuid %>" class="image-tmp" src="images/icon-imagem.png" />
 	<% parseThumb(media, params); %>
 	</a>
       <% } else if (media.type == 'video') { %>
-      <video preload="metadata" controls src="<%= media.url %>" />
+      <a class="fancybox-button" rel="fancybox-button" data-fancybox-type="iframe" data-fancybox-group="galeria" href="<%= media.url %>" title="<%= media.title %>" id="<%= media.uuid %>">
+	<video id="<%= media.uuid %>" preload="metadata" controls src="<%= media.url %>" />
+      </a>
       <% } else if (media.type == 'audio') { %>
       <audio preload="metadata" controls src="<%= media.url %>" />
       <% } else if (media.type == 'arquivo') { %>     

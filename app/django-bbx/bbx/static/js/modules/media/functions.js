@@ -248,15 +248,24 @@ define([
 	    $(target).html(_.template(MediaGridTpl, data));
 	    $('head').append('<link rel="stylesheet" href="/css/jquery.fancybox.css" type="text/css" />');
 	    $('head').append('<link rel="stylesheet" href="/css/jquery.fancybox-buttons.css" type="text/css" />');
+
+	    var updateVideoSize = function(object) {
+		
+	    }
 	    
 	    $('.fancybox-button').fancybox({
+		autoHeight: true,
+		autoWidth: true,
 		prevEffect: 'none',
 		nextEffect: 'none',
+		openEffect: 'none',
+		closeEffect: 'none',
+		padding: 0,
 		closeBtn: false,
+		minHeight: '350px',
 		helpers: {
 		    title: { type : 'inside' },
-		    buttons: {},
-		    media: {}
+		    buttons: {}
 		}
 	    });
 	    
