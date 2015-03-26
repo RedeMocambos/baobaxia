@@ -149,7 +149,7 @@ def check_functional_tags(request, tags):
 
                 response_data[tag] = {}
                 response_data[tag]['description'] = content['description']
-                response_data[tag]['levels'] = content['levels']
+                response_data[tag]['code'] = _get_functional_tag(tag)
             else:
                 response_data[tag] = {}
                 response_data[tag]['error'] = 'Functional tag\'s json descriptor not provided!'
@@ -159,3 +159,26 @@ def check_functional_tags(request, tags):
 
     
     return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+
+def _get_functional_tag(tag):
+    code = {}
+    functional_tags_folder = os.path.join(os.path.dirname(__file__), 'functional_tags');
+    
+    IGNORE_FILES = ('README')
+
+    code_files = []
+
+    # lista todos os arquivos de codigo da pasta
+    # TODO: tirar o 'interface' hard
+    interface_folder = os.path.join(functional_tags_folder, tag, 'interface')
+    for filename in os.listdir(interface_folder):
+        if os.path.isfile(os.path.join(interface_folder,filename)) and filename not in IGNORE_FILES:
+            name = filename.rsplit('.', 1)[0]
+            with open(os.path.join(interface_folder, filename), 'r') as f:
+                main_data = f.read()
+                f.closed
+                logger.info(main_data)
+
+                code[name] = main_data
+    
+    return code
