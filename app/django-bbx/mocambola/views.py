@@ -21,8 +21,6 @@ def mocambola_list(request, repository, mucua):
 
 @api_view(['GET'])
 def mocambola_detail(request, repository, mucua, mocambola):
-    # retorna detalhes do user
-
     try:
         user = User.objects.get(username=mocambola)
     except User.DoesNotExist:

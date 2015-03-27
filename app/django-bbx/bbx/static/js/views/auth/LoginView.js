@@ -10,9 +10,10 @@ define([
     'modules/mucua/model',
     'modules/mucua/collection',
     'modules/mocambola/model',
+    'modules/mocambola/collection',
     'text!/templates/' + BBX.userLang + '/auth/LoginTemplate.html',
     'text!/templates/' + BBX.userLang + '/common/HeaderHome.html',
-], function($, _, Backbone, jQueryCookie, jQueryJson, AuthFunctions, BBXFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, LoginTemplate, HeaderHomeTpl){
+], function($, _, Backbone, jQueryCookie, jQueryJson, AuthFunctions, BBXFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, MocambolaCollection, LoginTemplate, HeaderHomeTpl){
     var LoginView = Backbone.View.extend({
 	el: "body",
 	
@@ -33,7 +34,7 @@ define([
 	
 	render: function(){
 	    var config = BBX.config;
-	    
+	    console.log('login render');
 	    var __parseTemplate = function(data) {
 		$('#header').html(_.template(HeaderHomeTpl));
 		
@@ -47,9 +48,8 @@ define([
 		var compiledContent = _.template(LoginTemplate, data);
 		$('#content').html(compiledContent);
 	    }
-	    
 	    // get mucuas 
-	    var mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.MYREPOSITORY + '/mucuas'});
+	    var mucuas = new MucuaCollection();
 	    mucuas.fetch({
 		success: function() {
 		    var mucuasLength = mucuas.models.length,
@@ -80,9 +80,9 @@ define([
 		if ($.cookie('csrftoken')) {
 		    $.removeCookie('csrftoken');
 		}
-		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/mocambola/login";
-		var mocambola = new MocambolaModel([], {url: url});
-		mocambola.fetch({});
+		$.ajax({
+		    url: BBX.config.apiUrl + "/" + BBX.config.MYREPOSITORY + "/" + BBX.config.MYMUCUA + "/mocambola/login"
+		});
 	    };
 	}
     })

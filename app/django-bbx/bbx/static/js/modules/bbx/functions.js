@@ -85,19 +85,16 @@ define([
 	
 	console.log('addToCookie()');
 	if ($.cookie('sessionBBX')) {
-	    cookieData = $.parseJSON($.cookie('sessionBBX'));
+	    cookieData = JSON.stringify($.cookie('sessionBBX'));
 	}
 	if (_.isNull(cookieData)) {
 	    cookieData = {};
 	}
-	
 	cookieData[data.name] = data.values
-	
-	serializedCookie = $.toJSON(cookieData);
-	
+	serializedCookie = JSON.stringify(cookieData);
 	$.cookie('sessionBBX', null);
 	$.cookie('sessionBBX', serializedCookie);
-	var cookie = $.parseJSON($.cookie('sessionBBX'));
+	console.log($.cookie['sessionBBX']);
 	return cookieData;
     }
 
@@ -391,6 +388,7 @@ define([
 	    loadMucua = false;
 	
 	console.log('render sidebar');
+	console.log(isLogged());
 	if (isLogged() &&
 	    ((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() == "")) {
 	    var userData = getFromCookie('userData');

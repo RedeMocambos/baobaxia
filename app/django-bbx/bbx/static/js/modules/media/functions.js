@@ -448,7 +448,7 @@ define([
      */
     var getMedia = function(url, callback, params) {
 	var params = params || {},
-	    media = new MediaModel([], {url: url}),
+	    media = new MediaModel([], {urlRoot: url}),
 	    limit = url.match('limit'),
 	    offset = null,
 	    pagination = null;

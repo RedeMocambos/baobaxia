@@ -46,7 +46,7 @@ require.config({
 	jquery_form: 'lib/jquery.form.min',
 	underscore: 'lib/underscore-amd',
 	lodash: 'lib/lodash-min',
-	backbone: 'lib/backbone-amd',
+	backbone: 'lib/backbone.min',
  	backbone_form: 'lib/backbone-forms.min',
 	templates: '../templates',
 	backbone_subroute: 'lib/backbone.subroute.min',

@@ -6,6 +6,7 @@ define([
 ], function($, _, Backbone, MediaModel) {
     var MucuaModel = Backbone.Model.extend({
 	idAttribute: 'uuid',
+	url: BBX.config.apiUrl + '/' + BBX.config.MYREPOSITORY + '/mucua/' + this.idAttribute,
 
 	/**
 	 * Get mucua image:

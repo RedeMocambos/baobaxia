@@ -14,13 +14,14 @@ define([
     'backbone',
     'modules/bbx/functions',
     'modules/mocambola/model',
+    'modules/mocambola/collection',
     'text!/templates/' + BBX.userLang + '/auth/LoginOk.html',
     'text!/templates/' + BBX.userLang + '/auth/LoginFailed.html',
     'text!/templates/' + BBX.userLang + '/auth/PasswordMustMatch.html',
     'text!/templates/' + BBX.userLang + '/auth/FillUser.html',
     'text!/templates/' + BBX.userLang + '/auth/FillPassword.html',
     'text!/templates/' + BBX.userLang + '/auth/UserExists.html',
-], function($, _, Backbone, BBXFunctions, MocambolaModel, LoginOkTpl, LoginFailedTpl, PasswordMustMatchTpl, FillUserTpl, FillPasswordTpl, UserExistsTpl){
+], function($, _, Backbone, BBXFunctions, MocambolaModel, MocambolaCollection, LoginOkTpl, LoginFailedTpl, PasswordMustMatchTpl, FillUserTpl, FillPasswordTpl, UserExistsTpl){
     
     var init = function() {	
 	AuthFunctions = this;
@@ -46,18 +47,19 @@ define([
     var __checkLogin = function(loginData) {
 	var url = BBX.config.apiUrl + '/' + loginData.repository + '/' + loginData.mucua + '/mocambola/login';
 	//TODO: fazer check_login na API
-	var mocambola = new MocambolaModel(loginData, {url: url});
-	
-	mocambola.save()
-	    .always(function(userData) {
-		if (userData.error === true) {
-		    $('#message-area').html(userData.errorMessage);
-		    BBX.loginError = userData.errorMessage;
-		} else {
-		    $('#message-area').html(LoginOkTpl);
-		    BBX.config.userData = userData;
-		}
-	    });		
+	$.ajax({
+	    method: "POST",
+	    url: url,
+	    data: loginData
+	}).always(function(userData) {
+	    if (userData.error === true) {
+		$('#message-area').html(userData.errorMessage);
+		BBX.loginError = userData.errorMessage;
+	    } else {
+		$('#message-area').html(LoginOkTpl);
+		BBX.config.userData = userData;
+	    }
+	});		
     }
 	
     var __getDefaultHome = function() {
@@ -119,8 +121,9 @@ define([
 
     var __checkUser = function(registerData) {
 	// verify if exists any user with that username
-	var mocambola = new MocambolaModel(registerData, 					       
-					   {url: BBx.config.apiUrl + '/' + registerData.repository + '/' + registerData.mucua + '/mocambola/' + registerData.email});
+	var mocambola = new MocambolaCollection(registerData, 					       
+						{url: BBx.config.apiUrl + '/' + registerData.repository + '/' + registerData.mucua + '/mocambola/' + registerData.email});
+	console.log('check user');
 	mocambola.fetch({
 	    success: function() {
 		// if user exists, raises error
@@ -129,7 +132,7 @@ define([
 		    $("#message-area").html(UserExistsTpl);
 		} else {
 		    // if not exists, continue and register the user
-		    mocambola = new MocambolaModel(registerData, 					       
+		    mocambola = new MocambolaCollection(registerData, 					       
 						   {url: BBX.config.apiUrl + '/mocambola/register'});
 		    mocambola.save()
 			.always(function(userData) {
