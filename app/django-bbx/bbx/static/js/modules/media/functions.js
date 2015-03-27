@@ -252,7 +252,7 @@ define([
 	    var updateVideoSize = function(object) {
 		
 	    }
-	    
+	    BBX.tmp.fancybutton = {};
 	    $('.fancybox-button').fancybox({
 		autoHeight: true,
 		autoWidth: true,
@@ -262,10 +262,23 @@ define([
 		closeEffect: 'none',
 		padding: 0,
 		closeBtn: false,
-		minHeight: '350px',
+		//		minHeight: '350px',
 		helpers: {
 		    title: { type : 'inside' },
 		    buttons: {}
+		},
+		// TODO: autoplay quando termina o video
+		afterLoad: function() {
+		    if (this.type === 'iframe') {
+			BBX.tmp.fancybutton.minHeight = this.minHeight;
+			this.minHeight = '450px';
+
+			$('iframe').contents().find('video').bind('ended', function() {
+			    $.fancybox.next();
+			});
+		    } else if (this.type === 'image') {
+			this.minHeight = BBX.tmp.fancybutton.minHeight;
+		    }
 		}
 	    });
 	    

@@ -34,6 +34,7 @@ define([
      */    
     var init = function() {	
 	__setConfig(BBX.config);
+	BBX.tmp = {};
 	BBXFunctions = this;
     }
     
