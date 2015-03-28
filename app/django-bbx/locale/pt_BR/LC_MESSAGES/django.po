@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-09 17:10-0300\n"
+"POT-Creation-Date: 2015-03-27 21:23-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,7 +80,7 @@ msgstr "Mucua"
 
 #: bbx/templates/auth/LoginTemplate.html:35
 #: bbx/templates/auth/Register.html:36 media/serializers.py:145
-#: repository/models.py:475
+#: repository/models.py:476
 msgid "Repository"
 msgstr "Repositório"
 
@@ -269,7 +269,7 @@ msgstr "Publicar nova galeria"
 
 #: bbx/templates/media/MediaGalleryCreate.html:20
 #: bbx/templates/media/MediaPublish.html:11
-#: bbx/templates/media/MediaPublish.html:77
+#: bbx/templates/media/MediaPublish.html:78
 msgid "Origin"
 msgstr "Origem"
 
@@ -281,17 +281,20 @@ msgstr "Nome da galeria (tags)"
 msgid "Title of medias:"
 msgstr "Título das mídias"
 
-#: bbx/templates/media/MediaGalleryCreate.html:33
+#: bbx/templates/media/MediaGalleryCreate.html:34
+msgid "Description:"
+msgstr "Descrição"
+
+#: bbx/templates/media/MediaGalleryCreate.html:39
 #: bbx/templates/media/MediaGalleryEdit.html:14
-#: bbx/templates/media/MediaPublish.html:83
+#: bbx/templates/media/MediaPublish.html:84
 #: bbx/templates/media/MediaView.html:38
 msgid "License"
 msgstr "Licença"
 
-#: bbx/templates/media/MediaGalleryCreate.html:44
-#: bbx/templates/media/MediaPublish.html:22
-msgid "File type"
-msgstr "Tipo de arquivo"
+#: bbx/templates/media/MediaGalleryCreate.html:50
+msgid "Select file type to start upload"
+msgstr "Selecione o tipo do arquivo para iniciar os uploads"
 
 #: bbx/templates/media/MediaGalleryCreateErrorMessage.html:2
 msgid "Error while inserting media: "
@@ -300,6 +303,10 @@ msgstr "Erro ao criar a mídia: "
 #: bbx/templates/media/MediaGalleryCreateMessage.html:2
 msgid "Media inserted: "
 msgstr "Mídia inserida: "
+
+#: bbx/templates/media/MediaGalleryCreateValidationMessage.html:2
+msgid "Please fill the required fields to continue!"
+msgstr "Preencha os campos obrigatórios para continuar!"
 
 #: bbx/templates/media/MediaGalleryEdit.html:4
 msgid "Edit gallery"
@@ -314,7 +321,7 @@ msgid "Name of media"
 msgstr "Nome da mídia"
 
 #: bbx/templates/media/MediaGalleryEdit.html:13
-#: bbx/templates/media/MediaPublish.html:72
+#: bbx/templates/media/MediaPublish.html:73
 #: bbx/templates/media/MediaView.html:22
 msgid "Date"
 msgstr "Data"
@@ -335,12 +342,13 @@ msgstr "(sobrescreve mudanças particulares)"
 msgid "edit media"
 msgstr "editar mídia"
 
-#: bbx/templates/media/MediaGrid.html:28 bbx/templates/media/MediaView.html:98
+#: bbx/templates/media/MediaGrid.html:31 bbx/templates/media/MediaView.html:81
+#: bbx/templates/media/MediaView.html:98
 msgid "download"
 msgstr "baixar"
 
 #: bbx/templates/media/MediaList.html:5 media/models.py:113
-#: repository/models.py:404
+#: repository/models.py:405
 msgid "name"
 msgstr "nome"
 
@@ -424,50 +432,54 @@ msgstr "total:"
 msgid "Title:"
 msgstr "Título:"
 
-#: bbx/templates/media/MediaPublish.html:18
+#: bbx/templates/media/MediaPublish.html:19
 msgid "Tags:"
 msgstr "Tags:"
 
-#: bbx/templates/media/MediaPublish.html:35
+#: bbx/templates/media/MediaPublish.html:23
+msgid "File type"
+msgstr "Tipo de arquivo"
+
+#: bbx/templates/media/MediaPublish.html:36
 #: bbx/templates/media/MediaView.html:84
 msgid "No preview available"
 msgstr "Sem visualização disponível"
 
-#: bbx/templates/media/MediaPublish.html:53
+#: bbx/templates/media/MediaPublish.html:54
 #: bbx/templates/media/MediaView.html:114
 msgid "UUID:"
 msgstr "UUID:"
 
-#: bbx/templates/media/MediaPublish.html:67
+#: bbx/templates/media/MediaPublish.html:68
 msgid "Author"
 msgstr "Author"
 
-#: bbx/templates/media/MediaPublish.html:81
+#: bbx/templates/media/MediaPublish.html:82
 #: bbx/templates/media/MediaView.html:30
 msgid "Format"
 msgstr "Formato"
 
-#: bbx/templates/media/MediaPublish.html:91
+#: bbx/templates/media/MediaPublish.html:92
 msgid "Availability"
 msgstr "Disponibilidade"
 
-#: bbx/templates/media/MediaPublish.html:93
+#: bbx/templates/media/MediaPublish.html:94
 msgid "Description"
 msgstr "Descrição"
 
-#: bbx/templates/media/MediaPublish.html:103
+#: bbx/templates/media/MediaPublish.html:104
 msgid "Delete media"
 msgstr "Apagar"
 
-#: bbx/templates/media/MediaPublish.html:108
+#: bbx/templates/media/MediaPublish.html:109
 msgid "View media"
 msgstr "Visualizar"
 
-#: bbx/templates/media/MediaPublish.html:115
+#: bbx/templates/media/MediaPublish.html:116
 msgid "Update"
 msgstr "Atualizar"
 
-#: bbx/templates/media/MediaPublish.html:115
+#: bbx/templates/media/MediaPublish.html:116
 msgid "Upload file"
 msgstr "Subir arquivo"
 
@@ -595,7 +607,7 @@ msgstr "Data de criação da mídia"
 msgid "note"
 msgstr "anotações"
 
-#: media/models.py:121 repository/models.py:410
+#: media/models.py:121 repository/models.py:411
 msgid "Note.. use as you wish!"
 msgstr "Anotações.. use como quiser!"
 
@@ -655,16 +667,19 @@ msgstr "mídia atualizada - OK"
 msgid "error while creating media"
 msgstr "erro ao criar a mídia"
 
-#: media/views.py:517
-msgid "Requested media of uuid %s"
+#: media/views.py:518
+#, fuzzy, python-format
+msgid "Requested media of uuid %(uuid)s"
 msgstr "Mídia de uuid %s requisitada"
 
-#: media/views.py:528
-msgid "Dropped media of uuid %s"
+#: media/views.py:529
+#, fuzzy, python-format
+msgid "Dropped media of uuid %(uuid)s"
 msgstr "Removida mídia de uuid %uuid"
 
-#: media/views.py:540
-msgid "Removed media of uuid %s"
+#: media/views.py:541
+#, fuzzy, python-format
+msgid "Removed media of uuid %(uuid)s"
 msgstr "Mídia de uuid %s requisitada"
 
 #: mocambola/views.py:31
@@ -706,51 +721,51 @@ msgstr "Mucua não encontrada"
 msgid "Group %s deleted"
 msgstr "Grupo %s apagado"
 
-#: repository/models.py:405
+#: repository/models.py:406
 msgid "Repository name taken from available repositories"
 msgstr "Nome do repositório retirado da lista de repositórios disponíveis"
 
-#: repository/models.py:409
+#: repository/models.py:410
 msgid "notes"
 msgstr "anotações"
 
-#: repository/models.py:414
+#: repository/models.py:415
 msgid "synchronize"
 msgstr "sincronizar"
 
-#: repository/models.py:415
+#: repository/models.py:416
 msgid "Tick here to enablesyncronization of this repository"
 msgstr "Marque aqui para habilitar a sincronização desse repositório"
 
-#: repository/models.py:420
+#: repository/models.py:421
 msgid "repository"
 msgstr "repositório"
 
-#: repository/models.py:421
+#: repository/models.py:422
 msgid "repositories"
 msgstr "repositórios"
 
-#: repository/models.py:474
+#: repository/models.py:475
 msgid "CLEANING"
 msgstr "LIMPANDO"
 
-#: repository/models.py:481
+#: repository/models.py:482
 msgid "Deleting media"
 msgstr "Apagando mídia"
 
-#: repository/models.py:486
+#: repository/models.py:487
 msgid "Fingerprint"
 msgstr "Impressão digital"
 
-#: repository/models.py:489
+#: repository/models.py:490
 msgid "Media deleted."
 msgstr "Mídia apagada!"
 
-#: repository/models.py:492
+#: repository/models.py:493
 msgid "Media doesn't exist"
 msgstr "Mídia não existe"
 
-#: repository/models.py:495
+#: repository/models.py:496
 msgid "Delete problem"
 msgstr "Problema ao remover mídia"
 

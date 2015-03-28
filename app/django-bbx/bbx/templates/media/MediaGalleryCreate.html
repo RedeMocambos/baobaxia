@@ -47,8 +47,9 @@
       <div id="license_image" class="license-<%= media.license %>"></div>
 
       <!-- file type -->
-      <div class="type"><span class="title">{% trans "File type" %}</span><br/>
-	  <select name="type" id="media_type" <% if (page == 'MediaUpdate') { %>disabled<% } %>>
+      <div class="type"><span class="title">{% trans "Select file type to start upload" %}</span><br/>
+	<select name="type" id="media_type" <% if (page == 'MediaUpdate') { %>disabled<% } %>>
+	  <option></option>
 	    <% _.each(types, function(value, key) { %>
 	    <option value="<%= key %>" <% if (media.type == key) { %>selected<% } %>><%= value %></option>
 	    <% }) %>
