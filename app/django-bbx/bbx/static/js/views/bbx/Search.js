@@ -21,7 +21,8 @@ define([
 	    MediaFunctions.getMediaSearch(url, limit);
 	    MediaFunctions.getTagCloudBySearch('#cloud');
 	    BBXFunctions.renderUsage();
-
+	    //BBXFunctions.checkFunctionalTag();
+	    
 	    var focus = setInterval(function() {
 		var activeElId = document.activeElement.id;
 		if (activeElId != 'caixa_busca') {

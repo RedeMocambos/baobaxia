@@ -1,8 +1,0 @@
-{
-    "description": "Tag funcional para galerias",
-    "levels": {
-	"interface": true,
-	"distribution": false,
-	"custom": false
-    }
-}

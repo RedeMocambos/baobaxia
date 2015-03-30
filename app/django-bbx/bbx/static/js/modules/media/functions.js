@@ -13,6 +13,9 @@ define([
     'lodash',
     'backbone',
     'tagcloud',
+    'fancybox',
+    'fancybox_buttons',
+    'fancybox_media',
     'textext',
     'textext_ajax',
     'textext_autocomplete',
@@ -37,7 +40,7 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
-], function($, _, Backbone, TagCloud, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
+], function($, _, Backbone, TagCloud, Fancybox, FancyboxButtons, FancyboxMedia, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
     this.BBXFunctions = BBXFunctions;
 
     /**
@@ -175,13 +178,9 @@ define([
 		       }
 		     })
 	    .bind('tagClick', function(e, tag, value, callback) {
-		console.log('tag click');
-		
 		window.location = __parseUrlSearch(value);
 	    })
 	    .bind('enterKeyPress', function(e) {
-		console.log('enter');
-		
 		var textext = $(e.target).textext()[0],
 		    tags = textext.hiddenInput().val(),
 		    tags_str = '';
@@ -247,6 +246,42 @@ define([
 	switch(type) {
 	case 'grid':
 	    $(target).html(_.template(MediaGridTpl, data));
+	    $('head').append('<link rel="stylesheet" href="/css/jquery.fancybox.css" type="text/css" />');
+	    $('head').append('<link rel="stylesheet" href="/css/jquery.fancybox-buttons.css" type="text/css" />');
+
+	    var updateVideoSize = function(object) {
+		
+	    }
+	    BBX.tmp.fancybutton = {};
+	    $('.fancybox-button').fancybox({
+		autoHeight: true,
+		autoWidth: true,
+		prevEffect: 'none',
+		nextEffect: 'none',
+		openEffect: 'none',
+		closeEffect: 'none',
+		padding: 0,
+		closeBtn: false,
+		//		minHeight: '350px',
+		helpers: {
+		    title: { type : 'inside' },
+		    buttons: {}
+		},
+		// TODO: autoplay quando termina o video
+		afterLoad: function() {
+		    if (this.type === 'iframe') {
+			BBX.tmp.fancybutton.minHeight = this.minHeight;
+			this.minHeight = '450px';
+
+			$('iframe').contents().find('video').bind('ended', function() {
+			    $.fancybox.next();
+			});
+		    } else if (this.type === 'image') {
+			this.minHeight = BBX.tmp.fancybutton.minHeight;
+		    }
+		}
+	    });
+	    
 	    break;
 	case 'list':
 	    $(target).html(_.template(MediaListTpl, data));

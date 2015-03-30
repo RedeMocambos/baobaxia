@@ -18,13 +18,14 @@ define([
     'views/common/BuscadorView',
     'modules/mucua/model',
     'modules/repository/model',
+    'modules/tag/model',
     'modules/media/functions',
     'text!/templates/' + BBX.userLang + '/common/Content.html',
     'text!/templates/' + BBX.userLang + '/common/Sidebar.html',
     'text!/templates/' + BBX.userLang + '/common/UsageBar.html',
     'text!/templates/' + BBX.userLang + '/common/UserProfile.html',
     'text!/templates/' + BBX.userLang + '/common/MucuaProfile.html'
-], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
+], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, TagModel, MediaFunctions, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
 
     /**
      * init function of bbx functions
@@ -33,6 +34,7 @@ define([
      */    
     var init = function() {	
 	__setConfig(BBX.config);
+	BBX.tmp = {};
 	BBXFunctions = this;
     }
     
@@ -457,10 +459,6 @@ define([
 	    }, 1000);
 	} else {
 	    // MUCUA
-	    
-	    console.log('mucua');
-	    console.log(config.mucua);
-
 	    var mucuaResourcesLoad = setInterval(function() {
 		if (typeof BBX.mucua !== 'undefined') {
 		    if (typeof BBX.mucua.info !== 'undefined') {
@@ -490,8 +488,7 @@ define([
 			    
 			} else {
 			    
-			    // mucua de fora
-			    
+			    // mucua de fora			    
 			    var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.mucua});
 			    mucua.fetch({
 				success: function() {
@@ -571,9 +568,8 @@ define([
 		console.log('adiciona ao comeco');
 	    }	    
 	}
-	
 	addToCookie(visitedMucuas);
-	console.log(visitedMucuas);
+	
 	return visitedMucuas.values;
     }
 
@@ -733,6 +729,53 @@ define([
 	    return false;
 	}
     }
+
+    /**
+     * verifica se há tags funcionais
+     *
+     * return {None} [conteúdo definido pelo jQuery]
+     */
+    var checkFunctionalTag = function() {
+	console.log('checkFunctionalTag');
+	var config = __getConfig(),	
+	    tags = MediaFunctions.__getTagsFromUrl().join('/'),
+	    urlApi = config.apiUrl + '/tags/functional_tag/' + tags,
+	    tag = new TagModel([], {url: urlApi});
+
+	// cria objeto na variavel global do BBX
+	BBX.codeObj = {};
+	
+	tag.fetch({
+	    success: function() {
+		var code = tag.attributes;
+		// copia código para obj global
+		BBX.codeObj = _.extend(BBX.codeObj, code);
+	    }
+	});
+	
+	var functionalTagLoad = setInterval(function() {
+	    // se tiver tags funcionais
+	    if (typeof BBX.codeObj !== 'undefined') {
+		// inspeciona chaves / tags funcionais
+		for (var tagName in BBX.codeObj) {
+		    if (BBX.codeObj.hasOwnProperty(tagName)) {
+			// inspeciona cada arquivo da funcao
+			for (var file in BBX.codeObj[tagName].code) {
+			    if (BBX.codeObj[tagName].code.hasOwnProperty(file)) {
+				// cria objeto script
+				var nscr = document.createElement('script');
+				nscr.type = 'text/javascript';
+				nscr.textContent = BBX.codeObj[tagName].code[file];
+				nscr.setAttribute('name', 'dynamically inserted: ');
+				$('head').append(nscr);
+			    }
+			}
+		    }
+		}
+		clearInterval(functionalTagLoad);		   
+	    }
+	}, 100);	
+    }
     
     // public functions are defined above
     return {
@@ -747,7 +790,8 @@ define([
 	renderUsage: renderUsage,
 	renderSidebar: renderSidebar,
 	setNavigationVars: setNavigationVars,
-	formatDate: formatDate
+	formatDate: formatDate,
+	checkFunctionalTag: checkFunctionalTag
     }
 });
     

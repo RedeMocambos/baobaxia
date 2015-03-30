@@ -211,7 +211,7 @@ td.status {font-weight: bold}
 .media-box a:hover {color: #005500}
 .media-box .image {float: left; width: 100%}
 .media-box .image img,
-.media-box .image audio,
+.media-box .image audio {width: 192px; height: 130px;} 
 .media-box .image video {width: 192px; height: 130px;} 
 .media-box .image img.image-tmp { width: 20px; height: 16px; margin-top: 50px}
 .media-box .image img.arquivo { width: 16px; height: 18px}

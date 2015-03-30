@@ -29,6 +29,15 @@ require.config({
 	textext_autocomplete: {
 	    deps: ['jquery', 'textext']
 	},
+	fancybox: {
+	    deps: ['jquery', 'jquery_mousewheel']
+	},
+	fancybox_buttons: {
+	    deps: ['fancybox']
+	},
+	fancybox_media: {
+	    deps: ['fancybox']
+	}
    },
     paths: {
 	jquery: 'lib/jquery-min',
@@ -42,6 +51,10 @@ require.config({
 	templates: '../templates',
 	backbone_subroute: 'lib/backbone.subroute.min',
 	tagcloud: 'lib/jquery.tagcloud',
+	fancybox: 'lib/jquery.fancybox.pack',
+	fancybox_media: 'lib/jquery.fancybox-media',
+	fancybox_buttons: 'lib/jquery.fancybox-buttons',
+	jquery_mousewheel: 'lib/jquery.mousewheel.pack',
 	textext: 'lib/textext/textext.core',
 	textext_tags: 'lib/textext/textext.plugin.tags',
 	textext_ajax: 'lib/textext/textext.plugin.ajax',
