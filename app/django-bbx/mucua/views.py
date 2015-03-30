@@ -83,7 +83,9 @@ def mucua_get_info(request, uuid, repository=None):
 
     rewrite_size = re.compile('^([0-9\.]+)\s([a-z]*)\s*')
     re_crop_unit = re.compile('([[0-9\.]+)')
-    size_list = {'megabyte': 'MB',
+    size_list = {'bytes': 'B',
+                 'kilobytes': 'KB',
+                 'megabyte': 'MB',
                  'megabytes': 'MB',
                  'gigabyte': 'GB',
                  'gigabytes': 'GB',

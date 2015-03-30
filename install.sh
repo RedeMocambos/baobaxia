@@ -31,7 +31,7 @@ create_user() {
 # PRE: pkgs:
 
 # dependencies: se for deb pkg, tirar
-apt-get install git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools
+apt-get install git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext
 
 
 ### cria diretorio basico
@@ -226,8 +226,8 @@ sed -i "s:^\(STATIC_ROOT\s*=\s*\).*$:\1\"${INSTALL_DIR}\/static\":" $INSTALL_DIR
 
 echo ""
 echo "Configurando interface web ..."
-cp $INSTALL_DIR/baobaxia/app/django-bbx/bbx/static/js/config.json.example $INSTALL_DIR/baobaxia/app/django-bbx/bbx/static/js/config.json
-sed -i "s/bbxnamaste/${MUCUA}/" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/static/js/config.json
+cp $INSTALL_DIR/baobaxia/app/django-bbx/bbx/static/js/config.js.example $INSTALL_DIR/baobaxia/app/django-bbx/bbx/static/js/config.js
+sed -i "s/dpadua/${MUCUA}/" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/static/js/config.js
 
 
 ### instalacao do baobaxia
@@ -250,9 +250,10 @@ cd $INSTALL_DIR;
 pip install argparse;
 pip install django==1.6.7;
 pip install django-extensions;
-pip install djangorestframework;
+pip install djangorestframework=2.4.4;
 pip install gunicorn;
 pip install six;
+pip install Pillow;
 pip install sorl-thumbnail;
 pip install south;
 pip install wheel;
@@ -319,13 +320,22 @@ echo "Ativando NGINX ..."
 service nginx restart
 
 echo ""
+echo "Criando arquivo de configuração do Supervisor para Celery..."
+cp $INSTALL_DIR/baobaxia/conf/supervisor/celeryd /etc/supervisor/conf.d/celeryd.conf
+
+echo ""
 echo "Criando arquivo de configuração do Supervisor para BBX..."
 cp $INSTALL_DIR/baobaxia/conf/supervisor/bbx /etc/supervisor/conf.d/bbx.conf
 sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/supervisor/conf.d/bbx.conf
 
 echo ""
-echo "Criando arquivo de configuração do Supervisor para Celery..."
-cp $INSTALL_DIR/baobaxia/conf/supervisor/celeryd /etc/supervisor/conf.d/celeryd.conf
+echo "Instalando script para atualizar o BBX (update-templates) ..."
+cp $INSTALL_DIR/baobaxia/bin/update-templates.sh.example $INSTALL_DIR/bin/update-templates.sh
+chmod +x $INSTALL_DIR/bin/process-requests.sh
+
+echo ""
+echo "Atualizando os templates ..."
+/srv/bbx/bin/update-templates.sh
 
 echo ""
 echo "Ativando o Baobáxia ..."
