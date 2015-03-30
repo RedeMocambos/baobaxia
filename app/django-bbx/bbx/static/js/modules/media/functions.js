@@ -246,12 +246,11 @@ define([
 	switch(type) {
 	case 'grid':
 	    $(target).html(_.template(MediaGridTpl, data));
+
+	    // carrega galeria (fancybox)
 	    $('head').append('<link rel="stylesheet" href="/css/jquery.fancybox.css" type="text/css" />');
 	    $('head').append('<link rel="stylesheet" href="/css/jquery.fancybox-buttons.css" type="text/css" />');
-
-	    var updateVideoSize = function(object) {
-		
-	    }
+	    
 	    BBX.tmp.fancybutton = {};
 	    $('.fancybox-button').fancybox({
 		autoHeight: true,
@@ -262,7 +261,6 @@ define([
 		closeEffect: 'none',
 		padding: 0,
 		closeBtn: false,
-		//		minHeight: '350px',
 		helpers: {
 		    title: { type : 'inside' },
 		    buttons: {}
