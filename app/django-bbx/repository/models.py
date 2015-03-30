@@ -464,7 +464,7 @@ class RepositoryDoesNotExists(exceptions.Exception):
         self.args = args
 
 
-def remove_deleted_media(repository=get_default_repository().name):
+def remove_deleted_media(repository=DEFAULT_REPOSITORY):
     """Remove os midias no Django a partir do log do git."""
     try:
         repository = Repository.objects.get(

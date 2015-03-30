@@ -28,10 +28,14 @@ def check_if_path_exists_or_create(path):
             raise
 
 def convertToGB(size, unit):
-    allowed_units = ('MB', 'GB', 'TB')
+    allowed_units = ('B', 'KB', 'MB', 'GB', 'TB')
     if unit not in allowed_units:
         return False
-    
+
+    if unit == 'B':
+        size = float(size)/1000000000
+    if unit == 'KB':
+        size = float(size)/1000000
     if unit == 'MB':
         size = float(size)/1000
     if unit == 'GB':
