@@ -250,7 +250,7 @@ cd $INSTALL_DIR;
 pip install argparse;
 pip install django==1.6.7;
 pip install django-extensions;
-pip install djangorestframework=2.4.4;
+pip install djangorestframework==2.4.4;
 pip install gunicorn;
 pip install six;
 pip install Pillow;
