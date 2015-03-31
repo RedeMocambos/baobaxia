@@ -184,7 +184,16 @@ define([
 		var textext = $(e.target).textext()[0],
 		    tags = textext.hiddenInput().val(),
 		    tags_str = '';
-		tags_str = tags.match(/\[(.*)\]/)[1].replace(/"/g, '').replace(/,/g, '/');
+
+		// interpretador da busca com espaços e aspas
+		// adiciona separador ao espaço antes da aspa, depois da aspa e identifica dentro das aspas como um elemento único
+		tags = tags.replace(/\s+\\"{1}/,'/').replace(/\\"{1}\s+/,'/').replace(/\\"(.*)\\"\s*/g, '$1/');
+		// remove caracteres não desejados
+		tags_str = tags.match(/\[(.*)\]/)[1].replace(/\\"/g, '').replace(/,/g, '/').replace(/"/g, '');
+
+		// TODO: pensar como resolver algumas questões de busca
+		// -> a busca atual pega: ["mercado sul" ocupação], mas não pega [mercado sul ocupação] (considera como uma tag)
+		
 		window.location = __parseUrlSearch(tags_str);
 	    })
 	    .bind('removeTag', function(tag) {
