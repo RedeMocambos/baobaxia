@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-27 21:23-0300\n"
+"POT-Creation-Date: 2015-04-01 14:08-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -157,10 +157,6 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: bbx/templates/common/Menu.html:14
-msgid "network"
-msgstr ""
-
 #: bbx/templates/common/MucuaProfile.html:7
 msgid "Collection:"
 msgstr ""
@@ -291,7 +287,7 @@ msgstr ""
 msgid "Media inserted: "
 msgstr ""
 
-#: bbx/templates/media/MediaGalleryCreateValidationMessage.html:2
+#: bbx/templates/media/MediaGalleryCreateValidationErrorMessage.html:2
 msgid "Please fill the required fields to continue!"
 msgstr ""
 
@@ -334,64 +330,80 @@ msgstr ""
 msgid "download"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:5 media/models.py:113
-#: repository/models.py:405
+#: bbx/templates/media/MediaList.html:2
+msgid "Select columns..."
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:4 bbx/templates/media/MediaList.html:22
+#: media/models.py:113 repository/models.py:405
 msgid "name"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:6
+#: bbx/templates/media/MediaList.html:5 bbx/templates/media/MediaList.html:23
 msgid "author"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:7 media/models.py:131
+#: bbx/templates/media/MediaList.html:6 bbx/templates/media/MediaList.html:24
+#: media/models.py:131
 msgid "format"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:8
+#: bbx/templates/media/MediaList.html:7 bbx/templates/media/MediaList.html:25
 msgid "origin"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:9 media/models.py:118
+#: bbx/templates/media/MediaList.html:8 bbx/templates/media/MediaList.html:26
+#: media/models.py:118
 msgid "date"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:10 media/models.py:136
+#: bbx/templates/media/MediaList.html:9 bbx/templates/media/MediaList.html:27
+#: media/models.py:136
 msgid "license"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:11 media/models.py:126
+#: bbx/templates/media/MediaList.html:10 bbx/templates/media/MediaList.html:28
+#: media/models.py:126
 msgid "type"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:12
+#: bbx/templates/media/MediaList.html:11 bbx/templates/media/MediaList.html:29
 msgid "copies"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:13
-msgid "is local?"
+#: bbx/templates/media/MediaList.html:12 media/models.py:143
+msgid "is local"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:14
+#: bbx/templates/media/MediaList.html:13 bbx/templates/media/MediaList.html:31
 msgid "status"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:48
+#: bbx/templates/media/MediaList.html:14 bbx/templates/media/MediaList.html:32
+msgid "description"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:30
+msgid "is local?"
+msgstr ""
+
+#: bbx/templates/media/MediaList.html:66
 msgid "yes"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:50
+#: bbx/templates/media/MediaList.html:68
 msgid "no"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:55
+#: bbx/templates/media/MediaList.html:73
 msgid "requested"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:57
+#: bbx/templates/media/MediaList.html:75
 msgid "is_local"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:59
+#: bbx/templates/media/MediaList.html:77
 msgid "remote"
 msgstr ""
 
@@ -606,10 +618,6 @@ msgstr ""
 msgid "License of the media, like, cc, gpl, bsd, ..."
 msgstr ""
 
-#: media/models.py:143
-msgid "is local"
-msgstr ""
-
 #: media/models.py:144
 msgid "True if media content is available locally"
 msgstr ""
@@ -698,12 +706,12 @@ msgstr ""
 msgid "Acessing mucuas in repository: %s"
 msgstr ""
 
-#: mucua/views.py:41 mucua/views.py:65 mucua/views.py:77 mucua/views.py:132
-#: mucua/views.py:143 mucua/views.py:154
+#: mucua/views.py:41 mucua/views.py:65 mucua/views.py:77 mucua/views.py:134
+#: mucua/views.py:145 mucua/views.py:156
 msgid "Mucua not found"
 msgstr ""
 
-#: mucua/views.py:146
+#: mucua/views.py:148
 #, python-format
 msgid "Group %s deleted"
 msgstr ""

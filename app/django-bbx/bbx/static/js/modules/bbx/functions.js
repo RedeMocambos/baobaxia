@@ -776,6 +776,26 @@ define([
 	    }
 	}, 100);	
     }
+
+    /**
+     * trunca texto e adiciona limitador
+     *
+     * @param {String} text Texto a ser truncado
+     * @param {Integer} size Tamanho do texto
+     * @param {String} delimiter String delimitadora
+     * @returns {String} texto truncado
+     */
+    var truncate = function(text, size, delimiter) {
+	var size = size || 35,
+	    delimiter = delimiter || '...';
+	text = text.substring(0, size) + (
+	    (text.length > size) ? delimiter : ''
+	);
+	
+	return text;
+    }
+
+
     
     // public functions are defined above
     return {
@@ -791,7 +811,8 @@ define([
 	renderSidebar: renderSidebar,
 	setNavigationVars: setNavigationVars,
 	formatDate: formatDate,
-	checkFunctionalTag: checkFunctionalTag
+	checkFunctionalTag: checkFunctionalTag,
+	truncate: truncate
     }
 });
     
