@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core.context_processors import csrf
 from django.template import Template, RequestContext
+from django.utils.translation import ugettext_lazy as _
 
 from media.models import Media, generate_UUID
 from tag.models import Tag
@@ -86,14 +87,22 @@ def media_list(request, repository, mucua, args=None, format=None):
 
         """ TODO: move default_limit to configurable place """
         params = []
+        return_count = False
+
+        # se passado na url, retorna apenas listagem (count como palavra reservada)
+        if (args.find('count') != -1):
+            args = args.split('count')[0]
+            return_count = True
         
         default_limit = 20
         limiting_params = []
         if (args.find('limit') != -1):
-            limiting_params.append(int(args.split('limit/')[1]))
+            limiting_params = args.split('limit/')[1].split('/')
+            limiting_params = [ int(x) for x in limiting_params ]
             args = args.split('limit/')[0]
         else:
-            limiting_params.append(int(default_limit))
+            limiting_params.append(default_limit)
+
         
         """ if passed, get ordering rules """
         ordering_sql = ''
@@ -175,12 +184,19 @@ def media_list(request, repository, mucua, args=None, format=None):
                     
         if (len(term_sql) > 0):
             term_sql = ' AND (' + term_sql + ')'
-                            
-        sql = "SELECT DISTINCT \
-          m.*, \
-          u.username AS _author, \
-          mu.description AS _origin \
-        FROM \
+
+        if return_count:
+            sql = "SELECT \
+            m.id, \
+            count(DISTINCT m.uuid) as count "
+
+        else :
+            sql = "SELECT DISTINCT \
+            m.*, \
+            u.username AS _author, \
+            mu.description AS _origin "
+        
+        sql += "FROM \
           media_media m \
         LEFT JOIN media_media_tags mt \
           ON m.id = mt.media_id \
@@ -190,11 +206,17 @@ def media_list(request, repository, mucua, args=None, format=None):
           ON u.id = m.author_id  \
         LEFT JOIN mucua_mucua mu \
           ON mu.id = m.origin_id \
-        WHERE (" + origin_sql + " repository_id = ? ) " + term_sql + "  \
-        ORDER BY " + ordering_sql + "  \
-        LIMIT ?"
-        sql = sql.decode('utf-8')
+        WHERE (" + origin_sql + " repository_id = ? ) " + term_sql
+
+        if not return_count:
+            sql += "ORDER BY " + ordering_sql
+
+        if len(limiting_params) == 1:
+            sql += " LIMIT ?"
+        else:
+            sql += " LIMIT ?,?"
         
+        sql = sql.decode('utf-8')
         params.extend(limiting_params)
         medias = Media.objects.raw(sql, params)
         
@@ -203,9 +225,15 @@ def media_list(request, repository, mucua, args=None, format=None):
         """
         
         # serializa e da saida
-        serializer = MediaSerializer(medias, many=True)
+        if (return_count):
+            response_count = {
+                'count': medias[0].count
+            }
+            return HttpResponse(json.dumps(response_count), mimetype=u'application/json')
         
-        return Response(serializer.data)
+        else:
+            serializer = MediaSerializer(medias, many=True)
+            return Response(serializer.data)
 
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
@@ -236,6 +264,8 @@ def media_detail(request, repository, mucua, pk=None, format=None):
     author = request.user
 
     if pk:
+        # get media
+        
         try:
             media = Media.objects.get(uuid=pk)
         except Media.DoesNotExist:
@@ -243,18 +273,15 @@ def media_detail(request, repository, mucua, pk=None, format=None):
 
     if request.method == 'GET':
         if pk == '':
-            # acessa para inicializar tela de publicaocao de conteudo / gera
-            # token
-            c = RequestContext(request, {'autoescape': False})
-            c.update(csrf(request))
-            t = Template('{ "csrftoken": "{{ csrf_token  }}" }')
-            return HttpResponse(t.render(c), mimetype=u'application/json')
+            media_token(request, repository, mucua)
 
         if pk != '':
             serializer = MediaSerializer(media)
             return Response(serializer.data)
 
     elif request.method == 'PUT':
+        # update media
+        
         if pk == '':
             return HttpResponseRedirect(
                 redirect_base_url + repository.name + '/' +
@@ -283,10 +310,10 @@ def media_detail(request, repository, mucua, pk=None, format=None):
 
                     media.tags.add(tag)
 
-            return Response("updated media - OK",
+            return Response(_("updated media - OK"),
                             status=status.HTTP_201_CREATED)
         else:
-            return Response("error while creating media",
+            return Response(_("error while creating media"),
                             status=status.HTTP_400_BAD_REQUEST)
 
         if serializer.is_valid():
@@ -309,26 +336,39 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             author = User.objects.get(username=author)
         except User.DoesNotExist:
             author = User.objects.get(username=request.user)
-
+    
+        try:
+            mucua = Mucua.objects.get(description=request.DATA['origin'])
+        except Mucua.DoesNotExist:
+            mucua = Mucua.objects.get(description=DEFAULT_MUCUA)
+        
         media = Media(repository=repository,
                       origin=mucua,
                       author=author,
                       name=request.DATA['name'],
                       note=request.DATA['note'],
                       type=request.DATA['type'],
-                      format=request.FILES['media_file'].name.split('.')[-1].lower(),
                       license=request.DATA['license'],
                       date=(request.DATA['date'] if request.DATA['date'] !=
                             '' else datetime.now()),
-                      media_file=request.FILES['media_file'],
                       uuid=generate_UUID()
                       )
-
+        
+        if request.FILES.getlist('media_file') :
+            # multiple upload            
+            for filename, file in request.FILES.iteritems():
+                media.format=request.FILES[filename].name.split('.')[-1].lower()
+                media.media_file=request.FILES[filename]
+        
+        else:        
+            # single upload            
+            format=request.FILES['media_file'].name.split('.')[-1].lower(),
+            media_file=request.FILES['media_file'],
+                                  
         media.save()
         if media.id:
             # get tags by list or separated by ','
-            tags = (request.DATA['tags'] if iter(request.DATA['tags'])
-                    else request.DATA['tags'].split(','))
+            tags = request.DATA['tags'].split(',')
             for tag_name in tags:
                 try:
                     if tag_name.find(':') > 0:
@@ -345,9 +385,9 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             serializer = MediaSerializer(media)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response("error while creating media",
+            return Response(_("error while creating media"),
                             status=status.HTTP_400_BAD_REQUEST)
-
+        
     elif request.method == 'DELETE':
 
         media.delete()
@@ -378,6 +418,17 @@ def media_last(request, repository, mucua, limit=5):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+def media_token(request, repository, mucua):
+    # acessa para inicializar tela de publicaocao de conteudo / gera
+    # token
+    c = RequestContext(request, {'autoescape': False})
+    c.update(csrf(request))
+    t = Template('{ "csrftoken": "{{ csrf_token  }}" }')
+    return HttpResponse(t.render(c), mimetype=u'application/json')
+
+
+# TODO: implementar busca filtrando por usuario E tags
 @api_view(['GET'])
 def media_by_mocambola(request, repository, mucua, username, limit=20):
     if mucua != 'all':
@@ -452,6 +503,39 @@ def media_where_is(request, repository, mucua, uuid):
         media = Media.objects.get(uuid=uuid)
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    io = media.where_is()
-    data = json.loads(io)
-    return Response(data)
+    
+    return Response(media.where_is())
+
+@api_view(['GET'])
+#@renderer_classes((BrowsableAPIRenderer))
+def media_request_copy(request, repository, mucua, uuid):
+    try:
+        media = Media.objects.get(uuid=uuid)
+        media.request_copy()
+    except Media.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    return Response(_(u"Requested media of uuid %(uuid)s") % {'uuid': uuid})
+
+@api_view(['GET'])
+#@renderer_classes((BrowsableAPIRenderer))
+def media_drop_copy(request, repository, mucua, uuid):
+    try:
+        media = Media.objects.get(uuid=uuid)
+        media.drop_copy()
+    except Media.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    return Response(_(u"Dropped media of uuid %(uuid)s") % {'uuid': uuid})
+
+
+@api_view(['GET'])
+#@renderer_classes((BrowsableAPIRenderer))
+def media_remove(request, repository, mucua, uuid):
+    try:
+        media = Media.objects.get(uuid=uuid)
+        media.delete()
+    except Media.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    return Response(_(u"Removed media of uuid %(uuid)s") % {'uuid': uuid})

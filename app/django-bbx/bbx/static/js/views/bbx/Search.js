@@ -9,13 +9,20 @@ define([
 	el: "body",    
 
 	render: function(subroute) {
-	    var config = $("body").data("bbx").config,
-	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute;
+	    var config = BBX.config,
+		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute,
+		limit = (subroute.match('limit/')) ? subroute.split('limit/')[1] : null;
+
+	    if (url.match('limit/')) {
+		url = url.split('/limit/')[0];
+	    }
 
 	    BBXFunctions.renderSidebar();
-	    MediaFunctions.getMediaSearch(url);
+	    MediaFunctions.getMediaSearch(url, limit);
+	    MediaFunctions.getTagCloudBySearch('#cloud');
 	    BBXFunctions.renderUsage();
-
+	    //BBXFunctions.checkFunctionalTag();
+	    
 	    var focus = setInterval(function() {
 		var activeElId = document.activeElement.id;
 		if (activeElId != 'caixa_busca') {

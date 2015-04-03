@@ -3,22 +3,26 @@ define([
     'lodash',
     'jquery_cookie',
     'jquery_form',
-    'backbone', 
+    'backbone',
+    'textext',
+    'textext_ajax',
+    'textext_autocomplete',
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!templates/media/MediaPublish.html'
-], function($, _, jQueryCookie, jQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl){
+    'text!/templates/' + BBX.userLang + '/media/MediaPublish.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaConfirmRemoveMessage.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaRemoveMessage.html',
+], function($, _, jQueryCookie, jQueryForm, Backbone, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
     var MediaUpdate = Backbone.View.extend({
 	
 	__getFormData: function() {
-	    var media = $('body').data('bbx').media,
+	    var media = BBX.media,
 	    fields = {};
 	    
 	    $('#form_media_publish :input').each(function() {
 		fields[this.name] = this.value;
 	    });
-	    
 	    // TODO: adicionar tags separadas (patrimonio, publico) a tags
 	    media = {
 		name: fields.name,
@@ -33,6 +37,9 @@ define([
 		note: fields.note,		
 		media_file: $('#mediafile-original').html()
 	    }
+	    // HaCK para pegar tags no formato correto
+	    media.tags = media.tags.substring(1, media.tags.length -1).replace(/\"/g,'');
+	    
 	    return media;
 	},
 
@@ -41,13 +48,13 @@ define([
 		l = $(this);
 		if (!_.isEmpty(l.val())) {
 		    var license = 'license-' + l.val();
-		    $('#license_image').attr('class', license);
+		    $('#license_image').prop('class', license);
 		}
 	    });		
 	},
 
 	__updateMedia: function() {
-	    var config = $("body").data("bbx").config,   
+	    var config = BBX.config,   
 	    mediaData = getFormData(),
 	    media = null,
 	    options = {},
@@ -58,10 +65,11 @@ define([
 	    };
 	    //HACK para passar o objeto corretamente
 	    media.attributes =  _.clone(media.attributes[0]);
+	    console.log(media.attributes);
+
 	    Backbone.sync('update', media, options).done(function(){
-		$('.buttons').prepend("<h3 class='message'>Conteúdo atualizado!</h3>");
-		setTimeout(function(){$('.buttons h3.message').fadeOut(800)}, 2000);
-	    });	    
+		$('#media-update-image').prop('src', 'images/saved.png');
+	    });
 	},
 	
 	render: function(uuid){
@@ -70,10 +78,14 @@ define([
 	    updateMedia = this.__updateMedia;
 	    
 	    // comeca acao da funcao render
-	    var config = $("body").data("bbx").config,   
+	    var config = BBX.config,   
 	    urlApi = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid,
 	    urlMediaView = config.interfaceUrl + config.repository + '/' +  config.mucua + '/media/' + uuid;
 	    BBXFunctions.renderSidebar();
+
+	    $('head').append('<link rel="stylesheet" href="/css/textext.core.css" type="text/css" />');		    
+	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.tags.css" type="text/css" />');
+	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');		    
 	    
 	    var media = new MediaModel([], {url: urlApi});
 	    media.fetch({
@@ -88,12 +100,28 @@ define([
 			page: 'MediaUpdate',
 			pageTitle: 'Editar conteúdo'
 		    }
-		    $('body').data('bbx').media = media;
+		    BBX.media = media;
 		    var compiledTpl = _.template(MediaPublishTpl, data);
+		    MediaFunctions.__parseMenuSearch();
+		    
 		    $('#content').html(compiledTpl);  
+		    $('#origin').append("<option value='" + media.attributes.origin + "'>" + media.attributes.origin + "</option>");
+		    $('#origin').prop('disabled', true);
 		    
 		    var csrftoken = $.cookie('csrftoken');
-		    $('#csrfmiddlewaretoken').attr('value', csrftoken);
+		    $('#csrfmiddlewaretoken').prop('value', csrftoken);
+		    
+		    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
+		    var tags_arr = media.attributes.tags,
+			tags_str = tags_arr.join('/');
+		    $('#tags').textext({
+			plugins : 'tags autocomplete ajax',
+			tagsItems: tags_arr,
+			ajax : {
+			    url : urlApiTags,
+			    dataType : 'json'
+			},
+		    });
 		    
 		    // eventos		  
 		    $('#license').on('change', swapLicense);
@@ -102,6 +130,24 @@ define([
 		    $('#view-media').on('click', function() { 
 			window.location.href = urlMediaView;
 		    });
+		    $('#delete-media').on('click', function() {
+			var deleteMedia = confirm(MediaConfirmRemoveMessageTpl);
+			if (deleteMedia) {
+			    var urlDelete = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid + '/remove',
+				mediaDelete = new MediaModel([], {url: urlDelete}),
+				urlRedirect = config.interfaceUrl + config.repository + '/' +  config.mucua + '/bbx/search';
+			    
+			    mediaDelete.fetch({
+				success: function() {
+				    $('.buttons').prepend(MediaRemoveMessageTpl);
+				    setTimeout(function(){
+					window.location.href = urlRedirect;
+				    }, 2000);
+				}
+			    });
+			}	
+		    });
+		    
 		}
 	    });
 	},

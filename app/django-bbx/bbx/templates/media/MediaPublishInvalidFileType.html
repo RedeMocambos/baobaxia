@@ -1,0 +1,11 @@
+{% load i18n %}
+<div class="error-bar">&nbsp;</div>
+<h3 class='message'>{% trans "Invalid file type!" %}</h3>
+<p>{% trans "Format is currently unsupported: " %}<%= format %></p>
+<p>{% trans "Please add one of the following ones:" %}</p>
+<ul>
+  <% _.each(validTypes, function(validType, format) {
+     %>
+  <li><%= format %></li>
+  <% }) %>
+</ul>

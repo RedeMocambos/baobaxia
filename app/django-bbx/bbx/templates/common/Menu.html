@@ -1,0 +1,25 @@
+{% load i18n %}
+<%
+   if (config.subroute.match('limit')) {
+   config.subroute = config.subroute.split('/limit')[0];
+   }
+   %>
+<div id="menu">
+  <p class="posicoes">{% trans "Menu" %}</p>
+  <ul class="menu-itens">
+    <li class="rede redeoff <% matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/); 
+	       if (currentUrl.match(/rede/) || config.mucua === 'rede') {%>redeon<% }%>">
+      <a href="#<%= config.repository %>/rede/<%= config.subroute %>"><div>&nbsp;</div></a></li>
+    <li class="mucua <% var matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/); if (matches[1] == config.MYMUCUA) {%>current<% }
+ %>"><a href="#<%= config.MYREPOSITORY %>/<%= config.MYMUCUA %>/<%= config.subroute %>"><%= config.MYMUCUA %></a></li>
+    <% if (!currentUrl.match(/rede/) && config.mucua != config.MYMUCUA && config.mucua != 'rede' ) { %>
+    <li class="mucua current"><a href="#<%= config.repository %>/<%= config.mucua %>/<%= config.subroute %>"><%= config.mucua %></a></li>    <% } %>
+    <% _.each(lastVisitedMucuas, function(mucuaName, i) {
+       i += 1;
+       %>
+    <% if ((mucuaName != config.mucua) && (i <= 3)) { %>
+    <li class="mucua recent-<%= i %>"><a href="#<%= config.repository %>/<%= mucuaName %>/<%= config.subroute %>"><%= mucuaName %></a></li>
+    <% } %>
+    <% }) %>
+  </ul>
+</div>

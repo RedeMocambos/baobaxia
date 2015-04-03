@@ -1,0 +1,14 @@
+[program:celery]
+; Set full path to celery program if using virtualenv
+command=/srv/bbx/envs/bbx/bin/celery worker -A bbx --loglevel=INFO
+directory=/srv/bbx/baobaxia/app/django-bbx
+user=exu
+numprocs=1
+stdout_logfile=/srv/bbx/log/celery/worker.log
+stderr_logfile=/srv/bbx/log/celery/worker_error.log
+autostart=true
+autorestart=true
+startsecs=10
+
+
+environment = DJANGO_SETTINGS_MODULE="bbx.settings"; PYTHONPATH="/srv/bbx/envs/bbx",

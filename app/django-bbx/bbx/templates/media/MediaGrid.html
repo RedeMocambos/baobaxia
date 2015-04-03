@@ -1,0 +1,64 @@
+{% load i18n %}
+<% if (!_.isEmpty(medias)) { %>
+<% _.each(medias, function(media) { %>
+<div class="media-box <%= media.type %> <% _.each(media.tags, function(tagName) { %><%= tagName %> <% }); %>">
+  <div class="result-thumb">
+    <!-- edit button if logged -->
+    <% if (BBXFunctions.isLogged()) { %>
+    <div class="edit">
+      <a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">
+	<img src="images/edit-media-pq.png" />
+      </a>
+    </div>
+    <% } %>
+    <!--<span><%= media.type %></span>-->
+    <% if (media.is_local) { %>
+    <div class="image is_local <% if (media.type == 'arquivo') { %>icon-media<% } %>">
+      <% if (media.type == 'imagem') { %>
+      <!-- fancybox -->
+      <a class="fancybox-button" rel="fancybox-button" data-fancybox-type="image" data-fancybox-group="galeria" href="<%= media.url %>" title="<%= media.note %>">
+	<img id="media-<%= media.uuid %>" class="image-tmp" src="images/icon-imagem.png" />
+	<% parseThumb(media, params); %>
+	</a>
+      <% } else if (media.type == 'video') { %>
+      <a class="fancybox-button" rel="fancybox-button" data-fancybox-type="iframe" data-fancybox-group="galeria" href="<%= media.url %>" title="<strong><%= media.name %></strong><br/> - <%= media.note %>" id="<%= media.uuid %>">
+	<video id="<%= media.uuid %>" preload="metadata" controls src="<%= media.url %>" />
+      </a>
+      <% } else if (media.type == 'audio') { %>
+      <audio preload="metadata" controls src="<%= media.url %>" />
+      <% } else if (media.type == 'arquivo') { %>     
+      <a href="<%= media.url %>">
+	<img class="<%= media.type %>" alt="<%= media.type%>" src="images/icon-arquivo.png" /><br/>{% trans "download" %}
+      </a>
+      <% } %>
+    </div>
+    <% } else { %>
+    <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+      <div class="icon-media not_local">
+	<img alt="<%= media.type%>" src="images/icon-<%=media.type%>.png" /><br/>
+      </div>
+    </a>
+    <% } %>
+    
+  </div>
+  <div class="title">
+    <span>    
+      <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+	<% print(BBXFunctions.truncate(media.name, 35, '...')); %>
+      </a>
+    </span>
+  </div>
+  <div style="float:right;" class="origin">
+    <span><%= media.origin %></span>
+  </div>
+  <div style="float: left;" class="date">
+    <span><%= formatDate(media.date) %></span><br/>
+  </div>
+</div>
+<% }) %>
+<!-- tem que conseguir count do total de resultados e resultados com limite e offset -->
+<!-- se tiver mais media que o limite mínimo -->
+<!-- paginacao -->
+<% } else if (_.isEmpty(medias)) { %>
+<h4 class="message"><%= message %></h4>
+<% } %>

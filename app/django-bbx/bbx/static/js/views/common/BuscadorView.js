@@ -2,20 +2,27 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'textext',
-    'text!templates/common/Buscador.html',
-    'textext_ajax',
+     'modules/media/functions',
+    'text!/templates/' + BBX.userLang + '/common/Buscador.html',
     'textext_tags',
-], function($, _, Backbone, Textext, BuscadorTpl){
+], function($, _, Backbone, MediaFunctions, BuscadorTpl, TextextTags){
     var BuscadorView = Backbone.View.extend({
 	render: function(data) {
-	    //var data = data || {};
 	    console.log('buscador');
-	    var config = $("body").data("bbx").config;
+	    var config = BBX.config,
+		tags = MediaFunctions.__getTagsFromUrl();
+
+	    _.each(tags, function(tag) {
+		$("body").addClass(tag);	  
+	    });
+	    
 	    if ($('#buscador').html() == "" ||
 		(typeof $('#buscador').html() === "undefined")) {
 		$('#header-bottom').prepend(_.template(BuscadorTpl, data));
+		$('head').append('<link rel="stylesheet" href="/css/textext.core.css" type="text/css" />');		    
 		$('head').append('<link rel="stylesheet" href="/css/textext.plugin.tags.css" type="text/css" />');
+		$('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');		    
+
 	    }
 	}
     });

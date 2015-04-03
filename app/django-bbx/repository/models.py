@@ -7,14 +7,14 @@ from subprocess import PIPE
 import logging
 import exceptions
 
+
 from django.db import models
 from django.conf import settings
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
-from media.models import Media
-from media.models import get_file_path
+from media.models import get_file_path, Media
 from repository.signals import filesync_done
 from bbx.settings import DEFAULT_REPOSITORY
 from bbx.utils import logger
@@ -40,9 +40,29 @@ def git_media_post_save(instance, **kwargs):
     fout.close()
     git_add(mediadata, mediapath)
     git_commit(instance.get_file_name(),
-              instance.author.username,
-              instance.author.email,
-              get_file_path(instance))
+               instance.author.username,
+               instance.author.email,
+               get_file_path(instance),
+               os.path.join(mediapath, mediadata))
+
+# Connecting to Media signal
+@receiver(pre_delete, sender=Media)
+def git_media_post_delete(instance, **kwargs):
+    u"""Intercepta o sinal de *pre_delete* de objetos multimedia (*media*) e
+    remove o objeto do banco e do repositório."""
+    mediapath = get_file_path(instance)+'/'
+    mediadata = os.path.splitext(instance.get_file_name())[0] + '.json'
+    if os.path.isfile(os.path.join(mediapath, mediadata)): 
+        git_annex_drop(instance)    
+        git_rm(mediadata, mediapath)
+    if os.path.isfile(os.path.join(mediapath, instance.get_file_name())):
+        git_rm(instance.get_file_name(), mediapath)
+        git_commit(instance.get_file_name(),
+                   instance.author.username,
+                   instance.author.email,
+                   get_file_path(instance),
+                   instance.get_repository())
+
 
 
 def get_default_repository():
@@ -64,9 +84,10 @@ def get_latest_media(repository=DEFAULT_REPOSITORY):
     try:
         last_sync_mark = open(
             os.path.join(repository_dir, current_repository.name,
-                         'last_sync.txt'), 'r+')
+                         'lastSync.txt'), 'r+')
         last_sync = last_sync_mark.readline()
         last_sync = last_sync.replace("'", "")
+        print "Alterações a partir do commit: " + last_sync
     except IOError:
         cwd = os.path.join(repository_dir, current_repository.name)
         p1 = subprocess.Popen(['git', 'rev-list', 'HEAD'],
@@ -83,7 +104,54 @@ def get_latest_media(repository=DEFAULT_REPOSITORY):
 
     cwd = os.path.join(repository_dir, current_repository.name)
     p1 = subprocess.Popen(
-        ['git', 'diff', '--pretty=format:', '--name-only', 'HEAD', last_sync],
+        ['git', 'log', '--diff-filter=AM', '--pretty=format:', '--name-only', 
+         last_sync + '..HEAD'], cwd=cwd, stdout=PIPE
+    )
+    p2 = subprocess.Popen(["sort"], stdin=p1.stdout, stdout=PIPE)
+    p3 = subprocess.Popen(["uniq"], stdin=p2.stdout, stdout=PIPE)
+    p4 = subprocess.Popen(["grep", "json"], stdin=p3.stdout, stdout=PIPE)
+    p5 = subprocess.Popen(["grep", "-v", "mocambola"],
+                          stdin=p4.stdout, stdout=PIPE)
+    output, error = p5.communicate()
+    updated = [line.strip('\n') for line in output.splitlines()]
+    logger.info("Updated:\n%s", updated)
+    deleted = [line.strip('\n') for line in get_deleted_media()]
+    logger.info("Deleted:\n%s", deleted)
+    return list(set(updated) - set(deleted))
+
+
+def get_deleted_media(repository=DEFAULT_REPOSITORY):
+    u"""Retorna uma lista de caminhos dos medias removidos do repositório,
+    desde a ultima sincronização (last_sync)."""
+    try:
+        current_repository = Repository.objects.get(
+            name=repository)
+    except Repository.DoesNotExist:
+        return []
+    try:
+        last_sync_mark = open(
+            os.path.join(repository_dir, current_repository.name,
+                         'lastSync.txt'), 'r+')
+        last_sync = last_sync_mark.readline()
+        last_sync = last_sync.replace("'", "")
+    except IOError:
+        cwd = os.path.join(repository_dir, current_repository.name)
+        p1 = subprocess.Popen(['git', 'rev-list', 'HEAD'],
+                              cwd=cwd, stdout=PIPE)
+        p2 = subprocess.Popen(['tail', '-n 1'],
+                              stdin=p1.stdout, stdout=PIPE)
+        output, error = p2.communicate()
+        last_sync = output.rstrip()
+        #  Este é um exemplo do comando para pegar os ultimos medias
+        #  deletados desde last_sync 
+        #  git log --diff-filter=D --name-only
+        #  d703a3dfa2c7ca7c7d2e318833bf935..HEAD | grep json | sort | uniq |
+        #  grep -v mocambolas
+
+
+    cwd = os.path.join(repository_dir, current_repository.name)
+    p1 = subprocess.Popen(
+        ['git', 'log', '--diff-filter=D', '--name-only', last_sync+'..HEAD'],
         cwd=cwd, stdout=PIPE
     )
     p2 = subprocess.Popen(["sort"], stdin=p1.stdout, stdout=PIPE)
@@ -92,8 +160,7 @@ def get_latest_media(repository=DEFAULT_REPOSITORY):
     p5 = subprocess.Popen(["grep", "-v", "mocambola"],
                           stdin=p4.stdout, stdout=PIPE)
     output, error = p5.communicate()
-    return output
-
+    return [line.strip('\n') for line in output.splitlines()]
 
 def _get_available_folders(path):
     u"""Retorna a lista das pastas/repositórios"""
@@ -102,6 +169,32 @@ def _get_available_folders(path):
     return folder_list
 
 
+def git_remote_get_list(repository=DEFAULT_REPOSITORY):
+    """
+    Returns the list of connected mucua (git remote)
+    
+    """
+    try:
+        current_repository = Repository.objects.get(
+            name=repository)
+    except Repository.DoesNotExist:
+        return []
+
+    cmd = 'git remote -v'
+    pipe = subprocess.Popen(cmd, shell=True, 
+                            cwd=os.path.join(repository_dir, 
+                                             current_repository.name), 
+                            stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+
+    mucuas = []
+    # Match repositories.
+    if output:
+        for line in output.splitlines():
+            mucuas.append(line.split(None, 1)[0])
+    return list(set(mucuas))
+   
+
 def git_add(file_name, repository_path):
     u"""Adiciona um arquivo no repositório."""
     logger.info('git add ' + file_name)
@@ -109,13 +202,19 @@ def git_add(file_name, repository_path):
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
+def git_rm(file_name, repository_path):
+    u"""Adiciona um arquivo no repositório."""
+    logger.info('git rm ' + file_name)
+    cmd = 'git rm -f ' + file_name
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+    pipe.wait()
 
-def git_commit(file_title, author_name, author_email, repository_path):
+def git_commit(file_title, author_name, author_email, repository_path, file_path):
     u"""Executa o *commit* no repositório impostando os dados do author."""
     logger.info('git commit --author="' + author_name + ' <' + author_email +
                 '>" -m "' + file_title + '"')
     cmd = ('git commit --author="' + author_name + ' <' + author_email +
-           '>" -m "' + file_title + '"')
+           '>" -m "' + file_title + '" -- ' + file_path)
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
@@ -172,27 +271,36 @@ def git_annex_copy_to(repository_path):
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
+# @afazeres.task
+# def git_annex_get(repository_path, media_path):
+#     u"""
+#     Baixa os conteudos binarios desde o repositório remoto.
 
-def git_annex_get(repository_path):
-    u"""Baixa os conteudos binarios desde o repositório remoto."""
-    # TODO: Next release with possibility to choice what to get
-    logger.info('git annex get .')
-    cmd = 'git annex get .'
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
-    pipe.wait()
+#     Retorna o output do git annex get.    
+#     """
+#     # TODO: Next release with possibility to choice what to get
+#     cmd = 'git annex get ' + media_path
+#     logger.info(cmd)
+#     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+#     output, error = pipe.communicate()
+#     return output
 
 
 def git_annex_where_is(media):
     u"""Mostra quais mucuas tem copia do media."""
     cmd = 'git annex whereis ' + media.get_file_name() + ' --json'
-    logger.debug('Whereis filepath: ' +
-                 get_file_path(media) +
-                 media.get_file_name())
-    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media),
-                            stdout=subprocess.PIPE)
+    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media), stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    return output
+
+def git_annex_drop(media):
+    u"""Mostra quais mucuas tem copia do media."""
+    cmd = 'git annex drop --force ' + os.path.basename(media.media_file.name) 
+    logger.debug('Dropping filepath: ' + get_file_path(media) + media.get_file_name())
+    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media), stdout=subprocess.PIPE)
     output, error = pipe.communicate()
     logger.debug(error)
-    logger.debug(output)
+    logger.info(output)
     return output
 
 
@@ -308,7 +416,6 @@ def git_annex_version():
 
 def git_annex_status(repository_path):
     u"""View all mucuas in a given repository"""
-    logger.info('git annex info/status')
 
     # a partir da versao 5
     if (float(git_annex_version()) <= 5):
@@ -404,3 +511,36 @@ class GitAnnexCommandError(exceptions.Exception):
 class RepositoryDoesNotExists(exceptions.Exception):
     def __init__(self, args=None):
         self.args = args
+
+
+def remove_deleted_media(repository=DEFAULT_REPOSITORY):
+    """Remove os midias no Django a partir do log do git."""
+    try:
+        repository = Repository.objects.get(
+            name=repository)
+    except Repository.DoesNotExist:
+        return None
+
+    logger.info(u">>> %s" % _('CLEANING'))
+    logger.info(u"%s: %s" % (_('Repository'),  repository))
+
+    from media.models import Media
+
+    try:
+        for deleted_media in get_deleted_media(repository):
+            logger.info(u"%s: %s" % (_('Deleting media'), deleted_media))
+            
+            try:
+                fingerprint = os.path.join(repository_dir, repository.get_name(),
+                                           os.path.splitext(deleted_media)[0])
+                logger.info(u"%s: %s" % (_('Fingerprint'), fingerprint))
+                media = Media.objects.filter(media_file__startswith=fingerprint)
+                media[0].delete()
+                logger.info(u"%s" % _('Media deleted.'))
+                
+            except (Media.DoesNotExist, IndexError):
+                logger.info(u"%s" % _('Media doesn\'t exist'))
+
+    except Media.DoesNotExist:
+        logger.info(u"%s" % _('Delete problem'))
+

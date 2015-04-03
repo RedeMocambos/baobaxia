@@ -6,24 +6,29 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!templates/media/MediaPublish.html'
-], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl){
+    'modules/mucua/model',
+    'modules/mucua/collection',
+    'text!/templates/' + BBX.userLang + '/media/MediaPublish.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaPublishInvalidFileType.html'
+], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaPublishTpl, MediaPublishInvalidFileTypeTpl){
     
     var MediaPublish = Backbone.View.extend({	
 	render: function(){
 	    var uploadFile = function() {
-		var config = $("body").data("bbx").config;
+		var config = BBX.config,
+		    // get media token
+		    url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/token",
+		    mediaToken = new MediaModel([], {url: url});
+
 		console.log('upload');
 		
-		// get media token
-		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/";
-		mediaToken = new MediaModel([], {url: url});	    
 		mediaToken.fetch({
 		    success: function() {
 			var csrftoken = $.cookie('csrftoken');
-			$('#csrfmiddlewaretoken').attr('value', csrftoken);
+			$('#csrfmiddlewaretoken').prop('value', csrftoken);
 		    }
 		});
+
 		fields = {};
 		$('#form_media_publish :input').each(function() {
 		    fields[this.name] = this.value;
@@ -44,22 +49,32 @@ define([
 		    media_file: fields['media_file'].value
 		}
 		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/";
-		$('#form_media_publish').attr('action', url);
+		$('#form_media_publish').prop('action', url);
 		
 		var media = new MediaModel([], {url: url});
 	    };
 	    
 	    var updateMedia = function(media) {
-		var config = $("body").data("bbx").config,
-		url = config.interfaceUrl + config.repository + "/" + config.mucua + "/media/" + media.uuid + '/edit';
+		var config = BBX.config,
+		    url = config.interfaceUrl + config.repository + "/" + config.mucua + "/media/" + media.uuid + '/edit';
+		
 		document.location.href = url;
 	    }
 
-	    var config = $("body").data("bbx").config,
-	    data = {},
-	    url = '',
-	    mediaToken = null;
+	    var __parseOrigin = function(mucuaList) {
+		_.each(mucuaList, function(mucua) {
+		    $('#origin').append("<option value='" + mucua.description + "'>" + mucua.description + "</option>");
+		    
+		});
+		$('select[name="origin"]').find('option:contains("' + BBX.config.MYMUCUA + '")').prop("selected",true);
+	    }
 	    
+	    var config = BBX.config,
+		data = {},
+		url = '',
+		mediaToken = null,
+		mucuas = null;
+	    	    
 	    // session user data
 	    config.userData = BBXFunctions.getFromCookie('userData');
 	    
@@ -86,13 +101,37 @@ define([
 	    data.media.type = '';		
 	    
 	    $('#content').html(_.template(MediaPublishTpl, data));
-	    $('#media_publish .bloco-2').hide();
+	    MediaFunctions.__parseMenuSearch();
 	    
+	    $('#media_publish .bloco-2').hide();
+
+	    // try to get mucuas list
+	    if (typeof BBX.mucuaList === 'undefined') {
+		mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.MYREPOSITORY + '/mucuas'});
+		mucuas.fetch({
+		    success: function() {
+			var mucuasLength = mucuas.models.length;
+			BBX.mucuaList = [];
+			for (var m = 0; m < mucuasLength; m++) {
+			    var mucua = mucuas.models[m].attributes;
+			    BBX.mucuaList.push(mucua);
+			}
+		    }
+		});
+	    }
+	    
+	    var getMucuas = setInterval(function() {
+		if (typeof BBX.mucuaList !== 'undefined') {		  
+		    __parseOrigin(BBX.mucuaList);
+		    
+		    clearInterval(getMucuas);
+		} 
+	    }, 50);
+
 	    // form upload progress meter
-	    var bar = $('.bar');
-	    var percent = $('.percent');
-	    var status = $('#status');
-	    $('#media_file').change(function() {uploadFile()});
+	    var bar = $('.bar'),
+		percent = $('.percent'),
+		status = $('#status');
 	    
 	    $('#form_media_publish').ajaxForm({
 		beforeSend: function() {
@@ -120,13 +159,50 @@ define([
 	    });
 	    
 	    $('#submit').on('click', function() {
-		$('#form_media_publish').submit();
+		if (isValidFileType()) {
+		    console.log('valid');
+		    $('#form_media_publish').submit();
+		} else {
+		    console.log('invalid, error message');
+		}
 	    });
+
+	    // verifica se o tipo de arquivo é valido e retorna true/false
+	    var isValidFileType = function() {
+		var mime_type = document.getElementById('media_file').files[0].type,  // mime_type do arquivo submetido
+		    type = MediaFunctions.getTypeByMime(mime_type), // tipo de arquivo validado por mime type
+		    validTypes = MediaFunctions.getMediaTypes(), // tipos validos de arquivos
+		    pieces = $('#media_file').val().split('.'), // temporario para separar o formato
+		    format = pieces[pieces.length - 1]; // formato do arquivo
+
+		console.log(MediaFunctions.getTypeByMime(mime_type));
+		if (MediaFunctions.getTypeByMime(mime_type)) {
+		    $("#messages").html("");
+		    $('#type').val(type);
+		    return true;
+		} else {
+		    var data = {
+			validTypes: MediaFunctions.getValidMimeTypes(),
+			format: format
+		    }
+		    
+		    $("#messages").html(_.template(MediaPublishInvalidFileTypeTpl, data));
+		    $('#messages .error-bar').fadeIn(0,0, function() {});
+		    $('#messages .error-bar').fadeTo(3000, 0, function() {});
+		    console.log('abcd');
+		    return false;
+		}
+	    }
+	    
 	    $('#media_file').on('change', function(el) {
-		var mime = document.getElementById('media_file').files[0].type,
-		type = MediaFunctions.getTypeByMime(mime);
-		$('#type').val(type);
-	    });
+		if (isValidFileType()) {
+		    uploadFile();
+		} else {
+		    $('#messages .error-bar').fadeIn(0,0, function() {});
+		    $('#messages .error-bar').fadeTo(3000, 0, function() {});
+		    console.log('invalid, error message');
+		}
+	    });	    
 	},
     });
     

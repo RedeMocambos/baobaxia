@@ -18,27 +18,23 @@ define([
     'views/common/BuscadorView',
     'modules/mucua/model',
     'modules/repository/model',
+    'modules/tag/model',
     'modules/media/functions',
-    'json!config.json',
-    'text!templates/common/Content.html',
-    'text!templates/common/Sidebar.html',
-    'text!templates/common/UsageBar.html',
-    'text!templates/common/UserProfile.html',
-    'text!templates/common/MucuaProfile.html'
-], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, MediaFunctions, DefaultConfig, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
-    
+    'text!/templates/' + BBX.userLang + '/common/Content.html',
+    'text!/templates/' + BBX.userLang + '/common/Sidebar.html',
+    'text!/templates/' + BBX.userLang + '/common/UsageBar.html',
+    'text!/templates/' + BBX.userLang + '/common/UserProfile.html',
+    'text!/templates/' + BBX.userLang + '/common/MucuaProfile.html'
+], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, TagModel, MediaFunctions, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
+
+    /**
+     * init function of bbx functions
+     *
+     * @return {None}
+     */    
     var init = function() {	
-	if (typeof $("body").data("bbx") === 'undefined') {
-	    $("body").data("bbx", 
-			   {
-			       configLoaded: false
-			   });
-	}
-	
-	var configLoaded = $("body").data("bbx").configLoaded;
-	if (configLoaded === false) {
-	    __setConfig(DefaultConfig);
-	}
+	__setConfig(BBX.config);
+	BBX.tmp = {};
 	BBXFunctions = this;
     }
     
@@ -48,11 +44,27 @@ define([
      * @return {Bool} if there's a session opened
      */
     var isLogged = function() {
-	if (this.getFromCookie('userData')) {
+	if (getFromCookie('userData')) {
 	    // TODO: add some session check	   
 	    return true;
 	} else { 
 	    return false;
+	}
+    }
+
+    /**
+     * check if cookies are enabled
+     *
+     * @return {Bool} if cookies are enabled
+     *
+     */
+    var isCookiesEnabled = function() {
+	// TODO: improve cookie detection
+	if (!navigator.cookieEnabled) {
+	    console.log("Cookies not enabled, Baobaxia need cookies.");
+	    return false;
+	} else {
+	    return true;
 	}
     }
 
@@ -64,8 +76,12 @@ define([
      */
     var addToCookie = function(data) {
 	var cookieData = {},
-	serializedCookie = '',
-	cookie = null;
+	    serializedCookie = '',
+	    cookie = null;
+
+	if(!isCookiesEnabled) {
+	    return false;
+	}
 	
 	console.log('addToCookie()');
 	if ($.cookie('sessionBBX')) {
@@ -93,6 +109,11 @@ define([
      */
     var getFromCookie = function(key) {
 	var key = key || '*';
+	
+	if(!isCookiesEnabled) {
+	    return false;
+	}
+	
 	if ($.cookie('sessionBBX')) {
 	    var cookieData = $.parseJSON($.cookie('sessionBBX'));
 	    if (key == '*') {
@@ -118,8 +139,8 @@ define([
      */
     var getDefaultHome = function() {
 	// MAYBE, this should be a configurable field
-	var config = $("body").data("bbx").config,
-	url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/bbx/search';
+	var config = BBX.config,
+	    url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/bbx/search';
 	return url;
     }
     
@@ -130,8 +151,8 @@ define([
      */
     var getAvatar = function(username) {
 	var username = '',
-	avatarUrl = '',
-	defaultAvatar = 'avatar-default.png';
+	    avatarUrl = '',
+	    defaultAvatar = 'avatar-default.png';
 	
 	// TODO: implement avatar
 	
@@ -140,33 +161,45 @@ define([
     }
     
     /**
-     * render common for internal pages at baobaxia
+     * render common elements for internal pages at baobaxia
      *
+     * @el {String} HTML Element identifier
      * @return [jQuery modify #header]
      */
-    var renderCommon = function(name) {
+    var renderCommon = function(el) {
 	var data = {},
-	config = $("body").data("bbx").config;
-	data.config = config;
+	    config = BBX.config,
+	    tags = [];
 	
-	$('body').removeClass().addClass(name);
+	data.config = config;
+	data.isLogged = this.isLogged;
+	data.isEditable = false;
+	
+	$('body').removeClass().addClass(el);
 	if (config.mucua == config.MYMUCUA) {
 	    $('body').addClass('my-mucua');
 	} else {
 	    $('body').addClass('other-mucua');
 	}
-	data.lastVisitedMucuas = __getLastVisitedMucuas(config);
-	console.log('render common: ' + name);
+	data.lastVisitedMucuas = __getLastVisitedMucuas();
+	console.log('render common: ' + el);
 	if ($('#sidebar').html() == "" ||
 	    (typeof $('#sidebar').html() === "undefined")) {
 	    $('#footer').before(_.template(SidebarTpl, data));
 	}
 	
-	$('#content').html('');	
-	var headerView = new HeaderView();
+	$('#content').html('');
+
+	tags = MediaFunctions.__getTagsFromUrl();
+	BBX.tags = tags;
+	
+	if (tags.length > 0) {
+	    data.isEditable = true;
+	}
+	
+	var headerView = new HeaderView(data);
 	if (isLogged) {
 	    // get cookie data if has visit any mucuas
-	    // 
 	}
 	
 	headerView.render(data);
@@ -179,7 +212,7 @@ define([
     /**
      * render usage bar at footer
      *
-     * @return [jquery modify #footer]
+     * @return {None} [jquery modify #footer]
      */
     var renderUsage = function() {
 	console.log('render usage');
@@ -211,7 +244,7 @@ define([
 	    
 	    if (loadMucua === true) {
 		// load mucua
-		var config = $("body").data("bbx").config,
+		var config = __getConfig(),
 		mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.MYMUCUA});
 		mucua.fetch({
 		    success: function() {
@@ -224,54 +257,60 @@ define([
 		    }
 		});		
 	    } else {
-		__parseMucuaUsage(BBX.mucua.uuid);
+		__parseMucuaUsage(BBX.mucua);
 	    }
 	}
     }
-    
+
+    /**
+     * get mucua aditional data resources at API
+     *
+     * @uuid {String} Mucua UUID
+     * @return {None} [jQuery modification]
+     */    
     var __getMucuaResources = function(uuid) {
-	var config = $("body").data("bbx").config,
-	url = config.apiUrl + '/mucua/' + uuid + '/info',
-	mucua = {};
+	var config = __getConfig(),
+	    url = config.apiUrl + '/mucua/' + uuid + '/info',
+	    mucua = {};
 	
 	mucua = new MucuaModel([], {url: url});
 	mucua.fetch({
 	    success: function() {
 		var mucuaData = {},
-		reStripUnit = /^([0-9\.]+)([\w]*)/,
-		total = '',
-		usedByOther = '',
-		usedByAnnex = '',
-		networkSize = '';
+		    reStripUnit = /^([0-9\.]+)([\w]*)/,
+		    total = '',
+		    usedByOther = '',
+		    usedByAnnex = '',
+		    usedByAnnexUnit = '',
+		    networkSize = '';
 		
 		// set mucua info to global variable
-		BBX.mucua.info = mucua.attributes;
-		if (typeof BBX.network === 'undefined') {
-		    var networkData = {
-			note: 'REDE',
-			image: '/images/rede.png',
-			description: '',
-			note: config.repository,
-			url: '#' + config.repository
-		    }
-		    BBX.network = networkData;
-		}
-		
-		networkSize = mucua.attributes['network size'].match(reStripUnit);
-		BBX.network.info = { 
-		    'network_size': networkSize[1]
-		};
+		BBX.mucua.info = mucua.attributes;		
 		
 		// set mucua variables from API
-		mucuaData.totalDiskSpace = BBX.mucua.info['total disk space'];
-		mucuaData.usedByAnnex = BBX.mucua.info['local annex size'];
-		mucuaData.usedByOther = BBX.mucua.info['local used by other'];
-		mucuaData.availableLocalDiskSpace = BBX.mucua.info['available local disk space'];
+		mucuaData.totalDiskSpace = String(BBX.mucua.info['total disk space'])
+		mucuaData.usedByAnnex = String(BBX.mucua.info['local annex size']);
+		mucuaData.usedByOther = String(BBX.mucua.info['local used by other']);
+		mucuaData.availableLocalDiskSpace = String(BBX.mucua.info['available local disk space'])
 		mucuaData.demanded = 0; // TODO: dynamic var
 		
 		total = mucuaData.totalDiskSpace.match(reStripUnit);
+		// workaround to prevent error (not a bugfix!)
+		if (_.isNull(total)) {
+		    total = ['', 0, 0];
+		}
+		
 		usedByOther = mucuaData.usedByOther.match(reStripUnit);
+		// workaround to prevent error (not a bugfix!)
+		if (_.isNull(usedByOther)) {
+		    usedByOther = ['', 0, ''];
+		}
+
 		usedByAnnex = mucuaData.usedByAnnex.match(reStripUnit);
+		// workaround to prevent error (not a bugfix!)
+		if (_.isNull(usedByAnnex)) {
+		    usedByAnnex = ['', 0, ''];
+		}
 		
 		// split values from regexp
 		mucuaData.total = total[1];
@@ -286,7 +325,34 @@ define([
 		mucuaData.usedByAnnexPercent = parseFloat(parseFloat(mucuaData.usedByAnnex) / parseFloat(mucuaData.total) * 100).toFixed(1);
 		mucuaData.availableLocalDiskSpacePercent = parseFloat(parseFloat(mucuaData.availableLocalDiskSpace) / parseFloat(mucuaData.total) * 100).toFixed(1);
 		mucuaData.demandedPercent = parseFloat(parseFloat(mucuaData.demanded) / parseFloat(mucuaData.total) * 100).toFixed(1);
+
+		// network data
+		if (typeof BBX.network === 'undefined') {
+		    var networkData = {
+			mucua: {
+			    note: 'rede',
+			    image: '/images/rede.png',
+			    description: 'rede',
+			    note: config.repository,
+			    url: '#' + config.repository
+			},
+		    }
+		    BBX.network = networkData;
+		}		
 		
+		// TODO: fix
+		// workaround to prevent error (not a bugfix!)
+		if (typeof mucua.attributes['network size'] === 'undefined') {
+		    networkSize = 0;
+		} else {
+		    networkSize = mucua.attributes['network size'].match(reStripUnit)[1];
+		}
+		if (typeof BBX.network.info === 'undefined') {
+		    BBX.network.info = { 
+			'network_size': networkSize,
+			'usedByAnnexUnit': mucuaData.usedByAnnexUnit
+		    };
+		}	
 		BBX.mucua.info = mucuaData;
 	    }
 	});
@@ -300,134 +366,169 @@ define([
 	    mucua.uuid === '') { 
 	    return false;
 	}
-	
-	__getMucuaResources(mucua.uuid);
+	if (typeof BBX.mucua.info === 'undefined') {	
+	    __getMucuaResources(mucua.uuid);
+	}
 	var mucuaResourcesLoad = setInterval(function() {
 	    if (typeof BBX.mucua.info !== 'undefined') {
-		//BBXFunctions.renderUsage(BBX.mucua);
-		var compiledUsage = _.template(UsageBarTpl, BBX.mucua.info);
-		$('#footer').html(compiledUsage);
-		clearInterval(mucuaResourcesLoad);
+		if (BBX.mucua.info.availableLocalDiskSpace !== 'undefined') {
+		    var compiledUsage = _.template(UsageBarTpl, BBX.mucua.info);
+		    $('#footer').html(compiledUsage);
+		    clearInterval(mucuaResourcesLoad);
+		}
 	    }
 	}, 100);	
     }
-
     
     /**
+     * render elements at sidebar
      *
+     * @return {None} [jQuery modification]
      */
-    var renderSidebar = function(pageType) {
-	var page = page || '',
-	config = $("body").data("bbx").config,
-	mucuaData = {},
-	networkData = {};
+    var renderSidebar = function() {
+	var config = __getConfig(),
+	    mucuaData = {},
+	    loadMucua = false;
 	
 	console.log('render sidebar');
-	if (this.isLogged() &&
+	if (isLogged() &&
 	    ((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() == "")) {
-	    var userData = this.getFromCookie('userData');
+	    var userData = getFromCookie('userData');
 	    userData.mocambolaUrl = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/mocambola/' + userData.username
-	    userData.avatar = this.getAvatar();
+	    userData.avatar = getAvatar();
 	    if ($('#link-login')) {
 		$('#link-login').remove();
 	    }
 	    $('#user-profile').html(_.template(UserProfileTpl, userData));
 	}
-	
-	// if accessing the 'rede' tab, prepare networkData
-	if (config.mucua === 'rede' || config.mucua === '') {
-	    // if data not set at global, fill object
-	    if (typeof BBX.network === 'undefined') {
-		networkData = {
-		    mucua: {
-			note: 'REDE',
-			image: '/images/rede.png',
-			description: '',
-			note: config.repository,
-			url: '#' + config.repository,
-		    }
-		}
+
+	// busca dados básicos da mucua
+	// carrega quando:
+	// - nao tem nada
+	// - mucua
+
+	if (typeof BBX.mucua === 'undefined' || _.isEmpty(BBX.mucua)) {
+	    loadMucua = true;
+	} else if (_.isObject(BBX.mucua)) {
+	    if (typeof BBX.mucua.uuid === 'undefined') {		    
+		loadMucua = true;
 	    } else {
-		networkData.mucua = BBX.network;
-	    }
-	    
-	    var networkResourcesLoad = setInterval(function() {
-		// if network not set at global, fetch data
-		if (typeof BBX.network !== 'undefined') { 
-		    if (typeof BBX.network.storageSize === 'undefined') {
-			networkData.mucua.storageSize = BBX.network.info.network_size;
-			BBX.network = networkData.mucua;	
-		    }
-		    networkData.config = config;
-		    $('#place-profile').html(_.template(MucuaProfileTpl, networkData));
-		    $('#mucua_image').attr('src', networkData.mucua.image);
-		    clearInterval(networkResourcesLoad);
-		}
-	    }, 100);
-						   
-	// else - accessing mucua
-	} else {
-	    var loadNewMucua = false;	    
-	    // check if mucua has already been loaded
-	    if (typeof BBX.mucua === 'undefined') {
-		loadNewMucua = true;
-	    } else if (BBX.mucua) {
-		if (BBX.mucua.description !== config.mucua) {
-		    loadNewMucua = true;
-		}		    
-	    }
-	    
-	    if (loadNewMucua) {		
-		var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.mucua});
-		mucua.fetch({
-		    success: function() {
-			mucuaData = {
-			    mucua: mucua.attributes
-			};
-			
-			// FAKE DATA
-			mucuaData.mucua.url = ''; // TODO: get from API
-			BBX.mucua = mucuaData.mucua;			
-			
-			// retrieve mucua info data
-			if (typeof BBX.mucua.info === 'undefined') {
-			    __getMucuaResources(mucuaData.mucua.uuid);
-			}
-			
-			var mucuaResourcesLoad = setInterval(function() {
-			    if (typeof BBX.mucua.info !== 'undefined') {
-				if (BBX.mucua.description === BBX.config.MYMUCUA) {
-				    mucuaData.mucua.info = BBX.mucua.info;
-				}
-				mucuaData.config = config;
-				mucuaData.mucua.storageSize = mucuaData.mucua.info.usedByAnnex;
-				
-				$('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
-				
-				// check if that mucua has an image
-				var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid;
-				var mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
-				    $('#mucua_image').attr('src', imageSrc);
-				});
-				BBX.mucua = mucuaData.mucua;			
-				
-				clearInterval(mucuaResourcesLoad);
-			    }
-			}, 100);
-		    }
-		});	
-	    } else {
-		mucuaData.mucua = BBX.mucua;
-		mucuaData.config = config;
-		$('#place-profile').html(_.template(MucuaProfileTpl, mucuaData))
+		loadMucua = false;
 	    }
 	}
+	
+	// caso 1: nada carregado
+	if (loadMucua) {	    
+	    var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.MYMUCUA});
+	    mucua.fetch({
+		success: function() {
+		    BBX.mucua = mucua.attributes;
+		    
+		    var mucuaLoad = setInterval(function() {
+			if (typeof BBX.mucua !== 'undefined') {
+			    if (typeof BBX.network === 'undefined') {
+				__getMucuaResources(BBX.mucua.uuid);
+			    }		    
+			    clearInterval(mucuaLoad)
+			}
+		    }, 100);		
+		}
+	    });
+	}
+
+	// REDE
+	if (config.mucua === 'rede' || config.mucua === '') {
+	    console.log('rede');
+	    var networkResourcesLoad = setInterval(function() {
+		if (typeof BBX.network !== 'undefined') {
+		    if (typeof BBX.network.info !== 'undefined') {
+			if (typeof BBX.network.info.network_size !== 'undefined') {
+			    var networkData = BBX.network;
+			    networkData.mucua.storageSize = BBX.network.info.network_size;
+			    networkData.usedByAnnexUnit = BBX.network.info.usedByAnnexUnit;
+			    networkData.config = config;
+			    
+			    $('#place-profile').html(_.template(MucuaProfileTpl, networkData));
+			    console.log(networkData.mucua.image);
+			    $('#place-profile #mucua_image').prop('src', networkData.mucua.image);
+			    
+			    clearInterval(networkResourcesLoad);
+			}
+		    }
+		}
+	    }, 1000);
+	} else {
+	    // MUCUA
+	    var mucuaResourcesLoad = setInterval(function() {
+		if (typeof BBX.mucua !== 'undefined') {
+		    if (typeof BBX.mucua.info !== 'undefined') {
+			console.log(BBX.mucua.info.usedByAnnexUnit);
+			if (config.mucua === config.MYMUCUA) {
+			    // mucua local
+			    mucuaData = {
+				mucua: BBX.mucua,
+				usedByAnnexUnit: BBX.mucua.info.usedByAnnexUnit,
+				config: config
+			    };	    
+			    
+			    mucuaData.mucua.storageSize = BBX.mucua.info.usedByAnnex;
+			    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
+			    
+			    // verifica se a mucua tem uma imagem / media com nome do seu uuid
+			    var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid,
+				mucuaImageSrc = '';
+			    
+			    if (typeof mucua === 'undefined') {
+				var mucua = new MucuaModel([]);
+			    }
+			    // carrega imagem
+			    mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
+				$('#mucua_image').prop('src', imageSrc);
+			    });
+			    
+			} else {
+			    
+			    // mucua de fora			    
+			    var mucua = new MucuaModel([], {url: config.apiUrl + '/mucua/by_name/' + config.mucua});
+			    mucua.fetch({
+				success: function() {
+				    mucuaData = {
+					mucua: mucua.attributes,
+					usedByAnnexUnit: BBX.mucua.info.usedByAnnexUnit,					
+					config: config					
+				    };
+				    
+				    // FAKE DATA
+				    mucuaData.mucua.url = ''; // TODO: get from API
+				    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
+				    
+				    // carrega imagem
+				    // verifica se a mucua tem uma imagem / media com nome do seu uuid
+				    var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid,
+					mucuaImageSrc = '';
+				    
+				    mucuaImageSrc = mucua.getImage(urlMucuaImage, function(imageSrc){
+					$('#mucua_image').prop('src', imageSrc);
+				    });
+				}
+			    });  
+			}
+			clearInterval(mucuaResourcesLoad);
+		    }
+		}
+	    }, 100);		
+	}	
     }
     
-    var __getLastVisitedMucuas = function(config) {
+    /**
+     * get last visited Mucua
+     *
+     * @return {Object} with list of last visited mucuas
+     */
+    var __getLastVisitedMucuas = function() {
 	// get last visited mucuas
-
-	var visitedMucuas = {'name': 'visitedMucuas', 
+	var config = __getConfig(),
+	visitedMucuas = {'name': 'visitedMucuas', 
 			     'values': []
 			    }
 	visitedMucuas.values = getFromCookie('visitedMucuas') || [];
@@ -467,7 +568,6 @@ define([
 		console.log('adiciona ao comeco');
 	    }	    
 	}
-	
 	addToCookie(visitedMucuas);
 	
 	return visitedMucuas.values;
@@ -480,7 +580,7 @@ define([
      * @return {None} don't return values
      */
     var __getMyMucua = function() {
-	var config = $("body").data("bbx").config;
+	var config = BBX.config;
 	if (typeof config.MYMUCUA === 'undefined') {
 	    var myMucua = new MucuaModel([], {url: config.apiUrl + '/mucua/'});
 	    myMucua.fetch({
@@ -499,7 +599,7 @@ define([
      * @return {None} don't return values (only by jQuery)
      */
     var __getDefaultRepository = function() {
-	var config = $("body").data("bbx").config;
+	var config = BBX.config;
 	if (typeof config.MYREPOSITORY === 'undefined') {
 	    var defaultRepository = new RepositoryModel([], {url: config.apiUrl + '/repository/'});
 	    defaultRepository.fetch({
@@ -517,7 +617,7 @@ define([
      * @return {None} don't return values (only by jQuery)
      */
     var __getRepositories = function() {
-	var config = $("body").data("bbx").config;
+	var config = BBX.config;
 	
 	// TODO: puxar lista real de repositorios
 	//var listRepositories = new RepositoryModel([], {url: Config.apiUrl + '/repository/list'});
@@ -531,10 +631,9 @@ define([
      * @return {None} don't return values (only by jQuery)
      */
     var __setConfig = function(jsConfig) {
-	// configuracoes padrao: config.json
+	// configuracoes padrao: config.js
 	var jsConfig = jsConfig || '',
-	config = jsConfig;
-	$("body").data("bbx").config = jsConfig;
+	    config = jsConfig;
 	
 	__getMyMucua();
 	__getDefaultRepository();
@@ -545,25 +644,41 @@ define([
 	    if (typeof config.MYMUCUA !== 'undefined' &&
 		typeof config.MYREPOSITORY !== 'undefined' &&
 		typeof config.repositoriesList !== 'undefined') {	
-		console.log('configs loaded!');
-		$("body").data("bbx").configLoaded = true;
 		BBX.config = config;
-		
 		clearInterval(loadData);
 	    }
 	}, 50);	    
     }
 
+    
+    /**
+     * Get config data
+     *
+     * @return {Object} input object with config data
+     */
+    var __getConfig = function() {
+	return BBX.config;
+    }
+    
+    
+    /**
+     * Set navigation variables
+     *
+     * @repository {String} Repository name
+     * @mucua {String} Mucua name
+     * @subroute {String} Internal url subroute 
+     * @return {Object} input object with config data
+     */
     var setNavigationVars = function(repository, mucua, subroute) {
 	var subroute = subroute || '',
-	reMedia = /^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/,  // padrao de uuid
-	reMocambola = /^[0-9a-zA-Z-_]*@[0-9a-zA-Z-_\.]*\.[a-zA-Z]{2,4}/,
-	reSearch = /search/,
-	matchMedia = '',
-	matchSearch = '',
-	matchMocambola = '',
-	config = $("body").data("bbx").config,
-	currentPage = Backbone.history.location.href;
+	    reMedia = /^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}/,  // padrao de uuid
+	    reMocambola = /^[0-9a-zA-Z-_]*@[0-9a-zA-Z-_\.]*\.[a-zA-Z]{2,4}/,
+	    reSearch = /search/,
+	    matchMedia = '',
+	    matchSearch = '',
+	    matchMocambola = '',
+	    config = __getConfig(),
+	    currentPage = Backbone.history.location.href;
 	
 	config.repository = repository;
 	config.mucua = mucua;
@@ -598,12 +713,9 @@ define([
 	    }
 	}
 	
-	// 
 	if (config.subroute == '') {
 	    config.subroute = 'bbx/search';
 	}
-	
-	$("body").data("bbx").config = config;
     }
 
     // static format: day/month/year
@@ -617,10 +729,79 @@ define([
 	    return false;
 	}
     }
+
+    /**
+     * verifica se há tags funcionais
+     *
+     * return {None} [conteúdo definido pelo jQuery]
+     */
+    var checkFunctionalTag = function() {
+	console.log('checkFunctionalTag');
+	var config = __getConfig(),	
+	    tags = MediaFunctions.__getTagsFromUrl().join('/'),
+	    urlApi = config.apiUrl + '/tags/functional_tag/' + tags,
+	    tag = new TagModel([], {url: urlApi});
+
+	// cria objeto na variavel global do BBX
+	BBX.codeObj = {};
+	
+	tag.fetch({
+	    success: function() {
+		var code = tag.attributes;
+		// copia código para obj global
+		BBX.codeObj = _.extend(BBX.codeObj, code);
+	    }
+	});
+	
+	var functionalTagLoad = setInterval(function() {
+	    // se tiver tags funcionais
+	    if (typeof BBX.codeObj !== 'undefined') {
+		// inspeciona chaves / tags funcionais
+		for (var tagName in BBX.codeObj) {
+		    if (BBX.codeObj.hasOwnProperty(tagName)) {
+			// inspeciona cada arquivo da funcao
+			for (var file in BBX.codeObj[tagName].code) {
+			    if (BBX.codeObj[tagName].code.hasOwnProperty(file)) {
+				// cria objeto script
+				var nscr = document.createElement('script');
+				nscr.type = 'text/javascript';
+				nscr.textContent = BBX.codeObj[tagName].code[file];
+				nscr.setAttribute('name', 'dynamically inserted: ');
+				$('head').append(nscr);
+			    }
+			}
+		    }
+		}
+		clearInterval(functionalTagLoad);		   
+	    }
+	}, 100);	
+    }
+
+    /**
+     * trunca texto e adiciona limitador
+     *
+     * @param {String} text Texto a ser truncado
+     * @param {Integer} size Tamanho do texto
+     * @param {String} delimiter String delimitadora
+     * @returns {String} texto truncado
+     */
+    var truncate = function(text, size, delimiter) {
+	var size = size || 35,
+	    delimiter = delimiter || '...';
+	text = text.substring(0, size) + (
+	    (text.length > size) ? delimiter : ''
+	);
+	
+	return text;
+    }
+
+
     
+    // public functions are defined above
     return {
 	init: init,
 	isLogged: isLogged,
+	isCookiesEnabled: isCookiesEnabled,
 	getFromCookie: getFromCookie,
 	addToCookie: addToCookie,
 	getDefaultHome: getDefaultHome,
@@ -629,7 +810,9 @@ define([
 	renderUsage: renderUsage,
 	renderSidebar: renderSidebar,
 	setNavigationVars: setNavigationVars,
-	formatDate: formatDate
+	formatDate: formatDate,
+	checkFunctionalTag: checkFunctionalTag,
+	truncate: truncate
     }
 });
     

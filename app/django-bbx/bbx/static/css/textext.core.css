@@ -1,0 +1,37 @@
+.text-core {
+  position: relative;
+}
+.text-core .text-wrap {
+  background: #fff;
+  position: absolute;
+  border-radius: 8px;
+
+}
+.text-core .text-wrap textarea,
+.text-core .text-wrap input {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  border: 1px solid #9daccc;
+  outline: none;
+  resize: none;
+  position: absolute;
+  z-index: 1;
+  background: none;
+  overflow: hidden;
+  margin: 0;
+  padding: 2px 20px 2px 6px;
+  margin: 0 2px 2px 0;
+  white-space: nowrap;
+  line-height: 13px;
+  font: 17px "lucida grande", tahoma, verdana, arial, sans-serif;
+  font-weight: bold;
+}
+
+#buscador .text-core .text-wrap .text-tags {
+    height: 34px;
+    width: 450px;
+}

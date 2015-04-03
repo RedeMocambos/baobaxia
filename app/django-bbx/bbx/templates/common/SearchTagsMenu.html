@@ -1,0 +1,21 @@
+{% load i18n %}
+<ul id="terms-navigation">
+  <% var termCount = _.size(terms),
+     termId = 0;
+     %>
+  <% _.each(terms, function(term) { %>
+  <% termId += 1 %>
+  <li class="search-term">
+    <a class="search-links" href="<% print(baseUrl + term) %>"><%= term %></a>
+    <div class="trash-term" id="term_<%=termId%>"></div>
+    <span class="search-links">
+      <% if (termId < termCount) { %>+<% } %>
+    </span>
+  </li>
+  <% if (termId == termCount) { %>
+  <li class="add-term">
+    <a><span class="plus-search">+</span><span class="legend">{% trans "Add term to search" %}</span></a>
+  </li>
+  <% } %>
+  <% }); %>
+</ul>

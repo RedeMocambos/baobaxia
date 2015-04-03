@@ -1,5 +1,15 @@
-var BBX = {};
-
+/***
+ * Roteador geral da interface
+ *
+ * - gerencia rotas recebidas pelo navegador e direciona para funções
+ * /[repositório]/[mucua]/[subrota] => chama funcao 'funcao_que_cuida_da_subrota()'
+ * 
+ * - Para algumas rotas, o roteador faz a função de controlador,
+ * já renderizando páginas, como a página de Login.
+ *
+ * - Para outras rotas mais numerosas, é chamado um roteador local do módulo. 
+ * Como exemplo, o módulo de media, ou todo o conteúdo relacionado a media.
+ */
 define([
     'jquery', 
     'backbone',
@@ -58,15 +68,10 @@ define([
 	    var indexView = new IndexView();
 	    indexView.render();
 	    
-	    var loadConfigs = setInterval(function() {
-		if ($("body").data("bbx").configLoaded === true) {
-		    var config = $("body").data("bbx").config,
-		    urlRedirect = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA;
-		    
-		    window.location.href = urlRedirect;
-		    clearInterval(loadConfigs);
-		}
-	    }, 50);  
+	    var config = BBX.config,
+		urlRedirect = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA;
+	    
+	    window.location.href = urlRedirect;
 	},
 	
 	sobre: function() {
@@ -93,9 +98,10 @@ define([
 	
 	logout: function(repository, mucua) {
 	    var repository = repository || '',
-	    mucua = mucua || '',
-	    urlRedirect = '#login',
-	    logoutView = new LogoutView();
+		mucua = mucua || '',
+		urlRedirect = '#login',
+		logoutView = new LogoutView();
+	    
 	    logoutView.doLogout();
 	    console.log('logout');
 	    
@@ -107,10 +113,11 @@ define([
 
 	register: function(repository, mucua) {
 	    var repository = repository || '',
-	    mucua = mucua || '';
+		mucua = mucua || '',
+		registerView = new RegisterView();
+	    
 	    console.log('register');
-
-	    var registerView = new RegisterView();
+	    
 	    registerView.render();
 	},
 	
@@ -166,15 +173,10 @@ define([
     var initialize = function(){
 	BBXFunctions.init();
 	// waits for bbx init() in order to load navigation and routing
-	var loadConfigs = setInterval(function() {
-	    if ($("body").data("bbx").configLoaded === true) {
-		new App.Router();
-		if (Backbone.history.handlers.length !== true) {
-		    Backbone.history.start();
-		}		
-		clearInterval(loadConfigs);		
-	    }
-	}, 30);
+	new App.Router();
+	if (Backbone.history.handlers.length !== true) {
+	    Backbone.history.start();
+	}		
     };
 
     return {

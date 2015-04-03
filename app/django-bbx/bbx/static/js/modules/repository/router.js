@@ -24,15 +24,22 @@ define([
 	homeRepository: function() {	    
 	    console.log("home repository");
 	    
-	    //var repository = this.__getRepository(),
-	    //mucua = '',
-	    var homeRepository = new HomeRepository(); 
+	    var homeRepository = new HomeRepository();
+
+	    BBXFunctions.setNavigationVars(repository, 'rede');
+	    BBXFunctions.renderCommon('mocambola');
+	    
 	    homeRepository.render();
 	},
 	
 	listMucuas: function() {
 	    console.log("list mucuas of repository");
-	    var listMucuas = new ListMucuas(); 
+	    var listMucuas = new ListMucuas(),
+		repository = this.__getRepository();
+	    
+	    BBXFunctions.setNavigationVars(repository, 'rede');
+	    BBXFunctions.renderCommon('mocambola');
+	    
 	    listMucuas.render();
 	}
     });

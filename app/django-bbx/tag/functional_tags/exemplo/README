@@ -1,0 +1,24 @@
+As tags funcionais são funcionalidades expansíveis que podem ser executadas em variados níveis.
+
+Quando o usuário acessa determinada página, seja na API, seja na Interface, as tags funcionais
+são verificadas. Quando uma mídia é criada ou atualizada, as tags funcionais também são
+consultadas, para verificar se há alguma regra específica para aquele conteúdo
+
+Os níveis de execução das tags funcionais são os seguintes:
+
+* interface
+  São funcionalidades do lado do cliente, como css, javascript e html
+
+* distribution
+  São funcionalidades de distribuição de mídias pelas mucuas.
+  É verificada nos scripts de sincronização, definindo-se regras de
+  distribuição do conteúdo para outras mucuas.
+  
+* custom
+  Qualquer outra funcionalidade no nível da API.
+
+
+Para definir uma tag funcional, deve-se:
+* copiar este modelo
+* configurar o arquivo [nomedatag].json]
+* criar posicionar os arquivos com as funções nas pastas dos níveis de execução

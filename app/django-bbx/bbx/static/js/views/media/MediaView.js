@@ -5,19 +5,22 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!templates/media/MediaView.html'
-], function($, _, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaViewTpl){
+    'text!/templates/' + BBX.userLang + '/media/MediaView.html',
+    'text!/templates/' + BBX.userLang + '/media/MessageRequest.html',
+    'text!/templates/' + BBX.userLang + '/media/BackToSearch.html',
+    'text!/templates/' + BBX.userLang + '/media/MucuaHasFile.html',
+], function($, _, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaViewTpl, MessageRequestTpl, BackToSearchTpl, MucuaHasFileTpl){
     
     var MediaView = Backbone.View.extend({
 	
 	render: function(uuid){
 	    console.log("view media " + uuid);	    
-	    var config = $("body").data("bbx").config,
-	    media = '',
-	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
-	    urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis';
-	    
-	    var userData = BBXFunctions.getFromCookie('userData');
+	    var config = BBX.config,
+		media = '',
+		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
+		urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis',
+		userData = BBXFunctions.getFromCookie('userData');
+
 	    if (userData) {
 		config.userData = userData;
 	    } else {
@@ -44,14 +47,15 @@ define([
 		data.media = data.medias[0];
 		data.config = config;
 		data.baseUrl = BBXFunctions.getDefaultHome();
-		$('#header-bottom').append("<div id='back-to-results'><a class='back-to-results' href='javascript: history.back(-1)'><img src='" + config.imagePath + "/voltar.png'> voltar para a busca</a></div>");
+		$('#header-bottom').append(_.template(BackToSearchTpl, data));
+
 		$('#content').html(_.template(MediaViewTpl, data));
-		// TODO: add an event to monitor scroll
-		// if scroll reaches the end, load more content
-		//$('body').on('scroll', function() {
-		//		    console.log('scroll');
-		//});
-	    }, {'width': '400', 'height': '00' });
+		if (!data.media.is_local) {
+		    $('#message-request').html(_.template(MessageRequestTpl, data));
+		}
+		MediaFunctions.bindRequest(uuid);
+		
+	    }, {'width': '00', 'height': '300' });
 	    
 	    // who has the file
 	    var dataWhereis = new MediaModel([], {url: urlWhereis});
@@ -59,7 +63,11 @@ define([
 		success: function() {
 		    var mucuas = dataWhereis.attributes.whereis;		    
 		    _.each(mucuas, function(mucua) {
-			$('#whereis').append('<a href="' + config.interfaceUrl + config.MYREPOSITORY + '/' + mucua.description + '">' + mucua.description + '</a>&nbsp;');
+			var data = {
+			    config: config,
+			    mucua: mucua
+			};
+			$('#whereis').append(_.template(MucuaHasFileTpl, data));
 		    });
 		}
 	    });

@@ -6,6 +6,8 @@ from datetime import datetime
 import exceptions
 from importlib import import_module
 import subprocess
+import json
+import re
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -16,8 +18,10 @@ from django.template.defaultfilters import slugify
 from django.utils.functional import lazy
 
 from tag.models import Tag
-from bbx.settings import REPOSITORY_DIR
+from bbx.settings import REPOSITORY_DIR, DEFAULT_MUCUA
 from bbx.utils import logger
+from repository.tasks import git_annex_get
+
 
 try:
     from django.utils.encoding import force_unicode  # NOQA
@@ -27,7 +31,7 @@ except ImportError:
 TYPE_CHOICES = (('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'),
                 ('arquivo', 'arquivo'))
 FORMAT_CHOICES = (('ogg', 'ogg'), ('ogv', 'ogv'), ('webm', 'webm'), ('mp4', 'mp4'),
-                  ('jpg', 'jpg'), ('png', 'png'), ('pdf', 'pdf'), ('gif', 'gif'))
+                  ('jpg', 'jpg'), ('png', 'png'), ('pdf', 'pdf'), ('gif', 'gif'), ('odp', 'odp'), ('odt', 'odt'))
 
 
 def media_file_name(instance, file_name):
@@ -51,6 +55,7 @@ def get_file_path(instance):
     return os.path.join(REPOSITORY_DIR, get_media_path(instance))
 
 def get_media_path(instance):
+    # FIX: se mudar a data quebra o path
     if instance.date == '':
         t = datetime.now
         date = t.strftime("%y/%m/%d/")
@@ -142,6 +147,7 @@ class Media(models.Model):
         _('is requested'),
         help_text=_('True if media content is awaiting a local copy'),
         default=False)
+    # FIX: request_code desnessesario.. usando o uuid mesmo
     request_code = models.CharField(max_length=100, editable=False, blank=True)
     num_copies = models.IntegerField(
         _('number of copies'), default=1, blank=True,
@@ -162,7 +168,7 @@ class Media(models.Model):
 
     def get_file_name(self):
         if self.pk is None:
-            return (slugify(self.get_name()) + '-' + str(self.uuid[:5]) + '.' +
+            return (slugify(self.get_name())[:60] + '-' + str(self.uuid[:5]) + '.' +
                     self.format)
         else:
             return os.path.basename(self.media_file.name)
@@ -180,27 +186,103 @@ class Media(models.Model):
         return self.format
 
     # FIX (Nao pega na primeira save)
-    def _set_is_local(self):
+    def set_is_local(self):
         self.is_local = os.path.isfile(os.path.join(get_file_path(self),
                                                     self.get_file_name()))
 
-    def _set_num_copies(self):        
+    def _set_num_copies(self):
         from repository.models import git_annex_where_is
-        import json
+        
         data = git_annex_where_is(self)
-        whereis = json.loads(data)
-        self.num_copies = len(whereis[u'whereis'])
+        try:
+            whereis = json.loads(data)
+            self.num_copies = len(whereis[u'whereis'])
+        except ValueError:
+            self.num_copies = 1
 
     def where_is(self):
         from repository.models import git_annex_where_is
-        return git_annex_where_is(self)
+        
+        data = git_annex_where_is(self)
+        whereis = json.loads(data)
+        
+        index = 0
+        for item in whereis['whereis']:
+            # strip [ or ]  (prevent errors of getting mucuas address like [dpadua])
+            mucua_name = re.sub("[\[\]]", "", item['description'])
+            whereis['whereis'][index]['description'] = mucua_name
+            index += 1
+        
+        return whereis
 
     def get_tags(self):
         return self.tags
+    
+
+    def drop_copy(self):
+        u"""
+        Remove a copia local do media
+
+        O media é preservado se tiver um pedido pendente em 
+        /repository/mucua/requests/
+
+        """
+        requests_path = os.path.join(REPOSITORY_DIR, self.get_repository(),
+                                     DEFAULT_MUCUA,
+                                     'requests')
+        if self.uuid not in os.listdir(requests_path):
+            from repository.models import git_annex_drop
+            self.is_requested = False
+            git_annex_drop(self)
+            self.save()
+        
+
+    def request_copy(self):
+        u"""
+        Gera um pedido de copia local do media
+
+        Os pedidos tem um codigo uuid e são gravados em 
+        /repository/mucua/requests/uuid
+
+        O arquivo atualmente contem somente o caminho para o media no
+        repositorio.
+
+        """
+        self.set_is_local()
+        if not self.is_local:
+            self.is_requested = True
+            self.save()
+            try:
+                requests_path = os.path.join(REPOSITORY_DIR, self.get_repository(), 
+                                                DEFAULT_MUCUA,
+                                                'requests')
+                if not os.path.exists(requests_path):
+                    os.makedirs(requests_path)
+                
+                request_filename = os.path.join(requests_path, self.uuid)
+                logger.info("REQUESTING: " + request_filename)
+                request_file = open(request_filename, 'a')
+                request_file.write(self.media_file.path)
+                request_file.close
+                # TODO: Need to git add
+                logger.debug("ADDING REQUEST: " + os.path.basename(request_filename))
+                logger.debug("ADDED ON: " + os.path.dirname(request_filename))
+                from repository.models import git_add
+                git_add(os.path.basename(request_filename), os.path.dirname(request_filename))
+                
+            except IOError:
+                logger.info(u'Alo! I can\'t write request file!')
+            
+                logger.debug("get_file_path: " + get_file_path(self))
+                logger.debug("media_file.name: " + os.path.basename(self.media_file.name))
+        
+            async_result = git_annex_get.delay(get_file_path(self), os.path.basename(self.media_file.name))
+            #logger.debug(async_result.get)
+            #logger.debug(async_result.info)
 
     def save(self, *args, **kwargs):
-        self._set_is_local()
-        if self.pk is not None:
+        self.set_is_local()
+        if self.pk is not None and self.pk is not "":
             self._set_num_copies()
         self.url = self.get_url()
         super(Media, self).save(*args, **kwargs)
@@ -210,6 +292,10 @@ class Media(models.Model):
 
 
 class TagPolicyDoesNotExist(exceptions.Exception):
+    def __init__(self, args=None):
+        self.args = args
+
+class MediaDoesNotExist(exceptions.Exception):
     def __init__(self, args=None):
         self.args = args
 

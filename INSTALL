@@ -1,23 +1,26 @@
-sudo apt-get install git-annex python-pip
-sudo pip install virtualenv
-virtualenv bbxenv
-source bbxenv/bin/activate
-for package in $(cat app/django-bbx/requirements.txt); do pip install $package; done
-cd app/django-bbx/bbx
+Saravá, Alo!
 
-cp settings.example.py settings.py
+Para instalar o Baobaxia baixe o pacotão, a ultima versão disponivel
+esta em media.mocambos.net:
+http://media.mocambos.net/baobaxia_20150402.tbz
 
-   MODIFICAR o arquivo settings.py COM OS PATH E DB
+O instalador somente foi testado no debian. Na versão estavel atual
+7.x, a versão do git-annex é muito antiga e precisa instalar a versão
+"backported". 
 
-cd app/django-bbx
-  
-./limpa_bd.sh
+Para isso adicione no /etc/apt/sources.list a linha:
+ deb http://ftp.it.debian.org/debian wheezy-backports main
 
-   PARA RODAR O sistema 
+depois:
+ apt-get update && apt-get install -t wheezy-backports git-annex
 
-python manage.py runserver 0.0.0.0:9000
-        
+Agora pode instalar, como usuario root, e a partir da pasta /root/, descompate o arquivo:
+ tar xjvf baobaxia_20141105.tbz 
 
+Agora entre em /root/baobaxia/ e pode rodar o instalador com o ./install.sh  
 
+O instalador não funciona muito bem mas normalmente respondendo sempre
+sim (envio) ele funciona ;)
 
- 
+Qualquer duvida entre no canal #redemocambos no irc.freenode.org ou
+contato @ mocambos.org.

@@ -1,0 +1,21 @@
+{% load i18n %}
+<div id="usage-content">
+  <div class="usage-bar inline">
+    <div class="legend">
+      <div class="used-other inline">{% trans "others:" %}<%=usedByOtherPercent %>% (<%=usedByOther %><%=usedByOtherUnit %>)</div>
+      <div class="used inline">{% trans "repository:" %} <%=usedByAnnexPercent %>% (<%=usedByAnnex %><%=usedByAnnexUnit %>)</div>
+      <div class="available inline">{% trans "available:" %} <%=availableLocalDiskSpacePercent %>% (<%=availableLocalDiskSpace %>)</div>
+      <div class="demanded inline"><% if (demandedPercent > 0) { %>{% trans "demanded space:" %} <%=demandedPercent %>%<% }%></div>
+    </div>
+    <div class="the-bar">
+      <div class="used-other inline" style="width: <%=usedByOtherPercent %>%">&nbsp;</div>
+      <div class="used inline" style="width: <%=usedByAnnexPercent %>%">&nbsp;</div>
+      <div class="available inline" style="width: <%=availableLocalDiskSpace %>%">&nbsp;</div>
+      <% if (demandedPercent > 0) { %><div class="demanded inline" style="width: <%=demandedPercent %>%">&nbsp;</div><% }%>
+    </div>
+  </div>
+  <div class="total inline">total: <%=total%>GB</div>
+  <div id="sobre">
+    <a href="#sobre">{% trans "support / about baobaxia" %}</a>
+  </div>
+</div>

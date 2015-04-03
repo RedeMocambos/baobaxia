@@ -1,0 +1,24 @@
+Sarava, Alo!
+
+Bemvind@ no Codigo do Baobaxia..
+
+Aqui esta a descriçao:
+.
+├── bbx					Aplicaçao principal
+├── _bbx_CODIGO_DO_BAOBAXIA.txt		Este arquivo
+├── __init__.py				
+├── lang				Idiomas
+├── limpa_bd.sh				Script pra limpar o banco de dados - perigoso ;)
+├── locale				Traduçoes
+├── manage.py				Acesso aos comandos do Baobaxia pelo django 
+├── media				Objeto Media (arquivos do acervo, video, audio ..) 
+├── mocambola				Usuarios do Baobaxia
+├── mucua				Mucua 
+├── policy				Politicas associadas as etiquetas
+├── repository				Repositorios (catalogos, atualmente somente mocambos)
+├── requirements.txt			Lista de programas necessarios para o django-bbx
+└── tag					Etiquetas dos medias
+
+
+
+

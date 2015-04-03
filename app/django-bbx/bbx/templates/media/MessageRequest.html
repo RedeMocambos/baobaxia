@@ -1,0 +1,6 @@
+{% load i18n %}
+<% if (media.is_requested === true) { %>
+{% trans "local copy requested - pending" %}
+<% } else { %>
+{% trans "request local copy" %}
+<% } %>

@@ -7,10 +7,14 @@ define([
     'modules/media/collection',
     'views/media/MediaView', 
     'views/media/MediaPublish',
+    'views/media/MediaGalleryCreate',
+    'views/media/MediaGalleryEdit',
     'views/media/MediaUpdate',
-], function($, Backbone, Backbone_Subroute, BBXFunctions, MediaModel, MediaCollection, MediaViewView, MediaPublishView, MediaUpdateView){
+], function($, Backbone, Backbone_Subroute, BBXFunctions, MediaModel, MediaCollection, MediaViewView, MediaPublishView, MediaGalleryCreateView, MediaGalleryEditView, MediaUpdateView){
     var Router = Backbone.SubRoute.extend({
 	routes: {
+	    'gallery': 'gallery_create',
+	    'gallery/*tags/edit': 'gallery_edit',
 	    '': 'publish',
 	    '*': 'publish',
 	    ':uuid': 'view',
@@ -32,11 +36,12 @@ define([
 	    console.log("media view");
 	    
 	    var repository = this.__getRepository(),
-	    mucua = this.__getMucua();
+		mucua = this.__getMucua(),
+		mediaViewView = new MediaViewView();
 	    
 	    BBXFunctions.setNavigationVars(repository, mucua, uuid);
 	    BBXFunctions.renderCommon('media');
-	    var mediaViewView = new MediaViewView();
+	    
 	    mediaViewView.render(uuid);
 	},
 	
@@ -44,22 +49,61 @@ define([
 	    console.log("media publish");
 	    
 	    var repository = this.__getRepository(),
-	    mucua = this.__getMucua();
+		mucua = this.__getMucua(),
+		mediaPublishView = new MediaPublishView();
 	    
 	    BBXFunctions.renderCommon(repository, mucua);
 	    BBXFunctions.setNavigationVars(repository, mucua);
 	    BBXFunctions.renderCommon('media');
-	    var mediaPublishView = new MediaPublishView();
+	    
 	    mediaPublishView.render();
 	},
 
+	gallery_create: function() {
+	    console.log("create gallery");
+	    
+	    var repository = this.__getRepository(),
+		mucua = this.__getMucua(),
+		mediaGalleryCreateView = new MediaGalleryCreateView();
+	    
+	    BBXFunctions.renderCommon(repository, mucua);
+	    BBXFunctions.setNavigationVars(repository, mucua);
+	    BBXFunctions.renderCommon('media');
+	    
+	    mediaGalleryCreateView.render();	    
+	},
+
+	gallery_edit: function(subroute) {
+	    console.log("gallery edit");
+	    
+	    var repository = this.__getRepository(),
+		mucua = this.__getMucua(),
+		mediaGalleryEditView = new MediaGalleryEditView(),
+		limit = '';
+	    
+	    BBXFunctions.renderCommon(repository, mucua);
+	    BBXFunctions.setNavigationVars(repository, mucua);
+	    BBXFunctions.renderCommon('media');
+	    
+	    if (subroute.match('limit')) {
+		var matches = subroute.split('/limit/');
+		subroute = matches[0];
+		limit = matches[1];
+	    }
+	    
+	    mediaGalleryEditView.render(subroute, limit);	    
+	    
+	},
+	    
 	update: function(uuid) {
 	    console.log("media edit/update");
 	    
 	    var repository = this.__getRepository(),
-	    mucua = this.__getMucua();
+		mucua = this.__getMucua(),
+		mediaUpdateView = new MediaUpdateView();
+	    
 	    BBXFunctions.renderCommon('media');	    
-	    var mediaUpdateView = new MediaUpdateView();
+	    
 	    mediaUpdateView.render(uuid);	
 	},
 

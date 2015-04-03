@@ -1,0 +1,24 @@
+{% load i18n %}
+<div id="header-top">
+   <div id="header-image"><a id="logo-baobaxia" href="<%= homeUrl %>"><img src="images/logo-baobaxia.png" border="0"></a></div>
+  <p class="posicoes">{% trans "Header" %}</p>
+  <div id="title-mucua">
+  </div>
+</div>
+<div id="header-bottom">
+  <div class="media-display-type">
+    <a alt="{% trans 'list all' %}"><div class="all"></div></a>
+    <a alt="{% trans 'view as grid' %}"><div class="grid"></div></a>
+    <a alt="{% trans 'view as list' %}"><div class="list"></div></a>
+    <% if (isLogged()) {
+         if (isEditable) {
+       %>
+    <a href="<%= BBX.config.interfaceUrl %><%= BBX.config.repository %>/<%= BBX.config.mucua %>/media/gallery/<% 
+print(BBX.tags.join('/')); 
+var limit = (BBX.config.subroute.match('limit')) ? '/limit/' + BBX.config.subroute.split('/limit/')[1] : ''; 
+print(limit); %>/edit" alt="{% trans 'Multiple edit' %}"><div class="multiple-edit"></div></a>
+    <%   }
+       } %>
+    
+  </div>
+</div>

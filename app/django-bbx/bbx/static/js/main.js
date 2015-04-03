@@ -2,26 +2,43 @@
 // mapeia libs usadas, a serem chamadas pelo require
 
 require.config({
-    shin: {
+    shim: {
 	lodash: { 
 	    exports: '_'
 	},
 	backbone: {
-	    deps: ['lodash', 'jquery'],
+	    deps: ['jquery', 'lodash'],
 	    exports: 'Backbone'
 	},
-	'textext.core': {
-	    exports: ['textext']
+	jquery: {
+	    exports: '$'
 	},
-	'textext.clear': {
-	    deps: ['textext'],
-	    exports: ['textext.clear']
+	textext: {
+	    deps: ['jquery'],
+	    exports: '$.fn.textext'
 	},
-	'textext.tags': {
-	    deps: ['textext'],
-	    exports: ['textext.tags']
+	textext_ajax: {
+	    deps: ['jquery', 'textext']
 	},
-    },
+	textext_filter: {
+	    deps: ['jquery', 'textext']
+	},
+	textext_tags: {
+	    deps: ['jquery', 'textext']
+	},
+	textext_autocomplete: {
+	    deps: ['jquery', 'textext']
+	},
+	fancybox: {
+	    deps: ['jquery', 'jquery_mousewheel']
+	},
+	fancybox_buttons: {
+	    deps: ['fancybox']
+	},
+	fancybox_media: {
+	    deps: ['fancybox']
+	}
+   },
     paths: {
 	jquery: 'lib/jquery-min',
 	jquery_cookie: 'lib/jquery.cookie',
@@ -34,11 +51,19 @@ require.config({
 	templates: '../templates',
 	backbone_subroute: 'lib/backbone.subroute.min',
 	tagcloud: 'lib/jquery.tagcloud',
+	fancybox: 'lib/jquery.fancybox.pack',
+	fancybox_media: 'lib/jquery.fancybox-media',
+	fancybox_buttons: 'lib/jquery.fancybox-buttons',
+	jquery_mousewheel: 'lib/jquery.mousewheel.pack',
 	textext: 'lib/textext/textext.core',
-	textext_ajax: 'lib/textext/textext.plugin.ajax',
 	textext_tags: 'lib/textext/textext.plugin.tags',
+	textext_ajax: 'lib/textext/textext.plugin.ajax',
+	textext_filter: 'lib/textext/textext.plugin.filter',
+	textext_autocomplete: 'lib/textext/textext.plugin.autocomplete',
         json: 'lib/require/json',
-        text: 'lib/require/text',	
+        text: 'lib/require/text',
+	fileupload_iframe_transport: 'lib/jquery.iframe-transport',
+	fileupload: 'lib/jquery.fileupload',
     },
     waitSeconds: 200
 });
@@ -54,6 +79,5 @@ require([
 	    }
 	    return oldSync(method, model, options);
 	}
-	
 	App.initialize();
 });

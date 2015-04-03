@@ -1,0 +1,52 @@
+{% load i18n %}
+<div class="pagination-pages">
+<%
+// laço percorre páginas para montar paginador
+for (var page = 1; page <= totalPages; page++) { %>
+   <div><%
+  // se for pagina atual
+  if (((limit + offset - 1) /itensPerPage) === page) {
+    var nextPage = page + 1,
+    backPage = page - 1,
+    nextHtml = '',
+    backHtml = '',
+    url = (url[url.length -1] === '/') ?  url.substr(0, url.length -1): url;  // remove '/' do final, se houver	 
+
+    // se proxima pagina menor que total, escreve link de next
+    if (nextPage <= totalPages) {
+      var nextLimit = ((page + 1) * itensPerPage) - itensPerPage + 1,
+      nextOffset = itensPerPage,		       
+      urlNext = url + "/limit/" + nextLimit + "/" + nextOffset;
+		 
+      nextHtml = '<a class="next" href="' + urlNext + '">{% trans "next" %}</a>';
+    } else {
+      nextHtml = '';
+    }	       
+    if (backPage > 0) {
+      var backLimit = ((page - 1) * itensPerPage) - itensPerPage + 1,
+      backOffset = itensPerPage,		       
+      urlBack = url + "/limit/" + backLimit + "/" + backOffset;
+      backHtml = '<a class="back" href="' + urlBack + '">{% trans "back" %}</a>';
+    } else {
+      backHtml = '';
+    }%>
+     <strong><%= page %></strong>
+     <%
+  // se for outra página que não a atual
+  } else { %>
+     <a href="<%= url %>/limit/<%= (page * itensPerPage) - itensPerPage + 1 %>/<%= itensPerPage  %>"><%= page %></a>
+     <% } %>
+   </div>
+   <% } %>
+</div>
+<div class="pagination-buttons">
+  <div class="back" class="nav">
+     <h3><%= backHtml %></h3>
+  </div>
+  <div>
+  {% trans "total:" %} <%= totalMedia %>
+  </div>
+   <div class="next" class="nav">
+     <h3><%= nextHtml %></h3>
+   </div>
+</div>

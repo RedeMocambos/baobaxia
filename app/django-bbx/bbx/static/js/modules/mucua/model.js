@@ -16,10 +16,10 @@ define([
 	 */
 	getImage: function(url, callback, defaultImageSrc, width, height) {
 	    var width = width || 150,
-	    height = height || 150,
-	    defaultImageSrc = defaultImageSrc || '/images/mucua-default.png',
-	    media = new MediaModel([], {url: url});
-	    
+		height = height || 150,
+		defaultImageSrc = defaultImageSrc || '/images/mucua-default.png',
+		media = new MediaModel([], {url: url});
+
 	    media.fetch({
 		success: function() {
 		    var imageSrc = defaultImageSrc;
