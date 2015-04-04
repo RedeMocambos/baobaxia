@@ -21,6 +21,9 @@ from tag.models import Tag
 from bbx.settings import REPOSITORY_DIR, DEFAULT_MUCUA
 from bbx.utils import logger
 from repository.tasks import git_annex_get
+from repository.models import git_annex_list_tags, git_annex_add_tag,
+from repository.models import git_annex_remove_tag
+
 
 
 try:
@@ -312,6 +315,10 @@ def start_post_save_policies(instance, **kwargs):
     # disponibilidade da relaçao com a tag.
 
     tags = instance.get_tags()
+    # Before inspecting the policies, synchronize tags on media.
+    # Git-annex tags are *always* represented with the originating mucua, e.g.
+    # as "abdias:livros" for media tagged as books on mucua abdias.
+
     if tags.all():
         for tag in tags.all():
             try:
