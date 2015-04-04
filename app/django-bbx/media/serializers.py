@@ -176,7 +176,22 @@ def create_objects_from_files(repository=get_default_repository().name):
                  # 2) If tags from other mucuas have been deleted (are missing in
                  # the git_annex metadata tags), remove them from this media.
                  # media = serializer.object
-                 # tags = git_annex_list_tags(media)
+                 tags_on_media = set(git_annex_list_tags(media))
+                 existing_tags =set( 
+                     "{0}:{1}".format(t.namespace, t.name) for t in
+                     media.get_tags()
+                 )
+                 # Add new tags to media
+                 for t in tags_on_media - existing_tags:
+                     # TODO: Do your thing - add new tag
+                     pass
+
+                 # Remove tags that were removed on remote media
+                 for t in existing_tags - tags_on_media:
+                     # TODO: Remove tag
+                     # XXX: Ignore tags from local mucua?
+                     pass
+
                  # TODO: Well, we need to do something like this, but probably we
                  # want to do it inside the serializer.
                  print media, git_annex_list_tags(media)
