@@ -12,7 +12,7 @@ from django.core.management.base import CommandError
 from django.core.exceptions import ValidationError
 
 from media.models import Media
-from Tag.models import Tag
+from tag.models import Tag
 from repository.models import get_latest_media, get_default_repository, Repository
 from repository.models import git_annex_list_tags, git_annex_add_tag
 from repository.models import git_annex_remove_tag
@@ -180,7 +180,7 @@ def create_objects_from_files(repository=get_default_repository().name):
                 # the git_annex metadata tags), remove them from this media.
                 # media = serializer.object
                 tags_on_media = set(git_annex_list_tags(media))
-                existing_tags =set(str(t) for t in media.get_tags())
+                existing_tags =set(str(t) for t in media.tags.all())
                 # Add new tags to media
                 for t in tags_on_media - existing_tags:
                     # Add tag - search for existing, if none found create new tag.

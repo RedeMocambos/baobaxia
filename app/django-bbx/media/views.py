@@ -314,7 +314,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                 media.tags.add(tag)
             # Synchronize tags
             # First, add new ones as metadata on files.
-            tags = map(str, media.get_tags())
+            tags = map(str, media.tags.all())
             existing_tags = git_annex_list_tags(media)
             for t in tags:
                 if t not in existing_tags:
@@ -396,6 +396,20 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                     tag.save()
 
                 media.tags.add(tag)
+
+            # Synchronize tags
+            # First, add new ones as metadata on files.
+            tags = map(str, media.tags.all())
+            existing_tags = git_annex_list_tags(media)
+            for t in tags:
+                if t not in existing_tags:
+                    git_annex_add_tag(media, t)
+            # Then, *remove* tags that are no longer present. 
+            # Only remove tags set with present namespace!
+            for t in existing_tags:
+                if ':' in t and t.split(':')[0] == mucua.description:
+                    if not t in tags:
+                        git_annex_remove_tag(media, t)
 
             media.save()  # salva de novo para chamar o post_save
             serializer = MediaSerializer(media)
