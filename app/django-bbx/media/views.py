@@ -23,6 +23,8 @@ from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
 from bbx.utils import logger
 from mucua.models import Mucua
 from repository.models import Repository
+from repository.models import git_annex_list_tags, git_annex_add_tag
+from repository.models import git_annex_remove_tag
 
 redirect_base_url = "/api/"  # TODO: tirar / mover
 
@@ -297,18 +299,32 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             tags = request.DATA['tags'].split(',')
             media.tags.clear()
             for tag in tags:
-                if tag:
-                    try:
-                        tag = tag.strip()
-                        tag = Tag.objects.get(name=tag)
-                    except Tag.DoesNotExist:
-                        tag = Tag.objects.create(name=tag)
-                        # TODO: case or proximity check to avoid spelling
-                        # errors? Or do people handle this by manual merging &
-                        # deletion of tags?
-                        tag.save()
+                if not tag:
+                    continue
+                try:
+                    tag = tag.strip()
+                    tag = Tag.objects.get(name=tag,
+                                          namespace=mucua.description)
+                except Tag.DoesNotExist:
+                    tag = Tag.objects.create(name=tag,
+                                             namespace=mucua.description)
+                    # TODO: Handle namespaces!
+                    tag.save()
 
-                    media.tags.add(tag)
+                media.tags.add(tag)
+            # Synchronize tags
+            # First, add new ones as metadata on files.
+            tags = map(str, media.get_tags())
+            existing_tags = git_annex_list_tags(media)
+            for t in tags:
+                if t not in existing_tags:
+                    git_annex_add_tag(media, t)
+            # Then, *remove* tags that are no longer present. 
+            # Only remove tags set with present namespace!
+            for t in existing_tags:
+                if ':' in t and t.split(':')[0] == mucua.description:
+                    if not t in tags:
+                        git_annex_remove_tag(media, t)
 
             return Response(_("updated media - OK"),
                             status=status.HTTP_201_CREATED)
