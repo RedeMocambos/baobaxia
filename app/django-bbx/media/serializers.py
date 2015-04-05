@@ -12,7 +12,10 @@ from django.core.management.base import CommandError
 from django.core.exceptions import ValidationError
 
 from media.models import Media
+from Tag.models import Tag
 from repository.models import get_latest_media, get_default_repository, Repository
+from repository.models import git_annex_list_tags, git_annex_add_tag
+from repository.models import git_annex_remove_tag
 
 from bbx.settings import REPOSITORY_DIR
 from bbx.utils import dumpclean
@@ -169,32 +172,44 @@ def create_objects_from_files(repository=get_default_repository().name):
                     serializer.object.save()
                     logger.info(u"%s" % _('New media created'))
 
-                 # TODO: Synchronize/update tags.  
-                 #
-                 # 1) Add all tags found in the
-                 # git-annex metadata and not already present on the media.
-                 # 2) If tags from other mucuas have been deleted (are missing in
-                 # the git_annex metadata tags), remove them from this media.
-                 # media = serializer.object
-                 tags_on_media = set(git_annex_list_tags(media))
-                 existing_tags =set( 
-                     "{0}:{1}".format(t.namespace, t.name) for t in
-                     media.get_tags()
-                 )
-                 # Add new tags to media
-                 for t in tags_on_media - existing_tags:
-                     # TODO: Do your thing - add new tag
-                     pass
+                # TODO: Synchronize/update tags.  
+                #
+                # 1) Add all tags found in the
+                # git-annex metadata and not already present on the media.
+                # 2) If tags from other mucuas have been deleted (are missing in
+                # the git_annex metadata tags), remove them from this media.
+                # media = serializer.object
+                tags_on_media = set(git_annex_list_tags(media))
+                existing_tags =set(str(t) for t in media.get_tags())
+                # Add new tags to media
+                for t in tags_on_media - existing_tags:
+                    # Add tag - search for existing, if none found create new tag.
+                    namespace = ''
+                    if ':' in t:
+                        namespace, name = t.split(':')
+                    else:
+                        name = t
+                    try: 
+                        tag = Tag.objects.get(name=name, namespace=namespace)
+                    except Tag.DoesNotExist:
+                        tag = Tag(name=name, namespace=namespace)
+                        tag.save()
+                    media.tags.add(tag)
 
-                 # Remove tags that were removed on remote media
-                 for t in existing_tags - tags_on_media:
-                     # TODO: Remove tag
-                     # XXX: Ignore tags from local mucua?
-                     pass
+                # Remove tags that were removed on remote media
+                for t in existing_tags - tags_on_media:
+                    namespace = ''
+                    if ':' in t:
+                        namespace, name = t.split(':')
+                    else:
+                        name = t
+                    tag = Tag.objects.get(name=name, namespace=namespace)
+                    media.tags.remove(tag) 
+             
 
-                 # TODO: Well, we need to do something like this, but probably we
-                 # want to do it inside the serializer.
-                 print media, git_annex_list_tags(media)
+                # TODO: Well, we need to do something like this, but probably we
+                # want to do it inside the serializer.
+                print media, git_annex_list_tags(media)
 
     except CommandError:
         pass
