@@ -14,7 +14,7 @@ LOG_DIR='log/'
 PACK_DIR='/root/baobaxia'
 #PACK_FILE='pip_wheel_20140606.tbz'
 BBX_LOCAL_REPO='/root/baobaxia'
-BBX_REMOTE_REPO='http://github.com/RedeMocambos/baobaxia'
+BBX_REMOTE_REPO='https://github.com/RedeMocambos/baobaxia'
 
 create_user() {
     USERNAME=$1
