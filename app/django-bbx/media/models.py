@@ -313,9 +313,6 @@ def start_post_save_policies(instance, **kwargs):
     # disponibilidade da relaçao com a tag.
 
     tags = instance.get_tags()
-    # Before inspecting the policies, synchronize tags on media.
-    # Git-annex tags are *always* represented with the originating mucua, e.g.
-    # as "abdias:livros" for media tagged as books on mucua abdias.
 
     if tags.all():
         for tag in tags.all():
@@ -326,7 +323,7 @@ def start_post_save_policies(instance, **kwargs):
                         policy_module = "policy." + policy
                         module = import_module(policy_module)
                         result = getattr(module, policy)(instance)
-                        # TODO: I *assume* this is what is needed.
+                        
                         return result
             except TagPolicyDoesNotExist:
                 return []

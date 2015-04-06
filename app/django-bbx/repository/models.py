@@ -323,6 +323,8 @@ def git_annex_list_tags(media):
 
 def git_annex_add_tag(media, tag):
     u"""Adicionar uma etiqueta ao media."""
+    if tag.isspace() or not tag:
+        raise RuntimeError("Attempt to set empty tag!")
     cmd = 'git annex metadata -t {0} {1}'.format(tag, media.get_file_name())
     logger.debug(' '.join(['add_tag tag filepath:',
                            tag, get_file_path(media) + media.get_file_name()]))

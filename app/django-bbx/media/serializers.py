@@ -170,15 +170,15 @@ def create_objects_from_files(repository=get_default_repository().name):
                     print serializer.is_valid()
                     print serializer.errors
                     serializer.object.save()
+                    media = serializer.object
                     logger.info(u"%s" % _('New media created'))
 
-                # TODO: Synchronize/update tags.  
+                # Synchronize/update tags.  
                 #
-                # 1) Add all tags found in the
-                # git-annex metadata and not already present on the media.
+                # 1) Add all tags found in the git-annex metadata and not
+                # already present on the media.
                 # 2) If tags from other mucuas have been deleted (are missing in
                 # the git_annex metadata tags), remove them from this media.
-                # media = serializer.object
                 tags_on_media = set(git_annex_list_tags(media))
                 existing_tags =set(str(t) for t in media.tags.all())
                 # Add new tags to media
@@ -188,6 +188,9 @@ def create_objects_from_files(repository=get_default_repository().name):
                     if ':' in t:
                         namespace, name = t.split(':')
                     else:
+                        # TODO: This is for now, while people are upgrading. In
+                        # the end, we should not allow tags with blank
+                        # namespaces.
                         name = t
                     try: 
                         tag = Tag.objects.get(name=name, namespace=namespace)
@@ -206,10 +209,6 @@ def create_objects_from_files(repository=get_default_repository().name):
                     tag = Tag.objects.get(name=name, namespace=namespace)
                     media.tags.remove(tag) 
              
-
-                # TODO: Well, we need to do something like this, but probably we
-                # want to do it inside the serializer.
-                print media, git_annex_list_tags(media)
 
     except CommandError:
         pass
