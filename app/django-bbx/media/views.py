@@ -31,7 +31,7 @@ redirect_base_url = "/api/"  # TODO: tirar / mover
 
 # Utility function for adding tags and synchronizing to git-annex.
 # TODO: Move to separate library, e.g. "util.py", when refactoring.
-def add_and_synchronize_tags(media, tags):
+def add_and_synchronize_tags(media, tags, mucua):
     """
     Add tags to media, synchronize with git-annex repository.
     """
@@ -333,7 +333,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
         if media.id:
             tags = request.DATA['tags'].split(',')
             media.tags.clear()
-            add_and_synchronize_tags(media, tags)
+            add_and_synchronize_tags(media, tags, mucua)
             
             return Response(_("updated media - OK"),
                             status=status.HTTP_201_CREATED)
@@ -394,7 +394,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
         if media.id:
             # get tags by list or separated by ','
             tags = request.DATA['tags'].split(',')
-            add_and_synchronize_tags(media, tags)
+            add_and_synchronize_tags(media, tags, mucua)
 
             media.save()  # salva de novo para chamar o post_save
             serializer = MediaSerializer(media)
