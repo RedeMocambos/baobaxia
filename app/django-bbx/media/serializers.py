@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-                                                                                                                                                           
+# -*- coding: utf-8 -*-
 import os
 import logging
 import subprocess
@@ -12,7 +12,11 @@ from django.core.management.base import CommandError
 from django.core.exceptions import ValidationError
 
 from media.models import Media
+from tag.models import Tag
 from repository.models import get_latest_media, get_default_repository, Repository
+from repository.models import git_annex_list_tags, git_annex_add_tag
+from repository.models import git_annex_remove_tag
+
 from bbx.settings import REPOSITORY_DIR
 from bbx.utils import dumpclean
 
@@ -64,7 +68,7 @@ class MediaSerializer(serializers.ModelSerializer):
 
         for field_name, field in self.fields.items():
             field.initialize(parent=self, field_name=field_name)
-            if(field_name == 'media_file'):
+            if field_name == 'media_file':
                 # field_name = 'dataUri'
                 field = serializers.CharField()
                 try:
@@ -153,21 +157,58 @@ def create_objects_from_files(repository=get_default_repository().name):
             if os.path.isfile(media_json_file_path):
                 media_json_file = open(media_json_file_path)
                 data = JSONParser().parse(media_json_file)
-                
+
                 try:
                     media = Media.objects.get(uuid=data["uuid"])
                     serializer = MediaSerializer(media, data=data, partial=True)
                     print serializer.is_valid()
                     print serializer.errors
-                    serializer.object.save()            
+                    serializer.object.save()
                     logger.info(u"%s" % _('This media already exist. Updated.'))
                 except Media.DoesNotExist:
                     serializer = MediaSerializer(data=data)
                     print serializer.is_valid()
                     print serializer.errors
                     serializer.object.save()
+                    media = serializer.object
                     logger.info(u"%s" % _('New media created'))
+
+                # Synchronize/update tags.  
+                #
+                # 1) Add all tags found in the git-annex metadata and not
+                # already present on the media.
+                # 2) If tags from other mucuas have been deleted (are missing in
+                # the git_annex metadata tags), remove them from this media.
+                tags_on_media = set(git_annex_list_tags(media))
+                existing_tags =set(str(t) for t in media.tags.all())
+                # Add new tags to media
+                for t in tags_on_media - existing_tags:
+                    # Add tag - search for existing, if none found create new tag.
+                    namespace = ''
+                    if ':' in t:
+                        namespace, name = t.split(':')
+                    else:
+                        # TODO: This is for now, while people are upgrading. In
+                        # the end, we should not allow tags with blank
+                        # namespaces.
+                        name = t
+                    try: 
+                        tag = Tag.objects.get(name=name, namespace=namespace)
+                    except Tag.DoesNotExist:
+                        tag = Tag(name=name, namespace=namespace)
+                        tag.save()
+                    media.tags.add(tag)
+
+                # Remove tags that were removed on remote media
+                for t in existing_tags - tags_on_media:
+                    namespace = ''
+                    if ':' in t:
+                        namespace, name = t.split(':')
+                    else:
+                        name = t
+                    tag = Tag.objects.get(name=name, namespace=namespace)
+                    media.tags.remove(tag) 
+             
 
     except CommandError:
         pass
-
