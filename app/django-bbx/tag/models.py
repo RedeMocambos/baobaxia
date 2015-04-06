@@ -42,9 +42,9 @@ def get_available_policies():
 
 
 class Tag(models.Model):
-    namespace = models.CharField(max_length=10, blank=True, default='')
+    namespace = models.CharField(max_length=60, blank=True, default='')
     note = models.TextField(max_length=300, blank=True)
-    name = models.CharField(max_length=26)
+    name = models.CharField(max_length=40)
     policies = MultiSelectField(max_length=100,
                                 choices=get_available_policies(),
                                 blank=True)
@@ -71,6 +71,9 @@ class Tag(models.Model):
         if self.name.find(':') > 0:
             args = self.name.split(':')
             self.namespace = args[0]
+        else:
+            from mucua.models import get_default_mucua
+            self.namespace = get_default_mucua().uuid + '-tag'
 
     def set_name(self):
         """

@@ -6,8 +6,9 @@ import subprocess
 from subprocess import PIPE
 import logging
 import exceptions
+import json
 
-
+import django.dispatch
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_save, pre_delete
@@ -24,6 +25,7 @@ from bbx.utils import logger
 #logger = logging.getLogger(__name__)
 repository_dir = settings.REPOSITORY_DIR
 
+media_saved = django.dispatch.Signal()
 
 # Connecting to Media signal
 @receiver(post_save, sender=Media)
@@ -39,11 +41,57 @@ def git_media_post_save(instance, **kwargs):
     fout.write(str(serializer.getJSON()))
     fout.close()
     git_add(mediadata, mediapath)
+
     git_commit(instance.get_file_name(),
                instance.author.username,
                instance.author.email,
                get_file_path(instance),
                os.path.join(mediapath, mediadata))
+
+    media_saved.send(instance)
+
+
+@receiver(media_saved)
+def tag_update(instance, **kwargs):
+
+    data = git_annex_metadata(instance.get_file_name(), get_file_path(instance))
+    metadata = json.loads(data)
+
+    tags_annex = []
+    tags_django = []
+
+    for item in metadata:
+        if item.endswith('-tag'):
+            for tag in metadata[item]:
+                tags_annex.append({ item : tag })
+
+    for tag in instance.tags.all():
+        tags_django.append({ tag.namespace : tag.name })
+        
+    print "Tags Annex: "
+    print tags_annex
+    print "Tags Django: "
+    print tags_django
+
+    tags_out = [x for x in tags_annex if x not in tags_django]
+    tags_in = [x for x in tags_django if x not in tags_annex]
+
+    print "TAGS OUT:"
+    print tags_out
+    print "TAGS IN:"
+    print tags_in
+    
+    for tag in tags_out:
+        print tag
+        git_annex_metadata_del(instance.get_file_name(),
+                               get_file_path(instance),
+                               tag.items()[0][0], tag.items()[0][1])
+    for tag in tags_in:
+        print tag
+        git_annex_metadata_add(instance.get_file_name(),
+                               get_file_path(instance),
+                               tag.items()[0][0], tag.items()[0][1])
+
 
 # Connecting to Media signal
 @receiver(pre_delete, sender=Media)
@@ -251,6 +299,28 @@ def git_annex_add(file_name, repository_path):
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
+def git_annex_metadata(file_name, repository_path):
+    u"""Visualiza os metadatas do arquivo."""
+    logger.info('git annex metadata ' + file_name + ' --json')
+    cmd = 'git annex metadata ' + file_name + ' --json'
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    return output
+
+
+def git_annex_metadata_add(file_name, repository_path, key, value):
+    u"""Adiciona um metadata ao arquivo."""
+    logger.info('git annex metadata ' + file_name)
+    cmd = 'git annex metadata ' + file_name + ' -s ' + key + '+=' + value
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+    pipe.wait()
+
+def git_annex_metadata_del(file_name, repository_path, key, value):
+    u"""Remove um metadata do arquivo."""
+    logger.info('git annex metadata ' + file_name)
+    cmd = 'git annex metadata ' + file_name + ' -s ' + key + '-=' + value
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+    pipe.wait()
 
 def git_annex_merge(repository_path):
     u"""Executa o *merge* do repositório, reunindo eventuais
