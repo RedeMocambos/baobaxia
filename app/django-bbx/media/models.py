@@ -21,8 +21,6 @@ from tag.models import Tag
 from bbx.settings import REPOSITORY_DIR, DEFAULT_MUCUA
 from bbx.utils import logger
 from repository.tasks import git_annex_get
-from repository.models import git_annex_list_tags, git_annex_add_tag
-from repository.models import git_annex_remove_tag
 
 
 
