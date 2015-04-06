@@ -208,7 +208,7 @@ cd $INSTALL_DIR
 # TODO: pegar futuramente um pacote offline
 
 echo ""
-read -p "De onde você vai baixar o repositório do baobáxia? (ex: http://github.com/RedeMocambos/baobaxia) - (1 - local / 2 - internet): " BBX_REPO_FROM
+read -p "De onde você vai baixar o repositório do baobáxia? (ex: https://github.com/RedeMocambos/baobaxia) - (1 - local / 2 - internet): " BBX_REPO_FROM
 case "$BBX_REPO_FROM" in
     2|internet) BBX_REPO_FROM=$BBX_REMOTE_REPO ;;
     1|local|*) BBX_REPO_FROM=$BBX_LOCAL_REPO ;;
