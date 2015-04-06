@@ -326,8 +326,9 @@ def git_annex_add_tag(media, tag):
     if tag.isspace() or not tag:
         raise RuntimeError("Attempt to set empty tag!")
     cmd = 'git annex metadata -t {0} {1}'.format(tag, media.get_file_name())
-    logger.debug(' '.join(['add_tag tag filepath:',
-                           tag, get_file_path(media) + media.get_file_name()]))
+    logger.debug(' '.join([u'add_tag tag filepath:',
+                           tag, unicode(get_file_path(media) +
+                                        media.get_file_name())]))
     pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media),
                             stdout=subprocess.PIPE)
     output, error = pipe.communicate()
@@ -338,7 +339,8 @@ def git_annex_remove_tag(media, tag):
     u"""Adicionar uma etiqueta ao media."""
     cmd = 'git annex metadata -u {0} {1}'.format(tag, media.get_file_name())
     logger.debug(' '.join(['add_tag tag filepath:',
-                           tag, get_file_path(media) + media.get_file_name()]))
+                           tag, unicode(get_file_path(media) +
+                                        media.get_file_name())]))
     pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media),
                             stdout=subprocess.PIPE)
     output, error = pipe.communicate()
