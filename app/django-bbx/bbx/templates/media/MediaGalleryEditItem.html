@@ -29,10 +29,7 @@
     <input type="hidden" name="note-<%= media.uuid %>" value="<%= media.note %>" class="<%= media.uuid %>" />
     <input type="hidden" name="media_file-<%= media.uuid %>" value="<%= media.media_file %>" class="<%= media.media_file %> <%= media.uuid %>" /><br/>
     
-    <input type="text" name="name-<%= media.uuid %>" value="<%= media.name %>" class="name <%= media.uuid %>" /><br/>
-    <span class="edit-link">
-      <a href="<% print(BBX.config.interfaceUrl + BBX.config.MYREPOSITORY + '/' + media.origin + '/media/' + media.uuid + '/edit') %>">{% trans "edit media" %}</a>
-    </span>
+    <input type="text" name="name-<%= media.uuid %>" value="<%= media.name %>" class="name <%= media.uuid %>" />
   </td>
 
   <!-- date -->
@@ -54,9 +51,17 @@
   <td class="tags">
     <textarea name="tags-<%= media.uuid %>" class="tags <%= media.uuid %>"><% _.each(media.tags, function(tagName) { %><%= tagName %> <% }); %></textarea>
   </td>
- 
+
+  <!-- note -->
+  <td class="note">
+    <textarea name="note-<%= media.uuid %>" class="note <%= media.uuid %>" %><%= media.note %></textarea>
+  </td>
+  
   <td>
-    <div class="save-media-item" id="uuid-<%= media.uuid %>"></div>
+    <a alt="{% trans 'Update media' %}"><div class="save-media-item" id="uuid-<%= media.uuid %>"></div></a>
+    <a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit" alt="{% trans 'Edit media' %}">
+      <div class="link-edit-media">&nbsp;</div>
+    </a>
   </td>
 </tr>
      

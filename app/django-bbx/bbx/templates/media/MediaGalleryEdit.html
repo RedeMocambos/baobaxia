@@ -8,12 +8,31 @@
     <table>
       <thead>
 	<tr>
-	  <td class="head-thumb"><span>{% trans "Thumbnail" %}</span></td>
-	  <td class="head-name"><span>{% trans "Name of media" %}</span></td>
-	  <td class="head-date"><span>{% trans "Date" %}</span></td>
-	  <td class="head-license"><span>{% trans "License" %}</span></td>
-	  <td class="head-tags"><span>{% trans "Tags" %}</span></td>
-	  <td class="head-update"><span>{% trans "Save" %}</span></td>
+	  <td colspan="20">
+	    <!-- selecionador de colunas de dados -->
+	    <div id="select-column"><span>{% trans "Select columns..." %}</span>
+	    </div>
+	    <div id="menu-colunas">
+	      <ul class="checkboxes">
+		<li class="thumb"><input type="checkbox" name="thumb">{% trans "thumbnail" %}</li>
+		<li class="name"><input type="checkbox" name="name">{% trans "name" %}</li>
+		<li class="date"><input type="checkbox" name="date">{% trans "date" %}</li>
+		<li class="license"><input type="checkbox" name="license">{% trans "license" %}</li>
+		<li class="tags"><input type="checkbox" name="tags">{% trans "tags" %}</li>
+		<li class="note"><input type="checkbox" name="note">{% trans "description " %}</li>
+	      </ul>
+	    </div>   
+	  </td>
+	</tr>
+	
+	<tr>
+	  <td class="thumb"><span>{% trans "Thumbnail" %}</span></td>
+	  <td class="name"><span>{% trans "Name of media" %}</span></td>
+	  <td class="date"><span>{% trans "Date" %}</span></td>
+	  <td class="license"><span>{% trans "License" %}</span></td>
+	  <td class="tags"><span>{% trans "Tags" %}</span></td>
+	  <td class="note"><span>{% trans "Note" %}</span></td>
+	  <td class="update"><span>{% trans "Save" %}</span></td>
 	</tr>
 	<tr>
 	  <td>
@@ -21,25 +40,30 @@
 	    <span>{% trans "(override particular changes)" %}</span>
 	  </td>
 	  
-	  <td>
+	  <td class="name">
 	    <input type="text" name="all-name" class="all-name"/>
 	  </td>
 	  
-	  <td>
-	    <input type="text" name="all-date" class="all-date" value=""/>
+	  <td class="date">
+	    <input type="text" name="all-date" class="all-date" />
 	  </td>
 	  
-	  <td>
-	    <select class="all-license" name="license">
+	  <td class="license">
+	    <select name="license" class="all-license">
 	      <% _.each(licenses, function(value, key) { %>
 	      <option value="<%= key %>"><%= value %></option>
 	      <% }) %>
 	    </select>
 	  </td>
 	  
-	  <td>
+	  <td class="note">
+	    <textarea name="all-note" class="all-note"></textarea>
+	  </td>
+
+	  <td class="tags">
 	    <textarea name="all-tags" class="all-tags"></textarea>
 	  </td>
+		  
 	  
 	  <td>
 	    <div class="save-all"></div>

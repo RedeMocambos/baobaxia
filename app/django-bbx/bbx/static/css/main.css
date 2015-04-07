@@ -145,7 +145,7 @@ a {text-decoration: none; color: #0E5E80}
 .media #content {background-color: #fff; border-radius: 5px;}
 .destaques {clear: both}
 #content .media {text-align: right; clear: both}
-.destaques h3.title {color: #fff; font-size: 26px; margin: 4px}
+.destaques h3.title {color: #88A7B5; font-size: 19px; margin: 4px}
 .media #buscador .media-display-type {display: none; }
 #destaques-mucua .content-div {float: none}
 
@@ -174,11 +174,15 @@ a {text-decoration: none; color: #0E5E80}
  */
 #medias-length {display: none; margin-top: 10px}
 .bbx #medias-length {display: block }
-.media-list #menu-colunas ul {display: none; cursor: pointer; border: 1px solid #ae9f6d; float: right; height: 50px; margin-top: -45px  }
-.media-list #menu-colunas li {position: relative; font-size: 10px; padding-top: 30px; z-index: 3; float: left; background-color:#F8F2E0; padding: 4px; text-align: left; list-style: none; width: 50px; height: 20px; }
+.media-list #menu-colunas ul {display: none; cursor: pointer; border: 1px solid #ae9f6d; float: right; height: 50px; margin-top: -50px; background-color:#F8F2E0 }
+.media-list #menu-colunas li {position: relative; font-size: 10px; z-index: 3; float: left; padding: 4px; text-align: left; list-style: none; height: 40px; width: 50px; background-color:#F8F2E0 }
 .media-list #menu-colunas li input {display: table}
-.media-list #menu-colunas:hover ul {display: block; }
+.media-list #menu-colunas .button {float: right; width: 150px; cursor: pointer; margin-top: -50px }
+.media-list #menu-colunas div.button:hover + ul {display: block; }
+.media-list #menu-colunas ul:hover {display: block; }
 .media-list #menu-colunas h4 {font-weight: normal; font-size: 13px}
+.media-list #menu-colunas ul {background-color:#F8F2E0; margin-top: -35px}
+
 #content .media-list table {width: 100%; font-size: 12px; text-align: center}
 #content .media-list thead td {font-weight: bold; font-size: 15px; text-align: center !important }
 #content .media-list thead a {cursor: pointer }
@@ -269,8 +273,6 @@ td.status {font-weight: bold}
 .media #content {width: 70%; float: left; margin-left: 60px}
 #media-view .content-title {font-size: 18px;}
 #media-view .title-bold {font-size: 18px; font-weight: bold}
-
-#media-view #link-edit {background-image: url(../images/edit-media.png); width: 24px; height: 24px; float: right;}
 #media-view #media-title h3 { color:#197299; font-size: 20px}
 
 #media-view #inner-content {margin-right: 30px }
@@ -330,10 +332,11 @@ td.status {font-weight: bold}
 #mocambola-home #mocambola-profile h3,
 #mucua-home #mucua-profile h3 {color: #145B7A; font-size: 18px; float: left; padding-left: 8px}
 #mocambola-home #mocambola-profile img,
-#mucua-home #mucua-profile img {float: left; background: #1175a0}
+#mocambola-home {margin-top: 45px}
 #mocambola-home .actions {clear: both}
 #mocambola-home .actions h4.link a {color: #5EA933; font-size: 18px;}
 #mocambola-home .actions h4 .button {background: url('/images/add-content.png') no-repeat; width: 20px; height: 20px; display: inline-block}
+#mucua-home #mucua-profile img {float: left; background: #1175a0}
 
 /*
  * repository
@@ -404,7 +407,7 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media_gallery textarea#tags {width: 400px; font-size: 15px; resize: none }
 
 #media_gallery-edit {padding: 4px}
-#media-gallery-edit table {border-colapse: colapse}
+#media-gallery-edit table {border-colapse: colapse; width: 100%}
 #media-gallery-edit thead td {background-color: #eee}
 #media-gallery-edit thead td span {font-weight: bold; font-size: 13px}
 #media-gallery-edit thead td span.title {font-size: 15px}
@@ -412,10 +415,19 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media-gallery-edit select {font-size: 10px}
 #media-gallery-edit .edit-link {font-size: 10px; color:#999}
 #media-gallery-edit td {border-style: none; border-top: 1px solid #ccc; padding: 4px; margin: 2px; height: 115px; text-align: center }
-#media-gallery-edit td.head-thumb {width: 150px}
+#media-gallery-edit thead td.thumb {width: 150px}
 #media-gallery-edit .save-all {background-image: url('../images/save-all.png'); width: 27px; height: 25px; cursor: pointer}
-#media-gallery-edit .save-media-item {background-image: url('../images/save-pq.png'); width: 24px; height: 24px; cursor: pointer; }
+#media-gallery-edit .save-media-item {background-image: url('../images/save-pq.png'); width: 24px; height: 24px; cursor: pointer; display: inline-block; margin-right: 5px }
 #media-gallery-edit .save-media-item div {font-size: 10px; margin-top: 36px; float: left; z-index: 5; width: 150px; margin-left: -20px; }
+#media-gallery-edit .link-edit-media {background-color: #88A7B5; width: 28px; height: 28px; background-repeat: no-repeat; background-position: center; border-radius: 8px; margin-top: -2px }
+
+#media-gallery-edit thead td {height: 52px; padding: 4px}
+#media-gallery-edit #menu-colunas {float: right; height: 50px}
+#media-gallery-edit #menu-colunas ul {display: none}
+#media-gallery-edit #menu-colunas li {font-size: 10px; z-index: 3; text-align: left; list-style: none; display: inline-block }
+#media-gallery-edit #select-column {float: right; width: 100px; cursor: pointer}
+#media-gallery-edit #select-column:hover + #menu-colunas ul,
+#media-gallery-edit #menu-colunas:hover ul {display: block; float: right}
 
 /* form progress meter */
 .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
@@ -432,3 +444,5 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 .sobre-content h3 {color: #197299; margin-left: 40px}
 .sobre-content h4 {color: #197299; margin-left: 40px}
 
+/* gerais */
+.link-edit-media {background-image: url(../images/edit-media.png); width: 24px; height: 24px; float: right;}
