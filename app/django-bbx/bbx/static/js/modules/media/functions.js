@@ -321,7 +321,10 @@ define([
 	    
 	    $('th.note').hide();
 	    $('td.note').hide();
-	    
+	    $('th.tags').hide();
+	    $('td.tags').hide();
+
+	    // TODO: passar essa lista para uma userPreferences que será salva no cookie
 	    var active_columns = ['name', 'author', 'format', 'origin', 'date', 'license', 'type', 'num_copies', 'is_local', 'status'],
 		toggle_columns = function(column_name) {
 		    var el_name = '.' + column_name + ' input',
@@ -341,6 +344,9 @@ define([
 	    $('#menu-colunas input:checkbox').each(function() {
 		if (_.contains(active_columns, this.name)) {
 		    $(this).prop('checked', 'checked');
+		} else {
+		    $('td.' + this.name).hide();
+		    $('th.' + this.name).hide();
 		}
 		$(this).bind('click', function() {
 		    toggle_columns($(this).prop('name'));
@@ -968,6 +974,37 @@ define([
 		$('#media-gallery-edit tbody').append(_.template(MediaGalleryEditItemTpl, data));
 	    });
 
+	    // TODO: passar para user preferences
+	    var active_columns = ['thumb', 'name', 'date', 'license', 'tags'],
+		toggle_columns = function(column_name) {
+		    var el_name = '.' + column_name + ' input',
+			checked = $(el_name).prop('checked');
+		    // pega sempre o novo estado (o que acabou acabou de clicar)
+		    if (checked === true) {
+			$('td.all-' + column_name).show();
+			$('td.' + column_name).show();
+			$('th.' + column_name).show();
+		    } else {
+			$('td.all-' + column_name).show();
+			$('td.' + column_name).hide();
+			$('th.' + column_name).hide();
+		    }
+		}
+
+	    $('#menu-colunas input:checkbox').each(function() {
+		if (_.contains(active_columns, this.name)) {
+		    $(this).prop('checked', 'checked');
+		} else {
+		    $('td.all-' + this.name).hide();
+		    $('td.' + this.name).hide();
+		    $('th.' + this.name).hide();
+		}
+		
+		$(this).bind('click', function() {
+		    toggle_columns($(this).prop('name'));
+		});
+	    });	    
+	    
 	    // bind events filling
 	    $('.all-name').keyup(function() {
 		$('.name').val($('.all-name').val());

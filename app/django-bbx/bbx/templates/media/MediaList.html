@@ -1,5 +1,9 @@
 {% load i18n %}
-<div id="menu-colunas"><h4>{% trans "Select columns..." %}</h4>
+<!-- selecionador de colunas de dados -->
+<div id="menu-colunas">
+  <div class="button">
+    <h4>{% trans "Select columns..." %}</h4>
+  </div>
   <ul class="checkboxes">
     <li class="name"><input type="checkbox" name="name">{% trans "name" %}</li>
     <li class="author"><input type="checkbox" name="author">{% trans "author" %}</li>
@@ -12,9 +16,11 @@
     <li class="is_local"><input type="checkbox" name="is_local">{% trans "is local" %}</li>
     <li class="status"><input type="checkbox" name="status">{% trans "status" %}</li>
     <li class="note"><input type="checkbox" name="note">{% trans "description" %}</li>
+    <li class="tags"><input type="checkbox" name="tags">{% trans "tags" %}</li>
   </ul>
 </div>
 
+<!-- tabela de dados -->
 <div class="table-list">
 <table>
   <thead>
@@ -30,6 +36,7 @@
       <td class="is_local"><a>{% trans "is local?" %}<br/><div class="orderby_asc"></div></a></td>
       <td class="status"><a>{% trans "status" %}<br/><div class="orderby_asc"></div></a></td>
       <td class="note"><a>{% trans "description" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="tags"><a>{% trans "tags" %}<br/><div class="orderby_asc"></div></a></td>
     </tr>
   </thead>
   <tbody>
@@ -79,13 +86,22 @@
       </td>
       <td class="note">
 	<span><% print(BBXFunctions.truncate(media.note, 35, '...')); %></span>
-      </td>      
+      </td>
+      <td class="tags">
+	<span>
+	  <% _.each(media.tags, function(tagName) { %>
+	  <%= tagName %>&nbsp;
+	  <% }); %>
+	 </span>
+      </td>	    
     </tr>
     <% }) %>
   </tbody>
 </table>
 </div>
+
 <% if (_.isEmpty(medias)) { %>
+<!-- lista de dados vazia -->-
 <h4 class="message"><%= message %></h4>
 <% } %>
 
