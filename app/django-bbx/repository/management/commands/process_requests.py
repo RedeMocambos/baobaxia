@@ -74,7 +74,7 @@ class Command(BaseCommand):
                                                            os.path.basename(media.media_file.name))
                         logger.debug(async_result.info)
                         media.save()
-                except MediaDoesNotExist:
+                except Media.DoesNotExist:
                     request_list = [uuid for uuid in request_list if uuid != request_uuid]
                     logger.debug('Requested media not found')
             
