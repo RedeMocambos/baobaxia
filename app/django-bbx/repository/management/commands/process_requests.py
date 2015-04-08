@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 
 from repository.tasks import git_annex_get
 from repository.models import git_remote_get_list, git_annex_drop, git_add, git_rm
-from media.models import Media, MediaDoesNotExist, get_file_path
+from media.models import Media, get_file_path
 from bbx.settings import REPOSITORY_DIR
 from bbx.utils import logger
 
@@ -74,7 +74,5 @@ class Command(BaseCommand):
                                                            os.path.basename(media.media_file.name))
                         logger.debug(async_result.info)
                         media.save()
-                except MediaDoesNotExist:
-                    request_list = [uuid for uuid in request_list if uuid != request_uuid]
-                    logger.debug('Requested media not found')
-            
+                except Media.DoesNotExist:
+                    logger.debug('Requested media not found: {0}'.format(request_uuid))
