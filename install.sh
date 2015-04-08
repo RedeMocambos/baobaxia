@@ -14,7 +14,7 @@ LOG_DIR='log/'
 PACK_DIR='/root/baobaxia'
 #PACK_FILE='pip_wheel_20140606.tbz'
 BBX_LOCAL_REPO='/root/baobaxia'
-BBX_REMOTE_REPO='http://github.com/RedeMocambos/baobaxia'
+BBX_REMOTE_REPO='https://github.com/RedeMocambos/baobaxia'
 
 create_user() {
     USERNAME=$1
@@ -31,6 +31,7 @@ create_user() {
 # PRE: pkgs:
 
 # dependencies: se for deb pkg, tirar
+apt-get update
 apt-get install git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext
 
 
@@ -207,7 +208,7 @@ cd $INSTALL_DIR
 # TODO: pegar futuramente um pacote offline
 
 echo ""
-read -p "De onde você vai baixar o repositório do baobáxia? (ex: http://github.com/RedeMocambos/baobaxia) - (1 - local / 2 - internet): " BBX_REPO_FROM
+read -p "De onde você vai baixar o repositório do baobáxia? (ex: https://github.com/RedeMocambos/baobaxia) - (1 - local / 2 - internet): " BBX_REPO_FROM
 case "$BBX_REPO_FROM" in
     2|internet) BBX_REPO_FROM=$BBX_REMOTE_REPO ;;
     1|local|*) BBX_REPO_FROM=$BBX_LOCAL_REPO ;;
@@ -250,7 +251,7 @@ cd $INSTALL_DIR;
 pip install argparse;
 pip install django==1.6.7;
 pip install django-extensions;
-pip install djangorestframework=2.4.4;
+pip install djangorestframework==2.4.4;
 pip install gunicorn;
 pip install six;
 pip install Pillow;
@@ -284,8 +285,8 @@ python manage.py collectstatic --noinput
 
 echo ""
 echo "usuário do login número 1:"
-echo "username: zumbi@$MUCUA.mocambos.net"
-echo "senha: $USER_BBX_PASSWD"
+echo "username: exu@dpadua.mocambos.net"
+echo "senha: livre"
 
 echo ""
 echo "Configurando o gunicorn ..."
@@ -329,19 +330,19 @@ cp $INSTALL_DIR/baobaxia/conf/supervisor/bbx /etc/supervisor/conf.d/bbx.conf
 sed -i "s:_domain_:${BBX_DIR_NAME}:g" /etc/supervisor/conf.d/bbx.conf
 
 echo ""
-echo "Instalando script para atualizar o BBX (update-templates) ..."
-cp $INSTALL_DIR/baobaxia/bin/update-templates.sh.example $INSTALL_DIR/bin/update-templates.sh
-chmod +x $INSTALL_DIR/bin/process-requests.sh
+echo "Ativando supervisor..."
+service supervisor restart
 
 echo ""
-echo "Atualizando os templates ..."
-/srv/bbx/bin/update-templates.sh
+echo "Instalando script para atualizar o BBX (update-templates) ..."
+cp $INSTALL_DIR/baobaxia/bin/update-templates.sh.example $INSTALL_DIR/bin/update-templates.sh
+chmod +x $INSTALL_DIR/bin/update-templates.sh
 
 echo ""
 echo "Ativando o Baobáxia ..."
-supervisorctl reload
 supervisorctl restart bbx
 supervisorctl restart celeryd
+
 
 echo ""
 echo "Instalando script de sincronização (bbx-cron) ..."
@@ -352,7 +353,34 @@ echo ""
 echo "Instalando script para pedidos de arquivos (process-requests) ..."
 cp $INSTALL_DIR/baobaxia/bin/process-requests.sh.example $INSTALL_DIR/bin/process-requests.sh
 chmod +x $INSTALL_DIR/bin/process-requests.sh
+echo ""
 
-echo "..."
-echo "Instalação completa!"
+echo ""
+echo " >>> Instalação completa! <<< "
+echo ""
+echo "Lembre-se de entrar como usuario exu e pedir pra abrir os caminhos, lançando este script..."
+echo "exu@"$MUCUA': /srv/bbx/bin/update-templates.sh'
+
+echo ""
+echo "Pode acessar essa mucua por esses endereços (depende da sua rede local):"
+echo " http://"$MUCUA
+echo " http://127.0.0.1"
+echo " http://"`hostname -I`
+echo ""
+
+echo ""
+
+echo "          /                                                                          "
+echo "     _ \ /                                                                           "
+echo "      \_| |/__                                                                       "
+echo " <==    | /  ()                                                                      "
+echo " ==>    |/   NPDD/Rede Mocambos                                                      "
+echo " nnn    |                                                                            "
+echo "        |    http://wiki.mocambos.net/wiki/NPDD                                      "
+echo "        |    'Vamos fazer um mundo digital mais do nosso jeito...'                   "
+echo "______/~~~\________________________________________________________________ _ _ _    "
+echo "       /                                                                             "
+echo "      BAOBÁXIA                                 Software LIVRE! GPLv3                 "
+
+echo ""
 

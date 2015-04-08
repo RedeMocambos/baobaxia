@@ -1,4 +1,27 @@
 {% load i18n %}
+<!-- selecionador de colunas de dados -->
+<div id="menu-colunas">
+  <div class="button">
+    <h4>{% trans "Select columns..." %}</h4>
+  </div>
+  <ul class="checkboxes">
+    <li class="name"><input type="checkbox" name="name">{% trans "name" %}</li>
+    <li class="author"><input type="checkbox" name="author">{% trans "author" %}</li>
+    <li class="format"><input type="checkbox" name="format">{% trans "format" %}</li>
+    <li class="origin"><input type="checkbox" name="origin">{% trans "origin" %}</li>
+    <li class="date"><input type="checkbox" name="date">{% trans "date" %}</li>
+    <li class="license"><input type="checkbox" name="license">{% trans "license" %}</li>
+    <li class="type"><input type="checkbox" name="type">{% trans "type" %}</li>
+    <li class="num_copies"><input type="checkbox" name="num_copies">{% trans "copies" %}</li>
+    <li class="is_local"><input type="checkbox" name="is_local">{% trans "is local" %}</li>
+    <li class="status"><input type="checkbox" name="status">{% trans "status" %}</li>
+    <li class="note"><input type="checkbox" name="note">{% trans "description" %}</li>
+    <li class="tags"><input type="checkbox" name="tags">{% trans "tags" %}</li>
+  </ul>
+</div>
+
+<!-- tabela de dados -->
+<div class="table-list">
 <table>
   <thead>
     <tr>
@@ -12,6 +35,8 @@
       <td class="num_copies"><a>{% trans "copies" %}<br/><div class="orderby_asc"></div></a></td>
       <td class="is_local"><a>{% trans "is local?" %}<br/><div class="orderby_asc"></div></a></td>
       <td class="status"><a>{% trans "status" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="note"><a>{% trans "description" %}<br/><div class="orderby_asc"></div></a></td>
+      <td class="tags"><a>{% trans "tags" %}<br/><div class="orderby_asc"></div></a></td>
     </tr>
   </thead>
   <tbody>
@@ -59,10 +84,26 @@
 	<span class="not_local">{% trans "remote" %}</span>
 	<% } %>
       </td>
+      <td class="note">
+	<span><% print(BBXFunctions.truncate(media.note, 35, '...')); %></span>
+      </td>
+      <td class="tags">
+	<span>
+	  <% _.each(media.tags, function(tagName) { %>
+	  <%= tagName %>&nbsp;
+	  <% }); %>
+	 </span>
+      </td>	    
     </tr>
     <% }) %>
   </tbody>
 </table>
+</div>
+
 <% if (_.isEmpty(medias)) { %>
+<!-- lista de dados vazia -->-
 <h4 class="message"><%= message %></h4>
 <% } %>
+
+
+</div>

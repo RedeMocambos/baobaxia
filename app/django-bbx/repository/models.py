@@ -33,7 +33,7 @@ def git_media_post_save(instance, **kwargs):
     from media.serializers import MediaFileSerializer
     git_annex_add(instance.get_file_name(), get_file_path(instance))
     serializer = MediaFileSerializer(instance)
-    mediapath = get_file_path(instance)+'/'
+    mediapath = get_file_path(instance) + '/'
     mediadata = os.path.splitext(instance.get_file_name())[0] + '.json'
     fout = open(mediapath + mediadata, 'w')
     fout.write(str(serializer.getJSON()))
@@ -64,12 +64,14 @@ def git_media_post_delete(instance, **kwargs):
                    instance.get_repository())
 
 
+
 def get_default_repository():
     return Repository.objects.get(name=DEFAULT_REPOSITORY)
 
 
 def get_available_repositories():
     return Repository.objects.all()
+
 
 def get_latest_media(repository=DEFAULT_REPOSITORY):
     u"""Retorna uma lista de caminhos dos novos medias no repositório,
@@ -95,7 +97,7 @@ def get_latest_media(repository=DEFAULT_REPOSITORY):
         output, error = p2.communicate()
         last_sync = output.rstrip()
         #  Este é um exemplo do comando para pegar os ultimos medias desde
-        #  last_sync 
+        #  last_sync
         #    cmd = 'git diff --pretty="format:" --name-only ' +
         #    last_sync + 'HEAD' \ + '| sort | uniq | grep json | grep -v
         #    mocambolas'
@@ -218,7 +220,7 @@ def git_commit(file_title, author_name, author_email, repository_path, file_path
 
 
 def git_push(repository_path):
-    u"""Executa o *push* do repositório, atualizando o repositório de origem."""
+    u"""Executa o *push* do repositório; atualizar o repositório de origem."""
     logger.info('git push ')
     cmd = 'git push '
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
@@ -283,6 +285,7 @@ def git_annex_copy_to(repository_path):
 #     output, error = pipe.communicate()
 #     return output
 
+
 def git_annex_where_is(media):
     u"""Mostra quais mucuas tem copia do media."""
     cmd = 'git annex whereis ' + media.get_file_name() + ' --json'
@@ -301,24 +304,71 @@ def git_annex_drop(media):
     return output
 
 
+def git_annex_list_tags(media):
+    u"""Enumerar as etiquetas do media."""
+    cmd = 'git annex metadata ' + media.get_file_name()
+    logger.debug('list_tags filepath: ' +
+                 get_file_path(media) + media.get_file_name())
+    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media),
+                            stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    tags = []
+    for line in output.split('\n'):
+        split_line = line.strip().split('=')
+        if len(split_line) > 1 and split_line[0] == 'tag':
+            tag = "".join(split_line[1:])  # Allow for '=' in the tag itself
+            tags.append(tag)
+    return tags
+
+
+def git_annex_add_tag(media, tag):
+    u"""Adicionar uma etiqueta ao media."""
+    if tag.isspace() or not tag:
+        raise RuntimeError("Attempt to set empty tag!")
+    cmd = 'git annex metadata -t {0} {1}'.format(tag, media.get_file_name())
+    logger.debug(' '.join([u'add_tag tag filepath:',
+                           tag, unicode(get_file_path(media) +
+                                        media.get_file_name())]))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media),
+                            stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    return 'ok' in output.split('\n')
+
+
+def git_annex_remove_tag(media, tag):
+    u"""Adicionar uma etiqueta ao media."""
+    cmd = 'git annex metadata -u {0} {1}'.format(tag, media.get_file_name())
+    logger.debug(' '.join(['add_tag tag filepath:',
+                           tag, unicode(get_file_path(media) +
+                                        media.get_file_name())]))
+    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media),
+                            stdout=subprocess.PIPE)
+    output, error = pipe.communicate()
+    return 'ok' in output.split('\n')
+
+
 def git_annex_group_add(repository_path, mucua, group):
     u"""Adiciona a Mucua no grupo."""
     cmd = 'git annex group ' + mucua + ' ' + group
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path,
+                            stdout=subprocess.PIPE)
     output, error = pipe.communicate()
     logger.debug(error)
     logger.debug(output)
     return output
 
+
 def git_annex_group_del(repository_path, mucua, group):
     u"""Remove a Mucua do grupo."""
     cmd = 'git annex ungroup ' + mucua + ' ' + group
     logger.debug("Command: " + cmd)
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path,
+                            stdout=subprocess.PIPE)
     output, error = pipe.communicate()
     logger.debug(error)
     logger.debug(output)
     return output
+
 
 def git_annex_group_list(repository_path, group, mucua=None):
     u"""Lista todos os grupos ou de uma dada mucua"""
@@ -329,7 +379,8 @@ def git_annex_group_list(repository_path, group, mucua=None):
         for mucua in mucuas:
             cmd = 'git annex group ' + mucua.get_description()
             logger.debug("Command: " + cmd)
-            pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+            pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path,
+                                    stdout=subprocess.PIPE)
             output, error = pipe.communicate()
             logger.debug(error)
             logger.debug(output)
@@ -340,7 +391,8 @@ def git_annex_group_list(repository_path, group, mucua=None):
     else:
         cmd = 'git annex group ' + mucua.get_description()
         logger.debug("Command: " + cmd)
-        pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path, stdout=subprocess.PIPE)
+        pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path,
+                                stdout=subprocess.PIPE)
         output, error = pipe.communicate()
         logger.debug(error)
         logger.debug(output)
@@ -458,6 +510,7 @@ class Repository(models.Model):
 class GitAnnexCommandError(exceptions.Exception):
     def __init__(self, args=None):
         self.args = args
+
 
 class RepositoryDoesNotExists(exceptions.Exception):
     def __init__(self, args=None):

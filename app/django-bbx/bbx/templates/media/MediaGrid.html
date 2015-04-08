@@ -21,7 +21,7 @@
 	<% parseThumb(media, params); %>
 	</a>
       <% } else if (media.type == 'video') { %>
-      <a class="fancybox-button" rel="fancybox-button" data-fancybox-type="iframe" data-fancybox-group="galeria" href="<%= media.url %>" title="<%= media.note %>" id="<%= media.uuid %>">
+      <a class="fancybox-button" rel="fancybox-button" data-fancybox-type="iframe" data-fancybox-group="galeria" href="<%= media.url %>" title="<strong><%= media.name %></strong><br/> - <%= media.note %>" id="<%= media.uuid %>">
 	<video id="<%= media.uuid %>" preload="metadata" controls src="<%= media.url %>" />
       </a>
       <% } else if (media.type == 'audio') { %>
@@ -44,7 +44,7 @@
   <div class="title">
     <span>    
       <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
-	<% var strSize = 35; print(media.name.substring(0, strSize) + ((media.name.length > strSize) ? '...' : '')) %>
+	<% print(BBXFunctions.truncate(media.name, 35, '...')); %>
       </a>
     </span>
   </div>

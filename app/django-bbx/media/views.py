@@ -23,8 +23,45 @@ from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
 from bbx.utils import logger
 from mucua.models import Mucua
 from repository.models import Repository
+from repository.models import git_annex_list_tags, git_annex_add_tag
+from repository.models import git_annex_remove_tag
 
 redirect_base_url = "/api/"  # TODO: tirar / mover
+
+
+# Utility function for adding tags and synchronizing to git-annex.
+# TODO: Move to separate library, e.g. "util.py", when refactoring.
+def add_and_synchronize_tags(media, tags, mucua):
+    """
+    Add tags to media, synchronize with git-annex repository.
+    """
+    for tag in tags:
+        if not tag or tag.isspace():
+            continue
+        try:
+            tag = tag.strip()
+            tag = Tag.objects.get(name=tag,
+                                  namespace=mucua.description)
+        except Tag.DoesNotExist:
+            tag = Tag.objects.create(name=tag,
+                                     namespace=mucua.description)
+            # TODO: Handle namespaces!
+            tag.save()
+
+        media.tags.add(tag)
+    # Synchronize tags
+    # First, add new ones as metadata on files.
+    tags = map(str, media.tags.all())
+    existing_tags = git_annex_list_tags(media)
+    for t in tags:
+        if t not in existing_tags:
+            git_annex_add_tag(media, t)
+    # Then, *remove* tags that are no longer present. 
+    # Only remove tags set with present namespace!
+    for t in existing_tags:
+        if ':' in t and t.split(':')[0] == mucua.description:
+            if not t in tags:
+                git_annex_remove_tag(media, t)
 
 
 @api_view(['GET'])
@@ -296,20 +333,8 @@ def media_detail(request, repository, mucua, pk=None, format=None):
         if media.id:
             tags = request.DATA['tags'].split(',')
             media.tags.clear()
-            for tag in tags:
-                if tag:
-                    try:
-                        tag = tag.strip()
-                        tag = Tag.objects.get(name=tag)
-                    except Tag.DoesNotExist:
-                        tag = Tag.objects.create(name=tag)
-                        # TODO: case or proximity check to avoid spelling
-                        # errors? Or do people handle this by manual merging &
-                        # deletion of tags?
-                        tag.save()
-
-                    media.tags.add(tag)
-
+            add_and_synchronize_tags(media, tags, mucua)
+            
             return Response(_("updated media - OK"),
                             status=status.HTTP_201_CREATED)
         else:
@@ -369,20 +394,11 @@ def media_detail(request, repository, mucua, pk=None, format=None):
         if media.id:
             # get tags by list or separated by ','
             tags = request.DATA['tags'].split(',')
-            for tag_name in tags:
-                try:
-                    if tag_name.find(':') > 0:
-                        args = tag.split(':')
-                        tag_name = args[1]
-                    tag = Tag.objects.get(name=tag_name)
-                except Tag.DoesNotExist:
-                    tag = Tag.objects.create(name=tag_name)
-                    tag.save()
-
-                media.tags.add(tag)
+            add_and_synchronize_tags(media, tags, mucua)
 
             media.save()  # salva de novo para chamar o post_save
             serializer = MediaSerializer(media)
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(_("error while creating media"),

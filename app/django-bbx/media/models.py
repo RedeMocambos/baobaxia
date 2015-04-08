@@ -23,6 +23,7 @@ from bbx.utils import logger
 from repository.tasks import git_annex_get
 
 
+
 try:
     from django.utils.encoding import force_unicode  # NOQA
 except ImportError:
@@ -312,6 +313,7 @@ def start_post_save_policies(instance, **kwargs):
     # disponibilidade da relaçao com a tag.
 
     tags = instance.get_tags()
+
     if tags.all():
         for tag in tags.all():
             try:
@@ -321,7 +323,7 @@ def start_post_save_policies(instance, **kwargs):
                         policy_module = "policy." + policy
                         module = import_module(policy_module)
                         result = getattr(module, policy)(instance)
-                        # TODO: I *assume* this is what is needed.
+                        
                         return result
             except TagPolicyDoesNotExist:
                 return []
