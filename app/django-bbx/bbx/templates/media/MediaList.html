@@ -42,7 +42,7 @@
   <tbody>
     <% _.each(medias, function(media) { %>
     <tr class="media-line">
-      <td class="title">
+      <td class="name">
 	<a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
 	  <span><%= media.name %></span>
 	</a>
@@ -50,7 +50,7 @@
       <td class="author">
 	<span><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>"><%= media.author.split('@')[0] %></a></span>
       </td>
-      <td class="format_type">
+      <td class="format">
 	<span><%= media.format %></span>
       </td>
       <td class="origin">
