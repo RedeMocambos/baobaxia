@@ -333,7 +333,13 @@ def git_annex_metadata_del(file_name, repository_path, key, value):
 def git_annex_list_tags(media):
     u"""Enumerar as etiquetas do media."""
     metadata = git_annex_metadata(media.get_file_name(), get_file_path(media))
-    metadata = json.loads(metadata)
+    try:
+        metadata = json.loads(metadata)
+    except ValueError:
+        # Sometimes, the JSON metadata output on non-present media files is 
+        # malformed. Ignore these cases, but log.
+        logger.debug(u'Malformed JSON found on media: {0}'.format(media))
+        pass
     tags = []
     for item in metadata:
         if item.endswith('-tag'):

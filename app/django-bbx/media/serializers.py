@@ -185,7 +185,6 @@ def create_objects_from_files(repository=get_default_repository().name):
                 for t in tags_on_media - existing_tags:
                     # Add tag - search for existing, if none found create new tag.
                     namespace, name = t
-                    name = t
                     try: 
                         tag = Tag.objects.get(name=name, namespace=namespace)
                     except Tag.DoesNotExist:
