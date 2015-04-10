@@ -42,7 +42,7 @@ def get_available_policies():
 
 
 class Tag(models.Model):
-    namespace = models.CharField(max_length=10, blank=True, default='')
+    namespace = models.CharField(max_length=60, blank=True, default='')
     note = models.TextField(max_length=300, blank=True)
     name = models.CharField(max_length=26)
     policies = MultiSelectField(max_length=100,
