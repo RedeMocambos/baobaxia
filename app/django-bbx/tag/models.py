@@ -68,18 +68,14 @@ class Tag(models.Model):
 
     def set_namespace(self):
         u"""Imposta o namespace da etiqueta"""
+        if len(self.namespace) > 0:
+            return
         if self.name.find(':') > 0:
             args = self.name.split(':')
             self.namespace = args[0]
-
-    def set_name(self):
-        """
-        Sets tag's name. FIX
-
-        """
-        if self.name.find(':') > 0:
-            args = self.name.split(':')
-            self.name = args[1]
+        else:
+            from mucua.models import get_default_mucua
+            self.namespace = get_default_mucua().uuid + '-tag'
 
     def save(self, *args, **kwargs):
         """
@@ -88,7 +84,6 @@ class Tag(models.Model):
         """
 
         self.set_namespace()
-        self.set_name()
         super(Tag, self).save(*args, **kwargs)
 
     class Meta:

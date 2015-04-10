@@ -41,27 +41,27 @@ def add_and_synchronize_tags(media, tags, mucua):
         try:
             tag = tag.strip()
             tag = Tag.objects.get(name=tag,
-                                  namespace=mucua.description)
+                                  namespace__contains=mucua.uuid)
         except Tag.DoesNotExist:
-            tag = Tag.objects.create(name=tag,
-                                     namespace=mucua.description)
+            tag = Tag(name=tag)
             # TODO: Handle namespaces!
             tag.save()
 
         media.tags.add(tag)
     # Synchronize tags
     # First, add new ones as metadata on files.
-    tags = map(str, media.tags.all())
+    tags = media.tags.all()
     existing_tags = git_annex_list_tags(media)
-    for t in tags:
-        if t not in existing_tags:
-            git_annex_add_tag(media, t)
+    for t in media.tags.all():
+        if (t.namespace, t.name) not in existing_tags:
+            git_annex_add_tag(media, t.namespace, t.name)
     # Then, *remove* tags that are no longer present. 
     # Only remove tags set with present namespace!
-    for t in existing_tags:
-        if ':' in t and t.split(':')[0] == mucua.description:
-            if not t in tags:
-                git_annex_remove_tag(media, t)
+    for namespace, name in existing_tags:
+        if namespace.startswith(mucua.uuid)  and not (namespace, name) in [
+            (t.namespace, t.name) for t in tags
+        ]:
+            git_annex_remove_tag(media, namespace, name)
 
 
 @api_view(['GET'])
