@@ -2,6 +2,7 @@
 
 import re
 import os
+import json
 import subprocess
 from subprocess import PIPE
 import logging
@@ -332,6 +333,7 @@ def git_annex_metadata_del(file_name, repository_path, key, value):
 def git_annex_list_tags(media):
     u"""Enumerar as etiquetas do media."""
     metadata = git_annex_metadata(media.get_file_name(), get_file_path(media))
+    metadata = json.loads(metadata)
     tags = []
     for item in metadata:
         if item.endswith('-tag'):
@@ -348,7 +350,7 @@ def git_annex_add_tag(media, namespace, tag):
                            namespace, tag)
 
 
-def git_annex_remove_tag(media, tag, namespace):
+def git_annex_remove_tag(media, namespace, tag):
     u"""Apagar uma etiqueta do media."""
     git_annex_metadata_del(media.get_file_name(), get_file_path(media),
                            namespace, tag)
