@@ -34,7 +34,7 @@ class MediaFileSerializer(serializers.ModelSerializer):
         model = Media
         fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
                   'format', 'license', 'media_file', 'url', 'origin',
-                  'repository')
+                  'repository', 'last_modified')
         depth = 1
 
     def getJSON(self):
@@ -53,7 +53,8 @@ class MediaSerializer(serializers.ModelSerializer):
         model = Media
         fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
                   'format', 'license', 'media_file', 'url', 'origin',
-                  'repository', 'is_local', 'is_requested', 'num_copies', 'tags')
+                  'repository', 'is_local', 'is_requested', 'num_copies',
+                  'tags', 'last_modified')
         depth = 1
     
     def restore_fields(self, data, files):
