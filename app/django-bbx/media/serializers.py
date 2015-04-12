@@ -34,7 +34,7 @@ class MediaFileSerializer(serializers.ModelSerializer):
         model = Media
         fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
                   'format', 'license', 'media_file', 'url', 'origin',
-                  'repository')
+                  'repository', 'last_modified')
         depth = 1
 
     def getJSON(self):
@@ -53,7 +53,8 @@ class MediaSerializer(serializers.ModelSerializer):
         model = Media
         fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
                   'format', 'license', 'media_file', 'url', 'origin',
-                  'repository', 'is_local', 'is_requested', 'num_copies', 'tags')
+                  'repository', 'is_local', 'is_requested', 'num_copies',
+                  'tags', 'last_modified')
         depth = 1
     
     def restore_fields(self, data, files):
@@ -180,18 +181,11 @@ def create_objects_from_files(repository=get_default_repository().name):
                 # 2) If tags from other mucuas have been deleted (are missing in
                 # the git_annex metadata tags), remove them from this media.
                 tags_on_media = set(git_annex_list_tags(media))
-                existing_tags =set(str(t) for t in media.tags.all())
+                existing_tags = set((t.namespace, t.name) for t in media.tags.all())
                 # Add new tags to media
                 for t in tags_on_media - existing_tags:
                     # Add tag - search for existing, if none found create new tag.
-                    namespace = ''
-                    if ':' in t:
-                        namespace, name = t.split(':')
-                    else:
-                        # TODO: This is for now, while people are upgrading. In
-                        # the end, we should not allow tags with blank
-                        # namespaces.
-                        name = t
+                    namespace, name = t
                     try: 
                         tag = Tag.objects.get(name=name, namespace=namespace)
                     except Tag.DoesNotExist:
@@ -201,11 +195,7 @@ def create_objects_from_files(repository=get_default_repository().name):
 
                 # Remove tags that were removed on remote media
                 for t in existing_tags - tags_on_media:
-                    namespace = ''
-                    if ':' in t:
-                        namespace, name = t.split(':')
-                    else:
-                        name = t
+                    namespace, name = t 
                     tag = Tag.objects.get(name=name, namespace=namespace)
                     media.tags.remove(tag) 
              

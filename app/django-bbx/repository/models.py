@@ -2,6 +2,7 @@
 
 import re
 import os
+import json
 import subprocess
 from subprocess import PIPE
 import logging
@@ -304,47 +305,61 @@ def git_annex_drop(media):
     return output
 
 
-def git_annex_list_tags(media):
-    u"""Enumerar as etiquetas do media."""
-    cmd = 'git annex metadata ' + media.get_file_name()
-    logger.debug('list_tags filepath: ' +
-                 get_file_path(media) + media.get_file_name())
-    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media),
+def git_annex_metadata(file_name, repository_path):
+    u"""Visualiza os metadatas do arquivo."""
+    logger.info('git annex metadata ' + file_name + ' --json')
+    cmd = 'git annex metadata ' + file_name + ' --json'
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path,
                             stdout=subprocess.PIPE)
     output, error = pipe.communicate()
+    return output
+
+
+def git_annex_metadata_add(file_name, repository_path, key, value):
+    u"""Adiciona um metadata ao arquivo."""
+    logger.info('git annex metadata ' + file_name)
+    cmd = 'git annex metadata ' + file_name + ' -s ' + key + '+=' + value
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+    pipe.wait()
+
+def git_annex_metadata_del(file_name, repository_path, key, value):
+    u"""Remove um metadata do arquivo."""
+    logger.info('git annex metadata ' + file_name)
+    cmd = 'git annex metadata ' + file_name + ' -s ' + key + '-=' + value
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+    pipe.wait()
+
+                            
+def git_annex_list_tags(media):
+    u"""Enumerar as etiquetas do media."""
+    metadata = git_annex_metadata(media.get_file_name(), get_file_path(media))
+    try:
+        metadata = json.loads(metadata)
+    except ValueError:
+        # Sometimes, the JSON metadata output on non-present media files is 
+        # malformed. Ignore these cases, but log.
+        logger.debug(u'Malformed JSON found on media: {0}'.format(media))
+        pass
     tags = []
-    for line in output.split('\n'):
-        split_line = line.strip().split('=')
-        if len(split_line) > 1 and split_line[0] == 'tag':
-            tag = "".join(split_line[1:])  # Allow for '=' in the tag itself
-            tags.append(tag)
+    for item in metadata:
+        if item.endswith('-tag'):
+            for tag in metadata[item]:
+                tags.append((item, tag))
     return tags
 
 
-def git_annex_add_tag(media, tag):
+def git_annex_add_tag(media, namespace, tag):
     u"""Adicionar uma etiqueta ao media."""
     if tag.isspace() or not tag:
         raise RuntimeError("Attempt to set empty tag!")
-    cmd = 'git annex metadata -t {0} {1}'.format(tag, media.get_file_name())
-    logger.debug(' '.join([u'add_tag tag filepath:',
-                           tag, unicode(get_file_path(media) +
-                                        media.get_file_name())]))
-    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media),
-                            stdout=subprocess.PIPE)
-    output, error = pipe.communicate()
-    return 'ok' in output.split('\n')
+    git_annex_metadata_add(media.get_file_name(), get_file_path(media),
+                           namespace, tag)
 
 
-def git_annex_remove_tag(media, tag):
-    u"""Adicionar uma etiqueta ao media."""
-    cmd = 'git annex metadata -u {0} {1}'.format(tag, media.get_file_name())
-    logger.debug(' '.join(['add_tag tag filepath:',
-                           tag, unicode(get_file_path(media) +
-                                        media.get_file_name())]))
-    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media),
-                            stdout=subprocess.PIPE)
-    output, error = pipe.communicate()
-    return 'ok' in output.split('\n')
+def git_annex_remove_tag(media, namespace, tag):
+    u"""Apagar uma etiqueta do media."""
+    git_annex_metadata_del(media.get_file_name(), get_file_path(media),
+                           namespace, tag)
 
 
 def git_annex_group_add(repository_path, mucua, group):

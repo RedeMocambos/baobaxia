@@ -117,7 +117,10 @@ class Media(models.Model):
     media_file = models.FileField(upload_to=media_file_name, blank=True)
     url = models.URLField(_('URL'), editable=False)
     date = models.DateTimeField(_('date'),
-                                help_text=_('Media criation date'))
+                                help_text=_('Media creation date'))
+    last_modified = models.DateTimeField(_('last modified'),
+                                           default=datetime.now(),
+                                           help_text=_('Last change'))
     note = models.TextField(_('note'),
                             help_text=_('Note.. use as you wish!'),
                             max_length=300, blank=True)
@@ -286,6 +289,7 @@ class Media(models.Model):
         if self.pk is not None and self.pk is not "":
             self._set_num_copies()
         self.url = self.get_url()
+        last_modified = datetime.now()
         super(Media, self).save(*args, **kwargs)
 
     class Meta:
