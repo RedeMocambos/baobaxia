@@ -187,7 +187,8 @@ def create_objects_from_files(repository=get_default_repository().name):
                     # Add tag - search for existing, if none found create new tag.
                     namespace, name = t
                     try: 
-                        tag = Tag.objects.get(name=name, namespace=namespace)
+                        tag = Tag.objects.get(name=unicode(name),
+                                              namespace=unicode(namespace))
                     except Tag.DoesNotExist:
                         tag = Tag(name=name, namespace=namespace)
                         tag.save()
