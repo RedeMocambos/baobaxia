@@ -8,7 +8,9 @@ GROUP="exu" # the group to run as
 NUM_WORKERS=3 # how many worker processes should Gunicorn spawn
 DJANGO_SETTINGS_MODULE="bbx.settings" # which settings file should Django use
 DJANGO_WSGI_MODULE="bbx.wsgi" # WSGI module name
- 
+
+export LANG="pt_BR.UTF-8"
+
 echo "Starting $NAME as `whoami`"
  
 # Activate the virtual environment
