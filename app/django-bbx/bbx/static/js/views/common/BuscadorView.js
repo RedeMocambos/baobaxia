@@ -18,7 +18,8 @@ define([
 	    
 	    if ($('#buscador').html() == "" ||
 		(typeof $('#buscador').html() === "undefined")) {
-		$('#header-bottom').prepend(_.template(BuscadorTpl, data));
+		
+		$('#header-bottom').prepend(_.template(BuscadorTpl));
 		$('head').append('<link rel="stylesheet" href="/css/textext.core.css" type="text/css" />');		    
 		$('head').append('<link rel="stylesheet" href="/css/textext.plugin.tags.css" type="text/css" />');
 		$('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');		    

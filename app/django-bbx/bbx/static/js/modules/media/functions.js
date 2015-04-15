@@ -31,11 +31,12 @@ define([
     'text!/templates/' + BBX.userLang + '/common/ResultsMessage.html',
     'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html',
     'text!/templates/' + BBX.userLang + '/common/TagCloud.html',
+    'text!/templates/' + BBX.userLang + '/common/MessageSearch.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEdit.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
-], function($, _, Backbone, TagCloud, Fancybox, FancyboxButtons, FancyboxMedia, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
+], function($, _, Backbone, TagCloud, Fancybox, FancyboxButtons, FancyboxMedia, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MessageSearchTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
     /**
      * Funções gerais de media
      *
@@ -158,6 +159,13 @@ define([
 	    tags_str = tags_arr.join('/'),
 	    urlApiTags = config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
 
+	if (!_.isEmpty(tags_arr)) {
+	    $('#caixa_busca').val('');
+	} else {
+	    console.log(_.template(MessageSearchTpl));
+	    $('#caixa_busca').html(_.template(MessageSearchTpl));
+	    $('#caixa_busca').css('color', '#bbb');
+	}
 	$('#caixa_busca')
 	    .textext({ plugins: 'tags',
 		       tagsItems: tags_arr,
@@ -194,6 +202,10 @@ define([
 	    })
 	    .bind('removeTag', function(tag) {
 		console.log('removeTag: ' + tag);
+	    })
+	    .bind('click', function() {
+		$('#caixa_busca').val('');
+		$('#caixa_busca').css('color', '#000');
 	    });
 	
     }
