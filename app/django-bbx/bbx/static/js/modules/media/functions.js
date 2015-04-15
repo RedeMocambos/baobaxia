@@ -203,12 +203,36 @@ define([
      *
      * @returns {Object} Objeto com preferências do usuário
      */    
-    var setUserPrefs = function() {
-	var userPrefs = {'name': 'userPrefs',
+    var setUserPrefs = function(userPrefs, property) {
+	var userPrefs = userPrefs || null,
+	    property = property || null;
+
+	if (!userPrefs) {
+	    userPrefs = {'name': 'userPrefs',
 			 'values': {}
 			}
-	// default
-	userPrefs.values.media_listing_type = 'grid' ;
+	    // default
+	    userPrefs.values.media_listing_type = 'grid' ;
+	}
+	
+	if (_.isObject(property)) {
+	    userPrefs.values[property.name] = property.values;
+	}
+	
+	return userPrefs;
+    }
+
+    /**
+     *
+     */
+    var getUserPrefs = function() {
+	var BBXFunctions = window.BBXFunctions,
+	    userPrefs = BBXFunctions.getFromCookie('userPrefs');
+	if (_.isEmpty(userPrefs)) {
+	    userPrefs = setUserPrefs();
+	    BBXFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
+	}
+		
 	return userPrefs;
     }
 
@@ -230,11 +254,8 @@ define([
 	if (typeof BBXFunctions === 'undefined') {
 	    var BBXFunctions = window.BBXFunctions;
 	}
-	var userPrefs = BBXFunctions.getFromCookie('userPrefs');
-	if (_.isEmpty(userPrefs)) {
-	    userPrefs = setUserPrefs();
-	}
-
+	var userPrefs = getUserPrefs();
+	
 	// se vazio, pega default
 	type = (type == '') ? userPrefs.values.media_listing_type : type;
 	// se invalido, cai fora
@@ -319,30 +340,48 @@ define([
 	    $('thead td.is_local a').on('click', function(){ mediaSearchSort('is_local')});
 	    $('thead td.status a').on('click', function(){ mediaSearchSort('is_local,is_requested', true)});
 	    
-	    $('th.note').hide();
-	    $('td.note').hide();
-	    $('th.tags').hide();
-	    $('td.tags').hide();
+	    var default_columns = {
+		'name': 'active_columns',
+		'values' : {
+		    'name': true, 'author': true, 'format': true, 'origin': true, 'date': true, 'license': true, 'type': true, 'num_copies': true, 'is_local': true, 'status': true, 'note': false, 'tags': false
+		}
+	    },
+		active_columns = {};
 
-	    // TODO: passar essa lista para uma userPreferences que será salva no cookie
-	    var active_columns = ['name', 'author', 'format', 'origin', 'date', 'license', 'type', 'num_copies', 'is_local', 'status'],
-		toggle_columns = function(column_name) {
-		    var el_name = '.' + column_name + ' input',
-			checked = $(el_name).prop('checked');
-
-		    // pega sempre o novo estado (o que acabou acabou de clicar)
-		    if (checked === true) {
-			$('td.' + column_name).show();
-			$('th.' + column_name).show();
-		    } else {
-			$('td.' + column_name).hide();
-			$('th.' + column_name).hide();
-		    }
+	    // se estiver definido no cookie, pega valor dele; senão pega default
+	    if (typeof userPrefs.values['active_columns'] !== 'undefined') {
+		active_columns = {
+		    'name': 'active_columns',
+		    'values': userPrefs.values['active_columns']
+		}
+	    } else {
+		active_columns = default_columns;
+	    }
+	    var toggle_columns = function(column_name) {
+		var el_name = '.' + column_name + ' input',
+		    checked = $(el_name).prop('checked');
+		
+		// pega sempre o novo estado (o que acabou acabou de clicar)
+		if (checked === true) {
+		    // adiciona a lista
+		    active_columns.values[column_name] = true;
+		    // mostra colunas
+		    $('td.' + column_name).show();
+		    $('th.' + column_name).show();
+		} else {
+		    // remove da lista
+		    active_columns.values[column_name] = false;
+		    // esconde colunas
+		    $('td.' + column_name).hide();
+		    $('th.' + column_name).hide();
 		}
 
+		userPrefs = setUserPrefs(userPrefs, active_columns);
+		BBXFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
+	    }
 	    
 	    $('#menu-colunas input:checkbox').each(function() {
-		if (_.contains(active_columns, this.name)) {
+		if (active_columns.values[this.name] === true) {
 		    $(this).prop('checked', 'checked');
 		} else {
 		    $('td.' + this.name).hide();
@@ -975,6 +1014,8 @@ define([
 	    });
 
 	    // TODO: passar para user preferences
+	    
+	    
 	    var active_columns = ['thumb', 'name', 'date', 'license', 'tags'],
 		toggle_columns = function(column_name) {
 		    var el_name = '.' + column_name + ' input',
