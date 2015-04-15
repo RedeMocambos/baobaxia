@@ -157,3 +157,39 @@ def mucua_add_group(request, uuid, group, repository=None):
     
     mucua.add_group(group, repository)
     return Response("Group %s added" % group)
+
+
+
+
+@api_view(['GET'])
+@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+def mucua_get_territory(request, uuid=None, repository=None):
+    try:     
+        mucua = Mucua.objects.get(uuid=uuid)
+    except:
+        return Response(_("Mucua not found"))
+    
+    io = mucua.get_territory(repository)
+    return Response(io)
+
+@api_view(['GET'])
+@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+def mucua_del_territory(request, uuid, territory, repository=None):
+    try:     
+        mucua = Mucua.objects.get(uuid=uuid)
+    except:
+        return Response(_("Mucua not found"))
+    
+    mucua.del_territory(territory, repository)
+    return Response(_("Territory %s deleted" % territory))
+
+@api_view(['GET'])
+@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+def mucua_set_territory(request, uuid, territory, repository=None):
+    try:     
+        mucua = Mucua.objects.get(uuid=uuid)
+    except:
+        return Response(_("Mucua not found"))
+    
+    mucua.set_territory(territory, repository)
+    return Response("Territory %s added" % territory)

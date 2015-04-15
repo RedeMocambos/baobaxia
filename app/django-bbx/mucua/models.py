@@ -173,9 +173,11 @@ class Mucua(models.Model):
                 repository = get_default_repository()
             except DatabaseError:
                 return []
+        
 
-        return git_annex_group_list(repository.get_path(),
-                                    self.uuid)
+        return [group for group in git_annex_group_list(repository.get_path(),
+                                                        self.uuid) 
+                if not group.startswith('t:')]
 
     def add_group(self, group, repository):
         u"""Retorna a lista de grupos da mucua"""
@@ -210,26 +212,27 @@ class Mucua(models.Model):
                 return []
 
         groups = git_annex_group_list(repository.get_path(),
-                                      self.get_description())
+                                      self.uuid)
+        territory = ''
         for group in groups:
             if group.startswith('t:'):
-                return group
-            else:
-                return ''
+                territory = group
+
+        return territory[2:]
           
-    def add_territory(self, territory, repository):
-        u"""Retorna a lista de grupos da mucua"""
+    def set_territory(self, territory, repository):
+        u"""Define o territorio da mucua"""
         if not repository:
             try:
                 repository = get_default_repository()
             except DatabaseError:
                 return []
 
-        actual_territory = self.get_territory
+        actual_territory = self.get_territory(repository)
         if actual_territory != '':
             if territory.startswith('t:'):
-                git_annex_group_add(repository.getpath(),
-                                    self.get_description,
+                git_annex_group_add(repository.get_path(),
+                                    self.get_description(),
                                     territory)
                 return _("Mucua enraizada em " + territory)
             else:
@@ -238,15 +241,15 @@ class Mucua(models.Model):
         else: 
             return _("A mucua esta já enraizada em " + actual_territory)
 
-    def del_territory(self, territory):
+    def del_territory(self, territory, repository):
         if not repository:
             try:
                 repository = get_default_repository()
             except DatabaseError:
                 return []
 
-        git_annex_group_del(repository.getpath(),
-                            self.get_description,
+        git_annex_group_del(repository.get_path(),
+                            self.get_description(),
                             territory)
        
     def save(self, *args, **kwargs):
