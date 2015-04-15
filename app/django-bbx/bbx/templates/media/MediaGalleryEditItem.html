@@ -9,9 +9,9 @@
       <% parseThumb(media, params); %>
     </a>
     <% } else if (media.type == 'video') { %>
-    <video controls src="<%= media.url %>" width="150" />
+    <video controls src="<%= media.url %>" width="130" />
     <% } else if (media.type == 'audio') { %>
-    <audio controls src="<%= media.url %>" width="150" />
+    <audio controls src="<%= media.url %>" width="130" />
     <% } else if (media.type ='arquivo') { %>
     <a href="<%= media.url %>" class="download">download</a>
     <% } %>
@@ -49,7 +49,7 @@
 
   <!-- tags -->  
   <td class="tags">
-    <textarea name="tags-<%= media.uuid %>" class="tags <%= media.uuid %>"><% _.each(media.tags, function(tagName) { %><%= tagName %> <% }); %></textarea>
+    <textarea name="tags-<%= media.uuid %>" class="tags <%= media.uuid %>"><% _.each(media.tags, function(tagName) { %><%= tagName %>, <% }); %></textarea>
   </td>
 
   <!-- note -->
@@ -57,7 +57,7 @@
     <textarea name="note-<%= media.uuid %>" class="note <%= media.uuid %>" %><%= media.note %></textarea>
   </td>
   
-  <td>
+  <td class="operations">
     <a alt="{% trans 'Update media' %}"><div class="save-media-item" id="uuid-<%= media.uuid %>"></div></a>
     <a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit" alt="{% trans 'Edit media' %}">
       <div class="link-edit-media">&nbsp;</div>
