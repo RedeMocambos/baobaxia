@@ -270,7 +270,7 @@ td.status {font-weight: bold}
  * media view
  */
 #media-view {margin-left: 15px}
-.media #content {width: 70%; float: left; margin-left: 60px}
+.media #content {width: 71%; float: left; margin-left: 60px}
 #media-view .content-title {font-size: 18px;}
 #media-view .title-bold {font-size: 18px; font-weight: bold}
 #media-view #media-title h3 { color:#197299; font-size: 20px}
@@ -411,6 +411,7 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media-gallery-edit thead td {background-color: #eee}
 #media-gallery-edit thead td span {font-weight: bold; font-size: 13px}
 #media-gallery-edit thead td span.title {font-size: 15px}
+#media-gallery-edit td.operations {min-width: 70px}
 #media-gallery-edit input,
 #media-gallery-edit select {font-size: 10px}
 #media-gallery-edit .edit-link {font-size: 10px; color:#999}
