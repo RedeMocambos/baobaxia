@@ -166,6 +166,11 @@ define([
 	    $('#caixa_busca').html(_.template(MessageSearchTpl));
 	    $('#caixa_busca').css('color', '#bbb');
 	}
+	var limpaBusca = function() {
+	    $('#caixa_busca').val('');
+	    $('#caixa_busca').css('color', '#000');
+	}
+	
 	$('#caixa_busca')
 	    .textext({ plugins: 'tags',
 		       tagsItems: tags_arr,
@@ -204,8 +209,10 @@ define([
 		console.log('removeTag: ' + tag);
 	    })
 	    .bind('click', function() {
-		$('#caixa_busca').val('');
-		$('#caixa_busca').css('color', '#000');
+		limpaBusca();
+	    })
+	    .bind('focus', function() {
+		limpaBusca();
 	    });
 	
     }
