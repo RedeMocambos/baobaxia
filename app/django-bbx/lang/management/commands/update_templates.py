@@ -25,25 +25,30 @@ class Command(BaseCommand):
         """
         
         lang_codes = []
-        print _('Updating templates...')
-        
-        """ check if lang is accepted """
-        if args != ():
+        """ set languages to be parsed """
+        if not args:
+            # default: only LANGUAGE_CODE from settings.py
+            lang_codes.append(LANGUAGE_CODE)
+        elif 'all' in args:
+            # 'all' -> LANGUAGES from settings.py
+            for lang in LANGUAGES:
+                lang_codes.append(lang[0])
+        else:
+            # check if lang is accepted
             for lang in LANGUAGES:
                 for arg in args:
                     if arg in lang:
-                        lang_codes.append(arg)
+                        lang_codes.append(arg)            
             if not lang_codes:
                 print _('Language code not supported:')
                 print arg
                 return False
-        else:
-            for lang in LANGUAGES:
-                lang_codes.append(lang[0])
         
         tpl_src = os.path.join(PROJECT_ROOT, 'bbx', 'templates')
         api_url = 'http://' + DEFAULT_MUCUA + '/api/templates/'
-
+        
+        print _('Updating templates...')
+        
         """ generate templates for each language """
         for lang_code in lang_codes:
             tpl_parse = os.path.join(PROJECT_ROOT, 'bbx', 'static', 'templates', lang_code)
