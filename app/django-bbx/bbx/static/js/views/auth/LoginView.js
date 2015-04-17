@@ -46,6 +46,10 @@ define([
 		// parse content
 		var compiledContent = _.template(LoginTemplate, data);
 		$('#content').html(compiledContent);
+
+		if (! BBXFunctions.isCookiesEnabled()) {
+		    $('#message-area').html('Cookies are required for login, sorry!');
+		}
 	    }
 	    
 	    // get mucuas 

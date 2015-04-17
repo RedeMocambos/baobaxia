@@ -110,7 +110,7 @@ define([
     var getFromCookie = function(key) {
 	var key = key || '*';
 	
-	if(!isCookiesEnabled) {
+	if(!isCookiesEnabled()) {
 	    return false;
 	}
 	
@@ -727,12 +727,14 @@ define([
 	
 	// adds current url to redirect
 	if (!currentPage.match('login')) {
-	    addToCookie({
-		'name': 'redirect_url',
-		'values': {
-		    0: Backbone.history.location.href
-		}
-	    });
+	    if(isCookiesEnabled()) {
+		addToCookie({
+		    'name': 'redirect_url',
+		    'values': {
+			0: Backbone.history.location.href
+		    }
+		});
+	    }
 	}
 	
 	console.log('subroute: ' + config.subroute);

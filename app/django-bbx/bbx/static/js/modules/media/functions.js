@@ -242,9 +242,17 @@ define([
     }
 
     /**
-     *
+     * 
      */
     var getUserPrefs = function() {
+	if (!this.BBXFunctions.isCookiesEnabled()) {
+	    var userPrefs = {
+		'name': 'userPrefs',
+		values: {'media_listing_type' : 'list'}
+	    };
+	    return userPrefs;
+	}
+	
 	var BBXFunctions = window.BBXFunctions,
 	    userPrefs = BBXFunctions.getFromCookie('userPrefs');
 	if (_.isEmpty(userPrefs)) {
@@ -286,7 +294,10 @@ define([
 	// seta novo media-listing-type
 	userPrefs.values.media_listing_type = type;
 	if (!skipCookie) {
-	    BBXFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
+	    if (BBXFunctions.isCookiesEnabled()) {
+		BBXFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
+	    } else {
+	    }
 	}
 	
 	switch(type) {
@@ -396,7 +407,9 @@ define([
 		}
 
 		userPrefs = setUserPrefs(userPrefs, active_columns);
-		BBXFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
+		if (BBXFunctions.isCookiesEnabled()) {
+		    BBXFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
+		}
 	    }
 	    
 	    $('#menu-colunas input:checkbox').each(function() {
@@ -1141,6 +1154,7 @@ define([
 	
 	media = new MediaModel([mediaData], {url: urlUpdateItem});
 	options.beforeSend = function(xhr){
+	    // requiores cookies
 	    xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
 	}
 	console.log('updating media ' + mediaData.uuid);
