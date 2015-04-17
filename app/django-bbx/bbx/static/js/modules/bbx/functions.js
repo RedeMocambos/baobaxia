@@ -253,6 +253,7 @@ define([
 			};
 			BBX.mucua = mucuaData.mucua;
 			// parse usage
+			//__getMucuaGroups(mucuaData.uuid);
 			__parseMucuaUsage(mucuaData.mucua);
 		    }
 		});		
@@ -262,6 +263,46 @@ define([
 	}
     }
 
+    /**
+     * get mucua groups at API
+     * 
+     * @uuid {String} Mucua UUID
+     * @return {None}
+     */
+    var __getMucuaGroups = function(uuid) {
+	var config = __getConfig(),
+	    url = config.apiUrl + '/mucua/groups/' + uuid,
+	    mucuaData = {};
+
+	mucua = new MucuaModel([], {url: url});
+	mucua.fetch({
+	    success: function() {
+		mucuaData.groups = mucua.attributes;
+		// TODO: return mucua object to a specified target
+	    }
+	})
+    }
+
+    /**
+     * get mucua territory at API
+     * 
+     * @uuid {String} Mucua UUID
+     * @return {None}
+     */
+    var __getMucuaTerritory = function(uuid) {
+	var config = __getConfig(),
+	    url = config.apiUrl + '/mucua/territory/' + uuid,
+	    mucuaData = {};
+
+	mucua = new MucuaModel([], {url: url});
+	mucua.fetch({
+	    success: function() {
+		mucuaData.groups = mucua.attributes;
+		// TODO: return mucua object to a specified target
+	    }
+	})
+    }
+    
     /**
      * get mucua aditional data resources at API
      *
