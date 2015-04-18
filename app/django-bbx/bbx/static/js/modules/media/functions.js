@@ -162,7 +162,6 @@ define([
 	if (!_.isEmpty(tags_arr)) {
 	    $('#caixa_busca').val('');
 	} else {
-	    console.log(_.template(MessageSearchTpl));
 	    $('#caixa_busca').html(_.template(MessageSearchTpl));
 	    $('#caixa_busca').css('color', '#bbb');
 	}
@@ -774,21 +773,9 @@ define([
      */
     var getTagCloudByMucua = function(mucua, el) {
 	console.log('tagcloud bymucua');
-	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + mucua + '/tags',
-	    tag = new TagModel([], {url: url});
-
-
-	tag.fetch({
-	    success: function() {
-		var data = {
-		    tags: tag.attributes
-		}
-		//data = equalizeTags(data);
-		
-		$(el).html(_.template(TagCloudTpl, data));		
-		__getTagCloud(el)
-	    }
-	});	
+	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + mucua + '/tags';
+	
+	__getTagCloud(el, url);
     }
 
     /**
@@ -800,29 +787,56 @@ define([
     var getTagCloudBySearch = function(el) {
 	console.log('tagcloud bysearch');
 	var tags = __getTagsFromUrl(),
-	    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/tags/' + tags,
+	    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/tags/' + tags;
+
+	__getTagCloud(el, url);
+    }
+
+    /**
+     * função genérica de buscar tags que recebe callbacks
+     *
+     * @el {String} el Elemento HTML
+     * @url {String} url Endereço da consulta à API
+     * @callback {Function} callback Função opcional a ser executada
+     * @returns {None}
+     */
+    var __getTagCloud = function(el, url, callback) {
+	var callback = callback || null,
 	    tag = new TagModel([], {url: url});
-	
+	    
 	tag.fetch({
 	    success: function() {
-		var data = {
-		    tags: tag.attributes
-		}
+		var maxTags = 40,
+		    tags = tag.attributes,
+		    data = {};
+
+		tagData = tags;
+		// ordena por qtd ocorrencias
+		tags =_.sortBy(_.sortBy(tagData, 'tag_count').reverse().slice(0,maxTags), 'name');
+		
+		data = {
+		    tags: tags
+		}		
+		
 		//data = equalizeTags(data);
 		
 		$(el).html(_.template(TagCloudTpl, data));		
-		__getTagCloud(el)
+		__parseTagCloud(el)
+				
+		if (typeof callback === 'function') {
+		    callback(true);
+		}
 	    }
 	});	
     }
-
+    
     /**
      * retorna nuvem de tags e ativa biblioteca tagcloud
      * 
      * @param {String} el Elemento HTML alvo
      * @returns {None} [conteúdo definido pelo jQuery]
      */
-    var __getTagCloud = function(el) {	  
+    var __parseTagCloud = function(el) {	  
 	$.fn.tagcloud.defaults = {
 	    size: {start: 10, end: 16, unit: 'pt'},
 	    color: {start: '#88A7B5', end: '#145B7A'}
