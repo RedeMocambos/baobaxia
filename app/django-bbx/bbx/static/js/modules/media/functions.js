@@ -769,50 +769,59 @@ define([
      * 
      * @param {String} mucua Nome da Mucua 
      * @param {String} el Elemento HTML
+     * @param {Integer} limit Limite de tags
      * @returns {None} [conteúdo definido pelo jQuery]
      */
-    var getTagCloudByMucua = function(mucua, el) {
+    var getTagCloudByMucua = function(mucua, el, limit) {
 	console.log('tagcloud bymucua');
-	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + mucua + '/tags';
+	var limit = limit || 40,
+	    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + mucua + '/tags';	    
 	
-	__getTagCloud(el, url);
+	__getTagCloud(el, url, limit);
     }
 
     /**
      * retorna nuvem de tags a partir de uma busca
      * 
      * @param {String} el Elemento HTML alvo
+     * @param {Integer} limit Limite de tags
      * @returns {None} [conteúdo definido pelo jQuery]
      */
-    var getTagCloudBySearch = function(el) {
+    var getTagCloudBySearch = function(el, limit) {
 	console.log('tagcloud bysearch');
-	var tags = __getTagsFromUrl(),
+	var limit = limit || 40,
+	    tags = __getTagsFromUrl(),
 	    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/tags/' + tags;
-
-	__getTagCloud(el, url);
+	
+	__getTagCloud(el, url, limit);
     }
+
+
+    var getAllTags
+    
 
     /**
      * função genérica de buscar tags que recebe callbacks
      *
-     * @el {String} el Elemento HTML
-     * @url {String} url Endereço da consulta à API
-     * @callback {Function} callback Função opcional a ser executada
+     * @param {String} el Elemento HTML
+     * @param {String} url Endereço da consulta à API
+     * @param {Function} callback Função opcional a ser executada
+     * @param {Integer} limit Limite de tags
      * @returns {None}
      */
-    var __getTagCloud = function(el, url, callback) {
+    var __getTagCloud = function(el, url, limit, callback) {
 	var callback = callback || null,
+	    limit = limit || 40,
 	    tag = new TagModel([], {url: url});
 	    
 	tag.fetch({
 	    success: function() {
-		var maxTags = 40,
-		    tags = tag.attributes,
+		var tags = tag.attributes,
 		    data = {};
-
+		
 		tagData = tags;
 		// ordena por qtd ocorrencias
-		tags =_.sortBy(_.sortBy(tagData, 'tag_count').reverse().slice(0,maxTags), 'name');
+		tags =_.sortBy(_.sortBy(tagData, 'tag_count').reverse().slice(0, limit), 'name');
 		
 		data = {
 		    tags: tags
