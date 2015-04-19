@@ -284,13 +284,19 @@ class Media(models.Model):
             #logger.debug(async_result.get)
             #logger.debug(async_result.info)
 
-    def save(self, *args, **kwargs):
+    def save(self, is_syncing=False, *args, **kwargs):
         self.set_is_local()
+        print is_syncing
         if self.pk is not None and self.pk is not "":
             self._set_num_copies()
         self.url = self.get_url()
         last_modified = datetime.now()
-        super(Media, self).save(*args, **kwargs)
+        if is_syncing:
+            self.is_syncing = True
+            super(Media, self).save(*args, **kwargs)
+        else:
+            self.is_syncing = False
+            super(Media, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ('date',)
