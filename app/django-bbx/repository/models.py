@@ -31,20 +31,21 @@ repository_dir = settings.REPOSITORY_DIR
 def git_media_post_save(instance, **kwargs):
     u"""Intercepta o sinal de *post_save* de objetos multimedia (*media*) e
     adiciona o objeto ao repositório."""
-    from media.serializers import MediaFileSerializer
-    git_annex_add(instance.get_file_name(), get_file_path(instance))
-    serializer = MediaFileSerializer(instance)
-    mediapath = get_file_path(instance) + '/'
-    mediadata = os.path.splitext(instance.get_file_name())[0] + '.json'
-    fout = open(mediapath + mediadata, 'w')
-    fout.write(str(serializer.getJSON()))
-    fout.close()
-    git_add(mediadata, mediapath)
-    git_commit(instance.get_file_name(),
-               instance.author.username,
-               instance.author.email,
-               get_file_path(instance),
-               os.path.join(mediapath, mediadata))
+    if not instance.is_syncing:
+        from media.serializers import MediaFileSerializer
+        git_annex_add(instance.get_file_name(), get_file_path(instance))
+        serializer = MediaFileSerializer(instance)
+        mediapath = get_file_path(instance) + '/'
+        mediadata = os.path.splitext(instance.get_file_name())[0] + '.json'
+        fout = open(mediapath + mediadata, 'w')
+        fout.write(str(serializer.getJSON()))
+        fout.close()
+        git_add(mediadata, mediapath)
+        git_commit(instance.get_file_name(),
+                   instance.author.username,
+                   instance.author.email,
+                   get_file_path(instance),
+                   os.path.join(mediapath, mediadata))
 
 # Connecting to Media signal
 @receiver(pre_delete, sender=Media)

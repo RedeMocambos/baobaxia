@@ -164,13 +164,13 @@ def create_objects_from_files(repository=get_default_repository().name):
                     serializer = MediaSerializer(media, data=data, partial=True)
                     print serializer.is_valid()
                     print serializer.errors
-                    serializer.object.save()
+                    serializer.object.save(is_syncing=True)
                     logger.info(u"%s" % _('This media already exist. Updated.'))
                 except Media.DoesNotExist:
                     serializer = MediaSerializer(data=data)
                     print serializer.is_valid()
                     print serializer.errors
-                    serializer.object.save()
+                    serializer.object.save(is_syncing=True)
                     media = serializer.object
                     logger.info(u"%s" % _('New media created'))
 
