@@ -244,7 +244,8 @@
 }
 
 .fancybox-title-inside-wrap {
-	padding-top: 10px;
+    padding: 6px;
+    padding-top: 10px;
 }
 
 .fancybox-title-over-wrap {
