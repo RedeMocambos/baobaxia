@@ -120,7 +120,7 @@ define([
     var __checkUser = function(registerData) {
 	// verify if exists any user with that username
 	var mocambola = new MocambolaModel(registerData, 					       
-					   {url: BBx.config.apiUrl + '/' + registerData.repository + '/' + registerData.mucua + '/mocambola/' + registerData.email});
+					   {url: BBX.config.apiUrl + '/' + registerData.repository + '/' + registerData.mucua + '/mocambola/' + registerData.email});
 	mocambola.fetch({
 	    success: function() {
 		// if user exists, raises error

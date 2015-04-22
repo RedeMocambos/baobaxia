@@ -31,7 +31,7 @@ def mucua_tags(request, repository, mucua):
     """
     
     if mucua == 'rede':
-        tags = Tag.objects.all().annotate(tag_count=Count('name'))        
+        tags = Tag.objects.all().filter(media__origin__isnull=False).annotate(tag_count=Count('name'))        
     else:
         try:
             this_mucua = Mucua.objects.get(description=mucua)
