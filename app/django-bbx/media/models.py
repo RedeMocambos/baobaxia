@@ -16,6 +16,7 @@ from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.utils.functional import lazy
+from django.utils import timezone
 
 from tag.models import Tag
 from bbx.settings import REPOSITORY_DIR, DEFAULT_MUCUA
@@ -35,10 +36,17 @@ FORMAT_CHOICES = (('ogg', 'ogg'), ('ogv', 'ogv'), ('webm', 'webm'), ('mp4', 'mp4
                   ('jpg', 'jpg'), ('png', 'png'), ('pdf', 'pdf'), ('gif', 'gif'), ('odp', 'odp'), ('odt', 'odt'))
 
 
+def get_now():
+    """Get this very moment as correct local time."""
+    now = timezone.now()
+    return timezone.localtime(now)
+
+
 def media_file_name(instance, file_name):
     """Retorna o caminho, completo de nome, do media"""
     logger.debug(os.path.join(get_file_path(instance) + instance.get_file_name()))
     return os.path.join(get_file_path(instance), instance.get_file_name())
+
 
 def media_file_rename(instance, new_file_name):
     u"""Renomeia o media no repositório."""
@@ -47,9 +55,11 @@ def media_file_rename(instance, new_file_name):
     pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(instance))
     pipe.wait()
 
+
 def generate_UUID():
     """Gera um uuid4"""
     return str(uuid.uuid4())  
+
 
 def get_file_path(instance):
     """Retorna o caminho do media"""
@@ -58,7 +68,7 @@ def get_file_path(instance):
 def get_media_path(instance):
     # FIX: se mudar a data quebra o path
     if instance.date == '':
-        t = datetime.now
+        t = get_now()
         date = t.strftime("%y/%m/%d/")
     else:        
         if isinstance(instance.date, unicode):
@@ -119,7 +129,7 @@ class Media(models.Model):
     date = models.DateTimeField(_('date'),
                                 help_text=_('Media creation date'))
     last_modified = models.DateTimeField(_('last modified'),
-                                           default=datetime.now(),
+                                           default=get_now(),
                                            help_text=_('Last change'))
     note = models.TextField(_('note'),
                             help_text=_('Note.. use as you wish!'),
@@ -290,7 +300,7 @@ class Media(models.Model):
         if self.pk is not None and self.pk is not "":
             self._set_num_copies()
         self.url = self.get_url()
-        last_modified = datetime.now()
+        last_modified = get_now()
         if is_syncing:
             self.is_syncing = True
             super(Media, self).save(*args, **kwargs)
