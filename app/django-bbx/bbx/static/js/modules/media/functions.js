@@ -1111,7 +1111,10 @@ define([
 	    $('.all-tags').keyup(function() {
 		$('.tags').val($('.all-tags').val());
 	    });
-
+	    $('.all-note').keyup(function() {
+		$('.note').val($('.all-note').val());
+	    });	    
+	    
 	    $('.save-all').click(function() {
 		console.log('save all');
 		var uuidObjects = $('.uuid'),
