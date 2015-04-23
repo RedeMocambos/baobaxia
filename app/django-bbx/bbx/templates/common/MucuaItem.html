@@ -1,0 +1,9 @@
+<ul class="mucuas">
+  <% _.each(mucuas, function(mucua) { %>
+  <li>
+    <span>
+      <a href="<%=config.interfaceUrl%><%=config.MYREPOSITORY %>/<%= mucua.description %>"><%= mucua.description %></a>
+    </span>
+  </li>
+<% }); %>
+</ul>
