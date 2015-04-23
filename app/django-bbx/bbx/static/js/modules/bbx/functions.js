@@ -22,10 +22,11 @@ define([
     'modules/media/functions',
     'text!/templates/' + BBX.userLang + '/common/Content.html',
     'text!/templates/' + BBX.userLang + '/common/Sidebar.html',
+    'text!/templates/' + BBX.userLang + '/common/MucuaItem.html',
     'text!/templates/' + BBX.userLang + '/common/UsageBar.html',
     'text!/templates/' + BBX.userLang + '/common/UserProfile.html',
     'text!/templates/' + BBX.userLang + '/common/MucuaProfile.html'
-], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, TagModel, MediaFunctions, ContentTpl, SidebarTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
+], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, TagModel, MediaFunctions, ContentTpl, SidebarTpl, MucuaItemTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
 
     /**
      * init function of bbx functions
@@ -169,7 +170,9 @@ define([
     var renderCommon = function(el) {
 	var data = {},
 	    config = BBX.config,
-	    tags = [];
+	    tags = [],
+	    urlMucuas = config.apiUrl + '/' + config.repository + '/mucuas',
+	    mucuas = new MucuaModel([], {url: urlMucuas});
 	
 	data.config = config;
 	data.isLogged = this.isLogged;
@@ -187,6 +190,57 @@ define([
 	    (typeof $('#sidebar').html() === "undefined")) {
 	    $('#footer').before(_.template(SidebarTpl, data));
 	}
+	
+	// carregar lista de mucuas
+	var toggleTabs = function(currentEl, el) {
+	    _.each($('#header-tabs .button'), function(el) {
+		var elName = el.id,
+		    currentName = currentEl.currentTarget.id,
+		    elBtn = '',
+		    currentBtn = '';
+		    
+		elName = elName.split('btn-')[1];
+		currentName = currentName.split('btn-')[1];
+		
+		elBtn = '#btn-' + elName;
+		currentBtn = '#btn-' + elName;
+		
+		elName = '#' + elName  + '-container';
+		currentName = '#' + currentName  + '-container';
+		
+		console.log(elName);
+		console.log(currentName);
+		if (elName === currentName) {
+		    $(currentBtn).css('font-weight', 'bold');
+		    $(currentName).show();
+		} else {
+		    $(elBtn).css('font-weight', '');
+		    $(elName).hide();
+		}
+	    });
+	}
+	
+	data.mucuas = [];
+
+	if ($('#list-mucuas').html() === '') {
+	    mucuas.fetch({
+		success: function() {
+		    var mucuaData = {
+			config: config,
+			mucuas: mucuas.attributes
+		    }
+		    $('#list-mucuas').append(_.template(MucuaItemTpl, mucuaData));
+		    
+		    $('#list-mucuas-container').hide();
+		    $('#header-tabs #btn-cloud').css('font-weight', 'bold');
+		    $('#header-tabs .button').on('click', function(el) {
+			toggleTabs(el);
+		    });
+		}
+	    });
+	}
+	///////
+	
 	
 	$('#content').html('');
 

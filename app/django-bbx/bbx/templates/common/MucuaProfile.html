@@ -7,6 +7,3 @@
 <div class="storage bold">{% trans "Collection:" %} <%=mucua.storageSize%> <%= usedByAnnexUnit %></div>
 <% } %>
 <div class="more-info"><a href="">{% trans "more info" %}</a></div>
-<% if (config.mucua.toLowerCase() === 'rede' || config.mucua === '') { %>
-<div class="mucuas"><h3><a href="<%=config.interfaceUrl%><%=config.MYREPOSITORY %>/mucuas">{% trans "list of mucuas" %}</a></h3></div>
-<% } %>

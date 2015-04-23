@@ -80,8 +80,9 @@ a {text-decoration: none; color: #0E5E80}
 #menu li.redeon div {width: 82px; height: 27px; background-image: url('../images/redeon.png'); }
 #menu li.rede {padding: 0; border: 0}
 #menu li.mucua {}
-li.mucua div.territory-name {font-size: 16px; color: #88A7B5; display: block}
-li.mucua div.mucua-name {font-size: 11px; display: block; margin-left: 30px; text-align: right; margin-top: -5px}
+li.mucua div.territory-name {font-size: 17px; color: #145B7A; display: block}
+li.current div.territory-name {color: #88A7B5}
+li.mucua div.mucua-name {font-size: 11px; display: block; margin-left: 30px; text-align: right; margin-top: -3px}
 
 /*
  * login
@@ -141,6 +142,15 @@ li.mucua div.mucua-name {font-size: 11px; display: block; margin-left: 30px; tex
 #cloud div {display: inline}
 #cloud div a {color: #aac0ca; font-weight: bold}
 
+#header-tabs { padding-top: 10px; border-bottom: 1px solid #88A7B5; }
+#list-mucuas ul.mucuas li {list-style: none; display: inline-block; padding: 4px; font-weight: bold; }
+#header-tabs span.button {
+    font-size: 17px;
+    color: #145B7A;
+    cursor: pointer;
+    padding: 4px;
+    padding-left: 10px;
+}
 /*
  * visualizacoes de media
  */
