@@ -15,7 +15,7 @@ from django.core.context_processors import csrf
 from django.template import Template, RequestContext
 from django.utils.translation import ugettext_lazy as _
 
-from media.models import Media, generate_UUID
+from media.models import Media, generate_UUID, get_now
 from tag.models import Tag
 from media.serializers import MediaSerializer
 from media.models import getTypeChoices, getFormatChoices
@@ -379,7 +379,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                       type=request.DATA['type'],
                       license=request.DATA['license'],
                       date=(request.DATA['date'] if request.DATA['date'] !=
-                            '' else datetime.now()),
+                            '' else get_now()),
                       uuid=generate_UUID()
                       )
         
