@@ -296,9 +296,9 @@ class Media(models.Model):
 
     def save(self, is_syncing=False, *args, **kwargs):
         self.set_is_local()
-        print is_syncing
         if self.pk is not None and self.pk is not "":
             self._set_num_copies()
+            print self.num_copies
         self.url = self.get_url()
         last_modified = get_now()
         if is_syncing:
