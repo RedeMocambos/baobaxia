@@ -1021,7 +1021,8 @@ define([
 	if (limit !== '') {
 	    url += '/limit/' + limit;
 	}
-	
+
+	// chama getMedia passando funcao especifica
 	getMedia(url, function(data) {
 	    __parseMenuSearch();	    
 	    var __getFormData = function(uuid) {
@@ -1068,9 +1069,7 @@ define([
 		$('#media-gallery-edit tbody').append(_.template(MediaGalleryEditItemTpl, data));
 	    });
 
-	    // TODO: passar para user preferences
-	    
-	    
+	    // TODO: passar active_columns para user preferences (sessão/cookie)
 	    var active_columns = ['thumb', 'name', 'date', 'license', 'tags'],
 		toggle_columns = function(column_name) {
 		    var el_name = '.' + column_name + ' input',
@@ -1119,6 +1118,12 @@ define([
 		console.log('save all');
 		var uuidObjects = $('.uuid'),
 		    mediaData = {};
+
+		// define tmp no escopo global
+		BBX.tmp.objects_count = uuidObjects.length;
+		BBX.tmp.objects_saved = 0;
+		$('thead .operations div').removeClass('save-all');
+		$('thead .operations div').addClass('saving-all');
 		
 		_.each(uuidObjects, function(uuid) {
 		    uuid = uuid.value;
@@ -1127,7 +1132,16 @@ define([
 		    __updateMedia(mediaData, function(ok) {
 			var elem = '#uuid-' + uuid;
 			if (ok) {
+			    BBX.tmp.objects_saved += 1;
 			    $(elem).css('background-image', 'url(../images/saved-pq.png)');
+			    if (BBX.tmp.objects_saved === BBX.tmp.objects_count) {
+				BBX.tmp.objects_saved = undefined;
+				BBX.tmp.objects_count = undefined;
+				console.log('salvou tudo');
+
+				$('thead .operations div').addClass('save-all');
+				$('thead .operations div').removeClass('saving-all');
+			    }			    
 			} else {
 			    $(elem).css('background-image', 'url(../images/error.png)');
 			    $(elem).append( MediaUpdateErrorMessageTpl);
