@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 import os
 import logging
+
+try:
+    import urllib3.contrib.pyopenssl
+    urllib3.contrib.pyopenssl.inject_into_urllib3()
+except ImportError:
+    pass
+
 import urllib2
 
 from django.core.management.base import BaseCommand

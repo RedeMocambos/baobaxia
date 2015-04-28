@@ -203,6 +203,8 @@ class Media(models.Model):
     def set_is_local(self):
         self.is_local = os.path.isfile(os.path.join(get_file_path(self),
                                                     self.get_file_name()))
+        if self.is_local:
+            self.is_requested = False
 
     def _set_num_copies(self):
         from repository.models import git_annex_where_is
@@ -296,9 +298,9 @@ class Media(models.Model):
 
     def save(self, is_syncing=False, *args, **kwargs):
         self.set_is_local()
-        print is_syncing
         if self.pk is not None and self.pk is not "":
             self._set_num_copies()
+            print self.num_copies
         self.url = self.get_url()
         last_modified = get_now()
         if is_syncing:
