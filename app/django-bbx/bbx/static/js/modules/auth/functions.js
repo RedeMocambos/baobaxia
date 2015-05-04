@@ -83,13 +83,15 @@ define([
 	    urlRedirect = BBXFunctions.getFromCookie('redirect_url')[0];
 	} else {
 	    urlRedirect = defaultUrlRedirect;
-	}	
+	}
+	
 	//timeout nessa parte de baixo
 	var loginOK = setInterval(function() {
 	    var userData = {'name': 'userData',
 			    'values': BBX.config.userData
 			   }
-	    if (typeof userData.values !== 'undefined') {
+	    
+	    if (!_.isEmpty(userData.values)) {
 		// set cookie that expires in one day
 		BBXFunctions.addToCookie(userData);
 		BBX.config.userData = userData;
