@@ -431,8 +431,10 @@ def git_annex_version():
                   subprocess.Popen('git annex version',
                                    shell=True,
                                    stdout=subprocess.PIPE).stdout.read())
-    return v.group()
-
+#    return v.group()
+    
+    version = 5.20150420
+    return version
 
 def git_annex_status(repository_path):
     u"""View all mucuas in a given repository"""
