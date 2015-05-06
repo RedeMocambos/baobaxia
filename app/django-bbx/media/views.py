@@ -148,7 +148,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         """ if passed, get ordering rules """
         ordering_sql = ''
         ordering_params = []
-        default_ordering = 'name ASC'
+        default_ordering = 'date DESC'
         if (args.find('orderby/') != -1):
             ordering_terms = args.split('orderby/')[1].split('/')
             ordering_list = []
