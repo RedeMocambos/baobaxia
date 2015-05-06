@@ -403,7 +403,7 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media_publish textarea#tags {width: 400px; font-size: 15px; resize: none}
 #media_publish textarea#note {width: 450px !important; padding: 4px; padding-top: 3px; border: 2px solid #88A7B5; border-radius: 8px}
 #media_publish .button-nav, #media_update .button-nav {cursor: pointer; font-size: 13px; text-align: center; width: 60px; height: 42px; float: right; padding: 8px; border-radius: 4px; border: 1px solid #b9a95a; margin: 2px; color: #0e5e80 }
-#media_publish .button-nav #submit { }
+#media_publish .buttons #submit { width: 90px}
 #media_publish .button-nav:hover,#media_update .button-nav:hover {background-color: #f7f2e2}
 #media_publish #note {height: 120px}
 #media_publish .bloco-1 {float: left;}
