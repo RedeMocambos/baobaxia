@@ -119,9 +119,8 @@ def media_list(request, repository, mucua, args=None, format=None):
         [repository]/[mucua]/search/video/quilombo/orderby/title/limit/5
         [repository]/[mucua]/search/video/quilombo/orderby/type/desc/name/asc/limit/5
         [repository]/[mucua]/search/video/quilombo/orderby/author/desc
-
-        TODO: still failling when receives incomplete urls. i.e.:
-        [repository]/[mucua]/search/video/quilombo/orderby/title/limit/5
+        [repository]/[mucua]/search/video/quilombo/is_local
+        [repository]/[mucua]/search/video/quilombo/is_requested
         """
         
         """  if passed, get limiting rules """
@@ -158,11 +157,16 @@ def media_list(request, repository, mucua, args=None, format=None):
             accepted_ordering = ['uuid', 'name', 'date', 'note', 'type', 'author', 'origin', 'format', 'license', 'repository', 'is_local', 'is_requested', 'num_copies']
             """ hack: author and origin must be django objects, but here will assume string form """
             hack_fields = ['author', 'origin']
+            """ fields that if passed will make a boolean check """
+            filter_fields = ['is_local', 'is_requested']
             for term in ordering_terms:
                 if ((term == 'asc') | (term == 'desc')):
                     if counting == 0:
                         continue
                     ordering_sql += ' ' + term + ','
+                elif (term in filter_fields):
+                    # check if needed
+                    continue
                 else:
                     if (term in accepted_ordering):
                         if (term in hack_fields):
@@ -197,7 +201,12 @@ def media_list(request, repository, mucua, args=None, format=None):
             term_index = 0
             for term in args.split('/'):
                 term = str(term.encode('utf-8'))
-                if (term in [key for (key, type_choice) in getTypeChoices() if
+                if (term in filter_fields):
+                    if (term_index > 0):
+                        term_sql += " AND "
+                    term_sql += term + "=1"
+                    
+                elif (term in [key for (key, type_choice) in getTypeChoices() if
                             term == type_choice]):
                     if (term_index > 0):
                         term_sql += " AND " 
