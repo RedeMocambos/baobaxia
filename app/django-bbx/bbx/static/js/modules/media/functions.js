@@ -76,7 +76,17 @@ define([
 	    }
 	
 	$(target).html(_.template(ResultsMessageTpl, data));	
-    };    
+    };
+
+
+    /**
+     * Retorna campos de opções de busca válidos
+     *
+     * @returns {Array} Array com opções de busca válidos
+     */
+    var __getValidSearchOptions = function() {
+	return ['is_local', 'is_requested'];
+    }
 
     /**
      * Define url de busca
@@ -85,7 +95,8 @@ define([
      * @returns {String} String URL com busca a partir das tags recebidas
      */        
     var __parseUrlSearch = function(tags) {
-	var config = __getConfig();
+	var config = __getConfig(),
+	    validSearchOptions = __getValidSearchOptions();
 	
 	if (_.isArray(tags)) {
 	    tags = tags.join('/');
@@ -96,6 +107,18 @@ define([
 	    tags = (tags[0] === '/') ? tags.substring(1, tags.length) : tags;
 	}
 	tags = tags.replace('//', '/');
+	if (tags[tags.length -1] === '/') {
+	    tags = tags.substring[tags.length -2];
+	}
+	    
+	// adiciona opcao de busca se existir
+	_.each(validSearchOptions, function(optionSearch) {
+	    if ($('#' + optionSearch).attr('checked')) {
+		if (!tags.match(optionSearch)) {
+		    tags += '/'+ optionSearch;
+		}
+	    }
+	});
 	
 	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + tags;
     }
@@ -157,8 +180,14 @@ define([
 	    data = {},
 	    tags_arr = __getTagsFromUrl(),
 	    tags_str = tags_arr.join('/'),
-	    urlApiTags = config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
-
+	    urlApiTags = config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/',
+	    validSearchOptions = __getValidSearchOptions();
+	
+	// remove opcoes de busca da exibição dos termos
+	_.each(validSearchOptions, function(optionSearch) {
+	    tags_arr = _.without(tags_arr, optionSearch);
+	});
+	
 	if (!_.isEmpty(tags_arr)) {
 	    $('#caixa_busca').val('');
 	} else {
@@ -1462,6 +1491,7 @@ define([
 	mediaSearchSort: mediaSearchSort,
 	getTagCloudBySearch: getTagCloudBySearch,
 	getTagCloudByMucua: getTagCloudByMucua,
+	__getValidSearchOptions: __getValidSearchOptions,
 	__getTagsFromUrl: __getTagsFromUrl,
 	__parseMenuSearch: __parseMenuSearch,
 	parseThumb: parseThumb,
