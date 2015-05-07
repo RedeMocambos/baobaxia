@@ -152,7 +152,7 @@ class Media(models.Model):
         help_text=_('License of the media, like, cc, gpl, bsd, ...'),
         max_length=100, blank=True)
     repository = models.ForeignKey('repository.Repository')
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     is_local = models.BooleanField(
         _('is local'),
