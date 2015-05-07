@@ -136,6 +136,9 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         default_limit = 20
         limiting_params = []
+        """ fields that if passed will make a boolean check """
+        filter_fields = ['is_local', 'is_requested']
+
         if (args.find('limit') != -1):
             limiting_params = args.split('limit/')[1].split('/')
             limiting_params = [ int(x) for x in limiting_params ]
@@ -157,8 +160,6 @@ def media_list(request, repository, mucua, args=None, format=None):
             accepted_ordering = ['uuid', 'name', 'date', 'note', 'type', 'author', 'origin', 'format', 'license', 'repository', 'is_local', 'is_requested', 'num_copies']
             """ hack: author and origin must be django objects, but here will assume string form """
             hack_fields = ['author', 'origin']
-            """ fields that if passed will make a boolean check """
-            filter_fields = ['is_local', 'is_requested']
             for term in ordering_terms:
                 if ((term == 'asc') | (term == 'desc')):
                     if counting == 0:
