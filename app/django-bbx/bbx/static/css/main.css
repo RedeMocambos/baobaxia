@@ -50,7 +50,7 @@ a {text-decoration: none; color: #0E5E80}
  */
 #header {width: 100%; height: 215px; background-color: #fff; position: fixed; z-index:10 }
 #header-top {background: url('../images/faixabanner.png') repeat-x; height: 125px; background-color: #fff;  }
-#header-bottom { float:left; margin-left: 60px; width: 70%; height: 85px; border-bottom: 1px solid #fff; }
+#header-bottom { float:left; margin-left: 60px; width: 70%; height: 95px; border-bottom: 1px solid #fff; }
 #header-image {background: url('../images/cabecalho.png') no-repeat; margin: 0 auto; height: 80px }
 .posicoes {display: none}
 .home #header,
@@ -76,7 +76,7 @@ a {text-decoration: none; color: #0E5E80}
 .menu-itens .recent-1 {border: 2px solid #D5C590; opacity: 0.7}
 .menu-itens .recent-2 {border: 2px solid #D5C590; opacity: 0.5}
 .menu-itens .recent-3 {border: 2px solid #D5C590; opacity: 0.3}
-#menu li.redeoff div {width: 82px; height: 23px; background-image: url('../images/redeoff.png'); }
+#menu li.redeoff div {width: 72px; height: 23px; background-image: url('../images/redeoff.png'); }
 #menu li.redeon div {width: 82px; height: 27px; background-image: url('../images/redeon.png'); }
 #menu li.rede {padding: 0; border: 0}
 #menu li.mucua {}
@@ -273,7 +273,7 @@ td.status {font-weight: bold}
 .pagination .pagination-buttons {width: 100%; height: 12px}
 .pagination .pagination-buttons h3 {font-weight: bold; margin: 0}
 .pagination-buttons div {width: 105px }
-#pagination-top {height: 40px; margin-top: 40px}
+#pagination-top {height: 40px; margin-top: 45px}
 
 /*
  * functional tags
