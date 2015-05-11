@@ -15,7 +15,8 @@ for (var page = 1; page <= totalPages; page++) { %>
     backHtml = '',
     currentPage = page,	
     url = (url[url.length -1] === '/') ?  url.substr(0, url.length -1): url;  // remove '/' do final, se houver	 
-
+    jumpPage = 0;
+	
     // se proxima pagina menor que total, escreve link de next
     if (nextPage <= totalPages) {
       var nextLimit = ((page + 1) * itensPerPage) - itensPerPage + 1,
@@ -48,7 +49,7 @@ for (var page = 1; page <= totalPages; page++) { %>
 	<a href="<%= url %>/limit/<%= (page * itensPerPage) - itensPerPage + 1 %>/<%= itensPerPage  %>"><%= page %></a>
 	<% } else {
 	   if (jumpPage === 0) {
-	   %>...<%
+	   %>......<%
 	   }
    	jumpPage ++;
        } %>
