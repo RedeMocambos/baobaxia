@@ -7,9 +7,10 @@ define([
     'modules/media/model',
     'text!/templates/' + BBX.userLang + '/media/MediaView.html',
     'text!/templates/' + BBX.userLang + '/media/MessageRequest.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaDropMessage.html',
     'text!/templates/' + BBX.userLang + '/media/BackToSearch.html',
     'text!/templates/' + BBX.userLang + '/media/MucuaHasFile.html',
-], function($, _, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaViewTpl, MessageRequestTpl, BackToSearchTpl, MucuaHasFileTpl){
+], function($, _, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaViewTpl, MessageRequestTpl, MediaDropMessageTpl, BackToSearchTpl, MucuaHasFileTpl){
     
     var MediaView = Backbone.View.extend({
 	
@@ -20,7 +21,25 @@ define([
 		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
 		urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis',
 		userData = BBXFunctions.getFromCookie('userData');
-
+	    
+	    var askDrop = function() {
+		var config = BBX.config,		    
+		    dropMedia = confirm(MediaDropMessageTpl);
+		
+		if (dropMedia) {
+		    var urlDrop = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid + '/drop',
+			mediaDrop = new MediaModel([], {url: urlDrop});
+		    
+		    mediaDrop.fetch({
+			success: function() {
+			    setTimeout(function(){
+				window.location.reload();
+			    }, 500);
+			}
+		    });
+		}
+	    }
+	    
 	    if (userData) {
 		config.userData = userData;
 	    } else {
@@ -50,6 +69,7 @@ define([
 		$('#header-bottom').append(_.template(BackToSearchTpl, data));
 
 		$('#content').html(_.template(MediaViewTpl, data));
+		$('#drop-local-copy').on('click', function() {askDrop(media)});
 		if (!data.media.is_local) {
 		    $('#message-request').html(_.template(MessageRequestTpl, data));
 		}

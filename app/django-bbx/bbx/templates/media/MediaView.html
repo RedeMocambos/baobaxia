@@ -15,27 +15,27 @@
       
       <table class="block-title">
 	<tr>
-	  <td class="left">{% trans "By" %}</td>
+	  <td class="left">Por</td>
 	  <td class="right"><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>"><%= media.author.split('@')[0] %></a></td>
 	</tr>
 	<tr>
-	  <td class="left">{% trans "Date" %}</td>
+	  <td class="left">Data</td>
 	  <td class="right"><%= formatDate(media.date) %></td>
 	</tr>
 	<tr>
-	  <td class="left">{% trans "Mucua" %}</td>
+	  <td class="left">Mucua</td>
 	  <td class="right"><a href="<% print('#' + media.repository + '/' + media.origin) %>"><%= media.origin %></a></td>
 	</tr>
 	<tr>
-	  <td class="left">{% trans "Format" %}</td>
+	  <td class="left">Formato</td>
 	  <td class="right"><%= media.format %></td>
 	</tr>
 	<tr>
-	  <td class="left">{% trans "Size" %}</td>
+	  <td class="left">Tamanho</td>
 	  <td class="right">0GB</td>
 	</tr>
 	<tr>
-	  <td class="left">{% trans "License" %}</td>
+	  <td class="left">Licença</td>
 	  <td class="right license-image license-<%= media.license %>"></td>
 	</tr>
       </table>
@@ -53,11 +53,14 @@
       </div>
       <% } %>
       <div class="blocks">
-	<h3 class="quem-tem title">{% trans "who was this file?" %}</h3>	
+	<h3 class="quem-tem title">{% trans "Who was this file?" %}</h3>	
 	<p class="quem-tem">
 	  <span id="whereis">&nbsp;</span>
 	</p>
       </div>
+      <div class="blocks">
+	<p id="drop-local-copy">{% trans "Drop local copy" %}</p>	
+      </div>      
     </div>
     <!-- fim de inner sidebar -->
 
@@ -78,10 +81,10 @@
 	<% } else if (media.type == 'audio') { %>
 	<audio controls src="<%= media.url %>" />
 	<% } else if (media.type ='arquivo') { %>
-	<a href="<%= media.url %>" class="download" alt="{% trans "download" %}"><div class="download">&nbsp;</div>{% trans "download" %} </a>
+	<a href="<%= media.url %>" class="download" alt="baixar"><div class="download">&nbsp;</div>baixar </a>
 	<% } %>
       <% } else { %>
-      {% trans "No preview available" %}
+      Sem visualização disponível
       <% } %>
 
       <% if (media.note != '') { %>
@@ -95,9 +98,9 @@
     <% if (media.is_local) { %>
     <div class="blocks">
       <% if (media.type !=='arquivo') { %>
-      <a href="<%= media.url %>" class="download" alt="{% trans "download" %}"><div class="download">&nbsp;</div>{% trans "download" %} </a>
+      <a href="<%= media.url %>" class="download" alt="baixar"><div class="download">&nbsp;</div>baixar </a>
       <p class="">
-      {% trans "Local content" %}
+      Conteúdo local
       </p>
       <% } %>
     </div>
@@ -111,7 +114,7 @@
       </div>
       </div>
       <% } %>
-      <p class="uuid">{% trans "UUID:" %} <%= media.uuid %></p>
+      <p class="uuid">UUID: <%= media.uuid %></p>
     </div>
     <!-- bloco multimedia -->    
   </div>

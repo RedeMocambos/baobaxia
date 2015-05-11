@@ -565,7 +565,7 @@ def media_drop_copy(request, repository, mucua, uuid):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response(_(u"Dropped media of uuid %(uuid)s") % {'uuid': uuid})
+    return Response(_(u"Dropped media of uuid %(uuid)s") % (uuid))
 
 
 @api_view(['GET'])

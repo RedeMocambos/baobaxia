@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-07 17:05-0300\n"
+"POT-Creation-Date: 2015-05-11 17:21-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -73,7 +73,6 @@ msgid "Mocambola"
 msgstr ""
 
 #: bbx/templates/auth/LoginTemplate.html:26
-#: bbx/templates/media/MediaView.html:26
 msgid "Mucua"
 msgstr ""
 
@@ -258,6 +257,12 @@ msgstr ""
 msgid "mucua highlights"
 msgstr ""
 
+#: bbx/templates/media/MediaDropMessage.html:2
+msgid ""
+"Do you want to drop the local copy of this media? (Remember: after dropping, "
+"you still can request the content from another mucua)."
+msgstr ""
+
 #: bbx/templates/media/MediaGalleryCreate.html:4
 msgid "Create new gallery"
 msgstr ""
@@ -283,7 +288,6 @@ msgstr ""
 #: bbx/templates/media/MediaGalleryCreate.html:39
 #: bbx/templates/media/MediaGalleryEdit.html:32
 #: bbx/templates/media/MediaPublish.html:99
-#: bbx/templates/media/MediaView.html:38
 msgid "License"
 msgstr ""
 
@@ -348,7 +352,6 @@ msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:31
 #: bbx/templates/media/MediaPublish.html:88
-#: bbx/templates/media/MediaView.html:22
 msgid "Date"
 msgstr ""
 
@@ -376,8 +379,7 @@ msgstr ""
 msgid "Edit media"
 msgstr ""
 
-#: bbx/templates/media/MediaGrid.html:31 bbx/templates/media/MediaView.html:81
-#: bbx/templates/media/MediaView.html:98
+#: bbx/templates/media/MediaGrid.html:31
 msgid "download"
 msgstr ""
 
@@ -447,15 +449,15 @@ msgstr ""
 msgid "new content"
 msgstr ""
 
-#: bbx/templates/media/MediaPagination.html:21
+#: bbx/templates/media/MediaPagination.html:26
 msgid "next"
 msgstr ""
 
-#: bbx/templates/media/MediaPagination.html:29
+#: bbx/templates/media/MediaPagination.html:34
 msgid "back"
 msgstr ""
 
-#: bbx/templates/media/MediaPagination.html:47
+#: bbx/templates/media/MediaPagination.html:64
 msgid "total:"
 msgstr ""
 
@@ -472,12 +474,10 @@ msgid "File type"
 msgstr ""
 
 #: bbx/templates/media/MediaPublish.html:36
-#: bbx/templates/media/MediaView.html:84
 msgid "No preview available"
 msgstr ""
 
 #: bbx/templates/media/MediaPublish.html:54
-#: bbx/templates/media/MediaView.html:114
 msgid "UUID:"
 msgstr ""
 
@@ -486,7 +486,6 @@ msgid "Author"
 msgstr ""
 
 #: bbx/templates/media/MediaPublish.html:97
-#: bbx/templates/media/MediaView.html:30
 msgid "Format"
 msgstr ""
 
@@ -542,20 +541,12 @@ msgstr ""
 msgid "Media updated!"
 msgstr ""
 
-#: bbx/templates/media/MediaView.html:18
-msgid "By"
-msgstr ""
-
-#: bbx/templates/media/MediaView.html:34
-msgid "Size"
-msgstr ""
-
 #: bbx/templates/media/MediaView.html:56
-msgid "who was this file?"
+msgid "Who was this file?"
 msgstr ""
 
-#: bbx/templates/media/MediaView.html:100
-msgid "Local content"
+#: bbx/templates/media/MediaView.html:62
+msgid "Drop local copy"
 msgstr ""
 
 #: bbx/templates/media/MessageRequest.html:3
@@ -694,25 +685,25 @@ msgstr ""
 msgid "New media created"
 msgstr ""
 
-#: media/views.py:352
+#: media/views.py:361
 msgid "updated media - OK"
 msgstr ""
 
-#: media/views.py:355 media/views.py:418
+#: media/views.py:364 media/views.py:427
 msgid "error while creating media"
 msgstr ""
 
-#: media/views.py:548
+#: media/views.py:557
 #, python-format
 msgid "Requested media of uuid %(uuid)s"
 msgstr ""
 
-#: media/views.py:559
+#: media/views.py:568
 #, python-format
 msgid "Dropped media of uuid %(uuid)s"
 msgstr ""
 
-#: media/views.py:571
+#: media/views.py:580
 #, python-format
 msgid "Removed media of uuid %(uuid)s"
 msgstr ""

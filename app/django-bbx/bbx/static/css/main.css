@@ -51,6 +51,7 @@ a {text-decoration: none; color: #0E5E80}
 #header {width: 100%; height: 215px; background-color: #fff; position: fixed; z-index:10 }
 #header-top {background: url('../images/faixabanner.png') repeat-x; height: 125px; background-color: #fff;  }
 #header-bottom { float:left; margin-left: 60px; width: 70%; height: 95px; border-bottom: 1px solid #fff; }
+.media #header-bottom {height: 45px}
 #header-image {background: url('../images/cabecalho.png') no-repeat; margin: 0 auto; height: 80px }
 .posicoes {display: none}
 .home #header,
@@ -320,6 +321,7 @@ td.status {font-weight: bold}
 #media-view .download div {width: 21px; height: 21px; background: url('/images/download.png') no-repeat; }
 #media-view h3.quem-tem {margin-bottom: 4px; color: #fff}
 #media-view #whereis a {display: inline-block; border: 1px solid #ddd; background-color: #72a56e; padding: 2px; border-radius: 4px; margin-bottom: 4px; padding: 2px 4px 2px 4px}
+#media-view #drop-local-copy {cursor: pointer; font-weight: bold}
 
 #media-view a {color: #fff}
 #media-view .request-copy span {cursor: pointer}

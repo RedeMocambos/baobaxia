@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-07 17:05-0300\n"
+"POT-Creation-Date: 2015-05-11 17:21-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,7 +74,6 @@ msgid "Mocambola"
 msgstr "Mocambola"
 
 #: bbx/templates/auth/LoginTemplate.html:26
-#: bbx/templates/media/MediaView.html:26
 msgid "Mucua"
 msgstr "Mucua"
 
@@ -272,6 +271,14 @@ msgstr "Você quer apagar permanentemente essa mídia?"
 msgid "mucua highlights"
 msgstr "destaques da mucua"
 
+#: bbx/templates/media/MediaDropMessage.html:2
+msgid ""
+"Do you want to drop the local copy of this media? (Remember: after dropping, "
+"you still can request the content from another mucua)."
+msgstr ""
+"Você deseja apagar a cópua local dessa mídia? (Lembre-se: depois de apagar, "
+"você poderá solicitar a mídia novamente de outra mucua)."
+
 #: bbx/templates/media/MediaGalleryCreate.html:4
 msgid "Create new gallery"
 msgstr "Publicar nova galeria"
@@ -297,7 +304,6 @@ msgstr "Descrição"
 #: bbx/templates/media/MediaGalleryCreate.html:39
 #: bbx/templates/media/MediaGalleryEdit.html:32
 #: bbx/templates/media/MediaPublish.html:99
-#: bbx/templates/media/MediaView.html:38
 msgid "License"
 msgstr "Licença"
 
@@ -362,7 +368,6 @@ msgstr "Nome da mídia"
 
 #: bbx/templates/media/MediaGalleryEdit.html:31
 #: bbx/templates/media/MediaPublish.html:88
-#: bbx/templates/media/MediaView.html:22
 msgid "Date"
 msgstr "Data"
 
@@ -390,8 +395,7 @@ msgstr "Atualizar mídia"
 msgid "Edit media"
 msgstr "Editar mídia"
 
-#: bbx/templates/media/MediaGrid.html:31 bbx/templates/media/MediaView.html:81
-#: bbx/templates/media/MediaView.html:98
+#: bbx/templates/media/MediaGrid.html:31
 msgid "download"
 msgstr "baixar"
 
@@ -461,15 +465,15 @@ msgstr "conteúdo publicado pel@ mocambola"
 msgid "new content"
 msgstr "novo conteúdo"
 
-#: bbx/templates/media/MediaPagination.html:21
+#: bbx/templates/media/MediaPagination.html:26
 msgid "next"
 msgstr "avançar"
 
-#: bbx/templates/media/MediaPagination.html:29
+#: bbx/templates/media/MediaPagination.html:34
 msgid "back"
 msgstr "anterior"
 
-#: bbx/templates/media/MediaPagination.html:47
+#: bbx/templates/media/MediaPagination.html:64
 msgid "total:"
 msgstr "total:"
 
@@ -486,12 +490,10 @@ msgid "File type"
 msgstr "Tipo de arquivo"
 
 #: bbx/templates/media/MediaPublish.html:36
-#: bbx/templates/media/MediaView.html:84
 msgid "No preview available"
 msgstr "Sem visualização disponível"
 
 #: bbx/templates/media/MediaPublish.html:54
-#: bbx/templates/media/MediaView.html:114
 msgid "UUID:"
 msgstr "UUID:"
 
@@ -500,7 +502,6 @@ msgid "Author"
 msgstr "Author"
 
 #: bbx/templates/media/MediaPublish.html:97
-#: bbx/templates/media/MediaView.html:30
 msgid "Format"
 msgstr "Formato"
 
@@ -556,21 +557,13 @@ msgstr "Erro ao atualizar a mídia!"
 msgid "Media updated!"
 msgstr "Mídia atualizada!"
 
-#: bbx/templates/media/MediaView.html:18
-msgid "By"
-msgstr "Por"
-
-#: bbx/templates/media/MediaView.html:34
-msgid "Size"
-msgstr "Tamanho"
-
 #: bbx/templates/media/MediaView.html:56
-msgid "who was this file?"
+msgid "Who was this file?"
 msgstr "quem tem esse arquivo?"
 
-#: bbx/templates/media/MediaView.html:100
-msgid "Local content"
-msgstr "Conteúdo local"
+#: bbx/templates/media/MediaView.html:62
+msgid "Drop local copy"
+msgstr "Apagar cópia local"
 
 #: bbx/templates/media/MessageRequest.html:3
 msgid "local copy requested - pending"
@@ -708,23 +701,23 @@ msgstr "Essa mídia já existe. Atualizada."
 msgid "New media created"
 msgstr "Nova mídia criada"
 
-#: media/views.py:352
+#: media/views.py:361
 msgid "updated media - OK"
 msgstr "mídia atualizada - OK"
 
-#: media/views.py:355 media/views.py:418
+#: media/views.py:364 media/views.py:427
 msgid "error while creating media"
 msgstr "erro ao criar a mídia"
 
-#: media/views.py:548
+#: media/views.py:557
 msgid "Requested media of uuid %(uuid)s"
 msgstr "Mídia de uuid %s requisitada"
 
-#: media/views.py:559
+#: media/views.py:568
 msgid "Dropped media of uuid %(uuid)s"
-msgstr "Removida mídia de uuid %uuid"
+msgstr "Removida mídia de uuid %s"
 
-#: media/views.py:571
+#: media/views.py:580
 msgid "Removed media of uuid %(uuid)s"
 msgstr "Mídia de uuid %s requisitada"
 
@@ -824,6 +817,18 @@ msgstr "Problema ao remover mídia"
 #: repository/management/commands/bbxsync.py:46
 msgid "Revision is"
 msgstr "Revisão é"
+
+#~ msgid "By"
+#~ msgstr "Por"
+
+#~ msgid "Size"
+#~ msgstr "Tamanho"
+
+#~ msgid "who was this file?"
+#~ msgstr "quem tem esse arquivo?"
+
+#~ msgid "Local content"
+#~ msgstr "Conteúdo local"
 
 #~ msgid "list of mucuas"
 #~ msgstr "lista de mucuas"
