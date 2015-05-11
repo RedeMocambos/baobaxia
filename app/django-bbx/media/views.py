@@ -1,6 +1,7 @@
 from os import path
 from datetime import datetime
 import json
+import re
 
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
@@ -119,9 +120,8 @@ def media_list(request, repository, mucua, args=None, format=None):
         [repository]/[mucua]/search/video/quilombo/orderby/title/limit/5
         [repository]/[mucua]/search/video/quilombo/orderby/type/desc/name/asc/limit/5
         [repository]/[mucua]/search/video/quilombo/orderby/author/desc
-
-        TODO: still failling when receives incomplete urls. i.e.:
-        [repository]/[mucua]/search/video/quilombo/orderby/title/limit/5
+        [repository]/[mucua]/search/video/quilombo/is_local
+        [repository]/[mucua]/search/video/quilombo/is_requested
         """
         
         """  if passed, get limiting rules """
@@ -137,6 +137,9 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         default_limit = 20
         limiting_params = []
+        """ fields that if passed will make a boolean check """
+        filter_fields = ['is_local', 'is_requested']
+
         if (args.find('limit') != -1):
             limiting_params = args.split('limit/')[1].split('/')
             limiting_params = [ int(x) for x in limiting_params ]
@@ -144,11 +147,10 @@ def media_list(request, repository, mucua, args=None, format=None):
         else:
             limiting_params.append(default_limit)
 
-        
         """ if passed, get ordering rules """
         ordering_sql = ''
         ordering_params = []
-        default_ordering = 'name ASC'
+        default_ordering = 'date DESC'
         if (args.find('orderby/') != -1):
             ordering_terms = args.split('orderby/')[1].split('/')
             ordering_list = []
@@ -163,6 +165,9 @@ def media_list(request, repository, mucua, args=None, format=None):
                     if counting == 0:
                         continue
                     ordering_sql += ' ' + term + ','
+                elif (term in filter_fields):
+                    # check if needed
+                    continue
                 else:
                     if (term in accepted_ordering):
                         if (term in hack_fields):
@@ -189,7 +194,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         """ appends repository id """
         params.append(repository.id)
-
+        
         """ compose query string for terms """
         term_sql = ""
         args = args.rstrip('/')
@@ -197,7 +202,12 @@ def media_list(request, repository, mucua, args=None, format=None):
             term_index = 0
             for term in args.split('/'):
                 term = str(term.encode('utf-8'))
-                if (term in [key for (key, type_choice) in getTypeChoices() if
+                if (term in filter_fields):
+                    if (term_index > 0):
+                        term_sql += " AND "
+                    term_sql += term + "=1"
+                    
+                elif (term in [key for (key, type_choice) in getTypeChoices() if
                             term == type_choice]):
                     if (term_index > 0):
                         term_sql += " AND " 
@@ -209,6 +219,14 @@ def media_list(request, repository, mucua, args=None, format=None):
                              term == format_choice]:
                     term_sql += " format LIKE ? "
                     params.append("%" + term + "%")
+
+                # suporte a busca de mocambola
+                elif re.search('[^@]+@[^@]+\.[^@]+', term):
+                    if (term_index > 0):
+                        term_sql += " AND " 
+                    term_sql += ' u.username = ? '
+                    params.append(term)
+                    
                 else:
                     if (term_index > 0):
                         term_sql += " AND " 
@@ -250,7 +268,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         WHERE (" + origin_sql + " repository_id = ? ) " + term_sql
 
         if not return_count:
-            sql += "ORDER BY " + ordering_sql
+            sql += " ORDER BY " + ordering_sql
 
         if len(limiting_params) == 1:
             sql += " LIMIT ?"
@@ -261,10 +279,11 @@ def media_list(request, repository, mucua, args=None, format=None):
         params.extend(limiting_params)
         medias = Media.objects.raw(sql, params)
         
-        """ sql log
+        """ sql log & params
         logger.info('sql: ' + sql)
+        for i in params:
+            logger.info(i)
         """
-        
         # serializa e da saida
         if (return_count):
             response_count = {

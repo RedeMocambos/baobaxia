@@ -64,6 +64,21 @@
 	<input type="hidden" name="format" id="format" value="<%= media.format %>">
 	<input type="hidden" name="uuid" id="uuid" value="<%= media.uuid %>">
 
+	<p class="preview">
+	  <% if (media.type === 'imagem') { %>
+	  <a href="<%= media.url %>" class="media-image-container">
+	    <img id="media-<%= media.uuid %>" class="image-tmp" src="images/icon-imagem.png" />
+	    <% parseThumb(media, params); %>
+	  </a>
+	  <% } else if (media.type == 'video') { %>
+	  <video controls src="<%= media.url %>" width="130" />
+	  <% } else if (media.type == 'audio') { %>
+	  <audio controls src="<%= media.url %>" width="130" />
+	  <% } else if (media.type ='arquivo') { %>
+	  <a href="<%= media.url %>" class="download">download</a>
+	  <% } %>
+	</p>
+	
 	<p class="autor">
 	  <span class="title">{% trans "Author" %}</span><br/>
 	  <a href='<% print('#/mocambola/' + media.author) %>'><%= media.author %></a>

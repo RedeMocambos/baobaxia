@@ -79,8 +79,10 @@ define([
 	    
 	    // comeca acao da funcao render
 	    var config = BBX.config,   
-	    urlApi = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid,
-	    urlMediaView = config.interfaceUrl + config.repository + '/' +  config.mucua + '/media/' + uuid;
+		urlApi = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid,
+		urlMediaView = config.interfaceUrl + config.repository + '/' +  config.mucua + '/media/' + uuid,
+		params = {'width': 190, 'height': 132 };
+	    
 	    BBXFunctions.renderSidebar();
 
 	    $('head').append('<link rel="stylesheet" href="/css/textext.core.css" type="text/css" />');		    
@@ -97,6 +99,8 @@ define([
 			urlMediaView: urlMediaView,
 			types: MediaFunctions.getMediaTypes(),
 			licenses: MediaFunctions.getMediaLicenses(),
+			parseThumb: MediaFunctions.parseThumb,
+			params: params,
 			page: 'MediaUpdate',
 			pageTitle: 'Editar conteúdo'
 		    }
@@ -142,7 +146,7 @@ define([
 				    $('.buttons').prepend(MediaRemoveMessageTpl);
 				    setTimeout(function(){
 					window.location.href = urlRedirect;
-				    }, 2000);
+				    }, 1000);
 				}
 			    });
 			}	

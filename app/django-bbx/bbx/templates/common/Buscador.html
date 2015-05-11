@@ -8,7 +8,15 @@
       <textarea class="caixa_busca" id="caixa_busca"></textarea>
     </form>
   </div>
-</div>
+  <div id="search-options">
+    <span>
+      <input type="checkbox" name="is_local" id="is_local"> {% trans "Is local" %}
+    </span>
+    <span>
+      <input type="checkbox" name="is_requested" id="is_requested"> {% trans "Is requested" %}
+    </span>
+  </div>
+</div> 
 <div id="header-results">
   <div id="result-string"></div>
   <div id="back-to-results" class="menu-buscador"></div>

@@ -33,7 +33,8 @@ except ImportError:
 TYPE_CHOICES = (('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'),
                 ('arquivo', 'arquivo'))
 FORMAT_CHOICES = (('ogg', 'ogg'), ('ogv', 'ogv'), ('webm', 'webm'), ('mp4', 'mp4'), ('mp3', 'mp3'),
-                  ('jpg', 'jpg'), ('png', 'png'), ('pdf', 'pdf'), ('gif', 'gif'), ('odp', 'odp'), ('odt', 'odt'))
+                  ('jpg', 'jpg'), ('png', 'png'), ('pdf', 'pdf'), ('gif', 'gif'), ('odp', 'odp'), 
+                  ('odt', 'odt'), ('oga','oga'))
 
 
 def get_now():
@@ -151,7 +152,7 @@ class Media(models.Model):
         help_text=_('License of the media, like, cc, gpl, bsd, ...'),
         max_length=100, blank=True)
     repository = models.ForeignKey('repository.Repository')
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     is_local = models.BooleanField(
         _('is local'),
@@ -203,8 +204,6 @@ class Media(models.Model):
     def set_is_local(self):
         self.is_local = os.path.isfile(os.path.join(get_file_path(self),
                                                     self.get_file_name()))
-        if self.is_local:
-            self.is_requested = False
 
     def _set_num_copies(self):
         from repository.models import git_annex_where_is

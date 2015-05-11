@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-15 18:51-0300\n"
+"POT-Creation-Date: 2015-05-07 17:05-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,7 +79,7 @@ msgstr ""
 
 #: bbx/templates/auth/LoginTemplate.html:35
 #: bbx/templates/auth/Register.html:36 media/serializers.py:150
-#: repository/models.py:544
+#: repository/models.py:547
 msgid "Repository"
 msgstr ""
 
@@ -128,6 +127,14 @@ msgstr ""
 msgid "User already exists!"
 msgstr ""
 
+#: bbx/templates/common/Buscador.html:13
+msgid "Is local"
+msgstr ""
+
+#: bbx/templates/common/Buscador.html:16
+msgid "Is requested"
+msgstr ""
+
 #: bbx/templates/common/Footer.html:2
 msgid "Footer"
 msgstr ""
@@ -169,10 +176,6 @@ msgstr ""
 msgid "more info"
 msgstr ""
 
-#: bbx/templates/common/MucuaProfile.html:11
-msgid "list of mucuas"
-msgstr ""
-
 #: bbx/templates/common/SearchTagsMenu.html:17
 msgid "Add term to search"
 msgstr ""
@@ -181,9 +184,14 @@ msgstr ""
 msgid "do login"
 msgstr ""
 
-#: bbx/templates/common/Sidebar.html:8 bbx/templates/common/Sidebar.html:9
-#: bbx/templates/common/Sidebar.html:10 bbx/templates/common/Sidebar.html:11
-msgid "cloud"
+#: bbx/templates/common/Sidebar.html:9
+#: bbx/templates/media/MediaGalleryEdit.html:21
+#: bbx/templates/media/MediaList.html:19 bbx/templates/media/MediaList.html:39
+msgid "tags"
+msgstr ""
+
+#: bbx/templates/common/Sidebar.html:10
+msgid "mucuas"
 msgstr ""
 
 #: bbx/templates/common/Sobre.html:4
@@ -256,7 +264,7 @@ msgstr ""
 
 #: bbx/templates/media/MediaGalleryCreate.html:20
 #: bbx/templates/media/MediaPublish.html:11
-#: bbx/templates/media/MediaPublish.html:78
+#: bbx/templates/media/MediaPublish.html:93
 msgid "Origin"
 msgstr ""
 
@@ -274,7 +282,7 @@ msgstr ""
 
 #: bbx/templates/media/MediaGalleryCreate.html:39
 #: bbx/templates/media/MediaGalleryEdit.html:32
-#: bbx/templates/media/MediaPublish.html:84
+#: bbx/templates/media/MediaPublish.html:99
 #: bbx/templates/media/MediaView.html:38
 msgid "License"
 msgstr ""
@@ -310,25 +318,20 @@ msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:18
 #: bbx/templates/media/MediaList.html:8 bbx/templates/media/MediaList.html:28
-#: media/models.py:114 repository/models.py:472
+#: media/models.py:125 repository/models.py:475
 msgid "name"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:19
 #: bbx/templates/media/MediaList.html:12 bbx/templates/media/MediaList.html:32
-#: media/models.py:119
+#: media/models.py:130
 msgid "date"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:20
 #: bbx/templates/media/MediaList.html:13 bbx/templates/media/MediaList.html:33
-#: media/models.py:140
+#: media/models.py:151
 msgid "license"
-msgstr ""
-
-#: bbx/templates/media/MediaGalleryEdit.html:21
-#: bbx/templates/media/MediaList.html:19 bbx/templates/media/MediaList.html:39
-msgid "tags"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:22
@@ -344,7 +347,7 @@ msgid "Name of media"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:31
-#: bbx/templates/media/MediaPublish.html:73
+#: bbx/templates/media/MediaPublish.html:88
 #: bbx/templates/media/MediaView.html:22
 msgid "Date"
 msgstr ""
@@ -383,7 +386,7 @@ msgid "author"
 msgstr ""
 
 #: bbx/templates/media/MediaList.html:10 bbx/templates/media/MediaList.html:30
-#: media/models.py:135
+#: media/models.py:146
 msgid "format"
 msgstr ""
 
@@ -392,7 +395,7 @@ msgid "origin"
 msgstr ""
 
 #: bbx/templates/media/MediaList.html:14 bbx/templates/media/MediaList.html:34
-#: media/models.py:130
+#: media/models.py:141
 msgid "type"
 msgstr ""
 
@@ -400,7 +403,7 @@ msgstr ""
 msgid "copies"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:16 media/models.py:147
+#: bbx/templates/media/MediaList.html:16 media/models.py:158
 msgid "is local"
 msgstr ""
 
@@ -478,36 +481,36 @@ msgstr ""
 msgid "UUID:"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:68
+#: bbx/templates/media/MediaPublish.html:83
 msgid "Author"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:82
+#: bbx/templates/media/MediaPublish.html:97
 #: bbx/templates/media/MediaView.html:30
 msgid "Format"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:92
+#: bbx/templates/media/MediaPublish.html:107
 msgid "Availability"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:94
+#: bbx/templates/media/MediaPublish.html:109
 msgid "Description"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:104
+#: bbx/templates/media/MediaPublish.html:119
 msgid "Delete media"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:109
+#: bbx/templates/media/MediaPublish.html:124
 msgid "View media"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:116
+#: bbx/templates/media/MediaPublish.html:131
 msgid "Update"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:116
+#: bbx/templates/media/MediaPublish.html:131
 msgid "Upload file"
 msgstr ""
 
@@ -587,91 +590,91 @@ msgstr ""
 msgid "Template does not exists: "
 msgstr ""
 
-#: lang/management/commands/update_templates.py:28
-msgid "Updating templates..."
-msgstr ""
-
-#: lang/management/commands/update_templates.py:37
+#: lang/management/commands/update_templates.py:50
 msgid "Language code not supported:"
 msgstr ""
 
-#: lang/management/commands/update_templates.py:53
+#: lang/management/commands/update_templates.py:57
+msgid "Updating templates..."
+msgstr ""
+
+#: lang/management/commands/update_templates.py:65
 msgid "...created folder "
 msgstr ""
 
-#: lang/management/commands/update_templates.py:57
+#: lang/management/commands/update_templates.py:69
 msgid "Parsing templates: "
 msgstr ""
 
-#: media/models.py:111
+#: media/models.py:122
 msgid "uuid"
 msgstr ""
 
-#: media/models.py:112
+#: media/models.py:123
 msgid "Media universal unique identifier"
 msgstr ""
 
-#: media/models.py:113
+#: media/models.py:124
 msgid "No UUID"
 msgstr ""
 
-#: media/models.py:115
+#: media/models.py:126
 msgid "Media name"
 msgstr ""
 
-#: media/models.py:116
+#: media/models.py:127
 msgid "No title"
 msgstr ""
 
-#: media/models.py:118
+#: media/models.py:129
 msgid "URL"
 msgstr ""
 
-#: media/models.py:120
+#: media/models.py:131
 msgid "Media creation date"
 msgstr ""
 
-#: media/models.py:121
+#: media/models.py:132
 msgid "last modified"
 msgstr ""
 
-#: media/models.py:123
+#: media/models.py:134
 msgid "Last change"
 msgstr ""
 
-#: media/models.py:124
+#: media/models.py:135
 msgid "note"
 msgstr ""
 
-#: media/models.py:125 repository/models.py:478
+#: media/models.py:136 repository/models.py:481
 msgid "Note.. use as you wish!"
 msgstr ""
 
-#: media/models.py:131
+#: media/models.py:142
 msgid "Type of the media, like image, document, video, ..."
 msgstr ""
 
-#: media/models.py:141
+#: media/models.py:152
 msgid "License of the media, like, cc, gpl, bsd, ..."
 msgstr ""
 
-#: media/models.py:148
+#: media/models.py:159
 msgid "True if media content is available locally"
 msgstr ""
 
-#: media/models.py:151
+#: media/models.py:162
 msgid "is requested"
 msgstr ""
 
-#: media/models.py:152
+#: media/models.py:163
 msgid "True if media content is awaiting a local copy"
 msgstr ""
 
-#: media/models.py:157
+#: media/models.py:168
 msgid "number of copies"
 msgstr ""
 
-#: media/models.py:158
+#: media/models.py:169
 msgid "Number of copies of the media in the repository"
 msgstr ""
 
@@ -691,25 +694,25 @@ msgstr ""
 msgid "New media created"
 msgstr ""
 
-#: media/views.py:342
+#: media/views.py:352
 msgid "updated media - OK"
 msgstr ""
 
-#: media/views.py:345 media/views.py:408
+#: media/views.py:355 media/views.py:418
 msgid "error while creating media"
 msgstr ""
 
-#: media/views.py:538
+#: media/views.py:548
 #, python-format
 msgid "Requested media of uuid %(uuid)s"
 msgstr ""
 
-#: media/views.py:549
+#: media/views.py:559
 #, python-format
 msgid "Dropped media of uuid %(uuid)s"
 msgstr ""
 
-#: media/views.py:561
+#: media/views.py:571
 #, python-format
 msgid "Removed media of uuid %(uuid)s"
 msgstr ""
@@ -759,51 +762,51 @@ msgstr ""
 msgid "Territory %s deleted"
 msgstr ""
 
-#: repository/models.py:473
+#: repository/models.py:476
 msgid "Repository name taken from available repositories"
 msgstr ""
 
-#: repository/models.py:477
+#: repository/models.py:480
 msgid "notes"
 msgstr ""
 
-#: repository/models.py:482
+#: repository/models.py:485
 msgid "synchronize"
 msgstr ""
 
-#: repository/models.py:483
+#: repository/models.py:486
 msgid "Tick here to enablesyncronization of this repository"
 msgstr ""
 
-#: repository/models.py:488
+#: repository/models.py:491
 msgid "repository"
 msgstr ""
 
-#: repository/models.py:489
+#: repository/models.py:492
 msgid "repositories"
 msgstr ""
 
-#: repository/models.py:543
+#: repository/models.py:546
 msgid "CLEANING"
 msgstr ""
 
-#: repository/models.py:550
+#: repository/models.py:553
 msgid "Deleting media"
 msgstr ""
 
-#: repository/models.py:555
+#: repository/models.py:558
 msgid "Fingerprint"
 msgstr ""
 
-#: repository/models.py:558
+#: repository/models.py:561
 msgid "Media deleted."
 msgstr ""
 
-#: repository/models.py:561
+#: repository/models.py:564
 msgid "Media doesn't exist"
 msgstr ""
 
-#: repository/models.py:564
+#: repository/models.py:567
 msgid "Delete problem"
 msgstr ""
 

@@ -66,7 +66,8 @@ class Command(BaseCommand):
                                         requests.append(name)                        
                                         if request_uuid not in requests:
                                             git_annex_drop(media)
-                                            
+                        else: 
+                            media.is_requested = False                    
                         media.save()
                     else:
                         repository_path = os.path.join(REPOSITORY_DIR, media.get_repository())

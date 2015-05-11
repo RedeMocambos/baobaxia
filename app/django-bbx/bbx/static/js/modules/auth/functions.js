@@ -83,13 +83,15 @@ define([
 	    urlRedirect = BBXFunctions.getFromCookie('redirect_url')[0];
 	} else {
 	    urlRedirect = defaultUrlRedirect;
-	}	
+	}
+	
 	//timeout nessa parte de baixo
 	var loginOK = setInterval(function() {
 	    var userData = {'name': 'userData',
 			    'values': BBX.config.userData
 			   }
-	    if (typeof userData.values !== 'undefined') {
+	    
+	    if (!_.isEmpty(userData.values)) {
 		// set cookie that expires in one day
 		BBXFunctions.addToCookie(userData);
 		BBX.config.userData = userData;
@@ -119,15 +121,15 @@ define([
 
     var __checkUser = function(registerData) {
 	// verify if exists any user with that username
-	var mocambola = new MocambolaModel(registerData, 					       
-					   {url: BBX.config.apiUrl + '/' + registerData.repository + '/' + registerData.mucua + '/mocambola/' + registerData.email});
+	var mocambola = null;
+	
+	mocambola = new MocambolaModel(registerData, 					       
+				       {url: BBX.config.apiUrl + '/' + registerData.repository + '/' + registerData.mucua + '/mocambola/' + registerData.email});
 	mocambola.fetch({
 	    success: function() {
-		// if user exists, raises error
-		if (mocambola.attributes.error === false) {
-		    var message = UserExistsTpl;
-		    $("#message-area").html(UserExistsTpl);
-		} else {
+		// se retorna erro de usuario nao encontrado, segue. Registra usuario.
+		// busca usuarios. Se retorna usuario, ele ja existe. Avisa erro de usuario existe.
+		if (mocambola.attributes.error === true) {
 		    // if not exists, continue and register the user
 		    mocambola = new MocambolaModel(registerData, 					       
 						   {url: BBX.config.apiUrl + '/mocambola/register'});
@@ -140,6 +142,10 @@ define([
 				doLogin(userData);
 			    }
 			})		
+		} else {
+		    console.log('usuario ja existe. erro');
+		    var message = UserExistsTpl;
+		    $("#message-area").html(UserExistsTpl);
 		}
 	    }
 	});
@@ -172,7 +178,7 @@ define([
 	    });
 	    return false;
 	} else {
-	    __checkUser(postData);		
+	    __checkUser(postData);
 	}
     }
 	

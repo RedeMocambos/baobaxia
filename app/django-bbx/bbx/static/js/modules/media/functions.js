@@ -76,7 +76,17 @@ define([
 	    }
 	
 	$(target).html(_.template(ResultsMessageTpl, data));	
-    };    
+    };
+
+
+    /**
+     * Retorna campos de opções de busca válidos
+     *
+     * @returns {Array} Array com opções de busca válidos
+     */
+    var __getValidSearchOptions = function() {
+	return ['is_local', 'is_requested'];
+    }
 
     /**
      * Define url de busca
@@ -85,7 +95,8 @@ define([
      * @returns {String} String URL com busca a partir das tags recebidas
      */        
     var __parseUrlSearch = function(tags) {
-	var config = __getConfig();
+	var config = __getConfig(),
+	    validSearchOptions = __getValidSearchOptions();
 	
 	if (_.isArray(tags)) {
 	    tags = tags.join('/');
@@ -96,6 +107,18 @@ define([
 	    tags = (tags[0] === '/') ? tags.substring(1, tags.length) : tags;
 	}
 	tags = tags.replace('//', '/');
+	if (tags[tags.length -1] === '/') {
+	    tags = tags.substring[tags.length -2];
+	}
+	    
+	// adiciona opcao de busca se existir
+	_.each(validSearchOptions, function(optionSearch) {
+	    if ($('#' + optionSearch).attr('checked')) {
+		if (!tags.match(optionSearch)) {
+		    tags += '/'+ optionSearch;
+		}
+	    }
+	});
 	
 	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + tags;
     }
@@ -157,8 +180,14 @@ define([
 	    data = {},
 	    tags_arr = __getTagsFromUrl(),
 	    tags_str = tags_arr.join('/'),
-	    urlApiTags = config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
-
+	    urlApiTags = config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/',
+	    validSearchOptions = __getValidSearchOptions();
+	
+	// remove opcoes de busca da exibição dos termos
+	_.each(validSearchOptions, function(optionSearch) {
+	    tags_arr = _.without(tags_arr, optionSearch);
+	});
+	
 	if (!_.isEmpty(tags_arr)) {
 	    $('#caixa_busca').val('');
 	} else {
@@ -456,6 +485,7 @@ define([
 		'limit': limit,
 		'offset': offset,
 		'totalPages': null,
+		'maxPages': 9,
 		'url': urlInterface
 	    },
 	    media = new MediaModel([], {url: urlApi});
@@ -1021,7 +1051,8 @@ define([
 	if (limit !== '') {
 	    url += '/limit/' + limit;
 	}
-	
+
+	// chama getMedia passando funcao especifica
 	getMedia(url, function(data) {
 	    __parseMenuSearch();	    
 	    var __getFormData = function(uuid) {
@@ -1068,9 +1099,7 @@ define([
 		$('#media-gallery-edit tbody').append(_.template(MediaGalleryEditItemTpl, data));
 	    });
 
-	    // TODO: passar para user preferences
-	    
-	    
+	    // TODO: passar active_columns para user preferences (sessão/cookie)
 	    var active_columns = ['thumb', 'name', 'date', 'license', 'tags'],
 		toggle_columns = function(column_name) {
 		    var el_name = '.' + column_name + ' input',
@@ -1119,6 +1148,12 @@ define([
 		console.log('save all');
 		var uuidObjects = $('.uuid'),
 		    mediaData = {};
+
+		// define tmp no escopo global
+		BBX.tmp.objects_count = uuidObjects.length;
+		BBX.tmp.objects_saved = 0;
+		$('thead .operations div').removeClass('save-all');
+		$('thead .operations div').addClass('saving-all');
 		
 		_.each(uuidObjects, function(uuid) {
 		    uuid = uuid.value;
@@ -1127,7 +1162,16 @@ define([
 		    __updateMedia(mediaData, function(ok) {
 			var elem = '#uuid-' + uuid;
 			if (ok) {
+			    BBX.tmp.objects_saved += 1;
 			    $(elem).css('background-image', 'url(../images/saved-pq.png)');
+			    if (BBX.tmp.objects_saved === BBX.tmp.objects_count) {
+				BBX.tmp.objects_saved = undefined;
+				BBX.tmp.objects_count = undefined;
+				console.log('salvou tudo');
+
+				$('thead .operations div').addClass('save-all');
+				$('thead .operations div').removeClass('saving-all');
+			    }			    
 			} else {
 			    $(elem).css('background-image', 'url(../images/error.png)');
 			    $(elem).append( MediaUpdateErrorMessageTpl);
@@ -1448,6 +1492,7 @@ define([
 	mediaSearchSort: mediaSearchSort,
 	getTagCloudBySearch: getTagCloudBySearch,
 	getTagCloudByMucua: getTagCloudByMucua,
+	__getValidSearchOptions: __getValidSearchOptions,
 	__getTagsFromUrl: __getTagsFromUrl,
 	__parseMenuSearch: __parseMenuSearch,
 	parseThumb: parseThumb,

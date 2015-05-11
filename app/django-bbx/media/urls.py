@@ -16,9 +16,9 @@ urlpatterns = patterns(
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/last',
         'media_last'),
     url(r'^(?P<repository>\w+)/(?P<mucua>rede)/bbx/search/' +
-        '(?P<args>[\w\/\-_\ ]*)$', 'media_list'),
+        '(?P<args>[\w\/\-_\ \@\.]*)$', 'media_list'),
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/bbx/search/' +
-        '(?P<args>[\w\/\-_\ ]*)$', 'media_list'),
+        '(?P<args>[\w\/\-_\ \@\.]*)$', 'media_list'),
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/mocambola/' +
         '(?P<username>[a-zA-Z0-9\-\.@]+)/media/limit/(?P<limit>[0-9]+)', 'media_by_mocambola'),
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/mocambola/' +

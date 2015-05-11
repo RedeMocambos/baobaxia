@@ -45,10 +45,10 @@ define([
      * @return {Bool} if there's a session opened
      */
     var isLogged = function() {
-	if (getFromCookie('userData')) {
-	    // TODO: add some session check	   
+	if (!_.isEmpty(getFromCookie('userData'))) {
+	    // TODO: add some session check	   	    
 	    return true;
-	} else { 
+	} else {
 	    return false;
 	}
     }
