@@ -130,11 +130,11 @@ msgstr "Usuári@ já existe!"
 
 #: bbx/templates/common/Buscador.html:13
 msgid "Is local"
-msgstr "é local"
+msgstr "local"
 
 #: bbx/templates/common/Buscador.html:16
 msgid "Is requested"
-msgstr "é requisitado"
+msgstr "requisitado"
 
 #: bbx/templates/common/Footer.html:2
 msgid "Footer"
