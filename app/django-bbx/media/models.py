@@ -252,7 +252,7 @@ class Media(models.Model):
             self.save()
         
 
-    def request_copy(self):
+    def request_copy(self, save=True):
         u"""
         Gera um pedido de copia local do media
 
@@ -266,7 +266,8 @@ class Media(models.Model):
         self.set_is_local()
         if not self.is_local:
             self.is_requested = True
-            self.save()
+            if save:
+                self.save()
             try:
                 requests_path = os.path.join(REPOSITORY_DIR, self.get_repository(), 
                                                 DEFAULT_MUCUA,
@@ -302,6 +303,9 @@ class Media(models.Model):
             print self.num_copies
         self.url = self.get_url()
         last_modified = get_now()
+
+        if not self.is_local and self.is_requested:
+            self.request_copy(save=False)
 
         if is_syncing:
             self.is_syncing = True
