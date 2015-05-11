@@ -2,14 +2,18 @@
 <div class="pagination-pages">
 <%
 // laço percorre páginas para montar paginador
+var pageNumber = 1,
+jumpPage = 0;
 for (var page = 1; page <= totalPages; page++) { %>
-   <div><%
+     <%
   // se for pagina atual
-  if (((limit + offset - 1) /itensPerPage) === page) {
+  var currentPage = (limit + offset -1) / itensPerPage;
+  if (currentPage === page) {
     var nextPage = page + 1,
     backPage = page - 1,
     nextHtml = '',
     backHtml = '',
+    currentPage = page,	
     url = (url[url.length -1] === '/') ?  url.substr(0, url.length -1): url;  // remove '/' do final, se houver	 
 
     // se proxima pagina menor que total, escreve link de next
@@ -30,13 +34,25 @@ for (var page = 1; page <= totalPages; page++) { %>
     } else {
       backHtml = '';
     }%>
-     <strong><%= page %></strong>
-     <%
+     <div>
+       <strong><%= page %></strong>
+     </div>
+      <%
   // se for outra página que não a atual
-  } else { %>
-     <a href="<%= url %>/limit/<%= (page * itensPerPage) - itensPerPage + 1 %>/<%= itensPerPage  %>"><%= page %></a>
-     <% } %>
-   </div>
+	} else {
+	if ((page >= currentPage - maxPages && page <= currentPage + maxPages)
+	       ||
+             (page === 1 || page === totalPages)
+	     ) {
+	%>
+	<a href="<%= url %>/limit/<%= (page * itensPerPage) - itensPerPage + 1 %>/<%= itensPerPage  %>"><%= page %></a>
+	<% } else {
+	   if (jumpPage === 0) {
+	   %>...<%
+	   }
+   	jumpPage ++;
+       } %>
+   <% } %>
    <% } %>
 </div>
 <div class="pagination-buttons">

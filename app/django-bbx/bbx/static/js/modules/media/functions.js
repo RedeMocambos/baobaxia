@@ -485,6 +485,7 @@ define([
 		'limit': limit,
 		'offset': offset,
 		'totalPages': null,
+		'maxPages': 9,
 		'url': urlInterface
 	    },
 	    media = new MediaModel([], {url: urlApi});
