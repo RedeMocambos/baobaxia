@@ -48,7 +48,7 @@ a {text-decoration: none; color: #0E5E80}
 /*
  * header
  */
-#header {width: 100%; height: 215px; background-color: #fff; position: fixed; z-index:10 }
+#header {width: 100%; height: 224px; background-color: #fff; position: fixed; z-index:10 }
 #header-top {background: url('../images/faixabanner.png') repeat-x; height: 125px; background-color: #fff;  }
 #header-bottom { float:left; margin-left: 60px; width: 70%; height: 95px; border-bottom: 1px solid #fff; }
 .media #header-bottom {height: 45px}
