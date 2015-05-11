@@ -1,6 +1,7 @@
 from os import path
 from datetime import datetime
 import json
+import re
 
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
@@ -146,7 +147,6 @@ def media_list(request, repository, mucua, args=None, format=None):
         else:
             limiting_params.append(default_limit)
 
-        
         """ if passed, get ordering rules """
         ordering_sql = ''
         ordering_params = []
@@ -194,7 +194,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         """ appends repository id """
         params.append(repository.id)
-
+        
         """ compose query string for terms """
         term_sql = ""
         args = args.rstrip('/')
@@ -219,6 +219,14 @@ def media_list(request, repository, mucua, args=None, format=None):
                              term == format_choice]:
                     term_sql += " format LIKE ? "
                     params.append("%" + term + "%")
+
+                # suporte a busca de mocambola
+                elif re.search('[^@]+@[^@]+\.[^@]+', term):
+                    if (term_index > 0):
+                        term_sql += " AND " 
+                    term_sql += ' u.username = ? '
+                    params.append(term)
+                    
                 else:
                     if (term_index > 0):
                         term_sql += " AND " 
@@ -260,7 +268,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         WHERE (" + origin_sql + " repository_id = ? ) " + term_sql
 
         if not return_count:
-            sql += "ORDER BY " + ordering_sql
+            sql += " ORDER BY " + ordering_sql
 
         if len(limiting_params) == 1:
             sql += " LIMIT ?"
@@ -271,10 +279,11 @@ def media_list(request, repository, mucua, args=None, format=None):
         params.extend(limiting_params)
         medias = Media.objects.raw(sql, params)
         
-        """ sql log
+        """ sql log & params
         logger.info('sql: ' + sql)
+        for i in params:
+            logger.info(i)
         """
-        
         # serializa e da saida
         if (return_count):
             response_count = {
