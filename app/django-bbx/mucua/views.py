@@ -6,12 +6,15 @@ from rest_framework.response import Response
 from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
 
 from django.utils.translation import ugettext_lazy as _
+from django.views.decorators.cache import cache_page
+
 from mucua.models import Mucua, get_available_mucuas, get_default_mucua,get_mucua_from_UUID,get_mucua_info,get_mucua_disk
 from repository.models import Repository
 from mucua.serializers import MucuaSerializer
 from bbx.utils import convertToGB, logger
 from bbx.settings import DEFAULT_MUCUA
 
+@cache_page(60 * 15)
 @api_view(['GET'])
 def mucua_list(request, repository=None):
     """
@@ -47,7 +50,7 @@ def mucua_list(request, repository=None):
 
     return Response(serializer.data)
 
-
+@cache_page(60 * 15)
 @api_view(['GET'])
 def mucua_get_default(request):
     mucuas_list = []
@@ -56,7 +59,7 @@ def mucua_get_default(request):
 
     return Response(serializer.data)
 
-
+@cache_page(60 * 30)
 @api_view(['GET'])
 def mucua_get_by_name(request, name, repository=None):
     try:     
@@ -69,6 +72,7 @@ def mucua_get_by_name(request, name, repository=None):
     return Response(serializer.data)
 
 
+@cache_page(60 * 5)
 @api_view(['GET'])
 def mucua_get_info(request, uuid, repository=None):
     try:     
@@ -124,7 +128,7 @@ def mucua_get_info(request, uuid, repository=None):
     
     return Response(mucua_info)
 
-
+@cache_page(60 * 5)
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
 def mucua_get_groups(request, uuid=None, repository=None):
@@ -159,8 +163,7 @@ def mucua_add_group(request, uuid, group, repository=None):
     return Response("Group %s added" % group)
 
 
-
-
+@cache_page(60 * 5)
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
 def mucua_get_territory(request, uuid=None, repository=None):

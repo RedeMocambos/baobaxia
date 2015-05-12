@@ -118,7 +118,7 @@ def get_mucua_info(uuid, repository=None):
             repository = get_default_repository()
         except DatabaseError:
             return []
-    
+
     status = git_annex_status(repository.get_path())
     
     return status
