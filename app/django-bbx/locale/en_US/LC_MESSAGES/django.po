@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-11 19:16-0300\n"
+"POT-Creation-Date: 2015-05-13 10:20-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,11 +126,27 @@ msgstr ""
 msgid "User already exists!"
 msgstr ""
 
+#: bbx/templates/common/Buscador.html:12
+msgid "image"
+msgstr ""
+
 #: bbx/templates/common/Buscador.html:13
+msgid "video"
+msgstr ""
+
+#: bbx/templates/common/Buscador.html:14
+msgid "audio"
+msgstr ""
+
+#: bbx/templates/common/Buscador.html:15
+msgid "archive"
+msgstr ""
+
+#: bbx/templates/common/Buscador.html:19
 msgid "Is local"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:16
+#: bbx/templates/common/Buscador.html:22
 msgid "Is requested"
 msgstr ""
 
@@ -193,6 +209,10 @@ msgstr ""
 msgid "mucuas"
 msgstr ""
 
+#: bbx/templates/common/Sidebar.html:20
+msgid "see all mucuas"
+msgstr ""
+
 #: bbx/templates/common/Sobre.html:4
 msgid "About Baobaxia"
 msgstr ""
@@ -223,10 +243,6 @@ msgstr ""
 
 #: bbx/templates/common/Sobre.html:24
 msgid "This project has the Banco do Brasil Foundation Support."
-msgstr ""
-
-#: bbx/templates/common/TagCloud.html:10
-msgid "see all mucuas"
 msgstr ""
 
 #: bbx/templates/common/UsageBar.html:5
@@ -736,23 +752,23 @@ msgstr ""
 msgid "A mucua esta já enraizada em "
 msgstr ""
 
-#: mucua/views.py:21
+#: mucua/views.py:24
 #, python-format
 msgid "Acessing mucuas in repository: %s"
 msgstr ""
 
-#: mucua/views.py:41 mucua/views.py:65 mucua/views.py:77 mucua/views.py:134
-#: mucua/views.py:145 mucua/views.py:156 mucua/views.py:170 mucua/views.py:181
-#: mucua/views.py:192
+#: mucua/views.py:44 mucua/views.py:68 mucua/views.py:81 mucua/views.py:138
+#: mucua/views.py:149 mucua/views.py:160 mucua/views.py:173 mucua/views.py:184
+#: mucua/views.py:195
 msgid "Mucua not found"
 msgstr ""
 
-#: mucua/views.py:148
+#: mucua/views.py:152
 #, python-format
 msgid "Group %s deleted"
 msgstr ""
 
-#: mucua/views.py:184
+#: mucua/views.py:187
 #, python-format
 msgid "Territory %s deleted"
 msgstr ""

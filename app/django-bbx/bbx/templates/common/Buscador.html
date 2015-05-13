@@ -8,6 +8,33 @@
       <textarea class="caixa_busca" id="caixa_busca"></textarea>
     </form>
   </div>
+  <div id="filters-block">
+    <%
+       var currentFilter = {},
+         typeFilters = ['video', 'audio', 'imagem', 'arquivo'],
+         currentUrl = Backbone.history.location.href;
+
+       _.each(typeFilters, function(filterName) {
+         if (currentUrl.match(filterName)) {
+           currentFilter[filterName] = 'current';
+         } else {
+           currentFilter[filterName] = '';
+         }
+       });
+       %>
+    <a href="<%= '#' + config.repository + '/' + config.mucua +  '/bbx/search/imagem' %>" alt="{% trans "image" %}">
+      <div class="file-type image <% print(currentFilter['imagem']) %>">&nbsp;</div>
+    </a>
+    <a href="<%= '#' + config.repository + '/' + config.mucua +  '/bbx/search/video' %>" alt="{% trans "video" %}">
+      <div class="file-type video <% print(currentFilter['video']) %>">&nbsp;</div>
+    </a>	
+    <a href="<%= '#' + config.repository + '/' + config.mucua +  '/bbx/search/audio' %>" alt="{% trans "audio" %}">
+      <div class="file-type audio <% print(currentFilter['audio']) %>">&nbsp;</div>
+    </a>
+    <a href="<%= '#' + config.repository + '/' + config.mucua +  '/bbx/search/arquivo' %>" alt="{% trans "archive" %}">
+      <div class="file-type arquivo <% print(currentFilter['arquivo']) %>">&nbsp</div>
+    </a>
+  </div>
   <div id="search-options">
     <span>
       <input type="checkbox" name="is_local" id="is_local"> {% trans "Is local" %}
