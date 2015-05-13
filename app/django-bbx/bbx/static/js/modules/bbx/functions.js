@@ -208,8 +208,6 @@ define([
 		elName = '#' + elName  + '-container';
 		currentName = '#' + currentName  + '-container';
 		
-		console.log(elName);
-		console.log(currentName);
 		if (elName === currentName) {
 		    $(currentBtn).css('font-weight', 'bold');
 		    $(currentName).show();

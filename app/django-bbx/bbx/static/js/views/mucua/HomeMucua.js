@@ -20,10 +20,8 @@ define([
 	    
 	    console.log('render mucua');
 	    
-	    // start mucua DOM field
-	    BBX.mucua = {};
-	    BBX.media = {};	    
 	    BBXFunctions.renderSidebar();
+	    MediaFunctions.getTagCloudBySearch('#cloud');
 	    BBXFunctions.renderUsage();
 	    $('.media-display-type').remove();
 
