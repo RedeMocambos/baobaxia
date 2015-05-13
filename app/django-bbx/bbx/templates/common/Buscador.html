@@ -12,8 +12,31 @@
     <%
        var currentFilter = {},
          typeFilters = ['video', 'audio', 'imagem', 'arquivo'],
-         currentUrl = Backbone.history.location.href;
+         currentUrl = Backbone.history.location.hash;
 
+       // append search to the link
+       if (!currentUrl.match('search')) {
+         filterUrl = currentUrl + '/bbx/search';
+       }
+       
+       var parseLink = function(url, typeFilters, type) {
+         var urlParse = '',         
+           urlFrags = [];
+
+         _.each(typeFilters, function(t) {
+           url = url.replace(t, '');
+           url = url.replace('//', '/');
+         });
+         
+         urlFrags = url.split('/search');
+         urlParse = urlFrags[0] + '/search/' + type;
+         if (urlFrags.length > 1) {
+           urlParse += urlFrags[1];
+         }
+         return urlParse;
+       }
+       
+       // css
        _.each(typeFilters, function(filterName) {
          if (currentUrl.match(filterName)) {
            currentFilter[filterName] = 'current';
@@ -21,17 +44,18 @@
            currentFilter[filterName] = '';
          }
        });
+
        %>
-    <a href="<%= '#' + config.repository + '/' + config.mucua +  '/bbx/search/imagem' %>" alt="{% trans "image" %}">
+    <a href="<% print(parseLink(currentUrl, typeFilters, 'imagem')) %>" alt="{% trans "image" %}">
       <div class="file-type image <% print(currentFilter['imagem']) %>">&nbsp;</div>
     </a>
-    <a href="<%= '#' + config.repository + '/' + config.mucua +  '/bbx/search/video' %>" alt="{% trans "video" %}">
+    <a href="<% print(parseLink(currentUrl, typeFilters, 'video')) %>" alt="{% trans "video" %}">
       <div class="file-type video <% print(currentFilter['video']) %>">&nbsp;</div>
-    </a>	
-    <a href="<%= '#' + config.repository + '/' + config.mucua +  '/bbx/search/audio' %>" alt="{% trans "audio" %}">
+    </a>
+    <a href="<% print(parseLink(currentUrl, typeFilters, 'audio')) %>" alt="{% trans "audio" %}">
       <div class="file-type audio <% print(currentFilter['audio']) %>">&nbsp;</div>
     </a>
-    <a href="<%= '#' + config.repository + '/' + config.mucua +  '/bbx/search/arquivo' %>" alt="{% trans "archive" %}">
+    <a href="<% print(parseLink(currentUrl, typeFilters, 'arquivo')) %>" alt="{% trans "file" %}">
       <div class="file-type arquivo <% print(currentFilter['arquivo']) %>">&nbsp</div>
     </a>
   </div>
