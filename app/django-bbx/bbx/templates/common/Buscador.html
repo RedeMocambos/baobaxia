@@ -14,15 +14,20 @@
          typeFilters = ['video', 'audio', 'imagem', 'arquivo'],
          currentUrl = Backbone.history.location.hash;
 
-       // append search to the link
-       if (!currentUrl.match('search')) {
-         filterUrl = currentUrl + '/bbx/search';
-       }
-       
        var parseLink = function(url, typeFilters, type) {
          var urlParse = '',         
            urlFrags = [];
 
+         // completa url caso nao seja 'search'
+         if (!url.match('search')) {
+           // completa url para caso de 'mocambola'
+           if (url.match('mocambola')) {
+             url = url.replace('/mocambola', '/bbx/search');
+           } else {
+             url += '/bbx/search';
+           }
+         }
+         
          _.each(typeFilters, function(t) {
            url = url.replace(t, '');
            url = url.replace('//', '/');
