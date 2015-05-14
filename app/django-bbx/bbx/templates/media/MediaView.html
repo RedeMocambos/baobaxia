@@ -58,9 +58,11 @@
 	  <span id="whereis">&nbsp;</span>
 	</p>
       </div>
+      <% if (media.is_local) { %>
       <div class="blocks">
-	<p id="drop-local-copy">{% trans "Drop local copy" %}</p>	
+	<p id="drop-local-copy">{% trans "Drop local copy" %}</p>
       </div>      
+      <% } %>
     </div>
     <!-- fim de inner sidebar -->
 
