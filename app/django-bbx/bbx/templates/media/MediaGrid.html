@@ -16,9 +16,11 @@
     <div class="image is_local <% if (media.type == 'arquivo') { %>icon-media<% } %>">
       <% if (media.type == 'imagem') { %>
       <!-- fancybox -->
-      <a class="fancybox-button" rel="fancybox-button" data-fancybox-type="image" data-fancybox-group="galeria" href="<%= media.url %>" title="<%= media.note %>">
+      <a id="a-media-<%= media.uuid %>" class="fancybox-button" rel="fancybox-button" data-fancybox-type="image" data-fancybox-group="galeria" href="" title="<%= media.note %>">
 	<img id="media-<%= media.uuid %>" class="image-tmp" src="images/icon-imagem.png" />
-	<% parseThumb(media, params); %>
+	<%
+	   swapImageUrl(media, paramsGallery, '#a-media-' + media.uuid);
+	   parseThumb(media, params); %>
 	</a>
       <% } else if (media.type == 'video') { %>
       <a class="fancybox-button" rel="fancybox-button" data-fancybox-type="iframe" data-fancybox-group="galeria" href="<%= media.url %>" title="<strong><%= media.name %></strong><br/> - <%= media.note %>" id="<%= media.uuid %>">

@@ -21,7 +21,8 @@ define([
 		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
 		urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis',
 		userData = BBXFunctions.getFromCookie('userData');
-	    
+
+	    // pergunta se vai excluir cópia local do arquivo
 	    var askDrop = function() {
 		var config = BBX.config,		    
 		    dropMedia = confirm(MediaDropMessageTpl);
@@ -67,7 +68,7 @@ define([
 		data.config = config;
 		data.baseUrl = BBXFunctions.getDefaultHome();
 		$('#header-bottom').append(_.template(BackToSearchTpl, data));
-
+		
 		$('#content').html(_.template(MediaViewTpl, data));
 		$('#drop-local-copy').on('click', function() {askDrop(media)});
 		if (!data.media.is_local) {

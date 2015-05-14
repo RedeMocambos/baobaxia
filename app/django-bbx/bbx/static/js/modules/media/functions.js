@@ -330,6 +330,24 @@ define([
 	
 	switch(type) {
 	case 'grid':
+	    // troca imagem por resolucao menor
+	    var swapImageUrl = function(media, params, el) {
+		getThumb(media, params);
+		
+		var getUrlInterval = setInterval(function() {
+		    if (typeof BBX.tmp.imageThumb[media.uuid] !== 'undefined') {
+			if (typeof BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height] !== 'undefined') {
+			    var url = BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height];
+			    $(el).attr('href', url);
+			    clearInterval(getUrlInterval);
+			}
+		    }
+		}, 100);
+	    }
+	    // TODO: mover para um local configurável
+	    data.paramsGallery = {'width': '00', 'height': '600' };
+	    data.swapImageUrl = swapImageUrl;
+	    
 	    $(target).html(_.template(MediaGridTpl, data));
 
 	    // carrega galeria (fancybox)
@@ -671,6 +689,7 @@ define([
     }
 
     /**
+     * TODO: mover função para view - funcao muito específica
      * Dá saída de thumbnails
      *
      * @param {Object} media Objeto mídia
@@ -678,32 +697,59 @@ define([
      * @returns {None} [Saída dada pelo jquery]
      */
     var parseThumb = function(media, params) {
-	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + media.uuid + '/' + params.width + 'x' + params.height + '.' + media.format,
-	    mediaLoad = [];
-	
-	mediaLoad[media.uuid] = new MediaModel([], {url: url});
-	mediaLoad[media.uuid].fetch({
- 	    success: function() {
-		media.url = mediaLoad[media.uuid].attributes.url;
-		var tmpImage = new Image();
-		tmpImage.src = media.url;
-		tmpImage.onload = function() {
-		    if ($('#media-' + media.uuid).length) {
-			$('#media-' + media.uuid).removeClass('image-tmp');
-			$('#media-' + media.uuid).prop('src', media.url)
-			
-		    } else {
-			$('.media-image-container').prepend('<img id="media-' + media.uuid + '" src="' + media.url + '" />');
+	getThumb(media, params);
+	var thumbInterval = setInterval(function() {
+	    if (typeof BBX.tmp.imageThumb[media.uuid] !== 'undefined') {
+		if (typeof BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height] !== 'undefined') {
+		    media.url = BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height];
+		    var tmpImage = new Image();
+		    tmpImage.src = media.url;
+		    tmpImage.onload = function() {
+			if ($('#media-' + media.uuid).length) {
+			    $('#media-' + media.uuid).removeClass('image-tmp');
+			    $('#media-' + media.uuid).prop('src', media.url)
+			    
+			} else {
+			    $('.media-image-container').prepend('<img id="media-' + media.uuid + '" src="' + media.url + '" />');
+			}
+			var width = (params.width !== '00' && params.width < tmpImage.naturalWidth) ? params.width : tmpImage.naturalWidth;
+			var height = (params.height !== '00' && params.height < tmpImage.naturalHeight) ? params.height : tmpImage.naturalHeight;
+  			$('#media-' + media.uuid).prop('width', width);
+			$('#media-' + media.uuid).prop('height', height);
 		    }
-		    var width = (params.width !== '00' && params.width < tmpImage.naturalWidth) ? params.width : tmpImage.naturalWidth;
-		    var height = (params.height !== '00' && params.height < tmpImage.naturalHeight) ? params.height : tmpImage.naturalHeight;
-  		    $('#media-' + media.uuid).prop('width', width);
-		    $('#media-' + media.uuid).prop('height', height);
+		    clearInterval(thumbInterval);
 		}
+	    }
+	}, 100);
+    }
+    
+    /**
+     * Função que apenas retorna o arquivo de media redimensionado
+     *
+     * @param {Object} media Objeto mídia
+     * @param {Object} params Parâmetros (altura, largura)
+     * @returns {None} [Define campo temporário em BBX.tmp.imageThumb[uuid] ]
+     */
+    var getThumb = function(media, params) {
+	var url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + media.uuid + '/' + params.width + 'x' + params.height + '.' + media.format,
+	    mediaLoad = null;
+	
+	// define temporario
+	if (typeof BBX.tmp.imageThumb === 'undefined') {
+	    BBX.tmp.imageThumb = [];
+	}
+	
+	mediaLoad = new MediaModel([], {url: url});
+	mediaLoad.fetch({
+ 	    success: function() {
+		if (typeof BBX.tmp.imageThumb[media.uuid] === 'undefined') {
+		    BBX.tmp.imageThumb[media.uuid] = [];
+		}
+		BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height] = mediaLoad.attributes.url;
 	    }
 	});
     }
-
+    
     /**
      * Função para equalizar histograma para lista de tags * NAO FUNCIONA AINDA *
      * 
@@ -1496,6 +1542,7 @@ define([
 	__getTagsFromUrl: __getTagsFromUrl,
 	__parseMenuSearch: __parseMenuSearch,
 	parseThumb: parseThumb,
+	getThumb: getThumb,
 	parsePagination: parsePagination
     }
 });
