@@ -96,7 +96,9 @@ define([
      */        
     var __parseUrlSearch = function(tags) {
 	var config = __getConfig(),
-	    validSearchOptions = __getValidSearchOptions();
+	    validSearchOptions = __getValidSearchOptions(),
+	    current_url = decodeURI(Backbone.history.fragment),
+	    complement = '';
 	
 	if (_.isArray(tags)) {
 	    tags = tags.join('/');
@@ -119,8 +121,12 @@ define([
 		}
 	    }
 	});
+
+	if (current_url.match('/shuffle')) {
+	    complement += '/shuffle';
+	}
 	
-	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + tags;
+	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + tags + complement;
     }
 
     /**
@@ -140,12 +146,17 @@ define([
 	url_is_gallery = current_url.indexOf('gallery');
 	url_has_order = current_url.indexOf('/orderby');
 	url_has_limit = current_url.indexOf('/limit');
+	url_has_shuffle = current_url.match('/shuffle');
 	
 	// remove order & limit of url
 	if (url_has_order > 0) {
 	    current_url = current_url.slice(0, url_has_order);
 	} else if (url_has_order < 0 && url_has_limit > 0) {
 	    current_url = current_url.slice(0, url_has_limit);
+	}
+
+	if (url_has_shuffle) {
+	    current_url = current_url.replace('/shuffle', '');
 	}
 	
 	// identify type of url
@@ -481,6 +492,23 @@ define([
 		$('.media-display-type .' + type_name).css("background", "url(/images/" + type_name + "-off.png)");
 	    }	    
 	});
+
+	var url = Backbone.history.location.href;
+	
+	// marca limit
+	if (url.match('limit')) {
+	    $('.media-display-type .all').css("background", "url(/images/all-on.png)");
+	} else {
+	    $('.media-display-type .all').css("background", "url(/images/all-off.png)");
+	}
+	
+	// marca shuffle
+	if (url.match('shuffle')) {
+	    $('.media-display-type .shuffle').css("background", "url(/images/shuffle-on.png)");
+	} else {
+	    $('.media-display-type .shuffle').css("background", "url(/images/shuffle-off.png)");
+	}
+	
 	window.scrollTo(0, 0);
     }
 
@@ -871,11 +899,7 @@ define([
 	
 	__getTagCloud(el, url, limit);
     }
-
-
-    var getAllTags
     
-
     /**
      * função genérica de buscar tags que recebe callbacks
      *
@@ -1064,19 +1088,10 @@ define([
 	    BBX.data = data;
 	    showMediaBy('', '#media-mocambola .media');
 
-	    if (url.match('limit')) {
-		$('.media-display-type .all').css("background", "url(/images/all-on.png)");
-	    } else {
-		$('.media-display-type .all').css("background", "url(/images/all-off.png)");
-	    }
 	    var click = $('.media-display-type .all').data('events');
 	    if (typeof click === 'undefined') {
-		if (url.match('limit')) {
-		    $('.media-display-type .all').css("background", "url(/images/all-on.png)");
-		} else {
-		    $('.media-display-type .all').css("background", "url(/images/all-off.png)");
-		}
-		$('.media-display-type .all').on('click', function(){ changeMediaLimit(1000, url)});	    
+		$('.media-display-type .shuffle').on('click', function(){ shuffleMedia()});	    
+		$('.media-display-type .all').on('click', function(){ changeMediaLimit(false, url)});	    
 		$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
 		$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
 	    }
@@ -1326,27 +1341,40 @@ define([
 	    BBX.data = data;
 	    showMediaBy('', '#media-results .media');
 	    
-	    if (url.match('limit')) {
-		$('.media-display-type .all').css("background", "url(/images/all-on.png)");
-	    } else {
-		$('.media-display-type .all').css("background", "url(/images/all-off.png)");
-	    }
-	    
 	    // todo: verificar se ja existe um evento associado; se nao tiver, adiciona - quebrado
 	    var click = $('.media-display-type .all').data('events');
 	    if (typeof click === 'undefined') {
-		if (url.match('limit')) {
-		    $('.media-display-type .all').css("background", "url(/images/all-on.png)");
-		} else {
-		    $('.media-display-type .all').css("background", "url(/images/all-off.png)");
-		}
-		$('.media-display-type .all').on('click', function(){ changeMediaLimit(1000)});	    
+		$('.media-display-type .shuffle').on('click', function(){ shuffleMedia()});
+		$('.media-display-type .all').on('click', function(){ changeMediaLimit()});	    
 		$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
 		$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
 	    }
 	}, {'width': 190, 'height': 132 });
     };
-       
+
+
+    /**
+     * embaralha lista de resultados
+     *
+     */
+    var shuffleMedia = function() {
+	var url = Backbone.history.location.href,
+	    urlApi = urlApi || BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/';
+	
+	console.log('shuffle media listing');
+	if (url.match('orderby')) {
+	    url = url.split('/orderby')[0] + '/shuffle';
+	} else if (url.match('/shuffle')) {
+	    url = url.replace('/shuffle', '');	
+	} else {
+	    if (url.substring(0, url.length -1) === '/') {
+		url.substring(0, url.length -1);
+	    }
+	    url += '/shuffle';
+	}
+	window.location.replace(url);	
+    }
+    
     /** 
      * altera limite de mídia
      *
@@ -1355,14 +1383,15 @@ define([
      * @returns {None} altera url do navegador
      */
     var changeMediaLimit = function(limit, urlApi) {
-	var url = Backbone.history.location.href,
-	    urlApi = urlApi || BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/';
+	var limit = limit || 1000,  // default limit
+	    urlApi = urlApi || BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/',
+	    url = Backbone.history.location.href;
 	
 	console.log('change media limit');
 	if (url.match('limit')) {
 	    url = url.split('/limit')[0];
 	} else {
-	    url += '/limit/1000';
+	    url += '/limit/' + limit;
 	}
 	window.location.replace(url);
     }

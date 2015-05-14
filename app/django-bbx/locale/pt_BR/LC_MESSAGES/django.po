@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-13 10:20-0300\n"
+"POT-Creation-Date: 2015-05-14 14:17-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,27 +127,27 @@ msgstr "Usuário não pode ser criado"
 msgid "User already exists!"
 msgstr "Usuári@ já existe!"
 
-#: bbx/templates/common/Buscador.html:12
+#: bbx/templates/common/Buscador.html:54
 msgid "image"
 msgstr "imagem"
 
-#: bbx/templates/common/Buscador.html:13
+#: bbx/templates/common/Buscador.html:57
 msgid "video"
 msgstr "vídeo"
 
-#: bbx/templates/common/Buscador.html:14
+#: bbx/templates/common/Buscador.html:60
 msgid "audio"
 msgstr "áudio"
 
-#: bbx/templates/common/Buscador.html:15
-msgid "archive"
+#: bbx/templates/common/Buscador.html:63
+msgid "file"
 msgstr "arquivo"
 
-#: bbx/templates/common/Buscador.html:19
+#: bbx/templates/common/Buscador.html:69
 msgid "Is local"
 msgstr "local"
 
-#: bbx/templates/common/Buscador.html:22
+#: bbx/templates/common/Buscador.html:72
 msgid "Is requested"
 msgstr "requisitado"
 
@@ -160,18 +160,22 @@ msgid "Header"
 msgstr "Cabeçalho"
 
 #: bbx/templates/common/Header.html:10
+msgid "shuffle"
+msgstr "aleatório"
+
+#: bbx/templates/common/Header.html:11
 msgid "list all"
 msgstr "listar tudo"
 
-#: bbx/templates/common/Header.html:11
+#: bbx/templates/common/Header.html:12
 msgid "view as grid"
 msgstr "ver como grade"
 
-#: bbx/templates/common/Header.html:12
+#: bbx/templates/common/Header.html:13
 msgid "view as list"
 msgstr "ver como lista"
 
-#: bbx/templates/common/Header.html:19
+#: bbx/templates/common/Header.html:20
 #: bbx/templates/media/MediaGalleryEdit.html:39
 msgid "Multiple edit"
 msgstr "Edição múltipla"
@@ -415,7 +419,7 @@ msgstr "Atualizar mídia"
 msgid "Edit media"
 msgstr "Editar mídia"
 
-#: bbx/templates/media/MediaGrid.html:31
+#: bbx/templates/media/MediaGrid.html:33
 msgid "download"
 msgstr "baixar"
 
@@ -581,7 +585,7 @@ msgstr "Mídia atualizada!"
 msgid "Who was this file?"
 msgstr "quem tem esse arquivo?"
 
-#: bbx/templates/media/MediaView.html:62
+#: bbx/templates/media/MediaView.html:63
 msgid "Drop local copy"
 msgstr "Apagar cópia local"
 
@@ -663,11 +667,11 @@ msgstr "Data de criação da mídia"
 
 #: media/models.py:132
 msgid "last modified"
-msgstr ""
+msgstr "última modificação"
 
 #: media/models.py:134
 msgid "Last change"
-msgstr ""
+msgstr "Última alteração"
 
 #: media/models.py:135
 msgid "note"
@@ -837,6 +841,9 @@ msgstr "Problema ao remover mídia"
 #: repository/management/commands/bbxsync.py:46
 msgid "Revision is"
 msgstr "Revisão é"
+
+#~ msgid "archive"
+#~ msgstr "arquivo"
 
 #~ msgid "By"
 #~ msgstr "Por"

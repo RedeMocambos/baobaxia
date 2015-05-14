@@ -129,11 +129,17 @@ def media_list(request, repository, mucua, args=None, format=None):
         """ TODO: move default_limit to configurable place """
         params = []
         return_count = False
+        shuffle = False
 
         # se passado na url, retorna apenas listagem (count como palavra reservada)
         if (args.find('count') != -1):
             args = args.split('count')[0]
             return_count = True
+        
+        # se passado na url, aleatoriza retorno (shuffle como palavra reservada)
+        if (args.find('shuffle') != -1):
+            args = args.split('shuffle')[0]
+            shuffle = True
         
         default_limit = 20
         limiting_params = []
@@ -151,7 +157,14 @@ def media_list(request, repository, mucua, args=None, format=None):
         ordering_sql = ''
         ordering_params = []
         default_ordering = 'date DESC'
-        if (args.find('orderby/') != -1):
+        
+        if (shuffle):
+            # shuffle query
+            if args.find('orderby'):
+                args = args.split('orderby/')[0]            
+            ordering_sql += ' RANDOM()'
+        elif (args.find('orderby/') != -1):
+            # pass orderby to query
             ordering_terms = args.split('orderby/')[1].split('/')
             ordering_list = []
             counting = 0
@@ -184,6 +197,7 @@ def media_list(request, repository, mucua, args=None, format=None):
                 
             args = args.split('orderby/')[0]
         else:
+            # normal ordering
             ordering_sql = default_ordering
         
         origin_sql = ""

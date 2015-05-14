@@ -174,9 +174,11 @@ li.mucua div.mucua-name {font-size: 11px; display: block; margin-left: 30px; tex
 #header #header-results {float: left;}
 #header .media-display-type div {margin: 0; padding: 0; margin-right: 15px; float: right }
 #header .media-display-type .multiple-edit {background: url(/images/multiple-edit.png); width: 19px; height: 17px; cursor: pointer}
+#header .media-display-type .shuffle {background: url(/images/shuffle-off.png); width: 17px; height: 17px; cursor: pointer}
 #header .media-display-type .grid {background: url(/images/grid-off.png); width: 17px; height: 17px; cursor: pointer}
 #header .media-display-type .list {background: url(/images/list-off.png); width: 17px; height: 17px; cursor: pointer}
 #header .media-display-type .all {background: url(/images/all-off.png); width: 17px; height: 17px; cursor: pointer}
+#header .media-display-type .shuffle:hover {background: url(/images/shuffle-on.png); width: 17px; height: 17px; cursor: pointer}
 #header .media-display-type .grid:hover {background: url(/images/grid-on.png)}
 #header .media-display-type .list:hover {background: url(/images/list-on.png)}
 .icon-imagem {background: url(/images/icon-image.png) no-repeat}

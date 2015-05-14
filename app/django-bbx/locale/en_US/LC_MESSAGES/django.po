@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-13 10:20-0300\n"
+"POT-Creation-Date: 2015-05-14 14:17-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,27 +126,27 @@ msgstr ""
 msgid "User already exists!"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:12
+#: bbx/templates/common/Buscador.html:54
 msgid "image"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:13
+#: bbx/templates/common/Buscador.html:57
 msgid "video"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:14
+#: bbx/templates/common/Buscador.html:60
 msgid "audio"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:15
-msgid "archive"
+#: bbx/templates/common/Buscador.html:63
+msgid "file"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:19
+#: bbx/templates/common/Buscador.html:69
 msgid "Is local"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:22
+#: bbx/templates/common/Buscador.html:72
 msgid "Is requested"
 msgstr ""
 
@@ -159,18 +159,22 @@ msgid "Header"
 msgstr ""
 
 #: bbx/templates/common/Header.html:10
-msgid "list all"
+msgid "shuffle"
 msgstr ""
 
 #: bbx/templates/common/Header.html:11
-msgid "view as grid"
+msgid "list all"
 msgstr ""
 
 #: bbx/templates/common/Header.html:12
+msgid "view as grid"
+msgstr ""
+
+#: bbx/templates/common/Header.html:13
 msgid "view as list"
 msgstr ""
 
-#: bbx/templates/common/Header.html:19
+#: bbx/templates/common/Header.html:20
 #: bbx/templates/media/MediaGalleryEdit.html:39
 msgid "Multiple edit"
 msgstr ""
@@ -399,7 +403,7 @@ msgstr ""
 msgid "Edit media"
 msgstr ""
 
-#: bbx/templates/media/MediaGrid.html:31
+#: bbx/templates/media/MediaGrid.html:33
 msgid "download"
 msgstr ""
 
@@ -565,7 +569,7 @@ msgstr ""
 msgid "Who was this file?"
 msgstr ""
 
-#: bbx/templates/media/MediaView.html:62
+#: bbx/templates/media/MediaView.html:63
 msgid "Drop local copy"
 msgstr ""
 
