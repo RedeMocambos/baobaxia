@@ -57,18 +57,13 @@ define([
 		    
 		}
 	    });
-	    
-	    var prepareUpload = function() {
-		console.log('prepare upload');
 
+	    var validateUpload = function() {
 		// checa se titulo e tags foram preenchidos
 		var validationError = [];
 		// especifico - textext / tags
 		if ($('#fileupload').find('input[name="tags"]').val() === "[]") {
 		    validationError.push('#tags');
-		}
-		if ($('#name').val() === '') {
-		    validationError.push('#name');
 		}
 		_.each(validationError, function(el) {
 		    $(el).css('border', '2px solid red');
@@ -76,10 +71,14 @@ define([
 		if (validationError.length > 0) {
 		    $('#messages').html(_.template(MediaGalleryCreateValidationErrorMessageTpl));
 		    return false;
+		} else {
+		    return true;
 		}
+	    };
+	
+	    var prepareUpload = function() {
+		console.log('prepare upload');
 		
-		// com validacao ok, limpa mensagens
-		$('#messages').html();
 		$('#media_file_input').show();
 
 		$('#fileupload').fileupload({
@@ -161,7 +160,17 @@ define([
 		    }
 		})
 	    // on select type of file, prepare upload
-	    $('#media_type').change(function() { prepareUpload() });	    
+	    prepareUpload();
+	    
+	    $('#media_file').on('click', function(e) {
+		var validate = validateUpload();
+		if (!validate) {
+		    e.preventDefault();
+		} else {
+		    // com validacao ok, limpa mensagens
+		    $('#messages').html();
+		}
+	    });
 	}
     });
     

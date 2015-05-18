@@ -5,7 +5,6 @@ import uuid
 from datetime import datetime
 import exceptions
 from importlib import import_module
-import subprocess
 import json
 import re
 
@@ -35,7 +34,22 @@ TYPE_CHOICES = (('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'),
 FORMAT_CHOICES = (('ogg', 'ogg'), ('ogv', 'ogv'), ('webm', 'webm'), ('mp4', 'mp4'), ('mp3', 'mp3'),
                   ('jpg', 'jpg'), ('png', 'png'), ('pdf', 'pdf'), ('gif', 'gif'), ('odp', 'odp'), 
                   ('odt', 'odt'), ('oga','oga'))
-
+VALID_MIMETYPES = {
+    'audio/ogg': 'audio',
+    'audio/mpeg': 'audio',
+    'image/jpeg': 'imagem',
+    'image/png': 'imagem',
+    'image/gif': 'imagem',
+    'video/ogg': 'video',
+    'video/ogv': 'video',
+    'video/avi': 'video',
+    'video/mp4': 'video',
+    'video/webm': 'video',
+    'application/pdf': 'arquivo',
+    'application/odt': 'arquivo',
+    'application/ods': 'arquivo',
+    'application/odp': 'arquivo',
+}
 
 def get_now():
     """Get this very moment as correct local time."""
@@ -83,6 +97,16 @@ def get_media_path(instance):
     
     return os.path.join(instance.get_repository(), instance.get_mucua(), 
                         instance.get_type(), date)
+
+def get_media_name_by_filename(filename):
+    filename = re.match(r'(.*)\.{1}(.*)', filename).groups()[0]
+    return filename
+
+def get_media_type_by_filename(file_object):
+    mime = file_object.content_type
+    file_type = VALID_MIMETYPES[mime]
+    
+    return file_type
 
 def getTypeChoices():
     """Retorna uma tupla com os tipos de media suportados"""

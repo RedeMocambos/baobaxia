@@ -19,7 +19,7 @@ from django.utils.translation import ugettext_lazy as _
 from media.models import Media, generate_UUID, get_now
 from tag.models import Tag
 from media.serializers import MediaSerializer
-from media.models import getTypeChoices, getFormatChoices
+from media.models import getTypeChoices, getFormatChoices, get_media_name_by_filename,get_media_type_by_filename
 from bbx.settings import DEFAULT_MUCUA, DEFAULT_REPOSITORY
 from bbx.utils import logger
 from mucua.models import Mucua
@@ -337,24 +337,34 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                                     '/' + mucua.description + '/media/')
     author = request.user
 
+    # verifica se tem primary key definido antes de direcionar para os request.methods (get, put, post)
     if pk:
         # get media
-        
         try:
             media = Media.objects.get(uuid=pk)
         except Media.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
+        # get media
+        
         if pk == '':
+            """
+            get media
+            Se pk nao existe, chama token (preparacao para insercao)  # TODO: mover?
+            """
+            
             media_token(request, repository, mucua)
 
         if pk != '':
+            # get media
             serializer = MediaSerializer(media)
             return Response(serializer.data)
 
     elif request.method == 'PUT':
-        # update media
+        """
+        update media
+        """
         
         if pk == '':
             return HttpResponseRedirect(
@@ -403,11 +413,10 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             mucua = Mucua.objects.get(description=request.DATA['origin'])
         except Mucua.DoesNotExist:
             mucua = Mucua.objects.get(description=DEFAULT_MUCUA)
-        
+
         media = Media(repository=repository,
                       origin=mucua,
                       author=author,
-                      name=request.DATA['name'],
                       note=request.DATA['note'],
                       type=request.DATA['type'],
                       license=request.DATA['license'],
@@ -419,13 +428,17 @@ def media_detail(request, repository, mucua, pk=None, format=None):
         if request.FILES.getlist('media_file') :
             # multiple upload            
             for filename, file in request.FILES.iteritems():
-                media.format=request.FILES[filename].name.split('.')[-1].lower()
+                file_name = request.FILES[filename].name
+                
+                media.format=file_name.split('.')[-1].lower()
+                media.name=get_media_name_by_filename(file_name)
+                media.type=get_media_type_by_filename(request.FILES[filename])                
                 media.media_file=request.FILES[filename]
-        
         else:        
-            # single upload            
-            format=request.FILES['media_file'].name.split('.')[-1].lower(),
-            media_file=request.FILES['media_file'],
+            # single upload
+            media.name=request.DATA['name']
+            media.format=request.FILES['media_file'].name.split('.')[-1].lower()
+            media.media_file=request.FILES['media_file']
                                   
         media.save()
         if media.id:
