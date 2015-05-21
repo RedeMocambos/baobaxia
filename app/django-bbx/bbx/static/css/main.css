@@ -268,7 +268,7 @@ td.status {font-weight: bold}
  * busca
  */
 #buscador {margin-left: 4%; }
-#buscador textarea#caixa_busca { border: 2px solid #fff; border-radius: 8px !important; padding-left: 8px; font-size: 18px; height: 32px; width: 450px; }
+#buscador textarea#caixa_busca { border: 2px solid #fff; border-radius: 8px !important; padding-left: 8px; font-size: 18px; height: 32px; width: 450px; display: none }
 #buscador span.message {font-size: 13px; color: #bbb}
 #buscador .menu-buscador {margin-top: 20px; display: inline-block; padding-left: 6px}
 #back-to-results {font-size: 16px; font-weight: bold; padding-top: 20px}

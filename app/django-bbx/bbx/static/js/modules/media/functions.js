@@ -209,7 +209,7 @@ define([
 	    $('#caixa_busca').val('');
 	    $('#caixa_busca').css('color', '#000');
 	}
-	
+	$('#caixa_busca').css('display', 'block');	
 	$('#caixa_busca')
 	    .textext({ plugins: 'tags',
 		       tagsItems: tags_arr,
