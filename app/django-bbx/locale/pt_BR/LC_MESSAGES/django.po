@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-14 14:17-0300\n"
+"POT-Creation-Date: 2015-05-21 16:30-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -164,18 +164,14 @@ msgid "shuffle"
 msgstr "aleatório"
 
 #: bbx/templates/common/Header.html:11
-msgid "list all"
-msgstr "listar tudo"
-
-#: bbx/templates/common/Header.html:12
 msgid "view as grid"
 msgstr "ver como grade"
 
-#: bbx/templates/common/Header.html:13
+#: bbx/templates/common/Header.html:12
 msgid "view as list"
 msgstr "ver como lista"
 
-#: bbx/templates/common/Header.html:20
+#: bbx/templates/common/Header.html:19
 #: bbx/templates/media/MediaGalleryEdit.html:39
 msgid "Multiple edit"
 msgstr "Edição múltipla"
@@ -313,25 +309,21 @@ msgstr "Publicar nova galeria"
 msgid "Origin"
 msgstr "Origem"
 
-#: bbx/templates/media/MediaGalleryCreate.html:25
+#: bbx/templates/media/MediaGalleryCreate.html:24
 msgid "Gallery name (tags)"
 msgstr "Nome da galeria (tags)"
 
-#: bbx/templates/media/MediaGalleryCreate.html:28
-msgid "Title of medias:"
-msgstr "Título das mídias"
-
-#: bbx/templates/media/MediaGalleryCreate.html:34
+#: bbx/templates/media/MediaGalleryCreate.html:30
 msgid "Description:"
 msgstr "Descrição"
 
-#: bbx/templates/media/MediaGalleryCreate.html:39
+#: bbx/templates/media/MediaGalleryCreate.html:35
 #: bbx/templates/media/MediaGalleryEdit.html:32
 #: bbx/templates/media/MediaPublish.html:99
 msgid "License"
 msgstr "Licença"
 
-#: bbx/templates/media/MediaGalleryCreate.html:50
+#: bbx/templates/media/MediaGalleryCreate.html:46
 msgid "Select file type to start upload"
 msgstr "Selecione o tipo do arquivo para iniciar os uploads"
 
@@ -362,19 +354,19 @@ msgstr "Miniatura"
 
 #: bbx/templates/media/MediaGalleryEdit.html:18
 #: bbx/templates/media/MediaList.html:8 bbx/templates/media/MediaList.html:28
-#: media/models.py:125 repository/models.py:475
+#: media/models.py:149 repository/models.py:475
 msgid "name"
 msgstr "nome"
 
 #: bbx/templates/media/MediaGalleryEdit.html:19
 #: bbx/templates/media/MediaList.html:12 bbx/templates/media/MediaList.html:32
-#: media/models.py:130
+#: media/models.py:154
 msgid "date"
 msgstr "data"
 
 #: bbx/templates/media/MediaGalleryEdit.html:20
 #: bbx/templates/media/MediaList.html:13 bbx/templates/media/MediaList.html:33
-#: media/models.py:151
+#: media/models.py:175
 msgid "license"
 msgstr "licença"
 
@@ -420,15 +412,15 @@ msgid "Edit media"
 msgstr "Editar mídia"
 
 #: bbx/templates/media/MediaGrid.html:33
-msgid "download"
-msgstr "baixar"
+msgid "view/download"
+msgstr "ver/baixar"
 
 #: bbx/templates/media/MediaList.html:9 bbx/templates/media/MediaList.html:29
 msgid "author"
 msgstr "autor"
 
 #: bbx/templates/media/MediaList.html:10 bbx/templates/media/MediaList.html:30
-#: media/models.py:146
+#: media/models.py:170
 msgid "format"
 msgstr "formato"
 
@@ -437,7 +429,7 @@ msgid "origin"
 msgstr "origem"
 
 #: bbx/templates/media/MediaList.html:14 bbx/templates/media/MediaList.html:34
-#: media/models.py:141
+#: media/models.py:165
 msgid "type"
 msgstr "tipo"
 
@@ -445,7 +437,7 @@ msgstr "tipo"
 msgid "copies"
 msgstr "cópias"
 
-#: bbx/templates/media/MediaList.html:16 media/models.py:158
+#: bbx/templates/media/MediaList.html:16 media/models.py:182
 msgid "is local"
 msgstr "é local"
 
@@ -637,75 +629,75 @@ msgstr "...criada pasta "
 msgid "Parsing templates: "
 msgstr "Compilando templates: "
 
-#: media/models.py:122
+#: media/models.py:146
 msgid "uuid"
 msgstr "uuid"
 
-#: media/models.py:123
+#: media/models.py:147
 msgid "Media universal unique identifier"
 msgstr "Identificador único universal de mídia"
 
-#: media/models.py:124
+#: media/models.py:148
 msgid "No UUID"
 msgstr "Sem UUID"
 
-#: media/models.py:126
+#: media/models.py:150
 msgid "Media name"
 msgstr "Nome da mídia"
 
-#: media/models.py:127
+#: media/models.py:151
 msgid "No title"
 msgstr "Sem título"
 
-#: media/models.py:129
+#: media/models.py:153
 msgid "URL"
 msgstr "URL"
 
-#: media/models.py:131
+#: media/models.py:155
 msgid "Media creation date"
 msgstr "Data de criação da mídia"
 
-#: media/models.py:132
+#: media/models.py:156
 msgid "last modified"
 msgstr "última modificação"
 
-#: media/models.py:134
+#: media/models.py:158
 msgid "Last change"
 msgstr "Última alteração"
 
-#: media/models.py:135
+#: media/models.py:159
 msgid "note"
 msgstr "anotações"
 
-#: media/models.py:136 repository/models.py:481
+#: media/models.py:160 repository/models.py:481
 msgid "Note.. use as you wish!"
 msgstr "Anotações.. use como quiser!"
 
-#: media/models.py:142
+#: media/models.py:166
 msgid "Type of the media, like image, document, video, ..."
 msgstr "Tipo da mídia, como imagem, documento, vídeo..."
 
-#: media/models.py:152
+#: media/models.py:176
 msgid "License of the media, like, cc, gpl, bsd, ..."
 msgstr "Licença da mídia, como cc, gpl, bsd..."
 
-#: media/models.py:159
+#: media/models.py:183
 msgid "True if media content is available locally"
 msgstr "Verdadeiro se conteúdo de mídia está disponível localmente"
 
-#: media/models.py:162
+#: media/models.py:186
 msgid "is requested"
 msgstr "é requisitado"
 
-#: media/models.py:163
+#: media/models.py:187
 msgid "True if media content is awaiting a local copy"
 msgstr "Verdadeiro se o conteúdo de mídia está aguardando uma cópia local"
 
-#: media/models.py:168
+#: media/models.py:192
 msgid "number of copies"
 msgstr "número de cópias"
 
-#: media/models.py:169
+#: media/models.py:193
 msgid "Number of copies of the media in the repository"
 msgstr "Número de cópias da mídia no repositório"
 
@@ -725,23 +717,23 @@ msgstr "Essa mídia já existe. Atualizada."
 msgid "New media created"
 msgstr "Nova mídia criada"
 
-#: media/views.py:361
+#: media/views.py:385
 msgid "updated media - OK"
 msgstr "mídia atualizada - OK"
 
-#: media/views.py:364 media/views.py:427
+#: media/views.py:388 media/views.py:454
 msgid "error while creating media"
 msgstr "erro ao criar a mídia"
 
-#: media/views.py:557
+#: media/views.py:584
 msgid "Requested media of uuid %(uuid)s"
 msgstr "Mídia de uuid %s requisitada"
 
-#: media/views.py:568
+#: media/views.py:595
 msgid "Dropped media of uuid %(uuid)s"
 msgstr "Removida mídia de uuid %s"
 
-#: media/views.py:580
+#: media/views.py:607
 msgid "Removed media of uuid %(uuid)s"
 msgstr "Mídia de uuid %s requisitada"
 
@@ -841,6 +833,12 @@ msgstr "Problema ao remover mídia"
 #: repository/management/commands/bbxsync.py:46
 msgid "Revision is"
 msgstr "Revisão é"
+
+#~ msgid "list all"
+#~ msgstr "listar tudo"
+
+#~ msgid "Title of medias:"
+#~ msgstr "Título das mídias"
 
 #~ msgid "archive"
 #~ msgstr "arquivo"
