@@ -7,6 +7,7 @@ import exceptions
 from importlib import import_module
 import json
 import re
+from PIL import Image, ImageOps
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -18,7 +19,7 @@ from django.utils.functional import lazy
 from django.utils import timezone
 
 from tag.models import Tag
-from bbx.settings import REPOSITORY_DIR, DEFAULT_MUCUA
+from bbx.settings import REPOSITORY_DIR, DEFAULT_MUCUA,IMAGE_MAX_SIZE
 from bbx.utils import logger
 from repository.tasks import git_annex_get
 
@@ -107,6 +108,19 @@ def get_media_type_by_filename(file_object):
     file_type = VALID_MIMETYPES[mime]
     
     return file_type
+
+def handle_uploaded_image(instance, image_path):
+    """Limita arquivos de imagem ao tamanho máximo padrão"""
+    filename = os.path.join(get_file_path(instance), instance.get_file_name())
+    image = Image.open(image_path)
+    width, height = image.size
+
+    # if exceeds max size, resize it
+    if width > IMAGE_MAX_SIZE or height > IMAGE_MAX_SIZE:
+        image.thumbnail((IMAGE_MAX_SIZE, IMAGE_MAX_SIZE), Image.ANTIALIAS)
+        image.save(filename)
+        
+    return filename
 
 def getTypeChoices():
     """Retorna uma tupla com os tipos de media suportados"""
