@@ -1,0 +1,26 @@
+UPGRADE IMAGE RESIZE
+
+ ---------
+ | PT_BR |
+ -------------------------
+É preciso atualizar:
+/srv/bbx/baobaxia/app/django-bbx/bbx/settings.py
+
+Abra o arquivo /srv/bbx/baobaxia/app/django-bbx/bbx/settings.py
+em um editor de texto e adicione o trecho abaixo:
+
+  ## Uploaded image size limit
+  IMAGE_MAX_SIZE = 2000  # px  
+
+
+ ---------
+ | EN_US |
+ --------------------------
+Needs to update:
+/srv/bbx/baobaxia/app/django-bbx/bbx/settings.py
+
+Open the file /srv/bbx/baobaxia/app/django-bbx/bbx/settings.py
+in a text editor and add the following lines:
+
+  ## Uploaded image size limit
+  IMAGE_MAX_SIZE = 2000  # px  
