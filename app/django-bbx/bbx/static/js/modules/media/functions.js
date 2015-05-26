@@ -209,7 +209,7 @@ define([
 	    $('#caixa_busca').val('');
 	    $('#caixa_busca').css('color', '#000');
 	}
-	
+	$('#caixa_busca').css('display', 'block');	
 	$('#caixa_busca')
 	    .textext({ plugins: 'tags',
 		       tagsItems: tags_arr,
@@ -494,13 +494,6 @@ define([
 	});
 
 	var url = Backbone.history.location.href;
-	
-	// marca limit
-	if (url.match('limit')) {
-	    $('.media-display-type .all').css("background", "url(/images/all-on.png)");
-	} else {
-	    $('.media-display-type .all').css("background", "url(/images/all-off.png)");
-	}
 	
 	// marca shuffle
 	if (url.match('shuffle')) {
@@ -1088,10 +1081,9 @@ define([
 	    BBX.data = data;
 	    showMediaBy('', '#media-mocambola .media');
 
-	    var click = $('.media-display-type .all').data('events');
+	    var click = $('.media-display-type .list').data('events');
 	    if (typeof click === 'undefined') {
 		$('.media-display-type .shuffle').on('click', function(){ shuffleMedia()});	    
-		$('.media-display-type .all').on('click', function(){ changeMediaLimit(false, url)});	    
 		$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
 		$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
 	    }
@@ -1345,7 +1337,7 @@ define([
 	    var click = $('.media-display-type .all').data('events');
 	    if (typeof click === 'undefined') {
 		$('.media-display-type .shuffle').on('click', function(){ shuffleMedia()});
-		$('.media-display-type .all').on('click', function(){ changeMediaLimit()});	    
+		//$('.media-display-type .all').on('click', function(){ changeMediaLimit()});	    
 		$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
 		$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
 	    }

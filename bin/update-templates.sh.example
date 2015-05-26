@@ -5,3 +5,11 @@ cd /srv/bbx/baobaxia/app/django-bbx
 django-admin.py compilemessages
 python /srv/bbx/baobaxia/app/django-bbx/manage.py update_templates
 python /srv/bbx/baobaxia/app/django-bbx/manage.py collectstatic --noinput
+
+echo "--------"
+echo ""
+echo "EN/US: In order to run the new translations, you need to restart your 'bbx' application at supervisor, as root user"
+echo "PT/BR: Para carregar as novas traduções, você precisa reiniciar sua aplicação 'bbx' no supervisor, como usuário root"
+echo ""
+echo "# supervisorctl restart bbx"
+echo ""
