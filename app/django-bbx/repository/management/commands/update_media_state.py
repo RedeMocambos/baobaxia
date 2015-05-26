@@ -1,7 +1,8 @@
-import os
 import shutil
+from datetime import timedelta
 
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 
 from media.models import Media, MediaDoesNotExist
 from tag.models import Tag
@@ -14,10 +15,17 @@ Definicoes do comando para atualizar o estado dos medias
 
 class Command(BaseCommand):
     """Atualiza o estado dos media"""
-    help = 'Atualiza o estado dos media'
+    help = 'Atualiza o estado dos media desde os numero de dias passado (por default 7 dias)'
 
     def handle(self, *args, **options):
-        medias = Media.objects.all()
+        if len(args) == 0:
+            since = 7
+        else:
+            since = args[0]
+        some_day_last_week = timezone.now().date() - timedelta(days=int(since))
+        monday_of_last_week = some_day_last_week - timedelta(days=(some_day_last_week.isocalendar()[2] - 1))
+        monday_of_this_week = monday_of_last_week + timedelta(days=7)
+        medias = Media.objects.filter(date__gte=monday_of_last_week, date__lt=monday_of_this_week)
         
         for media in medias:
             try:
