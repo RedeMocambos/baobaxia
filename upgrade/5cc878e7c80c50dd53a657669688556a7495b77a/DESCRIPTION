@@ -1,0 +1,17 @@
+UPGRADE IMAGE DETECTION TYPE
+
+ ---------
+ | PT_BR |
+ -------------------------
+É preciso instalar o pacote 'python-magic' do python:
+
+$ . /srv/bbx/envs/bbx/bin/activate
+$ pip install python-magic
+
+ ---------
+ | EN_US |
+ --------------------------
+Please install python package 'python-magic':
+
+$ . /srv/bbx/envs/bbx/bin/activate
+$ pip install python-magic
