@@ -1187,6 +1187,9 @@ define([
 	    $('.all-name').keyup(function() {
 		$('.name').val($('.all-name').val());
 	    });
+	    $('.all-license').change(function() {
+		$('.license').val($('.all-license').val());
+	    });
 	    $('.all-date').keyup(function() {
 		$('.date').val($('.all-date').val());
 	    });
