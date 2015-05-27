@@ -445,7 +445,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                 
             media.type=get_media_type_by_filename(tmp_file)
             if media.type == 'imagem':
-                media.media_file=handle_uploaded_image(media, tmp_file)
+                media.media_file=handle_uploaded_image(media, tmp_file,request.FILES[filename])
             else:
                 media.media_file=request.FILES[filename]
             

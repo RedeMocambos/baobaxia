@@ -115,7 +115,7 @@ def get_media_type_by_filename(file_path):
         logger.info('Mime type not accepted.')
         return False
 
-def handle_uploaded_image(instance, image_path):
+def handle_uploaded_image(instance, image_path, current_path):
     """Limita arquivos de imagem ao tamanho máximo padrão"""
     filename = os.path.join(get_file_path(instance), instance.get_file_name())
     image = Image.open(image_path)
@@ -131,7 +131,7 @@ def handle_uploaded_image(instance, image_path):
             logger.info('Handle_Uploaded_Image: Error while reading uploaded file.')
             return False
     else:
-        return image_path
+        return current_path
     
 
 def getTypeChoices():
