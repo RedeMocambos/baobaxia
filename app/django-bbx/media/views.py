@@ -425,27 +425,27 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                       uuid=generate_UUID()
                       )
         
-        if request.FILES.getlist('media_file') :
-            logger.info('multiple upload')
-            # multiple upload            
-            for filename, file in request.FILES.iteritems():
-                file_name = request.FILES[filename].name
+        logger.info('processing upload')
+        # multiple upload            
+        for filename, file in request.FILES.iteritems():
+            file_name = request.FILES[filename].name
+            
+            media.format=file_name.split('.')[-1].lower()
+            media.name=get_media_name_by_filename(file_name)
+        
+            if hasattr(request.FILES[filename], 'temporary_file_path'):
+                # if file bigger than 2.5MB, is stored in /tmp
+                tmp_file = request.FILES[filename].temporary_file_path()
+            else:
+                # if lesser than 2.5MB, is stored on memory
+                tmp_file = '/tmp/' + media.uuid
+                f = open(tmp_file, 'w')
+                f.write(request.FILES[filename].read())
+                f.close()
                 
-                media.format=file_name.split('.')[-1].lower()
-                media.name=get_media_name_by_filename(file_name)
-                media.type=get_media_type_by_filename(request.FILES[filename])
-                if media.type == 'imagem':
-                    media.media_file=handle_uploaded_image(media, request.FILES[filename].temporary_file_path())
-                else:
-                    media.media_file=request.FILES[filename]
-
-        else:
-            logger.info('single upload')
-            # single upload
-            media.name=request.DATA['name']
-            media.format=request.FILES['media_file'].name.split('.')[-1].lower()
+            media.type=get_media_type_by_filename(tmp_file)
             if media.type == 'imagem':
-                media.media_file=handle_uploaded_image(media, request.FILES['media_file'].temporary_file_path())
+                media.media_file=handle_uploaded_image(media, tmp_file)
             else:
                 media.media_file=request.FILES[filename]
             

@@ -103,7 +103,9 @@ define([
 			    var terms = $('#fileupload').find('input[name="tags"]').val(),
 				gallery_url = '';
 
-			    terms = terms.substring(1, terms.length -1).replace(/\"/g,'');
+			    terms = terms.substring(0, terms.length).replace(/\"/g,'');
+			    terms = terms.replace(',', '/');
+			    console.log(terms);
 			    gallery_url = config.interfaceUrl + config.MYREPOSITORY + '/' + dataResult.result.origin + '/media/gallery/' + terms + '/edit';
 			    
 			    window.location.replace(gallery_url);
@@ -123,6 +125,7 @@ define([
 			    errorMessage: textStatus,
 			    errorThrown: errorThrown
 			};
+			$('#messages').remove('img')[0];
 			$('#messages').append(_.template(MediaGalleryCreateErrorMessageTpl, data));
 			console.log('error at upload');
 		    }

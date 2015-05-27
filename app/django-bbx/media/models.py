@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import os
 import uuid
 from datetime import datetime
@@ -8,6 +7,7 @@ from importlib import import_module
 import json
 import re
 from PIL import Image, ImageOps
+import magic
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -34,7 +34,7 @@ TYPE_CHOICES = (('audio', 'audio'), ('imagem', 'imagem'), ('video', 'video'),
                 ('arquivo', 'arquivo'))
 FORMAT_CHOICES = (('ogg', 'ogg'), ('ogv', 'ogv'), ('webm', 'webm'), ('mp4', 'mp4'), ('mp3', 'mp3'),
                   ('jpg', 'jpg'), ('png', 'png'), ('pdf', 'pdf'), ('gif', 'gif'), ('odp', 'odp'), 
-                  ('odt', 'odt'), ('oga','oga'))
+                  ('odt', 'odt'), ('oga','oga'), ('jpeg', 'jpeg'))
 VALID_MIMETYPES = {
     'audio/ogg': 'audio',
     'audio/mpeg': 'audio',
@@ -103,24 +103,36 @@ def get_media_name_by_filename(filename):
     filename = re.match(r'(.*)\.{1}(.*)', filename).groups()[0]
     return filename
 
-def get_media_type_by_filename(file_object):
-    mime = file_object.content_type
-    file_type = VALID_MIMETYPES[mime]
-    
-    return file_type
+def get_media_type_by_filename(file_path):
+    try:
+        mime = magic.from_file(file_path, mime=True)
+    except IOError:
+        logger.info('Error while reading uploaded file.')
+
+    if mime in VALID_MIMETYPES:
+        return VALID_MIMETYPES[mime]
+    else:
+        logger.info('Mime type not accepted.')
+        return False
 
 def handle_uploaded_image(instance, image_path):
     """Limita arquivos de imagem ao tamanho máximo padrão"""
     filename = os.path.join(get_file_path(instance), instance.get_file_name())
     image = Image.open(image_path)
     width, height = image.size
-
+    
     # if exceeds max size, resize it
     if width > IMAGE_MAX_SIZE or height > IMAGE_MAX_SIZE:
-        image.thumbnail((IMAGE_MAX_SIZE, IMAGE_MAX_SIZE), Image.ANTIALIAS)
-        image.save(filename)
-        
-    return filename
+        try:
+            image.thumbnail((IMAGE_MAX_SIZE, IMAGE_MAX_SIZE), Image.ANTIALIAS)
+            image.save(filename)
+            return filename
+        except IOError:
+            logger.info('Handle_Uploaded_Image: Error while reading uploaded file.')
+            return False
+    else:
+        return image_path
+    
 
 def getTypeChoices():
     """Retorna uma tupla com os tipos de media suportados"""
@@ -278,7 +290,6 @@ class Media(models.Model):
 
         O media é preservado se tiver um pedido pendente em 
         /repository/mucua/requests/
-
         """
         requests_path = os.path.join(REPOSITORY_DIR, self.get_repository(),
                                      DEFAULT_MUCUA,
