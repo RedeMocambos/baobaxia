@@ -109,6 +109,7 @@ def get_available_mucuas(uuid=None, repository=None):
                        in json_repository_status['trusted repositories']])
 
     mucuas =  [(m[0], rpr(m[1].replace('[','').replace(']',''))) for m in mucuas]
+    mucuas = sorted(mucuas, key=lambda x: x[1])
 #    logger.debug(u'Mucuas: %s' % mucuas)
     return mucuas
 
