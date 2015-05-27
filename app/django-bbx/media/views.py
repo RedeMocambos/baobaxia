@@ -431,7 +431,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             file_name = request.FILES[filename].name
             
             media.format=file_name.split('.')[-1].lower()
-            media.name=get_media_name_by_filename(file_name)
+            media.name = request.DATA['name'] if request.DATA['name'] != '' else get_media_name_by_filename(file_name)
         
             if hasattr(request.FILES[filename], 'temporary_file_path'):
                 # if file bigger than 2.5MB, is stored in /tmp
