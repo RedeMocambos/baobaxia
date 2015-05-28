@@ -65,7 +65,9 @@ class Command(BaseCommand):
                                     if os.path.isfile(os.path.join(requests_path, name)):
                                         requests.append(name)                        
                                         if request_uuid not in requests:
-                                            git_annex_drop(media)
+                                            # Check to see if origin mucua is not the current mucua
+                                            if media.origin.description != mucua:
+                                                git_annex_drop(media)
                         else: 
                             media.is_requested = False                    
                         media.save()
