@@ -18,6 +18,9 @@
          var urlParse = '',         
            urlFrags = [];
 
+         // remove limit e sequencia
+         url = url.split('/limit')[0];
+         
          // completa url caso nao seja 'search'
          if (!url.match('search')) {
            // completa url para caso de 'mocambola'
@@ -37,6 +40,10 @@
          urlParse = urlFrags[0] + '/search/' + type;
          if (urlFrags.length > 1) {
            urlParse += urlFrags[1];
+         }
+         // remove / final
+         if (urlParse.substring(0, urlParse.length -1) === '/') {
+           urlParse = urlParse.substring(0, urlParse.length -1);
          }
          return urlParse;
        }
