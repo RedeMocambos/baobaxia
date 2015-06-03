@@ -2,6 +2,10 @@ import json
 import re
 
 from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.decorators import authentication_classes, permission_classes
+
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
 
@@ -16,6 +20,8 @@ from bbx.settings import DEFAULT_MUCUA
 
 @cache_page(60 * 15)
 @api_view(['GET'])
+#@authentication_classes((SessionAuthentication, BasicAuthentication))
+#@permission_classes((IsAuthenticated,))
 def mucua_list(request, repository=None):
     """
     List all mucuas
