@@ -4,6 +4,10 @@ import json
 
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.decorators import authentication_classes, permission_classes
+
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
 
@@ -128,6 +132,8 @@ def search_related_tags(request, repository, mucua, args):
     return Response(serializer.data)
 
 @api_view(['GET'])
+@authentication_classes((SessionAuthentication, BasicAuthentication))
+@permission_classes((IsAuthenticated,))
 def check_functional_tags(request, tags):
     """
     verifica se existem tags funcionais para as tags passadas

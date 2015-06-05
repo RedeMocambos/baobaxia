@@ -20,8 +20,6 @@ from bbx.settings import DEFAULT_MUCUA
 
 @cache_page(60 * 15)
 @api_view(['GET'])
-#@authentication_classes((SessionAuthentication, BasicAuthentication))
-#@permission_classes((IsAuthenticated,))
 def mucua_list(request, repository=None):
     """
     List all mucuas
@@ -148,6 +146,8 @@ def mucua_get_groups(request, uuid=None, repository=None):
 
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+@authentication_classes((SessionAuthentication, BasicAuthentication))
+@permission_classes((IsAuthenticated,))
 def mucua_del_group(request, uuid, group, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
@@ -159,6 +159,8 @@ def mucua_del_group(request, uuid, group, repository=None):
 
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+@authentication_classes((SessionAuthentication, BasicAuthentication))
+@permission_classes((IsAuthenticated,))
 def mucua_add_group(request, uuid, group, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
@@ -183,6 +185,8 @@ def mucua_get_territory(request, uuid=None, repository=None):
 
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+@authentication_classes((SessionAuthentication, BasicAuthentication))
+@permission_classes((IsAuthenticated,))
 def mucua_del_territory(request, uuid, territory, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
@@ -194,6 +198,8 @@ def mucua_del_territory(request, uuid, territory, repository=None):
 
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+@authentication_classes((SessionAuthentication, BasicAuthentication))
+@permission_classes((IsAuthenticated,))
 def mucua_set_territory(request, uuid, territory, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
