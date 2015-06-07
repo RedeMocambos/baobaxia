@@ -156,8 +156,12 @@ def create_objects_from_files(repository=get_default_repository().name):
                                                 repository.name,
                                                 serialized_media)
             if os.path.isfile(media_json_file_path):
-                media_json_file = open(media_json_file_path)
-                data = JSONParser().parse(media_json_file)
+                with  open(media_json_file_path) as media_json_file:
+		    try:
+                        data = JSONParser().parse(media_json_file)
+                    except:
+                        print u"Problem parsing JSON: " + media_json_file.read()
+                        continue
 
                 try:
                     media = Media.objects.get(uuid=data["uuid"])
