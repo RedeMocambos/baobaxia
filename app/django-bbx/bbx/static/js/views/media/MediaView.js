@@ -67,6 +67,7 @@ define([
 		data.media = data.medias[0];
 		data.config = config;
 		data.baseUrl = BBXFunctions.getDefaultHome();
+		data.isLogged = BBXFunctions.isLogged;
 		$('#header-bottom').append(_.template(BackToSearchTpl, data));
 		
 		$('#content').html(_.template(MediaViewTpl, data));

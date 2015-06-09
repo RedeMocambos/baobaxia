@@ -5,7 +5,7 @@
     
     <!-- inner sidebar -->
     <div class="block-2 content-div">
-      <% if (config.userData.username) { %>
+      <% if (isLogged()) { %>
       <div class="link-edit-media">
 	<a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">
 	  <img src="images/edit-media.png" />
@@ -58,7 +58,7 @@
 	  <span id="whereis">&nbsp;</span>
 	</p>
       </div>
-      <% if (media.is_local) { %>
+      <% if (media.is_local && isLogged()) { %>
       <div class="blocks">
 	<p id="drop-local-copy">{% trans "Drop local copy" %}</p>
       </div>      
