@@ -123,6 +123,12 @@ def handle_uploaded_image(instance, image_path, current_path):
     
     # if exceeds max size, resize it
     if width > IMAGE_MAX_SIZE or height > IMAGE_MAX_SIZE:
+        # fix: create folder for thumbnail
+        file_folder = '/'.join(filename.rsplit('/')[0:-1])
+        if not os.path.exists(file_folder):
+            logger.info('creating folder: ' + file_folder)
+            os.makedirs(file_folder)
+        
         try:
             image.thumbnail((IMAGE_MAX_SIZE, IMAGE_MAX_SIZE), Image.ANTIALIAS)
             image.save(filename)
