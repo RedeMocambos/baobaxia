@@ -14,9 +14,14 @@
          if (isEditable) {
        %>
     <a href="<%= BBX.config.interfaceUrl %><%= BBX.config.repository %>/<%= BBX.config.mucua %>/media/gallery/<% 
-print(BBX.tags.join('/')); 
-var limit = (BBX.config.subroute.match('limit')) ? '/limit/' + BBX.config.subroute.split('/limit/')[1] : ''; 
-print(limit); %>/edit" alt="{% trans 'Multiple edit' %}"><div class="multiple-edit"></div></a>
+print(BBX.tags.join('/'));
+var url = Backbone.history.location.href,
+    limit = (url.match('limit')) ? '/limit/' + url.split('/limit/')[1] : '';
+    url = url.split('/limit')[0];
+    var orderby = (url.match('orderby')) ? '/orderby/' + url.split('/orderby/')[1] : '';
+
+print(orderby + limit); 
+    %>/edit" alt="{% trans 'Multiple edit' %}"><div class="multiple-edit"></div></a>
     <%   }
        } %>
     
