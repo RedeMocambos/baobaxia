@@ -139,7 +139,7 @@ li.mucua div.mucua-name {font-size: 11px; display: block; margin-left: 30px; tex
 #place-profile div h3 {font-size: 28px; font-weight: bold; margin-bottom: 15px}
 #place-profile .more-info a {border-radius: 4px; border: 2px solid #aac0ca; color: #aac0ca; padding-left: 6px; padding-right: 6px; }
 #place-profile img {border-radius: 75px }
-#cloud {padding: 20px; text-align: center}
+#cloud {padding: 20px; padding-top: 5px; text-align: center}
 #cloud .tag-item {text-align: center}
 .tag-item {display: inline}
 #cloud div a {color: #aac0ca; font-weight: bold}
