@@ -311,10 +311,16 @@ def media_list(request, repository, mucua, args=None, format=None):
 
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
+@authentication_classes((SessionAuthentication, BasicAuthentication))
 def media_detail(request, repository, mucua, pk=None, format=None):
     """
     Retrieve, create, update or delete a media instance.
     """
+    # TODO: Use object permissions for more fine grained control.
+    # For now, do a more primitive check that the user is authenticated.
+    
+    if request.method != 'GET' and not request.user.is_authenticated():
+        raise PermissionDenied
 
     # pegando sessao por url
     redirect_page = False
