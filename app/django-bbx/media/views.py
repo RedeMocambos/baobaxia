@@ -320,12 +320,6 @@ def media_detail(request, repository, mucua, pk=None, format=None):
     """
     Retrieve, create, update or delete a media instance.
     """
-    # TODO: Use object permissions for more fine grained control.
-    # For now, do a more primitive check that the user is authenticated.
-    
-    if request.method != 'GET' and not request.user.is_authenticated():
-        raise PermissionDenied
-
     # pegando sessao por url
     redirect_page = False
 
@@ -505,7 +499,6 @@ def media_last(request, repository, mucua, limit=5):
 
 @api_view(['GET'])
 @authentication_classes((SessionAuthentication, BasicAuthentication))
-@permission_classes((IsAuthenticated,))
 def media_token(request, repository, mucua):
     # acessa para inicializar tela de publicaocao de conteudo / gera
     # token
@@ -596,7 +589,6 @@ def media_where_is(request, repository, mucua, uuid):
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
 @authentication_classes((SessionAuthentication, BasicAuthentication))
-@permission_classes((IsAuthenticated,))
 def media_request_copy(request, repository, mucua, uuid):
     try:
         media = Media.objects.get(uuid=uuid)
@@ -609,7 +601,6 @@ def media_request_copy(request, repository, mucua, uuid):
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
 @authentication_classes((SessionAuthentication, BasicAuthentication))
-@permission_classes((IsAuthenticated,))
 def media_drop_copy(request, repository, mucua, uuid):
     try:
         media = Media.objects.get(uuid=uuid)
@@ -623,7 +614,6 @@ def media_drop_copy(request, repository, mucua, uuid):
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
 @authentication_classes((SessionAuthentication, BasicAuthentication))
-@permission_classes((IsAuthenticated,))
 def media_remove(request, repository, mucua, uuid):
     try:
         media = Media.objects.get(uuid=uuid)
