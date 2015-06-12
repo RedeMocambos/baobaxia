@@ -36,6 +36,7 @@ FORMAT_CHOICES = (('ogg', 'ogg'), ('ogv', 'ogv'), ('webm', 'webm'), ('mp4', 'mp4
                   ('jpg', 'jpg'), ('png', 'png'), ('pdf', 'pdf'), ('gif', 'gif'), ('odp', 'odp'), 
                   ('odt', 'odt'), ('oga','oga'), ('jpeg', 'jpeg'))
 VALID_MIMETYPES = {
+    'application/ogg': 'audio', # FIX. Pode ser video mas normalmente e' audio :)
     'audio/ogg': 'audio',
     'audio/mpeg': 'audio',
     'image/jpeg': 'imagem',
@@ -95,7 +96,13 @@ def get_media_path(instance):
             """        date = datetime(instance.date)"""
         else:
             date = instance.date.strftime("%y/%m/%d/")
-    
+
+    logger.debug("Check de atributos do media")
+    logger.debug("instance.get_repository(): " + instance.get_repository())
+    logger.debug("instance.get_mucua(): " + instance.get_mucua())
+    logger.debug("instance.get_type(): " + instance.get_type())
+    logger.debug("date: " + date)
+
     return os.path.join(instance.get_repository(), instance.get_mucua(), 
                         instance.get_type(), date)
 
@@ -112,6 +119,7 @@ def get_media_type_by_filename(file_path):
     if mime in VALID_MIMETYPES:
         return VALID_MIMETYPES[mime]
     else:
+        logger.debug('Mime: '+ mime)
         logger.info('Mime type not accepted.')
         return False
 
