@@ -7,7 +7,6 @@ for (var page = 1; page <= totalPages; page++) { %>
      <%
   // se for pagina atual
 	var currentPage = Math.floor((limit + offset) / itensPerPage);   // indicador numérico da página atual
-	console.log('current: ' + currentPage);
   if (currentPage === page) {
     var nextPage = page + 1,
     backPage = page - 1,

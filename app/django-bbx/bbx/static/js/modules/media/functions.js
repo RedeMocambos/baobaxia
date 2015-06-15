@@ -28,6 +28,7 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaList.html',
     'text!/templates/' + BBX.userLang + '/media/MediaPagination.html',
     'text!/templates/' + BBX.userLang + '/media/MessageRequest.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaRequestedList.html',
     'text!/templates/' + BBX.userLang + '/common/ResultsMessage.html',
     'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html',
     'text!/templates/' + BBX.userLang + '/common/TagCloud.html',
@@ -36,7 +37,7 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
-], function($, _, Backbone, TagCloud, Fancybox, FancyboxButtons, FancyboxMedia, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MessageSearchTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
+], function($, _, Backbone, TagCloud, Fancybox, FancyboxButtons, FancyboxMedia, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, MediaRequestedListTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MessageSearchTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
     /**
      * Funções gerais de media
      *
@@ -396,7 +397,17 @@ define([
 	    
 	    break;
 	case 'list':
+	    data.bindRequest = bindRequest;
 	    $(target).html(_.template(MediaListTpl, data));
+	    
+	    _.each($('.request-copy'), function(item) {
+		var uuid = $(item).attr('value'),
+		    className = '#request-copy-' + $(item).attr('value'),
+		    callback = function() {
+			$(className).parent().removeClass().addClass('requested').html(MediaRequestedListTpl);
+		    };
+		bindRequest(uuid, className, callback);
+	    });
 	    
 	    // get ordering; default: name
 	    // TODO: invert arrow according to order type (asc|desc)
@@ -430,7 +441,7 @@ define([
 	    var default_columns = {
 		'name': 'active_columns',
 		'values' : {
-		    'name': true, 'author': true, 'format': true, 'origin': true, 'date': true, 'license': true, 'type': true, 'num_copies': true, 'is_local': true, 'status': true, 'note': false, 'tags': false
+		    'name': true, 'author': true, 'format': true, 'origin': true, 'date': true, 'license': true, 'type': true, 'num_copies': true, 'is_local': true, 'status': true, 'note': false, 'tags': false, 'request': true
 		}
 	    },
 		active_columns = {};
@@ -1395,9 +1406,10 @@ define([
      * requisitar cópia
      *
      * @param {String} uuid UUID do conteúdo solicitado
+     * @param {Function} callback função callback opcional
      * @returns {None} [conteúdo definido pelo jQuery]
      */
-    var requestCopy = function(uuid) {
+    var requestCopy = function(uuid, callback) {
 	console.log('content ' + uuid + ' requested');
 	
 	var urlRequest = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/media/' + uuid + '/request',
@@ -1408,10 +1420,16 @@ define([
 		var data = {
 		    media: {
 			is_requested: true
-		    }
+		    },
+		    response: requestedCopy.attributes
 		}
-		$('#message-request').html(_.template(MessageRequestTpl, data));
-		$('.request-copy').addClass('requested-copy').removeClass('request-copy');
+		if (typeof callback === 'function') {
+		    // execute callback
+		    callback(data);
+		}
+	    },
+	    error: function() {
+		//
 	    }
 	})
     }
@@ -1420,10 +1438,13 @@ define([
      * ativa botão de requisição
      *
      * @param {String} uuid UUID do conteúdo atual
+     * @param {String} className nome da classe css
      * @returns {None} [conteúdo definido pelo jQuery]
      */
-    var bindRequest = function(uuid) {
-	$('.request-copy').on('click', function() { requestCopy(uuid) });   
+    var bindRequest = function(uuid, className, callback) {
+	var className = className || '.request-copy',
+	    callback = callback || null;
+	$(className).on('click', function() { requestCopy(uuid, callback) });   
     }
 
     /** 

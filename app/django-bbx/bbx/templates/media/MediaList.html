@@ -77,11 +77,17 @@
       </td>
       <td class="status">
 	<% if (media.is_requested) { %>
-	<span class="requested">{% trans "requested" %}</span>
+	<div class="requested">
+	  <span>{% trans "requested" %}</span>
+	</div>
 	<% } else if (!media.is_requested && media.is_local) { %>
-	<span class="local">{% trans "is_local" %}</span>
+	<div class="local">
+	  <span>{% trans "is_local" %}</span>
+	</div>
 	<% } else { %>
-	<span class="not_local">{% trans "remote" %}</span>
+	<div class="not_local">
+	  <input type="checkbox" name="request" class="request-copy" id="request-copy-<%= media.uuid %>" value="<%= media.uuid %>">
+	  <span>{% trans "request" %}</span>
 	<% } %>
       </td>
       <td class="note">

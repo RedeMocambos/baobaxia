@@ -228,7 +228,8 @@ li.mucua div.mucua-name {font-size: 11px; display: block; margin-left: 30px; tex
 .is_local .not_local {color: #a73400}
 td.status {font-weight: bold}
 .status .local {color: #34a700}
-.status .not_local {color: #a73400}
+.status .not_local {color: #a73400; display: flex}
+.status .not_local span {padding-top: 2px}
 .status .requested {color: #a7a700}
 #content .media .media-line a {color: #145B7A; text-align: left}
 .media-line td .icon-type {width: 21px; height: 21px; float: none !important}

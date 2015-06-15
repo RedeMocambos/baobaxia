@@ -75,7 +75,10 @@ define([
 		if (!data.media.is_local) {
 		    $('#message-request').html(_.template(MessageRequestTpl, data));
 		}
-		MediaFunctions.bindRequest(uuid);
+		MediaFunctions.bindRequest(uuid, '.request-copy', function() {
+		    $('#message-request').html(_.template(MessageRequestTpl, data));
+		    $('.request-copy').addClass('requested-copy').removeClass('request-copy');		    
+		});
 		
 	    }, {'width': '00', 'height': '300' });
 	    
