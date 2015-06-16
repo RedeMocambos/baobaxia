@@ -138,6 +138,7 @@ define([
     var __getTagsFromUrl = function() {
 	var url_has_order = false,
 	    url_has_limit = false,
+	    url_has_shuffle = false,	    
 	    url_is_search = false,
 	    url_is_gallery = false,
 	    tags = [],
@@ -921,9 +922,9 @@ define([
 	tag.fetch({
 	    success: function() {
 		var tags = tag.attributes,
-		    data = {};
+		    data = {},
+		    tagData = tags;
 		
-		tagData = tags;
 		// ordena por qtd ocorrencias
 		tags =_.sortBy(_.sortBy(tagData, 'tag_count').reverse().slice(0, limit), 'name');
 		
