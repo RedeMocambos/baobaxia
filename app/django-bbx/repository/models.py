@@ -8,7 +8,6 @@ from subprocess import PIPE
 import logging
 import exceptions
 
-
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_save, pre_delete
@@ -16,9 +15,11 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from media.models import get_file_path, Media
+
 from repository.signals import filesync_done
 from bbx.settings import DEFAULT_REPOSITORY
 from bbx.utils import logger
+
 
 # REPOSITORY_CHOICE é uma tupla com repositórios dentro da pasta /annex
 #REPOSITORY_CHOICES = [('mocambos', 'mocambos'), ('sarava', 'sarava')]
@@ -40,12 +41,19 @@ def git_media_post_save(instance, **kwargs):
         fout = open(mediapath + mediadata, 'w')
         fout.write(str(serializer.getJSON()))
         fout.close()
+
         git_add(mediadata, mediapath)
+
+        from mucua.models import get_default_mucua
+        from media.views import add_and_synchronize_tags
+        add_and_synchronize_tags(instance, instance.tags.all(), get_default_mucua())
+
         git_commit(instance.get_file_name(),
                    instance.author.username,
                    instance.author.email,
                    get_file_path(instance),
                    os.path.join(mediapath, mediadata))
+
 
 # Connecting to Media signal
 @receiver(pre_delete, sender=Media)
@@ -318,15 +326,15 @@ def git_annex_metadata(file_name, repository_path):
 
 def git_annex_metadata_add(file_name, repository_path, key, value):
     u"""Adiciona um metadata ao arquivo."""
-    logger.info('git annex metadata ' + file_name)
-    cmd = 'git annex metadata ' + file_name + ' -s ' + key + '+=' + value
+    cmd = 'git annex metadata ' + file_name + ' -s ' + key + '+='+ "'"+ value +"'"
+    logger.info('Adding metadata with: ' + cmd)
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 def git_annex_metadata_del(file_name, repository_path, key, value):
     u"""Remove um metadata do arquivo."""
     logger.info('git annex metadata ' + file_name)
-    cmd = 'git annex metadata ' + file_name + ' -s ' + key + '-=' + value
+    cmd = 'git annex metadata ' + file_name + ' -s ' + key + '-=' + "'"+ value +"'"
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
