@@ -97,12 +97,6 @@ def get_media_path(instance):
         else:
             date = instance.date.strftime("%y/%m/%d/")
 
-    logger.debug("Check de atributos do media")
-    logger.debug("instance.get_repository(): " + instance.get_repository())
-    logger.debug("instance.get_mucua(): " + instance.get_mucua())
-    logger.debug("instance.get_type(): " + instance.get_type())
-    logger.debug("date: " + date)
-
     return os.path.join(instance.get_repository(), instance.get_mucua(), 
                         instance.get_type(), date)
 
@@ -389,8 +383,8 @@ class MediaDoesNotExist(exceptions.Exception):
     def __init__(self, args=None):
         self.args = args
 
-
-@receiver(post_save, sender=Media)
+# Ainda nao ativas
+#@receiver(post_save, sender=Media)
 def start_post_save_policies(instance, **kwargs):
     """
     Intercepta o sinal de *post_save* de objetos multimedia (*media*) e

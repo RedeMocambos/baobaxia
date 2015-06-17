@@ -1,14 +1,14 @@
-from os import path
+import os
 from datetime import datetime
 import json
 import re
 
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
-from rest_framework.decorators import authentication_classes, permission_classes
+#from rest_framework.decorators import authentication_classes, permission_classes
 
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+#from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+#from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
 from sorl.thumbnail import get_thumbnail
@@ -53,11 +53,12 @@ def add_and_synchronize_tags(media, tags, mucua):
             tag = Tag.objects.get(name=tag,
                                   namespace__contains=mucua.uuid)
         except Tag.DoesNotExist:
-            tag = Tag(name=tag)
+            tag = Tag(name=tag, namespace=mucua.uuid + "-tag")
             # TODO: Handle namespaces!
             tag.save()
 
         media.tags.add(tag)
+
     # Synchronize tags
     # First, add new ones as metadata on files.
     tags = media.tags.all()
@@ -68,9 +69,9 @@ def add_and_synchronize_tags(media, tags, mucua):
     # Then, *remove* tags that are no longer present. 
     # Only remove tags set with present namespace!
     for namespace, name in existing_tags:
-        if namespace.startswith(mucua.uuid)  and not (namespace, name) in [
+        if namespace.startswith(mucua.uuid) and not (namespace, name) in [
             (t.namespace, t.name) for t in tags
-        ]:
+            ]:
             git_annex_remove_tag(media, namespace, name)
 
 
@@ -498,7 +499,7 @@ def media_last(request, repository, mucua, limit=5):
 
 
 @api_view(['GET'])
-@authentication_classes((SessionAuthentication, BasicAuthentication))
+#@authentication_classes((SessionAuthentication, BasicAuthentication))
 def media_token(request, repository, mucua):
     # acessa para inicializar tela de publicaocao de conteudo / gera
     # token
@@ -588,7 +589,7 @@ def media_where_is(request, repository, mucua, uuid):
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
-@authentication_classes((SessionAuthentication, BasicAuthentication))
+#@authentication_classes((SessionAuthentication, BasicAuthentication))
 def media_request_copy(request, repository, mucua, uuid):
     try:
         media = Media.objects.get(uuid=uuid)
@@ -600,7 +601,7 @@ def media_request_copy(request, repository, mucua, uuid):
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
-@authentication_classes((SessionAuthentication, BasicAuthentication))
+#@authentication_classes((SessionAuthentication, BasicAuthentication))
 def media_drop_copy(request, repository, mucua, uuid):
     try:
         media = Media.objects.get(uuid=uuid)
@@ -613,7 +614,7 @@ def media_drop_copy(request, repository, mucua, uuid):
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
-@authentication_classes((SessionAuthentication, BasicAuthentication))
+#@authentication_classes((SessionAuthentication, BasicAuthentication))
 def media_remove(request, repository, mucua, uuid):
     try:
         media = Media.objects.get(uuid=uuid)
