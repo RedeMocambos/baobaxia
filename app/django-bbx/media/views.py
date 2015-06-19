@@ -317,6 +317,7 @@ def media_list(request, repository, mucua, args=None, format=None):
 
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
+@authentication_classes((SessionAuthentication, BasicAuthentication))
 def media_detail(request, repository, mucua, pk=None, format=None):
     """
     Retrieve, create, update or delete a media instance.
