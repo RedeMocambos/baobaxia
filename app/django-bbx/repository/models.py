@@ -4,6 +4,7 @@ import re
 import os
 import json
 import subprocess
+
 from subprocess import PIPE
 import logging
 import exceptions
@@ -46,7 +47,8 @@ def git_media_post_save(instance, **kwargs):
 
         from mucua.models import get_default_mucua
         from media.views import add_and_synchronize_tags
-        add_and_synchronize_tags(instance, instance.tags.all(), get_default_mucua())
+        tags = [t.name for t in instance.tags.all()]
+        add_and_synchronize_tags(instance, tags, get_default_mucua())
 
         git_commit(instance.get_file_name(),
                    instance.author.username,

@@ -262,6 +262,8 @@ class Media(models.Model):
     def set_is_local(self):
         self.is_local = os.path.isfile(os.path.join(get_file_path(self),
                                                     self.get_file_name()))
+        if self.is_local:
+            self.is_requested = False
 
     def _set_num_copies(self):
         from repository.models import git_annex_where_is
