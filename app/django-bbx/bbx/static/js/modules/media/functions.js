@@ -264,6 +264,7 @@ define([
      * @returns {Object} Objeto com preferências do usuário
      */    
     var setUserPrefs = function(userPrefs, property) {
+	console.log('setUserPrefs()');
 	var userPrefs = userPrefs || null,
 	    property = property || null;
 
@@ -278,6 +279,7 @@ define([
 	if (_.isObject(property)) {
 	    userPrefs.values[property.name] = property.values;
 	}
+	localStorage.userPrefs = JSON.stringify(userPrefs);
 	
 	return userPrefs;
     }
@@ -286,21 +288,13 @@ define([
      * 
      */
     var getUserPrefs = function() {
-	if (!this.BBXFunctions.isCookiesEnabled()) {
-	    var userPrefs = {
-		'name': 'userPrefs',
-		values: {'media_listing_type' : 'list'}
-	    };
-	    return userPrefs;
+	console.log('getUserPrefs()');
+	if (typeof localStorage.userPrefs !== 'undefined') {
+	    var userPrefs = JSON.parse(localStorage.getItem('userPrefs'));
+	} else {
+	    userPrefs = setUserPrefs();
 	}
 	
-	var BBXFunctions = window.BBXFunctions,
-	    userPrefs = BBXFunctions.getFromCookie('userPrefs');
-	if (_.isEmpty(userPrefs)) {
-	    userPrefs = setUserPrefs();
-	    BBXFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
-	}
-		
 	return userPrefs;
     }
 
@@ -310,35 +304,32 @@ define([
      * @public
      * @param {String} type String do tipo, de uma lista predefinida de tipos
      * @param {String} target string do elemento HTML DOM (classe/id)
-     * @param {Bool} skipCookie booleano se usuário não quiser setar preferencias de usuário com esse valor
+     * @param {Bool} skipPreferences booleano se usuário não quiser setar preferencias de usuário com esse valor
      */
-    var showMediaBy = function(type, target, skipCookie) {
+    var showMediaBy = function(type, target, skipPreferences) {
 	var target = target || '.media-results .media',
 	    type = type || '',
-	    skipCookie = skipCookie || false,
+	    skipPreferences = skipPreferences || false,
 	    data = BBX.data,
 	    valid_types = ['list', 'grid'];
 	
 	if (typeof BBXFunctions === 'undefined') {
 	    var BBXFunctions = window.BBXFunctions;
 	}
+	
 	var userPrefs = getUserPrefs();
-	
 	// se vazio, pega default
-	type = (type == '') ? userPrefs.values.media_listing_type : type;
-	// se invalido, cai fora
+	type = (type === '') ? userPrefs.values.media_listing_type : type;
 	
+	// se invalido, cai fora
 	if (!_.contains(valid_types, type)) {
 	    console.log('false type');
 	}
 	
 	// seta novo media-listing-type
 	userPrefs.values.media_listing_type = type;
-	if (!skipCookie) {
-	    if (BBXFunctions.isCookiesEnabled()) {
-		BBXFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
-	    } else {
-	    }
+	if (!skipPreferences) {
+	    localStorage.userPrefs = JSON.stringify(userPrefs);
 	}
 	
 	switch(type) {
@@ -474,11 +465,7 @@ define([
 		    $('td.' + column_name).hide();
 		    $('th.' + column_name).hide();
 		}
-
 		userPrefs = setUserPrefs(userPrefs, active_columns);
-		if (BBXFunctions.isCookiesEnabled()) {
-		    BBXFunctions.addToCookie({'name': 'userPrefs', values: userPrefs});
-		}
 	    }
 	    
 	    $('#menu-colunas input:checkbox').each(function() {

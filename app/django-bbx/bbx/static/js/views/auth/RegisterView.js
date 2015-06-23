@@ -64,21 +64,9 @@ define([
 			repositoryList: config.repositoriesList
 		    }
 		    __parseTemplate(data);			    
-		    __getToken();			    
+		    // TODO: substituir por TOKEN auth
 		}
 	    });
-	    
-	    var __getToken = function() {
-		var config = BBX.config,
-		    url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/mocambola/login",
-		    mocambola = new MocambolaModel([], {url: url});
-		
-		// remove cookie if it exists
-		if ($.cookie('csrftoken')) {
-		    $.removeCookie('csrftoken');
-		}		
-		mocambola.fetch({});
-	    };	    
 	}
     })
     return RegisterView;

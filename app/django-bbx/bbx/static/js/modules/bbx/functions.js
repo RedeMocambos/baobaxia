@@ -12,7 +12,6 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'jquery_cookie',
     'views/common/HeaderView',
     'views/mucua/HomeMucua',
     'views/common/BuscadorView',
@@ -26,7 +25,7 @@ define([
     'text!/templates/' + BBX.userLang + '/common/UsageBar.html',
     'text!/templates/' + BBX.userLang + '/common/UserProfile.html',
     'text!/templates/' + BBX.userLang + '/common/MucuaProfile.html'
-], function($, _, Backbone, jQueryCookie, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, TagModel, MediaFunctions, ContentTpl, SidebarTpl, MucuaItemTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
+], function($, _, Backbone, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, TagModel, MediaFunctions, ContentTpl, SidebarTpl, MucuaItemTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
 
     /**
      * init function of bbx functions
@@ -45,94 +44,13 @@ define([
      * @return {Bool} if there's a session opened
      */
     var isLogged = function() {
-	if (!_.isEmpty(getFromCookie('userData'))) {
-	    // TODO: add some session check	   	    
+	if (typeof localStorage.userData !== 'undefined' && typeof sessionStorage.token !== 'undefined') {
 	    return true;
 	} else {
 	    return false;
 	}
     }
 
-    /**
-     * check if cookies are enabled
-     *
-     * @return {Bool} if cookies are enabled
-     *
-     */
-    var isCookiesEnabled = function() {
-	// TODO: improve cookie detection
-	if (!navigator.cookieEnabled) {
-	    console.log("Cookies not enabled, Baobaxia need cookies.");
-	    return false;
-	} else {
-	    return true;
-	}
-    }
-
-    /**
-     * adds value to cookie
-     *
-     * @data {Object} input Object with data to be added (with the structure: {'name': 'nameOfProperty', 'values': {Object})
-     * @return {Obj} return the complete new object
-     */
-    var addToCookie = function(data) {
-	var cookieData = {},
-	    serializedCookie = '',
-	    cookie = null;
-
-	if(!isCookiesEnabled) {
-	    return false;
-	}
-	
-	console.log('addToCookie()');
-	if ($.cookie('sessionBBX')) {
-	    cookieData = $.parseJSON($.cookie('sessionBBX'));
-	}
-	if (_.isNull(cookieData)) {
-	    cookieData = {};
-	}
-	
-	cookieData[data.name] = data.values
-	
-	serializedCookie = $.toJSON(cookieData);
-	
-	$.cookie('sessionBBX', null);
-	$.cookie('sessionBBX', serializedCookie);
-	var cookie = $.parseJSON($.cookie('sessionBBX'));
-	return cookieData;
-    }
-
-    /**
-     * get value from a cookie or the whole cookie
-     *
-     * @data {String} input String with the key or wildchar
-     * @return {Obj} return the selected value from the cookie
-     */
-    var getFromCookie = function(key) {
-	var key = key || '*';
-	
-	if(!isCookiesEnabled()) {
-	    return false;
-	}
-	
-	if ($.cookie('sessionBBX')) {
-	    var cookieData = $.parseJSON($.cookie('sessionBBX'));
-	    if (key == '*') {
-		return cookieData;
-	    } else { 
-		if (_.has(cookieData, key)) {
-		    return cookieData[key];
-		} else {
-		    // key don't exists
-		    return false;
-		}
-	    }
-	} else {
-	    // error / not logged in
-	    return false;
-	}
-    }
-    
     /**
      * return home page
      *
@@ -241,7 +159,7 @@ define([
 	
 	
 	$('#content').html('');
-
+	
 	tags = MediaFunctions.__getTagsFromUrl();
 	BBX.tags = tags;
 	
@@ -486,7 +404,8 @@ define([
 	console.log('render sidebar');
 	if (isLogged() &&
 	    ((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() == "")) {
-	    var userData = getFromCookie('userData');
+	    var userData = JSON.parse(localStorage.userData);
+	    console.log(userData);
 	    userData.mocambolaUrl = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/mocambola/' + userData.username
 	    userData.avatar = getAvatar();
 	    if ($('#link-login')) {
@@ -624,7 +543,7 @@ define([
 	visitedMucuas = {'name': 'visitedMucuas', 
 			     'values': []
 			    }
-	visitedMucuas.values = getFromCookie('visitedMucuas') || [];
+	visitedMucuas.values = localStorage.visitedMucuas || [];
 	
 	// se for mymucua, nao adiciona a navegacao
 	if (config.mucua == config.MYMUCUA || config.mucua == 'rede') {
@@ -661,7 +580,7 @@ define([
 		console.log('adiciona ao comeco');
 	    }	    
 	}
-	addToCookie(visitedMucuas);
+	localStorage.visitedMucuas = visitedMucuas;
 	
 	return visitedMucuas.values;
     }
@@ -779,14 +698,7 @@ define([
 	
 	// adds current url to redirect
 	if (!currentPage.match('login')) {
-	    if(isCookiesEnabled()) {
-		addToCookie({
-		    'name': 'redirect_url',
-		    'values': {
-			0: Backbone.history.location.href
-		    }
-		});
-	    }
+	    localStorage.redirect_url = Backbone.history.location.href;
 	}
 	
 	console.log('subroute: ' + config.subroute);
@@ -896,9 +808,6 @@ define([
     return {
 	init: init,
 	isLogged: isLogged,
-	isCookiesEnabled: isCookiesEnabled,
-	getFromCookie: getFromCookie,
-	addToCookie: addToCookie,
 	getDefaultHome: getDefaultHome,
 	getAvatar: getAvatar,
 	renderCommon: renderCommon,

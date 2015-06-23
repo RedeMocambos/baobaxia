@@ -76,7 +76,7 @@ define([
 		mucuas = null;
 	    	    
 	    // session user data
-	    config.userData = BBXFunctions.getFromCookie('userData');
+	    config.userData = localStorage.userData;
 	    
 	    // set data
 	    data.types = MediaFunctions.getMediaTypes(),

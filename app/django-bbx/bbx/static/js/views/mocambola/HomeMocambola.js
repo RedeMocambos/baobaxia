@@ -35,7 +35,7 @@ define([
 	    data = {},
 	    limit = limit || '';
 	    
-	    config.userData = BBXFunctions.getFromCookie('userData');
+	    config.userData = localStorage.userData;
 	    data.config = config;
 	    BBXFunctions.renderUsage();
 	    BBXFunctions.renderSidebar();

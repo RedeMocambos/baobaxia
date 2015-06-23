@@ -46,18 +46,21 @@ define([
     var __checkLogin = function(loginData) {
 	var url = BBX.config.apiUrl + '/' + loginData.repository + '/' + loginData.mucua + '/mocambola/login';
 	//TODO: fazer check_login na API
-	var mocambola = new MocambolaModel(loginData, {url: url});
 	
-	mocambola.save()
-	    .always(function(userData) {
-		if (userData.error === true) {
-		    $('#message-area').html(userData.errorMessage);
-		    BBX.loginError = userData.errorMessage;
+	$.post(url, loginData)
+	    .always(function(data) {
+		data = JSON.parse(data);
+		if (data.error === true) {
+		    $('#message-area').html(data.errorMessage);
+		    BBX.loginError = data.errorMessage;
 		} else {
 		    $('#message-area').html(LoginOkTpl);
-		    BBX.config.userData = userData;
-		}
-	    });		
+		    var userData = {'username': data.username }
+		    BBX.config.userData = userData;  // TODO: checar se precisa redundar as variaveis
+		    localStorage.userData = JSON.stringify(userData);
+		    sessionStorage.token = data.token;
+		}		
+	    });
     }
 	
     var __getDefaultHome = function() {
@@ -72,15 +75,14 @@ define([
 	loginData = loginData || '',
 	urlRedirect = '',
 	defaultUrlRedirect = BBXFunctions.getDefaultHome();
-	// Get from cookie
 	
 	if (loginData === '') {
 	    loginData = __prepareLoginData();
 	    __checkLogin(loginData);
 	}
 	
-	if (typeof BBXFunctions.getFromCookie('redirect_url')[0] !== 'undefined') {
-	    urlRedirect = BBXFunctions.getFromCookie('redirect_url')[0];
+	if (typeof localStorage.redirect_url !== 'undefined') {
+	    urlRedirect = localStorage.getItem('redirect_url');
 	} else {
 	    urlRedirect = defaultUrlRedirect;
 	}
@@ -92,10 +94,6 @@ define([
 			   }
 	    
 	    if (!_.isEmpty(userData.values)) {
-		// set cookie that expires in one day
-		BBXFunctions.addToCookie(userData);
-		BBX.config.userData = userData;
-		
 		// redirect
 		$('#content').html('');
 		window.location.href = urlRedirect;
@@ -109,10 +107,9 @@ define([
     }
 
     var doLogout = function() {
-	if ($.cookie('sessionBBX')) {
-	    $.removeCookie('sessionBBX');
-	}
-	BBX.userData = undefined;
+	delete BBX.userData;
+	delete localStorage.userData;
+	delete sessionStorage.token;
 	$('#header').html('');
 	$('#content').html('');
 	$('#sidebar').detach();

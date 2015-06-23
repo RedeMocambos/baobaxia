@@ -1,7 +1,6 @@
 define([
     'jquery', 
     'lodash',
-    'jquery_cookie',
     'jquery_form',
     'backbone',
     'textext',
@@ -13,7 +12,7 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaPublish.html',
     'text!/templates/' + BBX.userLang + '/media/MediaConfirmRemoveMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaRemoveMessage.html',
-], function($, _, jQueryCookie, jQueryForm, Backbone, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
+], function($, _, jQueryForm, Backbone, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
     var MediaUpdate = Backbone.View.extend({
 	
 	__getFormData: function() {
@@ -61,7 +60,7 @@ define([
 	    urlUpdate = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + mediaData.uuid;
 	    media = new MediaModel([mediaData], {url: urlUpdate});
 	    options.beforeSend = function(xhr){
-		xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
+		//xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
 	    };
 	    //HACK para passar o objeto corretamente
 	    media.attributes =  _.clone(media.attributes[0]);
@@ -112,8 +111,8 @@ define([
 		    $('#origin').append("<option value='" + media.attributes.origin + "'>" + media.attributes.origin + "</option>");
 		    $('#origin').prop('disabled', true);
 		    
-		    var csrftoken = $.cookie('csrftoken');
-		    $('#csrfmiddlewaretoken').prop('value', csrftoken);
+		    //var csrftoken = $.cookie('csrftoken');
+		    //$('#csrfmiddlewaretoken').prop('value', csrftoken);
 		    
 		    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
 		    var tags_arr = media.attributes.tags,

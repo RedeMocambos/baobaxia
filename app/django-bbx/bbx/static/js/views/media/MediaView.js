@@ -20,7 +20,7 @@ define([
 		media = '',
 		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
 		urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis',
-		userData = BBXFunctions.getFromCookie('userData');
+		userData = localStorage.userData;
 
 	    // pergunta se vai excluir cópia local do arquivo
 	    var askDrop = function() {

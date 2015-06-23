@@ -5,10 +5,10 @@ import re
 
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
-#from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.decorators import authentication_classes, permission_classes
 
-#from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-#from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
 from sorl.thumbnail import get_thumbnail
@@ -322,6 +322,12 @@ def media_detail(request, repository, mucua, pk=None, format=None):
     """
     Retrieve, create, update or delete a media instance.
     """
+    # TODO: Use object permissions for more fine grained control.
+    # For now, do a more primitive check that the user is authenticated.
+    
+    if request.method != 'GET' and not request.user.is_authenticated():
+        raise PermissionDenied
+    
     # pegando sessao por url
     redirect_page = False
 
