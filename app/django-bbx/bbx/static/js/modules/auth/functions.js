@@ -32,7 +32,8 @@ define([
 
     var __prepareLoginData = function() { 
 	// TODO: add form checks
-	var postData = {}
+	var postData = {},
+	    verifyLoginURL = '',
 	postData.username = $("#mocambola").val();
 	postData.repository = $("#repository").val();
 	postData.mucua = $("#mucua").val();
@@ -40,27 +41,27 @@ define([
 	// - https://github.com/RedeMocambos/baobaxia/issues/24
 	// while not solved, auth with no crypt
 	postData.password = $("#password").val().toString();
-    loginUser =  postData.username + "@" + postData.mucua + "." + postData.repository + '.net';
-    // TODO: Generate according to other schemes later.
-    sessionStorage.token = btoa(loginUser + ":" + postData.password);
-	return postData;
-    }
 	
-    var __checkLogin = function(loginData) {
-	var url = BBX.config.apiUrl + '/' + loginData.repository + '/' + loginData.mucua + '/mocambola/login';
-	//TODO: fazer check_login na API
+	loginUser =  postData.username + "@" + postData.mucua + "." + postData.repository + '.net';
+	verifyLoginURL = BBX.config.apiUrl + '/' + postData.repository + '/' + postData.mucua + '/mocambola/login';
 	
-	$.post(url, loginData)
+	// check login at 	
+	$.post(verifyLoginURL, postData)
 	    .always(function(data) {
 		data = JSON.parse(data);
 		if (data.error === true) {
+		    // unauthorized
 		    $('#message-area').html(data.errorMessage);
 		    BBX.loginError = data.errorMessage;
 		} else {
+		    // authorized
 		    $('#message-area').html(LoginOkTpl);
 		    var userData = {'username': data.username }
 		    BBX.config.userData = userData;  // TODO: checar se precisa redundar as variaveis
 		    localStorage.userData = JSON.stringify(userData);
+
+		    // generate token
+		    sessionStorage.token = btoa(loginUser + ":" + postData.password);
 		}		
 	    });
     }
@@ -79,8 +80,7 @@ define([
 	defaultUrlRedirect = BBXFunctions.getDefaultHome();
 	
 	if (loginData === '') {
-	    loginData = __prepareLoginData();
-	    __checkLogin(loginData);
+	    __checkLogin();
 	}
 	
 	if (typeof localStorage.redirect_url !== 'undefined') {
