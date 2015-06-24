@@ -40,7 +40,7 @@ define([
 	// - https://github.com/RedeMocambos/baobaxia/issues/24
 	// while not solved, auth with no crypt
 	postData.password = $("#password").val().toString();
-    loginUser =  loginData.username + "@" + loginData.mucua + "." + loginData.repository + '.net';
+    loginUser =  postData.username + "@" + postData.mucua + "." + postData.repository + '.net';
     // TODO: Generate according to other schemes later.
     postData.token = btoa(loginUser + ":" + postData.password);
 	return postData;
