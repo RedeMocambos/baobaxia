@@ -58,7 +58,7 @@ define([
 		    var userData = {'username': data.username }
 		    BBX.config.userData = userData;  // TODO: checar se precisa redundar as variaveis
 		    localStorage.userData = JSON.stringify(userData);
-		    sessionStorage.token = data.token;
+		    localStorage.token = data.token;
 		}		
 	    });
     }
@@ -109,7 +109,7 @@ define([
     var doLogout = function() {
 	delete BBX.userData;
 	delete localStorage.userData;
-	delete sessionStorage.token;
+	delete localStorage.token;
 	$('#header').html('');
 	$('#content').html('');
 	$('#sidebar').detach();

@@ -541,9 +541,10 @@ define([
 	// get last visited mucuas
 	var config = __getConfig(),
 	visitedMucuas = {'name': 'visitedMucuas', 
-			     'values': []
-			    }
-	visitedMucuas.values = localStorage.visitedMucuas || [];
+			 'values': []
+			}
+
+	visitedMucuas.values = (typeof localStorage.visitedMucuas !== 'undefined') ? JSON.parse(localStorage.visitedMucuas) : [];
 	
 	// se for mymucua, nao adiciona a navegacao
 	if (config.mucua == config.MYMUCUA || config.mucua == 'rede') {
@@ -580,7 +581,7 @@ define([
 		console.log('adiciona ao comeco');
 	    }	    
 	}
-	localStorage.visitedMucuas = visitedMucuas;
+	localStorage.visitedMucuas = JSON.stringify(visitedMucuas.values);
 	
 	return visitedMucuas.values;
     }
