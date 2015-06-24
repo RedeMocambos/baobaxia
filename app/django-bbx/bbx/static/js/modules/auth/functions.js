@@ -42,7 +42,7 @@ define([
 	postData.password = $("#password").val().toString();
     loginUser =  postData.username + "@" + postData.mucua + "." + postData.repository + '.net';
     // TODO: Generate according to other schemes later.
-    postData.token = btoa(loginUser + ":" + postData.password);
+    sessionStorage.token = btoa(loginUser + ":" + postData.password);
 	return postData;
     }
 	
@@ -61,7 +61,6 @@ define([
 		    var userData = {'username': data.username }
 		    BBX.config.userData = userData;  // TODO: checar se precisa redundar as variaveis
 		    localStorage.userData = JSON.stringify(userData);
-		    localStorage.token = data.token;
 		}		
 	    });
     }
@@ -112,7 +111,7 @@ define([
     var doLogout = function() {
 	delete BBX.userData;
 	delete localStorage.userData;
-	delete localStorage.token;
+	delete sessionStorage.token;
 	$('#header').html('');
 	$('#content').html('');
 	$('#sidebar').detach();
