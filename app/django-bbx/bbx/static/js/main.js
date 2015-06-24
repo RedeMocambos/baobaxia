@@ -75,7 +75,7 @@ require([
 	Backbone.sync = function(method, model, options) {
 	    options.beforeSend = function(xhr) {
 		if (typeof sessionStorage.token !== 'undefined') {
-		    xhr.setRequestHeader('Authorization', 'Bearer ' +  sessionStorage.token);
+		    xhr.setRequestHeader('Authorization', 'Basic ' +  sessionStorage.token);
 		}
 	    }
 	    return oldSync(method, model, options);
