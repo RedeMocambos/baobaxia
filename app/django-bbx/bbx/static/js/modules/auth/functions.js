@@ -30,10 +30,11 @@ define([
 	return BBX.config;
     }
 
-    var __prepareLoginData = function() { 
+    var __checkLogin = function() { 
 	// TODO: add form checks
 	var postData = {},
-	    verifyLoginURL = '',
+	    verifyLoginURL = '';
+	
 	postData.username = $("#mocambola").val();
 	postData.repository = $("#repository").val();
 	postData.mucua = $("#mucua").val();
@@ -48,13 +49,15 @@ define([
 	// check login at 	
 	$.post(verifyLoginURL, postData)
 	    .always(function(data) {
-		data = JSON.parse(data);
 		if (data.error === true) {
 		    // unauthorized
 		    $('#message-area').html(data.errorMessage);
 		    BBX.loginError = data.errorMessage;
+		    sessionStorage.error = data.errorMessage;
 		} else {
 		    // authorized
+		    delete sessionStorage.error;
+		    data = JSON.parse(data);
 		    $('#message-area').html(LoginOkTpl);
 		    var userData = {'username': data.username }
 		    BBX.config.userData = userData;  // TODO: checar se precisa redundar as variaveis
@@ -100,7 +103,7 @@ define([
 		$('#content').html('');
 		window.location.href = urlRedirect;
 		clearInterval(loginOK);
-	    } else if (BBX.loginError) {
+	    } else if (typeof sessionStorage.loginError !== 'undefined') {
 		console.log('login falhou');
 		BBX.loginError = false;		    
 		clearInterval(loginOK);
@@ -110,7 +113,7 @@ define([
 
     var doLogout = function() {
 	delete BBX.userData;
-	delete localStorage.userData;
+	delete localStorage.clear();
 	delete sessionStorage.token;
 	$('#header').html('');
 	$('#content').html('');
