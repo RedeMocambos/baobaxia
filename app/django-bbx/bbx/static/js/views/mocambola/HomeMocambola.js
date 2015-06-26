@@ -35,7 +35,7 @@ define([
 	    data = {},
 	    limit = limit || '';
 	    
-	    config.userData = localStorage.userData;
+	    config.userData = JSON.parse(localStorage.userData);
 	    data.config = config;
 	    BBXFunctions.renderUsage();
 	    BBXFunctions.renderSidebar();
