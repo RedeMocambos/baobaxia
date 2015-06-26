@@ -259,6 +259,8 @@ pip install sorl-thumbnail;
 pip install south;
 pip install wheel;
 pip install wsgiref;
+pip install python-magic;
+pip install python-memcached;
 pip install longerusername;
 pip install celery==3.1.14
 "
