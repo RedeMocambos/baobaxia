@@ -45,6 +45,7 @@ def add_and_synchronize_tags(media, tags, mucua):
     # Remove tags that originate in this mucua
     for tag in media.tags.filter(namespace__contains=mucua.uuid):
         media.tags.remove(tag)
+
     # Now add each tag in list.
     for tag in tags:
         if not tag or tag.isspace():

@@ -67,7 +67,9 @@ class Command(BaseCommand):
                                         if request_uuid not in requests:
                                             # Check to see if origin mucua is not the current mucua
                                             if media.origin.description != mucua:
-                                                git_annex_drop(media)
+                                                # Doesn't work 
+                                                #git_annex_drop(media)
+                                                pass
                         else: 
                             media.is_requested = False                    
                         media.save()
