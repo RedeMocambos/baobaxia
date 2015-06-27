@@ -7,7 +7,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.decorators import authentication_classes, permission_classes
 
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import SessionAuthentication
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
@@ -317,7 +318,7 @@ def media_list(request, repository, mucua, args=None, format=None):
 
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
-@authentication_classes((SessionAuthentication, BasicAuthentication))
+@authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
 def media_detail(request, repository, mucua, pk=None, format=None):
     """
     Retrieve, create, update or delete a media instance.
@@ -506,7 +507,6 @@ def media_last(request, repository, mucua, limit=5):
 
 
 @api_view(['GET'])
-#@authentication_classes((SessionAuthentication, BasicAuthentication))
 def media_token(request, repository, mucua):
     # acessa para inicializar tela de publicaocao de conteudo / gera
     # token
@@ -596,7 +596,6 @@ def media_where_is(request, repository, mucua, uuid):
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
-#@authentication_classes((SessionAuthentication, BasicAuthentication))
 def media_request_copy(request, repository, mucua, uuid):
     try:
         media = Media.objects.get(uuid=uuid)
@@ -608,7 +607,8 @@ def media_request_copy(request, repository, mucua, uuid):
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
-#@authentication_classes((SessionAuthentication, BasicAuthentication))
+@authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
+@permission_classes((IsAuthenticated,))
 def media_drop_copy(request, repository, mucua, uuid):
     try:
         media = Media.objects.get(uuid=uuid)
@@ -621,7 +621,8 @@ def media_drop_copy(request, repository, mucua, uuid):
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
-#@authentication_classes((SessionAuthentication, BasicAuthentication))
+@authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
+@permission_classes((IsAuthenticated,))
 def media_remove(request, repository, mucua, uuid):
     try:
         media = Media.objects.get(uuid=uuid)

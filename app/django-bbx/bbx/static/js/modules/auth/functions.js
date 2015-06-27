@@ -63,8 +63,9 @@ define([
 		    BBX.config.userData = userData;  // TODO: checar se precisa redundar as variaveis
 		    localStorage.userData = JSON.stringify(userData);
 
-		    // generate token
-		    sessionStorage.token = btoa(loginUser + ":" + postData.password);
+		    // set token
+                    sessionStorage.token = data.token;
+		    // sessionStorage.token = btoa(loginUser + ":" + postData.password);
 		}		
 	    });
     }
