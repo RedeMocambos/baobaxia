@@ -72,9 +72,9 @@ define([
 	},
 	
 	render: function(uuid){
-	    getFormData = this.__getFormData;
-	    swapLicense = this.__swapLicense;
-	    updateMedia = this.__updateMedia;
+	    var getFormData = this.__getFormData,
+		swapLicense = this.__swapLicense,
+		updateMedia = this.__updateMedia;
 	    
 	    // comeca acao da funcao render
 	    var config = BBX.config,   

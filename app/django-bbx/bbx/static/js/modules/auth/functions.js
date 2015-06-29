@@ -43,7 +43,7 @@ define([
 	// while not solved, auth with no crypt
 	postData.password = $("#password").val().toString();
 	
-	loginUser =  postData.username + "@" + postData.mucua + "." + postData.repository + '.net';
+	var loginUser =  postData.username + "@" + postData.mucua + "." + postData.repository + '.net';
 	verifyLoginURL = BBX.config.apiUrl + '/' + postData.repository + '/' + postData.mucua + '/mocambola/login';
 	
 	// check login at 	
@@ -102,7 +102,7 @@ define([
 	    if (!_.isEmpty(userData.values)) {
 		// redirect
 		$('#content').html('');
-		window.location.href = urlRedirect;
+		window.location.hash = urlRedirect;
 		clearInterval(loginOK);
 	    } else if (typeof sessionStorage.loginError !== 'undefined') {
 		console.log('login falhou');
