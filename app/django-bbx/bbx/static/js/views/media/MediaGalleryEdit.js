@@ -17,21 +17,11 @@ define([
 	render: function(subroute, limit){
 	    var config = BBX.config,
 		limit = (limit) ? '/limit/' + limit : '',
-		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute + limit,
-		urlToken = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/token",
-		mediaToken = new MediaModel([], {url: urlToken});
+		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/bbx/search/' + subroute + limit;	   
 	    console.log(url);
 	    BBXFunctions.renderSidebar();
 	    MediaFunctions.getMediaGallery(url);
 	    BBXFunctions.renderUsage();
-	    
-	    // get token
-	    mediaToken.fetch({
-		success: function() {
-		    var csrftoken = $.cookie('csrftoken');
-		    $('#csrfmiddlewaretoken').prop('value', csrftoken);		    
-		}
-	    });
 	}
     });
     
