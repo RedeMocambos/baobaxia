@@ -104,7 +104,7 @@ define([
 	}
 	data.lastVisitedMucuas = __getLastVisitedMucuas();
 	console.log('render common: ' + el);
-	if ($('#sidebar').html() == "" ||
+	if ($('#sidebar').html() === "" ||
 	    (typeof $('#sidebar').html() === "undefined")) {
 	    $('#footer').before(_.template(SidebarTpl, data));
 	}
@@ -403,7 +403,7 @@ define([
 	
 	console.log('render sidebar');
 	if (isLogged() &&
-	    ((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() == "")) {
+	    ((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() === "")) {
 	    var userData = JSON.parse(localStorage.userData);
 	    console.log(userData);
 	    userData.mocambolaUrl = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/mocambola/' + userData.username

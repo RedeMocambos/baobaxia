@@ -59,9 +59,7 @@ define([
 	    options = {},
 	    urlUpdate = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + mediaData.uuid;
 	    media = new MediaModel([mediaData], {url: urlUpdate});
-	    options.beforeSend = function(xhr){
-		//xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
-	    };
+	    
 	    //HACK para passar o objeto corretamente
 	    media.attributes =  _.clone(media.attributes[0]);
 	    console.log(media.attributes);
@@ -110,9 +108,6 @@ define([
 		    $('#content').html(compiledTpl);  
 		    $('#origin').append("<option value='" + media.attributes.origin + "'>" + media.attributes.origin + "</option>");
 		    $('#origin').prop('disabled', true);
-		    
-		    //var csrftoken = $.cookie('csrftoken');
-		    //$('#csrfmiddlewaretoken').prop('value', csrftoken);
 		    
 		    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
 		    var tags_arr = media.attributes.tags,

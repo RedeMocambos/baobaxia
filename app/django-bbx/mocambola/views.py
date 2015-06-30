@@ -9,7 +9,6 @@ from rest_framework_jwt.settings import api_settings
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from django.core.context_processors import csrf
 from django.template import Template, RequestContext
 from django.utils.translation import ugettext as _
 
@@ -46,17 +45,10 @@ def mocambola_detail(request, repository, mucua, mocambola):
     serializer = UserSerializer(user)
     return Response(serializer.data)
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def login(request):
     
-    if request.method == 'GET':
-        # gera token para tela de login
-        c = RequestContext(request, {'autoescape': False})
-        c.update(csrf(request))
-        t = Template('{ "csrftoken": "{{ csrf_token  }}" }')
-        return HttpResponse(t.render(c), mimetype=u'application/json')
-        
-    elif request.method == 'POST':
+    if request.method == 'POST':
         username = request.DATA['username'] + '@' + request.DATA['mucua'] + '.' + request.DATA['repository'] + '.net'
         password = request.DATA['password']
         fileBackend = FileBackend()

@@ -1278,10 +1278,6 @@ define([
 	    urlUpdateItem = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + mediaData.uuid;    
 	
 	media = new MediaModel([mediaData], {url: urlUpdateItem});
-	options.beforeSend = function(xhr){
-	    // requiores cookies
-	    xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
-	}
 	console.log('updating media ' + mediaData.uuid);
 	
 	//HACK para passar o objeto corretamente

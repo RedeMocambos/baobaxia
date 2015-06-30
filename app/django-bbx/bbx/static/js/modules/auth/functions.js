@@ -20,20 +20,48 @@ define([
     'text!/templates/' + BBX.userLang + '/auth/FillUser.html',
     'text!/templates/' + BBX.userLang + '/auth/FillPassword.html',
     'text!/templates/' + BBX.userLang + '/auth/UserExists.html',
-], function($, _, Backbone, BBXFunctions, MocambolaModel, LoginOkTpl, LoginFailedTpl, PasswordMustMatchTpl, FillUserTpl, FillPasswordTpl, UserExistsTpl){
+    'text!/templates/' + BBX.userLang + '/auth/UserCreationError.html',
+], function($, _, Backbone, BBXFunctions, MocambolaModel, LoginOkTpl, LoginFailedTpl, PasswordMustMatchTpl, FillUserTpl, FillPasswordTpl, UserExistsTpl, UserCreationErrorTpl){
     
+    /**
+     * Inicializa library
+     *
+     * @returns {None}
+     */    
     var init = function() {	
 	AuthFunctions = this;
     }
 
-    var __getConfig = function() {
-	return BBX.config;
+    /**
+     * Retorna url redirect padrão
+     *
+     * @returns {None} [Conteúdo definido pelo jquery]
+     */
+    var __getDefaultHome = function() {
+	// MAYBE, this should be a configurable field
+	var config = BBX.config,
+	    url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA;
+
+	console.log('__getDefaultHome');
+	
+	return url;
     }
 
+    var __registerLogin = function(userData) {
+	
+    }
+    
+    /**
+     * Dá saída de mensagem de restultados
+     *
+     * @returns {None} [Conteúdo definido pelo jquery]
+     */        
     var __checkLogin = function() { 
 	// TODO: add form checks
 	var postData = {},
 	    verifyLoginURL = '';
+
+	console.log('__checkLogin');
 	
 	postData.username = $("#mocambola").val();
 	postData.repository = $("#repository").val();
@@ -60,72 +88,34 @@ define([
 		    data = JSON.parse(data);
 		    $('#message-area').html(LoginOkTpl);
 		    var userData = {'username': data.username }
+		    
 		    BBX.config.userData = userData;  // TODO: checar se precisa redundar as variaveis
 		    localStorage.userData = JSON.stringify(userData);
-
+		    
 		    // set token
                     sessionStorage.token = data.token;
-		    // sessionStorage.token = btoa(loginUser + ":" + postData.password);
 		}		
 	    });
     }
-	
-    var __getDefaultHome = function() {
-	// MAYBE, this should be a configurable field
-	var config = BBX.config,
-	url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA;
-	return url;
-    }
 
-    var doLogin = function(loginData) {
-	var userData,
-	loginData = loginData || '',
-	urlRedirect = '',
-	defaultUrlRedirect = BBXFunctions.getDefaultHome();
+    /**
+     * Verifica se usuário já existe
+     * // used by register to verify if user exists    
+     *
+     * @params {Object} registerData dados de registro de usuário
+     * @returns {None} [Conteúdo definido pelo jquery]
+     */
+    var __verifyUserExists = function(registerData) {
+	var mocambola = null,
+	    registerData = registerData || null;
 	
-	if (loginData === '') {
-	    __checkLogin();
+	console.log('__verifyUserExists');
+	
+	if (_.isNull(registerData)) {
+	    return false;
 	}
-	
-	if (typeof localStorage.redirect_url !== 'undefined') {
-	    urlRedirect = localStorage.getItem('redirect_url');
-	} else {
-	    urlRedirect = defaultUrlRedirect;
-	}
-	
-	//timeout nessa parte de baixo
-	var loginOK = setInterval(function() {
-	    var userData = {'name': 'userData',
-			    'values': BBX.config.userData
-			   }
-	    
-	    if (!_.isEmpty(userData.values)) {
-		// redirect
-		$('#content').html('');
-		window.location.hash = urlRedirect;
-		clearInterval(loginOK);
-	    } else if (typeof sessionStorage.loginError !== 'undefined') {
-		console.log('login falhou');
-		BBX.loginError = false;		    
-		clearInterval(loginOK);
-	    }
-	}, 50);
-    }
 
-    var doLogout = function() {
-	delete BBX.userData;
-	delete localStorage.clear();
-	delete sessionStorage.token;
-	$('#header').html('');
-	$('#content').html('');
-	$('#sidebar').detach();
-	$('#footer').html('');
-    }
-
-    var __checkUser = function(registerData) {
-	// verify if exists any user with that username
-	var mocambola = null;
-	
+	// try to get user
 	mocambola = new MocambolaModel(registerData, 					       
 				       {url: BBX.config.apiUrl + '/' + registerData.repository + '/' + registerData.mucua + '/mocambola/' + registerData.email});
 	mocambola.fetch({
@@ -138,15 +128,15 @@ define([
 						   {url: BBX.config.apiUrl + '/mocambola/register'});
 		    mocambola.save()
 			.always(function(userData) {
-			    if (userData.error === true) {
+			    if (typeof userData.error !== 'undefined') {
 				$('#message-area').html(UserCreationErrorTpl);				    
 			    } else {
-				BBX.config.userData = userData;
+				BBX.config.userData = userData;  // TODO: checar se precisa redundar as variaveis
+				localStorage.userData = JSON.stringify(userData);
 				doLogin(userData);
 			    }
 			})		
 		} else {
-		    console.log('usuario ja existe. erro');
 		    var message = UserExistsTpl;
 		    $("#message-area").html(UserExistsTpl);
 		}
@@ -154,9 +144,65 @@ define([
 	});
     }
 
+
+    /**
+     * Tenta fazer login
+     *
+     * @params {Object} loginData dados de registro de usuário
+     * @returns {None} [Conteúdo definido pelo jquery]
+     */
+    var doLogin = function(loginData) {
+	var userData,
+	loginData = loginData || '',
+	urlRedirect = '',
+	defaultUrlRedirect = BBXFunctions.getDefaultHome();
+	
+	console.log('doLogin');
+	if (loginData === ''  || typeof sessionStorage.token === 'undefined') {
+	    loginData = __checkLogin();
+	}
+	
+	if (typeof localStorage.redirect_url === 'undefined') {
+	    urlRedirect = defaultUrlRedirect;
+	} else {
+	    urlRedirect = localStorage.getItem('redirect_url');
+	}
+	
+	//timeout nessa parte de baixo
+	var loginOK = setInterval(function() {
+	    if (typeof localStorage.userData !== 'undefined') {
+		var userData = JSON.parse(localStorage.userData);
+		
+		if (typeof userData.username !== 'undefined') {
+		    // redirect
+		    //$('#content').html('');
+		    window.location.href = urlRedirect;
+		    clearInterval(loginOK);
+		} else if (typeof sessionStorage.loginError !== 'undefined') {
+		    BBX.loginError = false;
+		    $('#message-area').html('login error! </\>');
+		    clearInterval(loginOK);
+		}	
+	    }
+	}, 50);
+    }
+
+    var doLogout = function() {
+	console.log('doLogout');
+	
+	delete BBX.userData;
+	localStorage.clear();
+	sessionStorage.clear();
+	$('#header').html('');
+	$('#content').html('');
+	$('#sidebar').detach();
+	$('#footer').html('');
+    }
+    
     var doRegister = function() {
 	var postData = {},
-	messageArray = [];
+	    messageArray = [];
+	console.log('doRegister');
 	postData.username = $("#mocambola").val() + '@' + $("#mucua").val() + '.' + $("#repository").val() + '.net';
 	postData.repository = $("#repository").val();
 	postData.mucua = $("#mucua").val();
@@ -181,7 +227,8 @@ define([
 	    });
 	    return false;
 	} else {
-	    __checkUser(postData);
+	    // verifica usuario e tenta registrar
+	    __verifyUserExists(postData);
 	}
     }
 	

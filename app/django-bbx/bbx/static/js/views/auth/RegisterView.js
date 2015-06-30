@@ -14,7 +14,7 @@ define([
 	el: "body",
 	
 	events: {
-	    "click .submit": "doRegister",
+	    "click .submit-register": "doRegister",
 	    "keyup #password2": "__checkKeyPress"
 	},
 
