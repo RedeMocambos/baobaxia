@@ -52,9 +52,8 @@ def add_and_synchronize_tags(media, tags, mucua):
             continue
         try:
             tag = tag.strip()
-            tag = Tag.objects.get(name=tag,
-                                  namespace__contains=mucua.uuid)
-        except Tag.DoesNotExist:
+            tag = Tag.objects.filter(name=tag)[0]
+        except (Tag.DoesNotExist, IndexError):
             tag = Tag(name=tag, namespace=mucua.uuid + "-tag")
             # TODO: Handle namespaces!
             tag.save()
