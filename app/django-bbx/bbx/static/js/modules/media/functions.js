@@ -257,7 +257,8 @@ define([
 	    });
 	
     }
-
+    
+    
     /**
      * Define preferencias de usuário
      *
@@ -616,6 +617,39 @@ define([
 	}
     };
 
+    /**
+     * Retorna objeto com dados do formulário (media update)
+     * 
+     * @returns {Objeto} Dados de formulário de media 
+     */    
+    var getFormData = function() {
+	var media = BBX.media,
+	    fields = {};
+	
+	$('#form_media_publish :input').each(function() {
+	    fields[this.name] = this.value;
+	});
+	// TODO: adicionar tags separadas (patrimonio, publico) a tags
+	media = {
+	    name: fields.name,
+	    uuid: fields.uuid,
+	    origin: fields.origin,
+	    author: fields.author,
+	    repository: fields.repository,
+	    tags: fields.tags,
+	    license: fields.license,
+	    date: fields.date,
+	    type: fields.type,
+	    note: fields.note,		
+	    media_file: $('#mediafile-original').html()
+	}
+	// HaCK para pegar tags no formato correto
+	media.tags = media.tags.substring(1, media.tags.length -1).replace(/\"/g,'');
+	
+	return media;
+    }
+    
+    
     /**
      * Busca mídias, genérico
      * 
@@ -1567,6 +1601,7 @@ define([
 	mediaSearchSort: mediaSearchSort,
 	getTagCloudBySearch: getTagCloudBySearch,
 	getTagCloudByMucua: getTagCloudByMucua,
+	getFormData: getFormData,
 	__getValidSearchOptions: __getValidSearchOptions,
 	__getTagsFromUrl: __getTagsFromUrl,
 	__parseMenuSearch: __parseMenuSearch,

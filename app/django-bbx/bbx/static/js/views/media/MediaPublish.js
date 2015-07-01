@@ -33,7 +33,7 @@ define([
 	    
 	    var updateMedia = function(media) {
 		var config = BBX.config,
-		    url = config.interfaceUrl + config.repository + "/" + config.mucua + "/media/" + media.uuid + '/edit';
+		    url = config.repository + "/" + config.mucua + "/media/" + media.uuid + '/edit';
 		
 		document.location.hash = url;
 	    }

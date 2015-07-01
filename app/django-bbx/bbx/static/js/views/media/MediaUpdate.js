@@ -15,33 +15,6 @@ define([
 ], function($, _, jQueryForm, Backbone, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
     var MediaUpdate = Backbone.View.extend({
 	
-	__getFormData: function() {
-	    var media = BBX.media,
-	    fields = {};
-	    
-	    $('#form_media_publish :input').each(function() {
-		fields[this.name] = this.value;
-	    });
-	    // TODO: adicionar tags separadas (patrimonio, publico) a tags
-	    media = {
-		name: fields.name,
-		uuid: fields.uuid,
-		origin: fields.origin,
-		author: fields.author,
-		repository: fields.repository,
-		tags: fields.tags,
-		license: fields.license,
-		date: fields.date,
-		type: fields.type,
-		note: fields.note,		
-		media_file: $('#mediafile-original').html()
-	    }
-	    // HaCK para pegar tags no formato correto
-	    media.tags = media.tags.substring(1, media.tags.length -1).replace(/\"/g,'');
-	    
-	    return media;
-	},
-
 	__swapLicence: function() {
 	    $('#license option:selected').each(function() {
 		l = $(this);
@@ -54,7 +27,7 @@ define([
 
 	__updateMedia: function() {
 	    var config = BBX.config,   
-	    mediaData = getFormData(),
+	    mediaData = MediaFunctions.getFormData(),
 	    media = null,
 	    options = {},
 	    urlUpdate = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + mediaData.uuid;
@@ -70,7 +43,7 @@ define([
 	},
 	
 	render: function(uuid){
-	    var getFormData = this.__getFormData,
+	    var getFormData = this.getFormData,
 		swapLicense = this.__swapLicense,
 		updateMedia = this.__updateMedia;
 	    
