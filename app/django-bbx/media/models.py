@@ -16,7 +16,6 @@ from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.utils.functional import lazy
-from django.utils import timezone
 
 from tag.models import Tag
 from bbx.settings import REPOSITORY_DIR, DEFAULT_MUCUA,IMAGE_MAX_SIZE
@@ -55,8 +54,7 @@ VALID_MIMETYPES = {
 
 def get_now():
     """Get this very moment as correct local time."""
-    now = timezone.now()
-    return timezone.localtime(now)
+    return datetime.utcnow()
 
 
 def media_file_name(instance, file_name):
