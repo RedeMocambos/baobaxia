@@ -18,6 +18,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core.context_processors import csrf
+from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied
 from django.template import Template, RequestContext
 from django.utils.translation import ugettext_lazy as _
@@ -318,6 +319,7 @@ def media_list(request, repository, mucua, args=None, format=None):
 
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
+@csrf_exempt
 @authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
 def media_detail(request, repository, mucua, pk=None, format=None):
     """
