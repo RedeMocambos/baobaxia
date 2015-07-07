@@ -84,11 +84,13 @@
 	<div class="local">
 	  <span>{% trans "is_local" %}</span>
 	</div>
-	<% } else { %>
+	<% } else {
+	   if (BBXFunctions.isLogged()) { %>
 	<div class="not_local">
 	  <input type="checkbox" name="request" class="request-copy" id="request-copy-<%= media.uuid %>" value="<%= media.uuid %>">
 	  <span>{% trans "request" %}</span>
-	<% } %>
+	  <% }
+	   } %>
       </td>
       <td class="note">
 	<span><% print(BBXFunctions.truncate(media.note, 35, '...')); %></span>

@@ -36,6 +36,12 @@ define([
 	    var __parseTemplate = function(data) {
 		$('#header').html(_.template(HeaderHomeTpl));
 		
+		// link para pagina default  bbx/search
+		$('#header').on('click', function() {
+		    $('#header').unbind('click');
+		    window.location.href = BBXFunctions.getDefaultHome();
+		});
+		
 		// clean sidebar
 		$('#sidebar').remove();
 		

@@ -55,7 +55,7 @@ a {text-decoration: none; color: #0E5E80}
 #header-image {background: url('../images/cabecalho.png') no-repeat; margin: 0 auto; height: 80px }
 .posicoes {display: none}
 .home #header,
-.login #header {height: 295px; background: url('../images/home-header-repeat.png') repeat-x; }
+.login #header {height: 295px; background: url('../images/home-header-repeat.png') repeat-x; cursor: pointer }
 .logo {background-image: url('../images/logo.png')}
 
 .home #header #header-top,
