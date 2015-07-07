@@ -14,51 +14,28 @@ define([
     
     var MediaPublish = Backbone.View.extend({	
 	render: function(){
+	    // var definitions	    
+	    var config = BBX.config,
+		data = {},
+		urlPost = '',
+		mediaToken = null,
+		mucuas = null;
+	    
+	    // begin of function definitions
 	    var uploadFile = function() {
-		var config = BBX.config,
-		    // get media token
-		    url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/token",
-		    mediaToken = new MediaModel([], {url: url});
-
+		var config = BBX.config;
 		console.log('upload');
 		
-		mediaToken.fetch({
-		    success: function() {
-			var csrftoken = $.cookie('csrftoken');
-			$('#csrfmiddlewaretoken').prop('value', csrftoken);
-		    }
-		});
-
-		fields = {};
-		$('#form_media_publish :input').each(function() {
-		    fields[this.name] = this.value;
-		});
+		urlPost = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/";
+		$('#form_media_publish').prop('action', urlPost);
 		
-		// TODO: adicionar tags separadas (patrimonio, publico) a tags
-		data = {
-		    name: fields['name'].value,
-		    uuid: fields['uuid'].value,
-		    origin: fields['origin'].value,
-		    author: fields['author'].value,
-		    repository: fields['repository'].value,
-		    tags: fields['tags'].value,
-		    license: fields['license'].value,
-		    date: fields['date'].value,
-		    type: fields['type'].value,
-		    note: fields['note'].value,
-		    media_file: fields['media_file'].value
-		}
-		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/";
-		$('#form_media_publish').prop('action', url);
-		
-		var media = new MediaModel([], {url: url});
 	    };
 	    
 	    var updateMedia = function(media) {
 		var config = BBX.config,
-		    url = config.interfaceUrl + config.repository + "/" + config.mucua + "/media/" + media.uuid + '/edit';
+		    url = config.repository + "/" + config.mucua + "/media/" + media.uuid + '/edit';
 		
-		document.location.href = url;
+		document.location.hash = url;
 	    }
 
 	    var __parseOrigin = function(mucuaList) {
@@ -69,42 +46,47 @@ define([
 		$('select[name="origin"]').find('option:contains("' + BBX.config.MYMUCUA + '")').prop("selected",true);
 	    }
 	    
-	    var config = BBX.config,
-		data = {},
-		url = '',
-		mediaToken = null,
-		mucuas = null;
-	    	    
+	    var __prepareFormData = function() {
+		var data = {},
+		    config = BBX.config;
+		
+		// set data
+		data.types = MediaFunctions.getMediaTypes(),
+		data.licenses = MediaFunctions.getMediaLicenses();
+		data.config = config;
+		data.page = 'MediaPublish';	    
+		data.pageTitle = 'Adicionar conteúdo';
+		
+		// instantiate model with default values
+		data.media = new MediaModel([]);	    
+		data.media.origin = config.MYMUCUA;
+		data.media.repository = config.MYREPOSITORY;
+		data.media.author = config.userData.username;
+		data.media.date = '';
+		data.media.uuid = '';
+		data.media.name = '';
+		data.media.format = '';
+		data.media.license = '';
+		data.media.media_file = '';
+		data.media.note = '';
+		data.media.tags = [];
+		data.media.type = '';		
+
+		return data;
+	    }
+	    // end of function definitions
+
+	    // begin rendering of MediaPublish
+	    
 	    // session user data
-	    config.userData = BBXFunctions.getFromCookie('userData');
-	    
-	    // set data
-	    data.types = MediaFunctions.getMediaTypes(),
-	    data.licenses = MediaFunctions.getMediaLicenses();
-	    data.config = config;
-	    data.page = 'MediaPublish';	    
-	    data.pageTitle = 'Adicionar conteúdo';
-	    
-	    // instantiate model with default values
-	    data.media = new MediaModel([]);	    
-	    data.media.origin = config.MYMUCUA;
-	    data.media.repository = config.MYREPOSITORY;
-	    data.media.author = config.userData.username;
-	    data.media.date = '';
-	    data.media.uuid = '';
-	    data.media.name = '';
-	    data.media.format = '';
-	    data.media.license = '';
-	    data.media.media_file = '';
-	    data.media.note = '';
-	    data.media.tags = [];
-	    data.media.type = '';		
+	    config.userData = localStorage.userData;
+	    data = __prepareFormData();
 	    
 	    $('#content').html(_.template(MediaPublishTpl, data));
 	    MediaFunctions.__parseMenuSearch();
 	    
 	    $('#media_publish .bloco-2').hide();
-
+	    
 	    // try to get mucuas list
 	    if (typeof BBX.mucuaList === 'undefined') {
 		mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.MYREPOSITORY + '/mucuas'});
@@ -127,14 +109,16 @@ define([
 		    clearInterval(getMucuas);
 		} 
 	    }, 50);
-
+	    
+	    
 	    // form upload progress meter
 	    var bar = $('.bar'),
 		percent = $('.percent'),
 		status = $('#status');
 	    
 	    $('#form_media_publish').ajaxForm({
-		beforeSend: function() {
+		beforeSend: function(xhr) {
+		    xhr.setRequestHeader('Authorization', 'JWT ' +  sessionStorage.token);
 		    status.empty();
 		    var percentVal = '0%';
 		    bar.width(percentVal)
@@ -153,7 +137,7 @@ define([
 		complete: function(xhr) {
 		    status.html(xhr.responseText);
 		    console.log(xhr.responseText);
-		    mediaSerialized = eval('(' + xhr.responseText + ')');
+		    var mediaSerialized = eval('(' + xhr.responseText + ')');
 		    updateMedia(mediaSerialized);
 		}
 	    });

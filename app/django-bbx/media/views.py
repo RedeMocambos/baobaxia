@@ -5,10 +5,11 @@ import re
 
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
-#from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.decorators import authentication_classes, permission_classes
 
-#from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-#from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
 from sorl.thumbnail import get_thumbnail
@@ -17,6 +18,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core.context_processors import csrf
+from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied
 from django.template import Template, RequestContext
 from django.utils.translation import ugettext_lazy as _
@@ -51,9 +53,8 @@ def add_and_synchronize_tags(media, tags, mucua):
             continue
         try:
             tag = tag.strip()
-            tag = Tag.objects.get(name=tag,
-                                  namespace__contains=mucua.uuid)
-        except Tag.DoesNotExist:
+            tag = Tag.objects.filter(name=tag)[0]
+        except (Tag.DoesNotExist, IndexError):
             tag = Tag(name=tag, namespace=mucua.uuid + "-tag")
             # TODO: Handle namespaces!
             tag.save()
@@ -318,10 +319,18 @@ def media_list(request, repository, mucua, args=None, format=None):
 
 
 @api_view(['GET', 'PUT', 'DELETE', 'POST'])
+@csrf_exempt
+@authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
 def media_detail(request, repository, mucua, pk=None, format=None):
     """
     Retrieve, create, update or delete a media instance.
     """
+    # TODO: Use object permissions for more fine grained control.
+    # For now, do a more primitive check that the user is authenticated.
+    
+    if request.method != 'GET' and not request.user.is_authenticated():
+        raise PermissionDenied
+    
     # pegando sessao por url
     redirect_page = False
 
@@ -500,7 +509,6 @@ def media_last(request, repository, mucua, limit=5):
 
 
 @api_view(['GET'])
-#@authentication_classes((SessionAuthentication, BasicAuthentication))
 def media_token(request, repository, mucua):
     # acessa para inicializar tela de publicaocao de conteudo / gera
     # token
@@ -590,7 +598,6 @@ def media_where_is(request, repository, mucua, uuid):
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
-#@authentication_classes((SessionAuthentication, BasicAuthentication))
 def media_request_copy(request, repository, mucua, uuid):
     try:
         media = Media.objects.get(uuid=uuid)
@@ -602,7 +609,8 @@ def media_request_copy(request, repository, mucua, uuid):
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
-#@authentication_classes((SessionAuthentication, BasicAuthentication))
+@authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
+@permission_classes((IsAuthenticated,))
 def media_drop_copy(request, repository, mucua, uuid):
     try:
         media = Media.objects.get(uuid=uuid)
@@ -615,7 +623,8 @@ def media_drop_copy(request, repository, mucua, uuid):
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
-#@authentication_classes((SessionAuthentication, BasicAuthentication))
+@authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
+@permission_classes((IsAuthenticated,))
 def media_remove(request, repository, mucua, uuid):
     try:
         media = Media.objects.get(uuid=uuid)

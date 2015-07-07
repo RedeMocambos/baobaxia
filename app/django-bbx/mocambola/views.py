@@ -5,15 +5,16 @@ from rest_framework.decorators import authentication_classes, permission_classes
 
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework_jwt.settings import api_settings
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from django.core.context_processors import csrf
 from django.template import Template, RequestContext
 from django.utils.translation import ugettext as _
 
 from mocambola.serializers import UserSerializer
 from bbx.auth import FileBackend
+from bbx.utils import logger
 
 @api_view(['GET'])
 def mocambola_list(request, repository, mucua):
@@ -44,16 +45,10 @@ def mocambola_detail(request, repository, mucua, mocambola):
     serializer = UserSerializer(user)
     return Response(serializer.data)
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def login(request):
-    if request.method == 'GET':
-        # gera token para tela de login
-        c = RequestContext(request, {'autoescape': False})
-        c.update(csrf(request))
-        t = Template('{ "csrftoken": "{{ csrf_token  }}" }')
-        return HttpResponse(t.render(c), mimetype=u'application/json')
-        
-    elif request.method == 'POST':
+    
+    if request.method == 'POST':
         username = request.DATA['username'] + '@' + request.DATA['mucua'] + '.' + request.DATA['repository'] + '.net'
         password = request.DATA['password']
         fileBackend = FileBackend()
@@ -66,16 +61,27 @@ def login(request):
                 user = User.objects.get(username=username)
             except User.DoesNotExist:
                 logger.debug(u"%s" % (
-                        _('Exception caught, UserDoesNotExist')
-                        ))    
+                    _('Exception caught, UserDoesNotExist')
+                ))
+            
             if user:
-                serializer = UserSerializer(user)
-                return Response(serializer.data)
+                # gera token
+                
+                jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+                jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+                payload = jwt_payload_handler(user)
+                
+                response_data = {
+                    'username': username,
+                    'token': jwt_encode_handler(payload)
+                }
+                
+                return HttpResponse(json.dumps(response_data))
             else:
                 response_data = {
                     'errorMessage': _('User don\'t exists: ')
                 }
-            return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+                return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
         else:
             response_data = {
                 'error': True,

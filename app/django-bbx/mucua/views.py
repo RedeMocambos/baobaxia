@@ -4,8 +4,9 @@ import re
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.decorators import authentication_classes, permission_classes
 
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-#from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
 
@@ -146,7 +147,8 @@ def mucua_get_groups(request, uuid=None, repository=None):
 
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
-@authentication_classes((SessionAuthentication, BasicAuthentication))
+@authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
+@permission_classes((IsAuthenticated, ))
 def mucua_del_group(request, uuid, group, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
@@ -158,7 +160,8 @@ def mucua_del_group(request, uuid, group, repository=None):
 
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
-@authentication_classes((SessionAuthentication, BasicAuthentication))
+@authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
+@permission_classes((IsAuthenticated,))
 def mucua_add_group(request, uuid, group, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
@@ -183,7 +186,8 @@ def mucua_get_territory(request, uuid=None, repository=None):
 
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
-@authentication_classes((SessionAuthentication, BasicAuthentication))
+@authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
+@permission_classes((IsAuthenticated,))
 def mucua_del_territory(request, uuid, territory, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
@@ -195,7 +199,8 @@ def mucua_del_territory(request, uuid, territory, repository=None):
 
 @api_view(['GET'])
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
-@authentication_classes((SessionAuthentication, BasicAuthentication))
+@authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
+@permission_classes((IsAuthenticated,))
 def mucua_set_territory(request, uuid, territory, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)

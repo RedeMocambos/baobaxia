@@ -351,14 +351,14 @@ def git_annex_metadata_add(file_name, repository_path, key, value):
     u"""Adiciona um metadata ao arquivo."""
     cmd = 'git annex metadata ' + file_name + ' -s ' + key + '+='+ "'"+ value +"'"
     logger.info('Adding metadata with: ' + cmd)
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+    pipe = subprocess.Popen(cmd.encode('UTF-8'), shell=True, cwd=repository_path)
     pipe.wait()
 
 def git_annex_metadata_del(file_name, repository_path, key, value):
     u"""Remove um metadata do arquivo."""
-    logger.info('git annex metadata ' + file_name)
     cmd = 'git annex metadata ' + file_name + ' -s ' + key + '-=' + "'"+ value +"'"
-    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+    logger.info('Removing metadata with: ' + cmd)
+    pipe = subprocess.Popen(cmd.encode('UTF-8'), shell=True, cwd=repository_path)
     pipe.wait()
 
                             

@@ -2,7 +2,6 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'jquery_cookie',
     'jquery_json',
     'modules/auth/functions',
     'modules/bbx/functions',
@@ -12,7 +11,7 @@ define([
     'modules/mocambola/model',
     'text!/templates/' + BBX.userLang + '/auth/LoginTemplate.html',
     'text!/templates/' + BBX.userLang + '/common/HeaderHome.html',
-], function($, _, Backbone, jQueryCookie, jQueryJson, AuthFunctions, BBXFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, LoginTemplate, HeaderHomeTpl){
+], function($, _, Backbone, jQueryJson, AuthFunctions, BBXFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, LoginTemplate, HeaderHomeTpl){
     var LoginView = Backbone.View.extend({
 	el: "body",
 	
@@ -37,6 +36,12 @@ define([
 	    var __parseTemplate = function(data) {
 		$('#header').html(_.template(HeaderHomeTpl));
 		
+		// link para pagina default  bbx/search
+		$('#header').on('click', function() {
+		    $('#header').unbind('click');
+		    window.location.href = BBXFunctions.getDefaultHome();
+		});
+		
 		// clean sidebar
 		$('#sidebar').remove();
 		
@@ -47,9 +52,6 @@ define([
 		var compiledContent = _.template(LoginTemplate, data);
 		$('#content').html(compiledContent);
 
-		if (! BBXFunctions.isCookiesEnabled()) {
-		    $('#message-area').html('Cookies are required for login, sorry!');
-		}
 	    }
 	    
 	    // get mucuas 
@@ -74,20 +76,8 @@ define([
 			repositoryList: config.repositoriesList
 		    }
 		    __parseTemplate(data);			    
-		    __getToken();			    
 		}
-	    });
-	    
-	    var __getToken = function() {
-		var config = BBX.config;
-		// remove cookie if it exists
-		if ($.cookie('csrftoken')) {
-		    $.removeCookie('csrftoken');
-		}
-		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/mocambola/login";
-		var mocambola = new MocambolaModel([], {url: url});
-		mocambola.fetch({});
-	    };
+	    });   
 	}
     })
 

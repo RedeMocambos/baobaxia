@@ -1,7 +1,6 @@
 define([
     'jquery', 
     'lodash',
-    'jquery_cookie',
     'jquery_form',
     'backbone',
     'textext',
@@ -13,36 +12,9 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaPublish.html',
     'text!/templates/' + BBX.userLang + '/media/MediaConfirmRemoveMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaRemoveMessage.html',
-], function($, _, jQueryCookie, jQueryForm, Backbone, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
+], function($, _, jQueryForm, Backbone, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
     var MediaUpdate = Backbone.View.extend({
 	
-	__getFormData: function() {
-	    var media = BBX.media,
-	    fields = {};
-	    
-	    $('#form_media_publish :input').each(function() {
-		fields[this.name] = this.value;
-	    });
-	    // TODO: adicionar tags separadas (patrimonio, publico) a tags
-	    media = {
-		name: fields.name,
-		uuid: fields.uuid,
-		origin: fields.origin,
-		author: fields.author,
-		repository: fields.repository,
-		tags: fields.tags,
-		license: fields.license,
-		date: fields.date,
-		type: fields.type,
-		note: fields.note,		
-		media_file: $('#mediafile-original').html()
-	    }
-	    // HaCK para pegar tags no formato correto
-	    media.tags = media.tags.substring(1, media.tags.length -1).replace(/\"/g,'');
-	    
-	    return media;
-	},
-
 	__swapLicence: function() {
 	    $('#license option:selected').each(function() {
 		l = $(this);
@@ -55,14 +27,12 @@ define([
 
 	__updateMedia: function() {
 	    var config = BBX.config,   
-	    mediaData = getFormData(),
+	    mediaData = MediaFunctions.getFormData(),
 	    media = null,
 	    options = {},
 	    urlUpdate = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + mediaData.uuid;
 	    media = new MediaModel([mediaData], {url: urlUpdate});
-	    options.beforeSend = function(xhr){
-		xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
-	    };
+	    
 	    //HACK para passar o objeto corretamente
 	    media.attributes =  _.clone(media.attributes[0]);
 	    console.log(media.attributes);
@@ -73,9 +43,9 @@ define([
 	},
 	
 	render: function(uuid){
-	    getFormData = this.__getFormData;
-	    swapLicense = this.__swapLicense;
-	    updateMedia = this.__updateMedia;
+	    var getFormData = this.getFormData,
+		swapLicense = this.__swapLicense,
+		updateMedia = this.__updateMedia;
 	    
 	    // comeca acao da funcao render
 	    var config = BBX.config,   
@@ -111,9 +81,6 @@ define([
 		    $('#content').html(compiledTpl);  
 		    $('#origin').append("<option value='" + media.attributes.origin + "'>" + media.attributes.origin + "</option>");
 		    $('#origin').prop('disabled', true);
-		    
-		    var csrftoken = $.cookie('csrftoken');
-		    $('#csrfmiddlewaretoken').prop('value', csrftoken);
 		    
 		    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
 		    var tags_arr = media.attributes.tags,

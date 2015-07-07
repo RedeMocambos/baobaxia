@@ -107,7 +107,8 @@
       <% } %>
     </div>
     <% } %>
-    <% if (!media.is_local) { %>
+    <% if (!media.is_local) { 
+      if (BBXFunctions.isLogged()) { %>
     <div class="blocks clear-both request<% if (media.is_requested === true) { %>ed<%} %>-copy">
       <div value="<%= media.uuid %>">
         <span id="message-request" class="title-bold">
@@ -115,7 +116,11 @@
         <span class="image"></span>
       </div>
       </div>
-      <% } %>
+    <% } else { %>
+    <div class="blocks clear-both">
+      <div>&nbsp;</div>
+    </div>
+    <% } } %>
       <p class="uuid">UUID: <%= media.uuid %></p>
     </div>
     <!-- bloco multimedia -->    

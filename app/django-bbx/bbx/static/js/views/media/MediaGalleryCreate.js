@@ -25,22 +25,12 @@ define([
 	    var data = {},
 		config = BBX.config,
 		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/",
-		urlToken = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/token",
-		mediaToken = new MediaModel([], {url: urlToken}),
 		mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.MYREPOSITORY + '/mucuas'});
 
 	    BBXFunctions.renderSidebar();
 	    BBXFunctions.renderUsage();
 	    MediaFunctions.__parseMenuSearch();
 	    
-	    // get token
-	    mediaToken.fetch({
-		success: function() {
-		    var csrftoken = $.cookie('csrftoken');
-		    $('#csrfmiddlewaretoken').prop('value', csrftoken);		    
-		}
-	    });
-
 	    // get mucuas list
 	    mucuas.fetch({
 		success: function() {
@@ -84,6 +74,9 @@ define([
 		$('#fileupload').fileupload({
 		    dataType: 'json',
 		    url: url,
+		    beforeSend: function(xhr) {
+			xhr.setRequestHeader('Authorization', 'JWT ' +  sessionStorage.token);
+		    },
 		    change: function(e, data) {
 			var terms = $('#fileupload').find('input[name="tags"]').val();
 			terms = terms.substring(1, terms.length -1).replace(/\"/g,'');
@@ -133,7 +126,7 @@ define([
 	    }
 	    
 	    // session user data
-	    config.userData = BBXFunctions.getFromCookie('userData');
+	    config.userData = localStorage.userData;
 	    
 	    // set data
 	    data.types = MediaFunctions.getMediaTypes(),

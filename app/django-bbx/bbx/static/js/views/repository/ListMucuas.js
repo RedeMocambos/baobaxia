@@ -27,7 +27,7 @@ define([
 		mucuas = new MucuaModel([], {url: url}),
 		data = {};
 	    
-	    config.userData = BBXFunctions.getFromCookie('userData');
+	    config.userData = localStorage.userData;
 	    data.config = config;
 	    
 	    BBXFunctions.renderSidebar();

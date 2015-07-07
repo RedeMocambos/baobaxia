@@ -27,7 +27,9 @@
 	<video id="<%= media.uuid %>" preload="metadata" controls src="<%= media.url %>" />
       </a>
       <% } else if (media.type == 'audio') { %>
-      <audio preload="metadata" controls src="<%= media.url %>" />
+      <a class="fancybox-button" rel="fancybox-button" data-fancybox-type="iframe" data-fancybox-group="galeria" href="<%= media.url %>" title="<strong><%= media.name %></strong><br/> - <%= media.note %>" id="<%= media.uuid %>">      
+	<audio preload="metadata" controls src="<%= media.url %>" />
+      </a>
       <% } else if (media.type == 'arquivo') { %>     
       <a href="<%= media.url %>">
 	<img class="<%= media.type %>" alt="<%= media.type%>" src="images/icon-arquivo.png" /><br/>{% trans "view/download" %}

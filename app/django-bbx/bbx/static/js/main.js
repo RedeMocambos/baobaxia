@@ -70,12 +70,13 @@ require.config({
 
 require([
     'jquery', 'lodash', 'backbone', 'app', 'backbone_subroute'], function($, _, Backbone, App){
-	// add csrftoken support to backbone posts
-	// thx to https://gist.github.com/gcollazo/1240683 :D
+	// add header token if present
 	var oldSync = Backbone.sync;
 	Backbone.sync = function(method, model, options) {
 	    options.beforeSend = function(xhr) {
-		xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
+		if (typeof sessionStorage.token !== 'undefined') {
+		    xhr.setRequestHeader('Authorization', 'JWT ' +  sessionStorage.token);
+		}
 	    }
 	    return oldSync(method, model, options);
 	}
