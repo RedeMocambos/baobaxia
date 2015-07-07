@@ -1,4 +1,12 @@
 # -*- coding: utf-8 -*-
+import os
+import errno
+import math
+import logging
+import time
+import socket 
+from socket import AF_INET, SOCK_DGRAM, SOL_SOCKET, SO_REUSEADDR
+
 from django.db import models
 from django import forms
 from django.utils.text import capfirst
@@ -6,11 +14,6 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib.humanize.templatetags.humanize import apnumber
 
 from bbx.settings import THUMBNAILS_ROOT, THUMBNAILS_URL
-
-import os
-import errno
-import math
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +69,40 @@ def dumpclean(obj):
     else:
         print obj.encode('ascii', 'ignore')
 
+def discover():
+    """Function to check if there are mucuas on local network.
+    
+       Returns a dictionary of remotes.
+    """
+    PORT = 50505
+    MAGIC = "bbx-discover"
+
+    s = socket.socket(AF_INET, SOCK_DGRAM) #create UDP socket 
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    s.bind(('', PORT))
+
+    logger.debug("Procurando mucuas na rede local... \n")    
+
+    timeout = 1   # 1 second from now
+    logger.debug("Timeout: " + str(timeout))
+    remotes = {}
+    
+    try:
+        while True:
+            logger.debug(".. .. .. \n")
+            logger.debug("Time: " + str(time.time()))    
+            s.settimeout(timeout)
+            data, addr = s.recvfrom(1024) #wait for a packet
+            if data.startswith(MAGIC):
+                logger.info("Achei uma mucua na rede local: ", data[len(MAGIC):])
+                uuid = data[len(MAGIC):].split('|')[0]
+                uri = data[len(MAGIC):].split('|')[1]
+                remotes[uuid] = uri
+    except socket.timeout:
+        logger.info("Nenhuma mucua encontrada")
+
+    return remotes
+        
 
 class MultiSelectFormField(forms.MultipleChoiceField):
     """Multi Select Field, originally taken from:

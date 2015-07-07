@@ -180,6 +180,13 @@ def _get_available_folders(path):
                   if os.path.isdir(os.path.join(path, name))]
     return folder_list
 
+def git_ls_remote(remote, repository_path):
+    u"""Verifica se um remote esta disponivel."""
+    logger.info('git ls-remote ' + remote)
+    cmd = 'git ls-remote ' + remote
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+    output, error = pipe.communicate()
+    return pipe.returncode
 
 def git_remote_get_list(repository=DEFAULT_REPOSITORY):
     """
@@ -206,6 +213,20 @@ def git_remote_get_list(repository=DEFAULT_REPOSITORY):
             mucuas.append(line.split(None, 1)[0])
     return list(set(mucuas))
    
+
+def git_remote_add(mucua_uuid, mucua_uri_backend, repository_path):
+    u"""Adiciona um remote ao repositorio."""
+    logger.info('git remote add ' + mucua_uuid + ' ' + mucua_uri_backend)
+    cmd = 'git remote add ' + mucua_uuid + ' ' + mucua_uri_backend
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+    pipe.wait()
+
+def git_remote_remove(mucua_uuid, repository_path):
+    u"""Remove o remote do repositorio."""
+    logger.info('git remote rm ' + mucua_uuid)
+    cmd = 'git remote rm ' + mucua_uuid
+    pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
+    pipe.wait()
 
 def git_add(file_name, repository_path):
     u"""Adiciona um arquivo no repositório."""

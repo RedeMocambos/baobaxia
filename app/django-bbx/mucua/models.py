@@ -3,6 +3,7 @@
 import exceptions
 import json
 import subprocess
+import time
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -11,11 +12,11 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from django.core.exceptions import ObjectDoesNotExist
 
-
 from bbx.settings import DEFAULT_MUCUA, MEDIA_ROOT
-from bbx.utils import dumpclean, logger
-from repository.models import (get_default_repository, git_annex_status,
-git_annex_group_add, git_annex_group_del, git_annex_group_list)
+from bbx.utils import dumpclean, logger, discover
+from repository.models import (get_default_repository, git_ls_remote, git_remote_remove,
+                               git_remote_add, git_annex_status, git_annex_group_add, 
+                               git_annex_group_del, git_annex_group_list)
 
 
 def get_default_mucua():
@@ -162,6 +163,10 @@ class Mucua(models.Model):
                             default='dandara')
     repository = models.ManyToManyField('repository.Repository')
     mocambolas = models.ManyToManyField(User, through='mocambola.Mocambola')
+    mucuas = models.ManyToManyField('Mucua', through='Rota', 
+                                    related_name='linked_mucuas')
+
+    uri_backend = models.CharField("Remote access to mucua", max_length=2048, default="")
 
     def get_description(self):
         return self.description
@@ -262,3 +267,69 @@ class Mucua(models.Model):
 
     class Meta:
         ordering = ('description',)
+
+
+class Rota(models.Model):
+    u"""
+    Classe de definição dos objetos Rota
+
+    Atributos
+    description: nome da rota
+    is_active: flag rota ativa
+    is_available: flag rota funcionando
+    weight: prioridade/velocidade da rota
+    """
+    mucua = models.ForeignKey(Mucua, related_name='rota_mucuas')
+    mucuia = models.ForeignKey(Mucua, related_name='rota_mucuias')
+    description = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=False)
+    is_available = models.BooleanField(default=False)
+    weight = models.CharField(max_length=100, default="100")
+
+    def check_and_set_remotes(self):
+        if get_default_mucua() == self.mucua:
+            r_mucua = self.mucuia
+        else:
+            r_mucua = self.mucua
+            
+        remotes = discover()
+        logger.debug("Mucuas" + str(remotes))
+        access_URI = remotes.get(r_mucua.uuid, "")
+        
+        if access_URI != "":
+            remote = access_URI
+        elif r_mucua.uri_backend != "":
+            remote = r_mucua.uri_backend
+        else:
+            remote = ""
+        
+        logger.debug("Remote" + str(remotes))
+
+        try:
+            repository = get_default_repository()
+        except DatabaseError:
+            pass
+
+        git_remote_remove(r_mucua.uuid, repository.get_path())
+        if remote != "": 
+            logger.debug("Adicionando " + str(remote) + " em " + str(repository.get_path()))
+            git_remote_add(r_mucua.uuid, remote, repository.get_path())
+        
+        if remote != "" and git_ls_remote(remote, repository.get_path()) == 0:
+            self.is_available = True
+        else:
+            self.is_available = False
+        
+    def disable():
+        self.is_active = False
+
+    def save(self, *args, **kwargs):
+        self.check_and_set_remotes()
+        super(Rota, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.description
+
+    class Meta:
+        ordering = ('description',)
+    
