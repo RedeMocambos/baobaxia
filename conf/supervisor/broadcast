@@ -1,0 +1,6 @@
+[program:bbx_broadcast]
+command = /srv/bbx/bin/broadcast_server.py ; Command to start app
+user = exu                                                              	 ; User to run as
+stdout_logfile = /srv/bbx/log/broadcast_server.log                        	 ; Where to write log messages
+redirect_stderr = true                                                  	 ; Save stderr in the same log
+environment=HOME="/home/exu", USER="exu"
