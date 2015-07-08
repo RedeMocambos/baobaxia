@@ -43,8 +43,9 @@ def mucua_list(request, repository=None):
     for mucua_obj in mucuas:
         if mucua_obj[1] != 'web':
             mucua_description = mucua_obj[1]
+            mucua_uuid = mucua_obj[0]
             try:
-                mucua = Mucua.objects.get(description=mucua_description)
+                mucua = Mucua.objects.get(uuid=mucua_uuid)
             except Mucua.DoesNotExist:
                 return Response(_("Mucua not found"))
 
