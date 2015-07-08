@@ -185,7 +185,7 @@ def git_ls_remote(remote, repository_path):
     logger.info('git ls-remote ' + remote)
     cmd = 'git ls-remote ' + remote
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
-    output, error = pipe.communicate()
+    output = pipe.poll()
     return pipe.returncode
 
 def git_remote_get_list(repository=DEFAULT_REPOSITORY):

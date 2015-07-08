@@ -52,9 +52,10 @@ def create_user_from_files(repository):
                     data = JSONParser().parse(mocambola_json_file)
                     u = User()
                     serializer = UserSerializer(u, data=data)
+                    logger.debug("Checking user " + u.username)
 
                     if serializer.errors:
-                        logger.debug(u"%s %s" % (_('Error deserialing'),
+                        logger.debug(u"%s %s" % (_('Error deserializing'),
                                                  serializer.errors))
                     serializer.is_valid()
 
@@ -63,6 +64,7 @@ def create_user_from_files(repository):
                         User.objects.get(username=current_user.username)
                     except ObjectDoesNotExist:
                         current_user.save()
+                        logger.debug("User " + current_user.username + " saved!")
 
 
 class Mocambola(models.Model):

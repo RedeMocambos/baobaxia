@@ -30,7 +30,7 @@ def update_mucuas_list(repository):
         mucua_description = str(mucua[1])
         mucua_uuid = str(mucua[0])
         try:
-            mucua = Mucua.objects.get(description=mucua_description)
+            mucua = Mucua.objects.get(uuid=mucua_uuid)
             logger.info("Vi a mucua " + mucua_description + 
                         ", UUID: " + mucua_uuid)
         except Mucua.DoesNotExist:
@@ -166,7 +166,7 @@ class Mucua(models.Model):
     mucuas = models.ManyToManyField('Mucua', through='Rota', 
                                     related_name='linked_mucuas')
 
-    uri_backend = models.CharField("Remote access to mucua", max_length=2048, default="")
+    uri_backend = models.CharField("Remote access to mucua", max_length=2048, default="", blank=True)
 
     def get_description(self):
         return self.description
@@ -311,7 +311,7 @@ class Rota(models.Model):
             pass
 
         git_remote_remove(r_mucua.uuid, repository.get_path())
-        if remote != "": 
+        if remote != "" and self.is_active: 
             logger.debug("Adicionando " + str(remote) + " em " + str(repository.get_path()))
             git_remote_add(r_mucua.uuid, remote, repository.get_path())
         
