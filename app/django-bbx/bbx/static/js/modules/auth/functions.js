@@ -191,6 +191,7 @@ define([
 	console.log('doLogout');
 	
 	delete BBX.userData;
+	BBX.tmp = {};
 	localStorage.clear();
 	sessionStorage.clear();
 	$('#header').html('');

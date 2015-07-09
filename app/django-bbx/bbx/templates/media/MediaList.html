@@ -43,7 +43,7 @@
     <% _.each(medias, function(media) { %>
     <tr class="media-line">
       <td class="name">
-	<a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+	<a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>" title="<%= media.name %>">
 	  <span><%= media.name %></span>
 	</a>
       </td>
