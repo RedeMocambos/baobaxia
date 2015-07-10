@@ -159,7 +159,8 @@ def media_list(request, repository, mucua, args=None, format=None):
             limiting_params = [ int(x) for x in limiting_params ]
             args = args.split('limit/')[0]
         else:
-            limiting_params.append(default_limit)
+            if not return_count:
+                limiting_params.append(default_limit)
 
         """ if passed, get ordering rules """
         ordering_sql = ''
@@ -253,7 +254,7 @@ def media_list(request, repository, mucua, args=None, format=None):
                     if (term_index > 0):
                         term_sql += " AND " 
                         
-                    term_sql += " ( t.name LIKE ? "
+                    term_sql += " ( tag_concat LIKE ? "
                     term_sql += " OR m.name LIKE ?"
                     term_sql += " OR m.note LIKE ? )"
                     params.append("%" + term + "%")
@@ -264,16 +265,17 @@ def media_list(request, repository, mucua, args=None, format=None):
                 term_index += 1
                     
         if (len(term_sql) > 0):
-            term_sql = ' AND (' + term_sql + ')'
+            term_sql = ' HAVING (' + term_sql + ')'
 
         if return_count:
             sql = "SELECT \
             m.id, \
-            count(DISTINCT m.uuid) as count "
+            t.name || ',' || group_concat(t.name, ',') as tag_concat "
 
         else :
             sql = "SELECT DISTINCT \
             m.*, \
+            t.name || ',' || group_concat(t.name, ',') as tag_concat, \
             u.username AS _author, \
             mu.description AS _origin "
         
@@ -287,15 +289,16 @@ def media_list(request, repository, mucua, args=None, format=None):
           ON u.id = m.author_id  \
         LEFT JOIN mucua_mucua mu \
           ON mu.id = m.origin_id \
-        WHERE (" + origin_sql + " repository_id = ? ) " + term_sql
-
+        WHERE (" + origin_sql + " repository_id = ? ) \
+        GROUP BY m.id " + term_sql
+        
         if not return_count:
             sql += " ORDER BY " + ordering_sql
 
-        if len(limiting_params) == 1:
-            sql += " LIMIT ?"
-        else:
+        if len(limiting_params) >1:
             sql += " LIMIT ?,?"
+        elif len(limiting_params) == 1:
+            sql += " LIMIT ?"
         
         sql = sql.decode('utf-8')
         params.extend(limiting_params)
@@ -309,7 +312,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         # serializa e da saida
         if (return_count):
             response_count = {
-                'count': medias[0].count
+                'count': len(list(medias))
             }
             return HttpResponse(json.dumps(response_count), mimetype=u'application/json')
         
