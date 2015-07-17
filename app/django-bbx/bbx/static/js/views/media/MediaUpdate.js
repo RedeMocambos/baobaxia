@@ -32,6 +32,7 @@ define([
 	    options = {},
 	    urlUpdate = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + mediaData.uuid;
 	    media = new MediaModel([mediaData], {url: urlUpdate});
+	    $('#media-update-image').prop('src', 'images/loading-pq.gif');
 	    
 	    //HACK para passar o objeto corretamente
 	    media.attributes =  _.clone(media.attributes[0]);
