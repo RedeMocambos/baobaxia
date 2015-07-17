@@ -1137,7 +1137,7 @@ define([
 	if (limit !== '') {
 	    url += '/limit/' + limit;
 	}
-
+ 
 	// chama getMedia passando funcao especifica
 	getMedia(url, function(data) {
 	    __parseMenuSearch();	    
@@ -1278,6 +1278,8 @@ define([
 		    mediaData = __getFormData(uuid);
 		
 		mediaData.uuid = uuid;
+		$('#uuid-' + uuid ).css('background-image', 'url(../images/loading-pq.gif)');
+		$('#uuid-' + uuid ).css('background-size', '100% auto');
 		
 		__updateMedia(mediaData, function(ok) {
 		    var elem = '#uuid-' + uuid;
