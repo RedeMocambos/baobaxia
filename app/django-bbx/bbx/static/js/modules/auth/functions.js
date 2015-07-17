@@ -85,7 +85,13 @@ define([
 		} else {
 		    // authorized
 		    delete sessionStorage.error;
-		    data = JSON.parse(data);
+		    
+		    if (typeof data === 'string') {
+			data = JSON.parse(data);
+		    } else {
+			$('#message-area').html(LoginFailedTpl);
+			return false;
+		    }
 		    $('#message-area').html(LoginOkTpl);
 		    var userData = {'username': data.username }
 		    
