@@ -17,8 +17,9 @@ define([
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateErrorMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateValidationErrorMessage.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage.html'
-], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryCreateTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaGalleryCreateErrorMessageTpl, MediaGalleryCreateValidationErrorMessageTpl, MediaGalleryCreateMessageTpl){
+    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage.html',
+    'text!/templates/' + BBX.userLang + '/common/PermissionDenied.html'
+], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryCreateTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaGalleryCreateErrorMessageTpl, MediaGalleryCreateValidationErrorMessageTpl, MediaGalleryCreateMessageTpl, PermissionDeniedTpl){
     
     var MediaGalleryCreate = Backbone.View.extend({	
 	render: function(){
@@ -27,6 +28,14 @@ define([
 		url = config.apiUrl + "/" + config.MYREPOSITORY + "/" + config.MYMUCUA + "/media/",
 		mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.MYREPOSITORY + '/mucuas'});
 
+	    if (!BBXFunctions.isLogged()) {
+		$('#content').html(PermissionDeniedTpl);
+		setTimeout(function() {
+		    document.location.hash = BBXFunctions.getDefaultHome();
+		}, 2000);
+		return false
+	    }
+	    
 	    BBXFunctions.renderSidebar();
 	    BBXFunctions.renderUsage();
 	    MediaFunctions.__parseMenuSearch();

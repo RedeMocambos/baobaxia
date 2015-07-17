@@ -9,8 +9,9 @@ define([
     'modules/mucua/model',
     'modules/mucua/collection',
     'text!/templates/' + BBX.userLang + '/media/MediaPublish.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaPublishInvalidFileType.html'
-], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaPublishTpl, MediaPublishInvalidFileTypeTpl){
+    'text!/templates/' + BBX.userLang + '/media/MediaPublishInvalidFileType.html',
+    'text!/templates/' + BBX.userLang + '/common/PermissionDenied.html'
+], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaPublishTpl, MediaPublishInvalidFileTypeTpl, PermissionDeniedTpl){
     
     var MediaPublish = Backbone.View.extend({	
 	render: function(){
@@ -20,6 +21,14 @@ define([
 		urlPost = '',
 		mediaToken = null,
 		mucuas = null;
+
+	    if (!BBXFunctions.isLogged()) {
+		$('#content').html(PermissionDeniedTpl);
+		setTimeout(function() {
+		    document.location.hash = BBXFunctions.getDefaultHome();
+		}, 2000);
+		return false
+	    }
 	    
 	    // begin of function definitions
 	    var uploadFile = function() {
