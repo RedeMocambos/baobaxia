@@ -32,7 +32,7 @@ create_user() {
 
 # dependencies: se for deb pkg, tirar
 apt-get update
-apt-get install git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext
+apt-get install git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff5-dev libjpeg62-turbo-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext
 
 
 ### cria diretorio basico
@@ -262,6 +262,7 @@ pip install wsgiref;
 pip install python-magic;
 pip install python-memcached;
 pip install longerusername;
+pip install djangorestframework-jwt;
 pip install celery==3.1.14
 "
 
