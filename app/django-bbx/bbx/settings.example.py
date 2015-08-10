@@ -255,3 +255,8 @@ AUTH_PROFILE_MODULE = 'mocambola.Mocambola'
 
 ## Uploaded image size limit
 IMAGE_MAX_SIZE = 2000  # px
+
+# Disable jwt expiration 
+JWT = {
+    'JWT_VERIFY_EXPIRATION': False
+}
