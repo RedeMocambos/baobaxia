@@ -465,6 +465,8 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media-gallery-edit #select-column {float: right; width: 100px; cursor: pointer}
 #media-gallery-edit #select-column:hover + #menu-colunas ul,
 #media-gallery-edit #menu-colunas:hover ul {display: block; float: right}
+#media-gallery-edit .tags textarea,
+#media-gallery-edit .note textarea { height: 120px }
 
 /* form progress meter */
 .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }

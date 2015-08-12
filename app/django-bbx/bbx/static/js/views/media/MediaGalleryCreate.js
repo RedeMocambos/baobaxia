@@ -106,7 +106,7 @@ define([
 				gallery_url = '';
 
 			    terms = terms.substring(0, terms.length).replace(/\"/g,'');
-			    terms = terms.replace(',', '/');
+			    terms = terms.replace(/,/g, '/');
 			    console.log(terms);
 			    gallery_url = config.interfaceUrl + config.MYREPOSITORY + '/' + dataResult.result.origin + '/media/gallery/' + terms + '/edit';
 			    
