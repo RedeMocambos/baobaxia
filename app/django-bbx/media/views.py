@@ -139,6 +139,10 @@ def media_list(request, repository, mucua, args=None, format=None):
         return_count = False
         shuffle = False
 
+        # remove ultimo caractere
+        if args[:-1] == '/':
+            args = args[:-1]
+        
         # se passado na url, retorna apenas listagem (count como palavra reservada)
         if (args.find('count') != -1):
             args = args.split('count')[0]
@@ -153,10 +157,10 @@ def media_list(request, repository, mucua, args=None, format=None):
         limiting_params = []
         """ fields that if passed will make a boolean check """
         filter_fields = ['is_local', 'is_requested']
-
         if (args.find('limit') != -1):
             limiting_params = args.split('limit/')[1].split('/')
-            limiting_params = [ int(x) for x in limiting_params ]
+            if (limiting_params != ''):
+                limiting_params = [ int(x) for x in limiting_params ]
             args = args.split('limit/')[0]
         else:
             if not return_count:
@@ -336,7 +340,9 @@ def media_detail(request, repository, mucua, pk=None, format=None):
     
     # pegando sessao por url
     redirect_page = False
-
+    if mucua == 'rede':
+        mucua = request.DATA['origin']
+    
     try:
         mucua = Mucua.objects.get(description=mucua)
     except Mucua.DoesNotExist:
@@ -375,7 +381,6 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             media_token(request, repository, mucua)
 
         if pk != '':
-            # get media
             serializer = MediaSerializer(media)
             return Response(serializer.data)
 

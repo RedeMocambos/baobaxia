@@ -71,6 +71,32 @@ def media_file_rename(instance, new_file_name):
     pipe.wait()
 
 
+def get_media_size(instance):
+    u"""Retorna tamanho da mídia"""
+    cmd = 'git annex info ' + instance.get_file_name() + ' --json'
+    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(instance))
+    output, error = pipe.communicate()
+
+    try:
+        media_size = json.loads(output)['size'].split(' ')
+    except ValueError:
+        logger.info('Error while trying to get file size.')
+
+    size_list = {'bytes': 'B',
+                 'kilobytes': 'KB',
+                 'megabyte': 'MB',
+                 'megabytes': 'MB',
+                 'gigabyte': 'GB',
+                 'gigabytes': 'GB',
+                 'terabyte': 'TB',
+                 'terabytes': 'TB'
+    }
+    
+    media_size[1] = size_list[media_size[1]]
+    media_str = media_size[0] + ' ' + media_size[1]
+    return media_str
+
+
 def generate_UUID():
     """Gera um uuid4"""
     return str(uuid.uuid4())  
