@@ -1,4 +1,6 @@
 import json
+from calendar import timegm
+from datetime import datetime,timedelta
 
 from rest_framework.decorators import api_view
 from rest_framework.decorators import authentication_classes, permission_classes
@@ -70,7 +72,11 @@ def login(request):
                 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
                 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
                 payload = jwt_payload_handler(user)
-                
+                payload['orig_iat'] = timegm(
+                    datetime.utcnow().utctimetuple()
+                )
+                payload['exp'] = datetime.utcnow() + timedelta(minutes=3600)
+
                 response_data = {
                     'username': username,
                     'token': jwt_encode_handler(payload)
