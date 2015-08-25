@@ -904,7 +904,7 @@ define([
      */
     var getTagCloudByMucua = function(mucua, el, limit) {
 	console.log('tagcloud bymucua');
-	var limit = limit || 40,
+	var limit = limit || 25,
 	    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + mucua + '/tags';	    
 	
 	__getTagCloud(el, url, limit);
@@ -919,7 +919,7 @@ define([
      */
     var getTagCloudBySearch = function(el, limit) {
 	console.log('tagcloud bysearch');
-	var limit = limit || 40,
+	var limit = limit || 25,
 	    tags = __getTagsFromUrl(),
 	    url = BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/tags/' + tags;
 	
@@ -937,7 +937,7 @@ define([
      */
     var __getTagCloud = function(el, url, limit, callback) {
 	var callback = callback || null,
-	    limit = limit || 40,
+	    limit = limit || 25,
 	    tag = new TagModel([], {url: url});
 	    
 	tag.fetch({
@@ -973,7 +973,7 @@ define([
      */
     var __parseTagCloud = function(el) {	  
 	$.fn.tagcloud.defaults = {
-	    size: {start: 10, end: 16, unit: 'pt'},
+	    size: {start: 11, end: 16, unit: 'px'},
 	    color: {start: '#88A7B5', end: '#145B7A'}
 	};
 	
