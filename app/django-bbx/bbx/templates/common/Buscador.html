@@ -1,14 +1,18 @@
 {% load i18n %}
 <div id="buscador">
-  <div class="imagem menu-buscador">
-    <img id="imagem-busca" src="images/buscar.png" />
-  </div>
   <div class="menu-buscador" id="buscador-form">
-    <form id="form_buscador" action="">
-      <textarea class="caixa_busca" id="caixa_busca" placeholder=""></textarea>
-    </form>
+    <div class="imagem menu-buscador">
+      <img id="imagem-busca" src="images/buscar.png" />
+    </div>
+    <div>
+      <form id="form_buscador" action="">
+	<textarea class="caixa_busca" id="caixa_busca" placeholder=""></textarea>
+      </form>
+    </div>
   </div>
-  <div id="filters-block">
+  <div class="controls">
+    <!-- começo controles -->
+    <div id="filters-block">
     <%
        var currentFilter = {},
          typeFilters = ['video', 'audio', 'imagem', 'arquivo'],
@@ -79,6 +83,9 @@
       <input type="checkbox" name="is_requested" id="is_requested"> {% trans "Is requested" %}
     </span>
   </div>
+  <!-- fim controles -->
+  </div>
+  
 </div> 
 <div id="header-results">
   <div id="result-string"></div>

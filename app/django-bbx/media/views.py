@@ -460,8 +460,8 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             file_name = request.FILES[filename].name
             
             media.format=file_name.split('.')[-1].lower()
-            media.name = request.DATA.get('name', get_media_name_by_filename(file_name))
-            
+            if request.DATA.get('name') == '':
+                media.name = get_media_name_by_filename(file_name)
             if hasattr(request.FILES[filename], 'temporary_file_path'):
                 # if file bigger than 2.5MB, is stored in /tmp
                 tmp_file = request.FILES[filename].temporary_file_path()
@@ -477,7 +477,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                 media.media_file=handle_uploaded_image(media, tmp_file,request.FILES[filename])
             else:
                 media.media_file=request.FILES[filename]
-            
+        
         media.save()
         if media.id:
             # get tags by list or separated by ','
