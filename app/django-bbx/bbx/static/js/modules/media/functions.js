@@ -1388,11 +1388,18 @@ define([
 	    urlApi = urlApi || BBX.config.apiUrl + '/' + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/';
 	
 	console.log('shuffle media listing');
-	if (url.match('orderby')) {
-	    url = url.split('/orderby')[0] + '/shuffle';
-	} else if (url.match('/shuffle')) {
+	if (url.match('orderby') || url.match('limit')) {
+	    if (url.match('orderby')) { 
+		url = url.split('/orderby')[0];
+	    } else if (url.match('limit')) {
+		url = url.split('/limit')[0];
+	    }
+	}
+	if (url.match('/shuffle')) {
+	    // desliga
 	    url = url.replace('/shuffle', '');	
 	} else {
+	    // liga
 	    if (url.substring(0, url.length -1) === '/') {
 		url.substring(0, url.length -1);
 	    }
