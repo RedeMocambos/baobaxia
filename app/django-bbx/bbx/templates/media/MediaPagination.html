@@ -21,7 +21,6 @@ for (var page = 1; page <= totalPages; page++) { %>
       var nextLimit = ((page + 1) * itensPerPage) - itensPerPage,
       nextOffset = itensPerPage,		       
       urlNext = url + "/limit/" + nextLimit + "/" + nextOffset;
-		 
       nextHtml = '<a class="next" href="' + urlNext + '">{% trans "next" %}</a>';
     } else {
       nextHtml = '';
@@ -30,7 +29,12 @@ for (var page = 1; page <= totalPages; page++) { %>
     if (backPage > 0) {
       var backLimit = ((page -1) * itensPerPage) - itensPerPage,
       backOffset = itensPerPage,		       
-      urlBack = url + "/limit/" + backLimit + "/" + backOffset;
+      urlBack = url;
+      // different url for first
+      if (backLimit != '0') {
+    	urlBack += "/limit/" + backLimit + "/" + backOffset;;
+      }
+	
       backHtml = '<a class="back" href="' + urlBack + '">{% trans "back" %}</a>';
     } else {
       backHtml = '';
@@ -46,8 +50,15 @@ for (var page = 1; page <= totalPages; page++) { %>
 	       ||
              (page === 1 || page === totalPages)
 	     ) {
-	%>
-	<a href="<%= url %>/limit/<%= (page * itensPerPage) - itensPerPage %>/<%= itensPerPage  %>"><%= page %></a>
+       var pageNumber = (page * itensPerPage) - itensPerPage,
+       hrefHtml = '';
+       // different url for first
+       if (pageNumber == '0') {
+         urlHtml = url;
+       } else {
+         urlHtml = url + '/limit/' + pageNumber + '/' + itensPerPage;
+       }
+	%><a href="<%= urlHtml %>"><%= page %></a>
 	<% } else {
 	   if (jumpPage === 0) {
 	   %>......<%
