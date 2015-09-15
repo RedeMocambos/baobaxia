@@ -442,13 +442,14 @@ def media_detail(request, repository, mucua, pk=None, format=None):
             mucua = Mucua.objects.get(description=request.DATA['origin'])
         except Mucua.DoesNotExist:
             mucua = Mucua.objects.get(description=DEFAULT_MUCUA)
-
+        
         media = Media(repository=repository,
                       origin=mucua,
                       author=author,
                       note=request.DATA['note'],
                       type=request.DATA['type'],
                       license=request.DATA['license'],
+                      name=request.DATA.get('name', ''),
                       date=(request.DATA['date'] if request.DATA['date'] !=
                             '' else get_now()),
                       uuid=generate_UUID()
@@ -458,9 +459,8 @@ def media_detail(request, repository, mucua, pk=None, format=None):
         # multiple upload            
         for filename, file in request.FILES.iteritems():
             file_name = request.FILES[filename].name
-            
             media.format=file_name.split('.')[-1].lower()
-            if request.DATA.get('name') == '':
+            if media.name == '':
                 media.name = get_media_name_by_filename(file_name)
             if hasattr(request.FILES[filename], 'temporary_file_path'):
                 # if file bigger than 2.5MB, is stored in /tmp
