@@ -27,7 +27,7 @@ def update_mucuas_list(repository):
     u"""Atualiza a lista de mucuas disponivéis no repositório"""
     mucuas = get_available_mucuas(None, repository)
     for mucua in mucuas:
-        mucua_description = str(mucua[1])
+        mucua_description = str(mucua[1].split(' ')[0])
         mucua_uuid = str(mucua[0])
         try:
             mucua = Mucua.objects.get(uuid=mucua_uuid)
@@ -64,7 +64,7 @@ def get_mucua_from_UUID(uuid=None, repository=None):
         for mucua in json_repository_status['trusted repositories']:
             if mucua['uuid'] == uuid:
                 description = mucua['description']
-        return rpr(description)
+        return rpr(description.split(' ')[0])
     except Mucua.DoesNotExists:
         return "Invalid"
 
@@ -96,16 +96,16 @@ def get_available_mucuas(uuid=None, repository=None):
     if uuid:
         for mucua in json_repository_status['semitrusted repositories']:
             if mucua['uuid'] == uuid:
-                mucuas.append(mucua['description'])
+                mucuas.append(mucua['description'].split(' ')[0])
         for mucua in json_repository_status['trusted repositories']:
             if mucua['uuid'] == uuid:
-                mucuas.append(mucua['description'])
+                mucuas.append(mucua['description'].split(' ')[0])
                 
     else:
-        mucuas.extend([(mucua['uuid'], mucua['description'])
+        mucuas.extend([(mucua['uuid'], mucua['description'].split(' ')[0])
                        for mucua 
                        in json_repository_status['semitrusted repositories']])
-        mucuas.extend([(mucua['uuid'], mucua['description'])
+        mucuas.extend([(mucua['uuid'], mucua['description'].split(' ')[0])
                        for mucua 
                        in json_repository_status['trusted repositories']])
 
@@ -294,7 +294,7 @@ class Rota(models.Model):
             
         remotes = discover()
         logger.debug("Mucuas" + str(remotes))
-        access_URI = remotes.get(r_mucua.uuid, "")
+        access_URI = remotes.get(r_mucua.description, "")
         
         if access_URI != "":
             remote = access_URI
@@ -310,15 +310,15 @@ class Rota(models.Model):
         except DatabaseError:
             pass
 
-        git_remote_remove(r_mucua.uuid, repository.get_path())
+        git_remote_remove(r_mucua.description, repository.get_path())
         if remote != "" and self.is_active: 
             logger.debug("Adicionando " + str(remote) + " em " + str(repository.get_path()))
-            git_remote_add(r_mucua.uuid, remote, repository.get_path())
+            git_remote_add(r_mucua.description, remote, repository.get_path())
         
-        if remote != "" and git_ls_remote(remote, repository.get_path()) == 0:
-            self.is_available = True
-        else:
-            self.is_available = False
+        # if remote != "" and git_ls_remote(remote, repository.get_path()) == 0:
+        #     self.is_available = True
+        # else:
+        #     self.is_available = False
         
     def disable():
         self.is_active = False

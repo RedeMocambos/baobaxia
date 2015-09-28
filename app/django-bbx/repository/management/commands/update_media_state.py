@@ -22,10 +22,9 @@ class Command(BaseCommand):
             since = 7
         else:
             since = int(args[0])
-        some_day_last_week = timezone.now().date() - timedelta(days=since)
-        monday_of_last_week = some_day_last_week - timedelta(days=(some_day_last_week.isocalendar()[2] - 1))
-        monday_of_this_week = monday_of_last_week + timedelta(days=since)
-        medias = Media.objects.filter(date__gte=monday_of_last_week, date__lt=monday_of_this_week)
+        some_day_ago = timezone.now().date() - timedelta(days=since)
+        logger.info("Atualizando os medias desde o dia: " + str(some_day_ago))
+        medias = Media.objects.filter(date__gte=some_day_ago)
         
         for media in medias:
             try:

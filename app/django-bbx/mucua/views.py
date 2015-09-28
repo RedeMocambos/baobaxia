@@ -130,7 +130,7 @@ def mucua_get_info(request, uuid, repository=None):
     mucua_info['network size'] =  convertToGB(
         str(float(network_size.group(1))), size_list[network_size.group(2)])
     
-    mucua_info['mucua_groups'] = mucua.get_groups(repository)
+#    mucua_info['mucua_groups'] = mucua.get_groups(repository)
     
     return Response(mucua_info)
 

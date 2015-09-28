@@ -26,7 +26,7 @@ class Command(BaseCommand):
         s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1) #this is a broadcast socket                                                                                                            
         mucua = Mucua.objects.get(description=DEFAULT_MUCUA)
 
-        mucua_uri= mucua.uuid + '|' + 'ssh://' + DEFAULT_IP + '/data/bbx/repositories/mocambos'
+        mucua_uri= mucua.description + '|' + 'ssh://' + DEFAULT_IP + '/data/bbx/repositories/mocambos'
 
         while 1:
             data = MAGIC + mucua_uri

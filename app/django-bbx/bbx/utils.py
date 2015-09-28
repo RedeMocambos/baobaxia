@@ -95,9 +95,9 @@ def discover():
             data, addr = s.recvfrom(1024) #wait for a packet
             if data.startswith(MAGIC):
                 logger.info("Achei uma mucua na rede local: ", data[len(MAGIC):])
-                uuid = data[len(MAGIC):].split('|')[0]
+                description = data[len(MAGIC):].split('|')[0]
                 uri = data[len(MAGIC):].split('|')[1]
-                remotes[uuid] = uri
+                remotes[description] = uri
     except socket.timeout:
         logger.info("Nenhuma mucua encontrada")
 

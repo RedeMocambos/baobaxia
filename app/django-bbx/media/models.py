@@ -308,7 +308,7 @@ class Media(models.Model):
         index = 0
         for item in whereis['whereis']:
             # strip [ or ]  (prevent errors of getting mucuas address like [dpadua])
-            mucua_name = re.sub("[\[\]]", "", item['description'])
+            mucua_name = re.sub("[\[\]]", "", item['description']).split(' ')[0]
             whereis['whereis'][index]['description'] = mucua_name
             index += 1
         
