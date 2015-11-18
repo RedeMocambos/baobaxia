@@ -15,27 +15,27 @@
       
       <table class="block-title">
 	<tr>
-	  <td class="left">Por</td>
+	  <td class="left">{% trans "By" %}</td>
 	  <td class="right"><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>"><%= media.author.split('@')[0] %></a></td>
 	</tr>
 	<tr>
-	  <td class="left">Data</td>
+	  <td class="left">{% trans "Date" %}</td>
 	  <td class="right"><%= formatDate(media.date) %></td>
 	</tr>
 	<tr>
-	  <td class="left">Mucua</td>
+	  <td class="left">{% trans "Mucua" %}</td>
 	  <td class="right"><a href="<% print('#' + media.repository + '/' + media.origin) %>"><%= media.origin %></a></td>
 	</tr>
 	<tr>
-	  <td class="left">Formato</td>
+	  <td class="left">{% trans "Format" %}</td>
 	  <td class="right"><%= media.format %></td>
 	</tr>
 	<tr>
-	  <td class="left">Tamanho</td>
+	  <td class="left">{% trans "Size" %}</td>
 	  <td class="right">0GB</td>
 	</tr>
 	<tr>
-	  <td class="left">Licença</td>
+	  <td class="left">{% trans "License" %}</td>
 	  <td class="right license-image license-<%= media.license %>"></td>
 	</tr>
       </table>
