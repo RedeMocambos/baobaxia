@@ -19,12 +19,12 @@ define([
     'modules/repository/model',
     'modules/tag/model',
     'modules/media/functions',
-    'text!/templates/' + BBX.userLang + '/common/Content.html',
-    'text!/templates/' + BBX.userLang + '/common/Sidebar.html',
-    'text!/templates/' + BBX.userLang + '/common/MucuaItem.html',
-    'text!/templates/' + BBX.userLang + '/common/UsageBar.html',
-    'text!/templates/' + BBX.userLang + '/common/UserProfile.html',
-    'text!/templates/' + BBX.userLang + '/common/MucuaProfile.html'
+    'text!templates/' + BBX.userLang + '/common/Content.html',
+    'text!templates/' + BBX.userLang + '/common/Sidebar.html',
+    'text!templates/' + BBX.userLang + '/common/MucuaItem.html',
+    'text!templates/' + BBX.userLang + '/common/UsageBar.html',
+    'text!templates/' + BBX.userLang + '/common/UserProfile.html',
+    'text!templates/' + BBX.userLang + '/common/MucuaProfile.html'
 ], function($, _, Backbone, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, TagModel, MediaFunctions, ContentTpl, SidebarTpl, MucuaItemTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
 
     /**

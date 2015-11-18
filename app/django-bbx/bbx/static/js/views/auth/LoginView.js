@@ -9,8 +9,8 @@ define([
     'modules/mucua/model',
     'modules/mucua/collection',
     'modules/mocambola/model',
-    'text!/templates/' + BBX.userLang + '/auth/LoginTemplate.html',
-    'text!/templates/' + BBX.userLang + '/common/HeaderHome.html',
+    'text!templates/' + BBX.userLang + '/auth/LoginTemplate.html',
+    'text!templates/' + BBX.userLang + '/common/HeaderHome.html',
 ], function($, _, Backbone, jQueryJson, AuthFunctions, BBXFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, LoginTemplate, HeaderHomeTpl){
     var LoginView = Backbone.View.extend({
 	el: "body",

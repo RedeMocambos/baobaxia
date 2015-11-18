@@ -3,7 +3,7 @@ define([
     'lodash',
     'backbone',
     'backbone_form',
-    'text!/api/templates/' + BBX.userLang + '/auth/LoginTemplate.html'
+    'text!' + BBX.config.apiUrl + '/templates/' + BBX.userLang + '/auth/LoginTemplate.html'
 ], function($, _, Backbone, BackboneForm, LoginTemplate) {
     var Login = Backbone.Model.extend({
 	template: _.template(LoginTemplate, $('#form_login_template').html()),

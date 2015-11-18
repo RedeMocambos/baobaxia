@@ -19,24 +19,24 @@ define([
     'modules/media/collection',
     'modules/mucua/model',
     'modules/tag/model',
-    'text!/templates/' + BBX.userLang + '/media/MediaDestaquesMucua.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaNovidades.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaMocambola.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaRelated.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaResults.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGrid.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaList.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaPagination.html',
-    'text!/templates/' + BBX.userLang + '/media/MessageRequest.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaRequestedList.html',
-    'text!/templates/' + BBX.userLang + '/common/ResultsMessage.html',
-    'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html',
-    'text!/templates/' + BBX.userLang + '/common/TagCloud.html',
-    'text!/templates/' + BBX.userLang + '/common/MessageSearch.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEdit.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
+    'text!templates/' + BBX.userLang + '/media/MediaDestaquesMucua.html',
+    'text!templates/' + BBX.userLang + '/media/MediaNovidades.html',
+    'text!templates/' + BBX.userLang + '/media/MediaMocambola.html',
+    'text!templates/' + BBX.userLang + '/media/MediaRelated.html',
+    'text!templates/' + BBX.userLang + '/media/MediaResults.html',
+    'text!templates/' + BBX.userLang + '/media/MediaGrid.html',
+    'text!templates/' + BBX.userLang + '/media/MediaList.html',
+    'text!templates/' + BBX.userLang + '/media/MediaPagination.html',
+    'text!templates/' + BBX.userLang + '/media/MessageRequest.html',
+    'text!templates/' + BBX.userLang + '/media/MediaRequestedList.html',
+    'text!templates/' + BBX.userLang + '/common/ResultsMessage.html',
+    'text!templates/' + BBX.userLang + '/common/SearchTagsMenu.html',
+    'text!templates/' + BBX.userLang + '/common/TagCloud.html',
+    'text!templates/' + BBX.userLang + '/common/MessageSearch.html',
+    'text!templates/' + BBX.userLang + '/media/MediaGalleryEdit.html',
+    'text!templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
+    'text!templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html',
+    'text!templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
 ], function($, _, Backbone, TagCloud, Fancybox, FancyboxButtons, FancyboxMedia, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, MediaRequestedListTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MessageSearchTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
     /**
      * Funções gerais de media
@@ -356,8 +356,8 @@ define([
 	    $(target).html(_.template(MediaGridTpl, data));
 
 	    // carrega galeria (fancybox)
-	    $('head').append('<link rel="stylesheet" href="/css/jquery.fancybox.css" type="text/css" />');
-	    $('head').append('<link rel="stylesheet" href="/css/jquery.fancybox-buttons.css" type="text/css" />');
+	    $('head').append('<link rel="stylesheet" href="css/jquery.fancybox.css" type="text/css" />');
+	    $('head').append('<link rel="stylesheet" href="css/jquery.fancybox-buttons.css" type="text/css" />');
 	    
 	    BBX.tmp.fancybutton = {};
 	    $('.fancybox-button').fancybox({

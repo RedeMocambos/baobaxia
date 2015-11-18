@@ -12,13 +12,13 @@ define([
     'modules/media/model',
     'modules/mucua/model',
     'modules/mucua/collection',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreate.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEdit.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateErrorMessage.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateValidationErrorMessage.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage.html',
-    'text!/templates/' + BBX.userLang + '/common/PermissionDenied.html'
+    'text!templates/' + BBX.userLang + '/media/MediaGalleryCreate.html',
+    'text!templates/' + BBX.userLang + '/media/MediaGalleryEdit.html',
+    'text!templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
+    'text!templates/' + BBX.userLang + '/media/MediaGalleryCreateErrorMessage.html',
+    'text!templates/' + BBX.userLang + '/media/MediaGalleryCreateValidationErrorMessage.html',
+    'text!templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage.html',
+    'text!templates/' + BBX.userLang + '/common/PermissionDenied.html'
 ], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryCreateTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaGalleryCreateErrorMessageTpl, MediaGalleryCreateValidationErrorMessageTpl, MediaGalleryCreateMessageTpl, PermissionDeniedTpl){
     
     var MediaGalleryCreate = Backbone.View.extend({	
@@ -150,7 +150,7 @@ define([
 	    data.media.repository = config.MYREPOSITORY;
 	    data.media.author = config.userData.username;
 	    
-	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');
+	    $('head').append('<link rel="stylesheet" href="css/textext.plugin.autocomplete.css" type="text/css" />');
 	    $('#content').html(_.template(MediaGalleryCreateTpl, data));
 	    
 	    // tags

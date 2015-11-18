@@ -8,9 +8,9 @@ define([
     'modules/media/model',
     'modules/mucua/model',
     'modules/mucua/collection',
-    'text!/templates/' + BBX.userLang + '/media/MediaPublish.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaPublishInvalidFileType.html',
-    'text!/templates/' + BBX.userLang + '/common/PermissionDenied.html'
+    'text!templates/' + BBX.userLang + '/media/MediaPublish.html',
+    'text!templates/' + BBX.userLang + '/media/MediaPublishInvalidFileType.html',
+    'text!templates/' + BBX.userLang + '/common/PermissionDenied.html'
 ], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaPublishTpl, MediaPublishInvalidFileTypeTpl, PermissionDeniedTpl){
     
     var MediaPublish = Backbone.View.extend({	

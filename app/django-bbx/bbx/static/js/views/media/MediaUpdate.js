@@ -9,9 +9,9 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!/templates/' + BBX.userLang + '/media/MediaPublish.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaConfirmRemoveMessage.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaRemoveMessage.html',
+    'text!templates/' + BBX.userLang + '/media/MediaPublish.html',
+    'text!templates/' + BBX.userLang + '/media/MediaConfirmRemoveMessage.html',
+    'text!templates/' + BBX.userLang + '/media/MediaRemoveMessage.html',
 ], function($, _, jQueryForm, Backbone, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
     var MediaUpdate = Backbone.View.extend({
 	
@@ -56,9 +56,9 @@ define([
 	    
 	    BBXFunctions.renderSidebar();
 
-	    $('head').append('<link rel="stylesheet" href="/css/textext.core.css" type="text/css" />');		    
-	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.tags.css" type="text/css" />');
-	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');		    
+	    $('head').append('<link rel="stylesheet" href="css/textext.core.css" type="text/css" />');		    
+	    $('head').append('<link rel="stylesheet" href="css/textext.plugin.tags.css" type="text/css" />');
+	    $('head').append('<link rel="stylesheet" href="css/textext.plugin.autocomplete.css" type="text/css" />');		    
 	    
 	    var media = new MediaModel([], {url: urlApi});
 	    media.fetch({

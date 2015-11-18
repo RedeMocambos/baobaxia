@@ -5,11 +5,11 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!/templates/' + BBX.userLang + '/media/MediaView.html',
-    'text!/templates/' + BBX.userLang + '/media/MessageRequest.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaDropMessage.html',
-    'text!/templates/' + BBX.userLang + '/media/BackToSearch.html',
-    'text!/templates/' + BBX.userLang + '/media/MucuaHasFile.html',
+    'text!templates/' + BBX.userLang + '/media/MediaView.html',
+    'text!templates/' + BBX.userLang + '/media/MessageRequest.html',
+    'text!templates/' + BBX.userLang + '/media/MediaDropMessage.html',
+    'text!templates/' + BBX.userLang + '/media/BackToSearch.html',
+    'text!templates/' + BBX.userLang + '/media/MucuaHasFile.html',
 ], function($, _, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaViewTpl, MessageRequestTpl, MediaDropMessageTpl, BackToSearchTpl, MucuaHasFileTpl){
     
     var MediaView = Backbone.View.extend({

@@ -3,7 +3,7 @@ define([
     'lodash',
     'backbone',
      'modules/media/functions',
-    'text!/templates/' + BBX.userLang + '/common/Buscador.html',
+    'text!templates/' + BBX.userLang + '/common/Buscador.html',
     'textext_tags',
 ], function($, _, Backbone, MediaFunctions, BuscadorTpl, TextextTags){
     var BuscadorView = Backbone.View.extend({
@@ -47,9 +47,9 @@ define([
 		    config: config
 		}
 		$('#header-bottom').prepend(_.template(BuscadorTpl, data));
-		$('head').append('<link rel="stylesheet" href="/css/textext.core.css" type="text/css" />');		    
-		$('head').append('<link rel="stylesheet" href="/css/textext.plugin.tags.css" type="text/css" />');
-		$('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');
+		$('head').append('<link rel="stylesheet" href="css/textext.core.css" type="text/css" />');		    
+		$('head').append('<link rel="stylesheet" href="css/textext.plugin.tags.css" type="text/css" />');
+		$('head').append('<link rel="stylesheet" href="css/textext.plugin.autocomplete.css" type="text/css" />');
 
 		// adiciona eventos de search options
 		_.each(validSearchOptions, function(searchOption) {

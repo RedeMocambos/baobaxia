@@ -14,13 +14,13 @@ define([
     'backbone',
     'modules/bbx/functions',
     'modules/mocambola/model',
-    'text!/templates/' + BBX.userLang + '/auth/LoginOk.html',
-    'text!/templates/' + BBX.userLang + '/auth/LoginFailed.html',
-    'text!/templates/' + BBX.userLang + '/auth/PasswordMustMatch.html',
-    'text!/templates/' + BBX.userLang + '/auth/FillUser.html',
-    'text!/templates/' + BBX.userLang + '/auth/FillPassword.html',
-    'text!/templates/' + BBX.userLang + '/auth/UserExists.html',
-    'text!/templates/' + BBX.userLang + '/auth/UserCreationError.html',
+    'text!templates/' + BBX.userLang + '/auth/LoginOk.html',
+    'text!templates/' + BBX.userLang + '/auth/LoginFailed.html',
+    'text!templates/' + BBX.userLang + '/auth/PasswordMustMatch.html',
+    'text!templates/' + BBX.userLang + '/auth/FillUser.html',
+    'text!templates/' + BBX.userLang + '/auth/FillPassword.html',
+    'text!templates/' + BBX.userLang + '/auth/UserExists.html',
+    'text!templates/' + BBX.userLang + '/auth/UserCreationError.html',
 ], function($, _, Backbone, BBXFunctions, MocambolaModel, LoginOkTpl, LoginFailedTpl, PasswordMustMatchTpl, FillUserTpl, FillPasswordTpl, UserExistsTpl, UserCreationErrorTpl){
     
     /**
