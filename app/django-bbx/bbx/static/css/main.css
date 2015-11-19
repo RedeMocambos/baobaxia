@@ -468,6 +468,8 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media-gallery-edit .tags textarea,
 #media-gallery-edit .note textarea { height: 120px }
 
+.field-error { border: 2px solid red !important }
+
 /* form progress meter */
 .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
 .bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }

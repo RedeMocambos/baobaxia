@@ -10,8 +10,9 @@ define([
     'modules/mucua/collection',
     'text!/templates/' + BBX.userLang + '/media/MediaPublish.html',
     'text!/templates/' + BBX.userLang + '/media/MediaPublishInvalidFileType.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateValidationErrorMessage.html',    
     'text!/templates/' + BBX.userLang + '/common/PermissionDenied.html'
-], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaPublishTpl, MediaPublishInvalidFileTypeTpl, PermissionDeniedTpl){
+], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaPublishTpl, MediaPublishInvalidFileTypeTpl, MediaGalleryCreateValidationErrorMessageTpl, PermissionDeniedTpl){
     
     var MediaPublish = Backbone.View.extend({	
 	render: function(){
@@ -52,7 +53,6 @@ define([
 		    $('#origin').append("<option value='" + mucua.description + "'>" + mucua.description + "</option>");
 		    
 		});
-		$('select[name="origin"]').find('option:contains("' + BBX.config.MYMUCUA + '")').prop("selected",true);
 	    }
 	    
 	    var __prepareFormData = function() {
@@ -186,16 +186,55 @@ define([
 		    return false;
 		}
 	    }
-	    
-	    $('#media_file').on('change', function(el) {
-		if (isValidFileType()) {
-		    uploadFile();
-		} else {
-		    $('#messages .error-bar').fadeIn(0,0, function() {});
-		    $('#messages .error-bar').fadeTo(3000, 0, function() {});
-		    console.log('invalid, error message');
+
+	    var validateUpload = function() {
+		var validationError = [],
+		    fields = ['#origin'];
+		
+		// verificacao dos campos (uma verificacao por field)
+		if ($('#origin').val() === "") {
+		    validationError.push('#origin');
 		}
-	    });	    
+		
+		_.each(validationError, function(el) {
+		    $(el).addClass('field-error');
+		});
+		
+		// remove a borda caso estiver ok
+		_.each(_.difference(fields, validationError), function(field) {
+		    $(field).removeClass('field-error');
+		});
+		
+		if (validationError.length > 0) {
+		    $('#messages').html(_.template(MediaGalleryCreateValidationErrorMessageTpl));
+		    return false;
+		} else {
+		    return true;
+		}		
+	    }
+
+	    // verifica preenchimento de campos mínimos para fazer o upload
+	    $('#media_file').on('click', function(e) {
+		var validate = validateUpload();
+		if (!validate) {
+		    e.preventDefault();
+		} else {
+		    // com validacao ok, limpa mensagens
+		    $('#messages').html();
+		}
+	    });
+	    
+	    // validacao client side do arquivo
+	    $('#media_file').on('change', function(e) {
+		$('#media_file').on('change', function(e) {
+		    if (isValidFileType()) {
+			uploadFile();
+		    } else {
+			$('#messages .error-bar').fadeIn(0,0, function() {});
+			$('#messages .error-bar').fadeTo(3000, 0, function() {});
+		    }
+		});
+	    });
 	},
     });
     

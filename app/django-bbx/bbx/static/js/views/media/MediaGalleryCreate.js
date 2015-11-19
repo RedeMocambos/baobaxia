@@ -51,22 +51,31 @@ define([
 			BBX.mucuaList.push(mucua);
 			$('#origin').append("<option value='" + mucua.description + "'>" + mucua.description + "</option>");
 		    }
-		    $('select[name="origin"]').find('option:contains("' + BBX.config.MYMUCUA + '")').prop("selected",true);
-
-		    
 		}
 	    });
 
 	    var validateUpload = function() {
-		// checa se titulo e tags foram preenchidos
-		var validationError = [];
-		// especifico - textext / tags
+		var validationError = [],
+		    fields = ['#tags', '#origin'];
+		
+		// verifica lista de campos obrigatórios
 		if ($('#fileupload').find('input[name="tags"]').val() === "[]") {
 		    validationError.push('#tags');
 		}
+		// verifica lista de campos obrigatórios
+		if ($('#origin').val() === "") {
+		    validationError.push('#origin');
+		}
+		
 		_.each(validationError, function(el) {
-		    $(el).css('border', '2px solid red');
+		    $(el).addClass('field-error');
 		});
+		
+		// remove a borda caso estiver ok
+		_.each(_.difference(fields, validationError), function(field) {
+		    $(field).removeClass('field-error');
+		});
+		
 		if (validationError.length > 0) {
 		    $('#messages').html(_.template(MediaGalleryCreateValidationErrorMessageTpl));
 		    return false;
