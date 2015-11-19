@@ -20,7 +20,8 @@ BBX.config = {
     "interfaceUrl": "/#",
     "MYMUCUA":"dpadua",
     "MYREPOSITORY": "mocambos",
-    "userLang": "pt_BR"
+    "userLang": "pt_BR",
+    "defaultHome": '/#mocambos/rede/bbx/search'    
 }
 /***
  * NÃO EDITAR DAQUI EM DIANTE

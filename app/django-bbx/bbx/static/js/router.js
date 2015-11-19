@@ -14,7 +14,7 @@ define([
     'jquery', 
     'backbone',
     'backbone_subroute',
-    'modules/bbx/functions',
+    'modules/bbx/functions',    
     'views/auth/LoginView', 
     'views/auth/LogoutView',
     'views/auth/RegisterView', 
@@ -69,8 +69,8 @@ define([
 	    indexView.render();
 	    
 	    var config = BBX.config,
-		urlRedirect = config.interfaceUrl + config.MYREPOSITORY + "/" + config.MYMUCUA;
-	    
+		urlRedirect = config.defaultHome;
+
 	    window.location.href = urlRedirect;
 	},
 	
