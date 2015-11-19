@@ -40,7 +40,7 @@ define([
     var __getDefaultHome = function() {
 	// MAYBE, this should be a configurable field
 	var config = BBX.config,
-	    url = '#' + config.MYREPOSITORY + '/' + config.MYMUCUA;
+	    url = BBX.defaultHome;
 
 	console.log('__getDefaultHome');
 	

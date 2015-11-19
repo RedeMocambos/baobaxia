@@ -84,11 +84,16 @@ define([
 	    BBXFunctions.renderCommon(repository, mucua);
 	    BBXFunctions.setNavigationVars(repository, mucua);
 	    BBXFunctions.renderCommon('media');
-	    
-	    if (subroute.match('limit')) {
-		var matches = subroute.split('/limit/');
-		subroute = matches[0];
-		limit = matches[1];
+
+	    if (!_.isNull(subroute)) {
+		if (subroute.match('limit')) {
+		    var matches = subroute.split('/limit/');
+		    subroute = matches[0];
+		    limit = matches[1];
+		}
+	    } else {
+		subroute = '';
+		limit = '';
 	    }
 	    
 	    mediaGalleryEditView.render(subroute, limit);	    
