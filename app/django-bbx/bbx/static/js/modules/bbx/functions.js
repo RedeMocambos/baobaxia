@@ -162,10 +162,9 @@ define([
 	
 	tags = MediaFunctions.__getTagsFromUrl();
 	BBX.tags = tags;
-	
-	if (tags.length > 0) {
-	    data.isEditable = true;
-	}
+
+	// regra que define se habilita campo de edicao
+	data.isEditable = true;
 	
 	var headerView = new HeaderView(data);
 	if (isLogged) {
