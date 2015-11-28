@@ -109,33 +109,6 @@ define([
 	    $('#footer').before(_.template(SidebarTpl, data));
 	}
 	
-	// carregar lista de mucuas
-	var toggleTabs = function(currentEl, el) {
-	    _.each($('#header-tabs .button'), function(el) {
-		var elName = el.id,
-		    currentName = currentEl.currentTarget.id,
-		    elBtn = '',
-		    currentBtn = '';
-		    
-		elName = elName.split('btn-')[1];
-		currentName = currentName.split('btn-')[1];
-		
-		elBtn = '#btn-' + elName;
-		currentBtn = '#btn-' + elName;
-		
-		elName = '#' + elName  + '-container';
-		currentName = '#' + currentName  + '-container';
-		
-		if (elName === currentName) {
-		    $(currentBtn).css('font-weight', 'bold');
-		    $(currentName).show();
-		} else {
-		    $(elBtn).css('font-weight', '');
-		    $(elName).hide();
-		}
-	    });
-	}
-	
 	data.mucuas = [];
 
 	if ($('#list-mucuas').html() === '') {
@@ -149,8 +122,8 @@ define([
 		    
 		    $('#list-mucuas-container').hide();
 		    $('#header-tabs #btn-cloud').css('font-weight', 'bold');
-		    $('#header-tabs .button').on('click', function(el) {
-			toggleTabs(el);
+		    $('#visualize-rede').click(function(e) {
+			$('#list-mucuas-container').toggle();			
 		    });
 		}
 	    });
@@ -459,9 +432,8 @@ define([
 			    networkData.usedByAnnexUnit = BBX.network.info.usedByAnnexUnit;
 			    networkData.config = config;
 			    
-			    $('#place-profile').html(_.template(MucuaProfileTpl, networkData));
-			    console.log(networkData.mucua.image);
-			    $('#place-profile #mucua_image').prop('src', networkData.mucua.image);
+			    $('#mucua-profile').html(_.template(MucuaProfileTpl, networkData));
+			    $('#mucua-profile #mucua_image').prop('src', networkData.mucua.image);
 			    
 			    clearInterval(networkResourcesLoad);
 			}
@@ -473,7 +445,6 @@ define([
 	    var mucuaResourcesLoad = setInterval(function() {
 		if (typeof BBX.mucua !== 'undefined') {
 		    if (typeof BBX.mucua.info !== 'undefined') {
-			console.log(BBX.mucua.info.usedByAnnexUnit);
 			if (config.mucua === config.MYMUCUA) {
 			    // mucua local
 			    mucuaData = {
@@ -483,7 +454,7 @@ define([
 			    };	    
 			    
 			    mucuaData.mucua.storageSize = BBX.mucua.info.usedByAnnex;
-			    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
+			    $('#mucua-profile').html(_.template(MucuaProfileTpl, mucuaData));
 			    
 			    // verifica se a mucua tem uma imagem / media com nome do seu uuid
 			    var urlMucuaImage = config.apiUrl + '/' + config.MYREPOSITORY + '/' + mucuaData.mucua.description + '/bbx/search/' + mucuaData.mucua.uuid,
@@ -511,7 +482,7 @@ define([
 				    
 				    // FAKE DATA
 				    mucuaData.mucua.url = ''; // TODO: get from API
-				    $('#place-profile').html(_.template(MucuaProfileTpl, mucuaData));
+				    $('#mucua-profile').html(_.template(MucuaProfileTpl, mucuaData));
 				    
 				    // carrega imagem
 				    // verifica se a mucua tem uma imagem / media com nome do seu uuid

@@ -15,8 +15,8 @@ define([
 	 * @return image
 	 */
 	getImage: function(url, callback, defaultImageSrc, width, height) {
-	    var width = width || 150,
-		height = height || 150,
+	    var width = width || 170,
+		height = height || 170,
 		defaultImageSrc = defaultImageSrc || '/images/mucua-default.png',
 		media = new MediaModel([], {url: url});
 

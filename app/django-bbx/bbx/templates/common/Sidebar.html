@@ -3,22 +3,23 @@
   <% if (_.isEmpty(BBX.config.profile)) { %><div id="link-login"><a class="" href='#login'>{% trans "do login" %}</a></div><% } %>
   <div id="user-profile"></div>
   <div class="sidebar-inner">
-    <div id="place-profile"></div>
+    <div id="mucua-profile"></div>
 
-    <div id="header-tabs">
-      <span class="button" id="btn-cloud">{% trans "tags" %}</span>
-      <span class="button" id="btn-list-mucuas">{% trans "mucuas" %}</span>      
+    <div id="box-mucuas">
+      <h3 id="btn-list-mucuas"><div class="mucua-grey"></div><%= '{% trans "mucuas" %}'.toUpperCase() %></h3>
+      <h5 id="visualize-rede">{% trans "browse the network" %}</h5>
     </div>
-    
-    <div id="cloud-container">
-      <div id="cloud"></div>
-    </div>
-    
+
     <div id="list-mucuas-container">
       <div id="list-mucuas"></div>
       <div class="see-mucuas">
 	<span><a href="<% print(BBX.config.interfaceUrl + '/' + BBX.config.repository + '/mucuas'); %>">{% trans "see all mucuas" %}</span>
       </div>
     </div>
+    
+    <div id="cloud-container">
+      <div id="cloud"></div>
+    </div>
+    
   </div>
 </div>

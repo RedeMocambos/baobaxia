@@ -974,7 +974,7 @@ define([
     var __parseTagCloud = function(el) {	  
 	$.fn.tagcloud.defaults = {
 	    size: {start: 11, end: 16, unit: 'px'},
-	    color: {start: '#88A7B5', end: '#145B7A'}
+	    color: {start: '#aaa', end: '#999'}
 	};
 	
 	$(function () {
