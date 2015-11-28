@@ -26,7 +26,7 @@ html, body, #container {height: 100%; }
     padding: 10px;    
     z-index: 20;
 }
-.sidebar-inner {background-color: #fff; height: 100%; padding: 20px; padding-top: 0px; margin-top: 46px}
+.sidebar-inner {background-color: #fff; height: 100%; padding: 20px; padding-top: 0px; margin-top: 33px}
 .sidebar-inner div {padding: 0px; margin: 0px}
 
 #footer {clear: both; height: 40px; position: fixed; z-index: 10; background-color: #E1D2A0; width: 100%; bottom: -2px; border-top: #fff solid 2px; }
@@ -50,7 +50,7 @@ a {text-decoration: none; color: #0E5E80}
  * header
  */
 #header {width: 100%; height: 224px; background-color: #fff; position: fixed; z-index:10 }
-#header-top {background: url('../images/faixabanner.png') repeat-x; height: 125px; background-color: #fff;  }
+#header-top {background: url('../images/faixabanner.png') repeat-x; height: 112px; background-color: #fff;  }
 #header-bottom { float:left; margin-left: 60px; width: 70%; height: 75px; border-bottom: 1px solid #fff; }
 .media #header-bottom {height: 45px}
 #header-image {background: url('../images/cabecalho.png') no-repeat; margin: 0 auto; height: 80px }
@@ -72,15 +72,18 @@ a {text-decoration: none; color: #0E5E80}
 .home #footer {display: none}
 
 #menu {margin-left: 35%; margin-top: -25px; width: 100%; }
-.menu-itens li {display: inline-block; border-radius: 8px; background-color: #d5c590; border: 2px solid #D5C590; color: #fff; font-size: 18px; font-weight: bold; padding: 4px; margin: 4px;}
-.menu-itens li a {color: #fff; text-decoration: none; }
-.menu-itens .current {background-color: #145B7A; border: 2px solid #145B7A}
-.menu-itens .recent-1 {border: 2px solid #D5C590; opacity: 0.7}
-.menu-itens .recent-2 {border: 2px solid #D5C590; opacity: 0.5}
-.menu-itens .recent-3 {border: 2px solid #D5C590; opacity: 0.3}
-#menu li.redeoff div {width: 72px; height: 23px; background-image: url('../images/redeoff.png'); }
-#menu li.redeon div {width: 82px; height: 27px; background-image: url('../images/redeon.png'); }
-#menu li.rede {padding: 0; border: 0}
+.menu-itens li {display: inline-block; border-radius: 8px; font-size: 16px; padding: 4px; padding-right: 14px; background: url('../images/seta-esq.png') no-repeat right center}
+.menu-itens li a {color: #145B7A; text-decoration: none; }
+.menu-itens li.current a {color: #145B7A }
+.menu-itens li.current div {display: inline-block; position: relative; }
+.menu-itens li.current div.link {}
+.menu-itens li.current div.esq {background: url(../images/menu-atual-esq.png) no-repeat left center; width: 12px; height: 22px; top: 5px }
+.menu-itens li.current div.dir {background: url(../images/menu-atual-dir.png) no-repeat right center; width: 12px; height: 22px; top: 5px}
+
+.menu-itens li.recent-1 a {color: #197299;}
+.menu-itens li.recent-2 a {color: #0E5E80;}
+.menu-itens li.recent-3 a {color: #88A7B5;}
+#menu li.rede {font-size: 20px}
 #menu li.mucua {}
 li.mucua div.territory-name {font-size: 17px; color: #145B7A; display: block}
 li.current div.territory-name {color: #88A7B5}

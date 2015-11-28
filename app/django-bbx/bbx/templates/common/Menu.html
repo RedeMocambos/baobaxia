@@ -7,13 +7,37 @@
 <div id="menu">
   <p class="posicoes">{% trans "Menu" %}</p>
   <ul class="menu-itens">
-    <li class="rede redeoff <% matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/); 
-	       if (currentUrl.match(/rede/) || config.mucua === 'rede') {%>redeon<% }%>">
-      <a href="#<%= config.repository %>/rede/<%= config.subroute %>"><div>&nbsp;</div></a></li>
-    <li class="mucua <% var matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/); if (matches[1] == config.MYMUCUA) {%>current<% }
- %>"><a href="#<%= config.MYREPOSITORY %>/<%= config.MYMUCUA %>/<%= config.subroute %>"><%= config.MYMUCUA %></a></li>
-    <% if (!currentUrl.match(/rede/) && config.mucua != config.MYMUCUA && config.mucua != 'rede' ) { %>
-    <li class="mucua current"><a href="#<%= config.repository %>/<%= config.mucua %>/<%= config.subroute %>"><%= config.mucua %></a></li>    <% } %>
+
+    <!-- rede -->
+    <% var matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/); if (currentUrl.match(/rede/) || config.mucua === 'rede') {%>
+    <li class="rede current">
+      <div class="esq"></div>
+      <div class="link">
+	<a href="#<%= config.repository %>/rede/<%= config.subroute %>">
+	  <div>{% trans "rede" %}</div>
+	</a>
+        </div>
+      <div class="dir"></div>
+    </li>
+    <% } else {%>
+    <li class="rede">    
+      <a href="#<%= config.MYREPOSITORY %>/rede/<%= config.subroute %>">
+	  <div>{% trans "rede" %}</div>
+    </li>
+    <% } %>
+    <!-- mucuas -->    
+    <% matches = currentUrl.match(/\w+\/([a-zA-Z0-9\-]*)/);
+       if ((matches[1] === config.MYMUCUA) || (!currentUrl.match(/rede/) && config.mucua != config.MYMUCUA && config.mucua != 'rede')) { %>
+    <li class="mucua current">
+      <div class="esq"></div>
+      <div class="link"><a href="#<%= config.repository %>/<%= config.mucua %>/<%= config.subroute %>"><%= config.mucua %></a></div>
+      <div class="dir"></div>
+    </li>
+    <% } else { %>
+    <li class="mucua">    
+      <a href="#<%= config.MYREPOSITORY %>/<%= config.MYMUCUA %>/<%= config.subroute %>"><%= config.MYMUCUA %></a>
+    </li>
+    <% } %>
     <% _.each(lastVisitedMucuas, function(mucuaName, i) {
        i += 1;
        %>
