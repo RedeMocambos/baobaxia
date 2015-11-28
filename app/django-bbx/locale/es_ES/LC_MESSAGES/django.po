@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-17 17:06-0300\n"
+"POT-Creation-Date: 2015-11-28 12:37-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr ""
 msgid "logged in"
 msgstr ""
 
-#: bbx/auth.py:75 mocambola/views.py:64
+#: bbx/auth.py:75 mocambola/views.py:66
 msgid "Exception caught, UserDoesNotExist"
 msgstr ""
 
@@ -183,15 +183,19 @@ msgstr ""
 msgid "Search at "
 msgstr ""
 
-#: bbx/templates/common/MucuaProfile.html:7
+#: bbx/templates/common/MucuaProfile.html:3
+msgid "mucua"
+msgstr ""
+
+#: bbx/templates/common/MucuaProfile.html:22
 msgid "Collection:"
 msgstr ""
 
-#: bbx/templates/common/MucuaProfile.html:9
+#: bbx/templates/common/MucuaProfile.html:25
 msgid "more info"
 msgstr ""
 
-#: bbx/templates/common/PermissionDenied.html:2
+#: bbx/templates/common/PermissionDenied.html:3
 msgid "Permission denied"
 msgstr ""
 
@@ -204,16 +208,14 @@ msgid "do login"
 msgstr ""
 
 #: bbx/templates/common/Sidebar.html:9
-#: bbx/templates/media/MediaGalleryEdit.html:21
-#: bbx/templates/media/MediaList.html:19 bbx/templates/media/MediaList.html:39
-msgid "tags"
-msgstr ""
-
-#: bbx/templates/common/Sidebar.html:10
 msgid "mucuas"
 msgstr ""
 
-#: bbx/templates/common/Sidebar.html:20
+#: bbx/templates/common/Sidebar.html:10
+msgid "browse the network"
+msgstr ""
+
+#: bbx/templates/common/Sidebar.html:16
 msgid "see all mucuas"
 msgstr ""
 
@@ -293,25 +295,25 @@ msgstr ""
 
 #: bbx/templates/media/MediaGalleryCreate.html:19
 #: bbx/templates/media/MediaPublish.html:10
-#: bbx/templates/media/MediaPublish.html:92
+#: bbx/templates/media/MediaPublish.html:93
 msgid "Origin"
 msgstr ""
 
-#: bbx/templates/media/MediaGalleryCreate.html:23
+#: bbx/templates/media/MediaGalleryCreate.html:24
 msgid "Gallery name (tags)"
 msgstr ""
 
-#: bbx/templates/media/MediaGalleryCreate.html:29
+#: bbx/templates/media/MediaGalleryCreate.html:30
 msgid "Description:"
 msgstr ""
 
-#: bbx/templates/media/MediaGalleryCreate.html:34
+#: bbx/templates/media/MediaGalleryCreate.html:35
 #: bbx/templates/media/MediaGalleryEdit.html:32
-#: bbx/templates/media/MediaPublish.html:98
+#: bbx/templates/media/MediaPublish.html:99
 msgid "License"
 msgstr ""
 
-#: bbx/templates/media/MediaGalleryCreate.html:45
+#: bbx/templates/media/MediaGalleryCreate.html:46
 msgid "Select file type to start upload"
 msgstr ""
 
@@ -342,20 +344,25 @@ msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:18
 #: bbx/templates/media/MediaList.html:8 bbx/templates/media/MediaList.html:28
-#: media/models.py:181 repository/models.py:506
+#: media/models.py:207 repository/models.py:506
 msgid "name"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:19
 #: bbx/templates/media/MediaList.html:12 bbx/templates/media/MediaList.html:32
-#: media/models.py:186
+#: media/models.py:212
 msgid "date"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:20
 #: bbx/templates/media/MediaList.html:13 bbx/templates/media/MediaList.html:33
-#: media/models.py:207
+#: media/models.py:233
 msgid "license"
+msgstr ""
+
+#: bbx/templates/media/MediaGalleryEdit.html:21
+#: bbx/templates/media/MediaList.html:19 bbx/templates/media/MediaList.html:39
+msgid "tags"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:22
@@ -371,7 +378,7 @@ msgid "Name of media"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:31
-#: bbx/templates/media/MediaPublish.html:87
+#: bbx/templates/media/MediaPublish.html:88
 msgid "Date"
 msgstr ""
 
@@ -408,7 +415,7 @@ msgid "author"
 msgstr ""
 
 #: bbx/templates/media/MediaList.html:10 bbx/templates/media/MediaList.html:30
-#: media/models.py:202
+#: media/models.py:228
 msgid "format"
 msgstr ""
 
@@ -417,7 +424,7 @@ msgid "origin"
 msgstr ""
 
 #: bbx/templates/media/MediaList.html:14 bbx/templates/media/MediaList.html:34
-#: media/models.py:197
+#: media/models.py:223
 msgid "type"
 msgstr ""
 
@@ -425,7 +432,7 @@ msgstr ""
 msgid "copies"
 msgstr ""
 
-#: bbx/templates/media/MediaList.html:16 media/models.py:214
+#: bbx/templates/media/MediaList.html:16 media/models.py:240
 msgid "is local"
 msgstr ""
 
@@ -470,67 +477,67 @@ msgstr ""
 msgid "new content"
 msgstr ""
 
-#: bbx/templates/media/MediaPagination.html:25
+#: bbx/templates/media/MediaPagination.html:24
 msgid "next"
 msgstr ""
 
-#: bbx/templates/media/MediaPagination.html:34
+#: bbx/templates/media/MediaPagination.html:38
 msgid "back"
 msgstr ""
 
-#: bbx/templates/media/MediaPagination.html:65
+#: bbx/templates/media/MediaPagination.html:76
 msgid "total:"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:15
+#: bbx/templates/media/MediaPublish.html:16
 msgid "Title:"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:18
+#: bbx/templates/media/MediaPublish.html:19
 msgid "Tags:"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:22
+#: bbx/templates/media/MediaPublish.html:23
 msgid "File type"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:35
+#: bbx/templates/media/MediaPublish.html:36
 msgid "No preview available"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:53
+#: bbx/templates/media/MediaPublish.html:54
 msgid "UUID:"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:82
+#: bbx/templates/media/MediaPublish.html:83
 msgid "Author"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:96
+#: bbx/templates/media/MediaPublish.html:97
 msgid "Format"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:106
+#: bbx/templates/media/MediaPublish.html:107
 msgid "Availability"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:108
+#: bbx/templates/media/MediaPublish.html:109
 msgid "Description"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:118
+#: bbx/templates/media/MediaPublish.html:119
 msgid "Delete media"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:123
+#: bbx/templates/media/MediaPublish.html:124
 msgid "View media"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:130
+#: bbx/templates/media/MediaPublish.html:131
 msgid "Update"
 msgstr ""
 
-#: bbx/templates/media/MediaPublish.html:130
+#: bbx/templates/media/MediaPublish.html:131
 msgid "Upload file"
 msgstr ""
 
@@ -618,75 +625,75 @@ msgstr ""
 msgid "Parsing templates: "
 msgstr ""
 
-#: media/models.py:178
+#: media/models.py:204
 msgid "uuid"
 msgstr ""
 
-#: media/models.py:179
+#: media/models.py:205
 msgid "Media universal unique identifier"
 msgstr ""
 
-#: media/models.py:180
+#: media/models.py:206
 msgid "No UUID"
 msgstr ""
 
-#: media/models.py:182
+#: media/models.py:208
 msgid "Media name"
 msgstr ""
 
-#: media/models.py:183
+#: media/models.py:209
 msgid "No title"
 msgstr ""
 
-#: media/models.py:185
+#: media/models.py:211
 msgid "URL"
 msgstr ""
 
-#: media/models.py:187
+#: media/models.py:213
 msgid "Media creation date"
 msgstr ""
 
-#: media/models.py:188
+#: media/models.py:214
 msgid "last modified"
 msgstr ""
 
-#: media/models.py:190
+#: media/models.py:216
 msgid "Last change"
 msgstr ""
 
-#: media/models.py:191
+#: media/models.py:217
 msgid "note"
 msgstr ""
 
-#: media/models.py:192 repository/models.py:512
+#: media/models.py:218 repository/models.py:512
 msgid "Note.. use as you wish!"
 msgstr ""
 
-#: media/models.py:198
+#: media/models.py:224
 msgid "Type of the media, like image, document, video, ..."
 msgstr ""
 
-#: media/models.py:208
+#: media/models.py:234
 msgid "License of the media, like, cc, gpl, bsd, ..."
 msgstr ""
 
-#: media/models.py:215
+#: media/models.py:241
 msgid "True if media content is available locally"
 msgstr ""
 
-#: media/models.py:218
+#: media/models.py:244
 msgid "is requested"
 msgstr ""
 
-#: media/models.py:219
+#: media/models.py:245
 msgid "True if media content is awaiting a local copy"
 msgstr ""
 
-#: media/models.py:224
+#: media/models.py:250
 msgid "number of copies"
 msgstr ""
 
-#: media/models.py:225
+#: media/models.py:251
 msgid "Number of copies of the media in the repository"
 msgstr ""
 
@@ -706,25 +713,25 @@ msgstr ""
 msgid "New media created"
 msgstr ""
 
-#: media/views.py:403
+#: media/views.py:414
 msgid "updated media - OK"
 msgstr ""
 
-#: media/views.py:406 media/views.py:481
+#: media/views.py:417 media/views.py:492
 msgid "error while creating media"
 msgstr ""
 
-#: media/views.py:611
+#: media/views.py:622
 #, python-format
 msgid "Requested media of uuid %(uuid)s"
 msgstr ""
 
-#: media/views.py:624
+#: media/views.py:635
 #, python-format
 msgid "Dropped media of uuid %(uuid)s"
 msgstr ""
 
-#: media/views.py:638
+#: media/views.py:649
 #, python-format
 msgid "Removed media of uuid %(uuid)s"
 msgstr ""
@@ -733,15 +740,15 @@ msgstr ""
 msgid "Error deserializing"
 msgstr ""
 
-#: mocambola/views.py:34
+#: mocambola/views.py:36
 msgid "User don\t exists"
 msgstr ""
 
-#: mocambola/views.py:82
+#: mocambola/views.py:88
 msgid "User don't exists: "
 msgstr ""
 
-#: mocambola/views.py:88
+#: mocambola/views.py:94
 msgid "Invalid user or password"
 msgstr ""
 
