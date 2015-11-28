@@ -226,14 +226,13 @@ define([
 	    
 	    // validacao client side do arquivo
 	    $('#media_file').on('change', function(e) {
-		$('#media_file').on('change', function(e) {
-		    if (isValidFileType()) {
-			uploadFile();
-		    } else {
-			$('#messages .error-bar').fadeIn(0,0, function() {});
-			$('#messages .error-bar').fadeTo(3000, 0, function() {});
-		    }
-		});
+		console.log('inicia o upload');
+		if (isValidFileType()) {
+		    uploadFile();
+		} else {
+		    $('#messages .error-bar').fadeIn(0,0, function() {});
+		    $('#messages .error-bar').fadeTo(3000, 0, function() {});
+		}
 	    });
 	},
     });
