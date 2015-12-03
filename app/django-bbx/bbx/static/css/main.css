@@ -72,13 +72,13 @@ a {text-decoration: none; color: #0E5E80}
 .home #footer {display: none}
 
 #menu {margin-left: 35%; margin-top: -25px; width: 100%; }
-.menu-itens li {display: inline-block; border-radius: 8px; font-size: 16px; padding: 4px; padding-right: 14px; background: url('../images/seta-esq.png') no-repeat right center}
+.menu-itens li {display: inline-block; font-weight: bold; border-radius: 8px; font-size: 16px; padding: 4px; padding-right: 14px; background: url('../images/seta-esq.png') no-repeat right center}
 .menu-itens li a {color: #145B7A; text-decoration: none; }
 .menu-itens li.current a {color: #145B7A }
 .menu-itens li.current div {display: inline-block; position: relative; }
 .menu-itens li.current div.link {}
-.menu-itens li.current div.esq {background: url(../images/menu-atual-esq.png) no-repeat left center; width: 12px; height: 22px; top: 5px }
-.menu-itens li.current div.dir {background: url(../images/menu-atual-dir.png) no-repeat right center; width: 12px; height: 22px; top: 5px}
+.menu-itens li.current div.esq {background: url(../images/menu-atual-esq.png) no-repeat left center; width: 12px; height: 22px; top: 5px; right: -5px }
+.menu-itens li.current div.dir {background: url(../images/menu-atual-dir.png) no-repeat right center; width: 12px; height: 22px; top: 5px; left: -5px}
 
 .menu-itens li.recent-1 a {color: #197299;}
 .menu-itens li.recent-2 a {color: #0E5E80;}
@@ -183,7 +183,7 @@ li.mucua div.mucua-name {font-size: 11px; display: block; margin-left: 30px; tex
 #header .media-display-type .shuffle:hover {background: url(/images/shuffle-on.png); width: 17px; height: 17px; cursor: pointer}
 #header .media-display-type .grid:hover {background: url(/images/grid-on.png)}
 #header .media-display-type .list:hover {background: url(/images/list-on.png)}
-.icon-imagem {background: url(/images/icon-image.png) no-repeat}
+.icon-imagem {background: url(/images/icon-image.png) no-repeat;}
 .icon-arquivo {background: url(/images/icon-file.png) no-repeat}
 .icon-video {background: url(/images/icon-video.png) no-repeat}
 .icon-audio {background: url(/images/icon-audio.png) no-repeat}
@@ -244,6 +244,11 @@ td.status {font-weight: bold}
 #filters-block .video {background-image: url(/images/icon-video.png)}
 #filters-block .audio {background-image: url(/images/icon-audio.png)}
 #filters-block .arquivo {background-image: url(/images/icon-arquivo.png)}
+
+#filters-block .image.current {background-image: url(/images/icon-imagem-active.png)}
+#filters-block .video.current {background-image: url(/images/icon-video-active.png)}
+#filters-block .audio.current {background-image: url(/images/icon-audio-active.png)}
+#filters-block .arquivo.current {background-image: url(/images/icon-arquivo-active.png)}
 #filters-block .current {border-bottom: 2px solid #145B7A}
 
 /*
@@ -267,6 +272,7 @@ td.status {font-weight: bold}
 .media-box .image img.arquivo { width: 16px; height: 18px}
 .media-box .edit {position: absolute; margin-top: -2px; margin-left: 175px; padding-bottom: 1px; padding-left: 3px; background-color: #F4EFDD; border-radius: 4px; z-index: 1}
 .media-box .icon-media {margin-top: 55px; width: 100%}
+
 
 /*
  * busca

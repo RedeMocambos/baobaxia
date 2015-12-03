@@ -17,7 +17,7 @@
       <% if (media.type == 'imagem') { %>
       <!-- fancybox -->
       <a id="a-media-<%= media.uuid %>" class="fancybox-button" rel="fancybox-button" data-fancybox-type="image" data-fancybox-group="galeria" href="" title="<%= media.note %>">
-	<img id="media-<%= media.uuid %>" class="image-tmp" src="images/icon-imagem.png" />
+	<img id="media-<%= media.uuid %>" class="image-tmp" src="images/icon-imagem-active.png" />
 	<%
 	   swapImageUrl(media, paramsGallery, '#a-media-' + media.uuid);
 	   parseThumb(media, params); %>
@@ -32,14 +32,14 @@
       </a>
       <% } else if (media.type == 'arquivo') { %>     
       <a href="<%= media.url %>">
-	<img class="<%= media.type %>" alt="<%= media.type%>" src="images/icon-arquivo.png" /><br/>{% trans "view/download" %}
+	<img class="<%= media.type %>" alt="<%= media.type%>" src="images/icon-arquivo-active.png" /><br/>{% trans "view/download" %}
       </a>
       <% } %>
     </div>
     <% } else { %>
     <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
       <div class="icon-media not_local">
-	<img alt="<%= media.type%>" src="images/icon-<%=media.type%>.png" /><br/>
+	<img alt="<%= media.type%>" src="images/icon-<%=media.type%>-active.png" /><br/>
       </div>
     </a>
     <% } %>
