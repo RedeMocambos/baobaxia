@@ -1,0 +1,11 @@
+/*
+ * ajustes de responsividade
+ */
+
+@media only screen and (min-width: 1360px) {
+    #filters-block {margin-left: 250px;}
+}
+
+@media only screen and (max-width: 1359px) {
+    #filters-block {margin-left: 10px;}
+}

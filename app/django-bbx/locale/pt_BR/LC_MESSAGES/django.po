@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-28 12:37-0200\n"
+"POT-Creation-Date: 2015-12-04 18:18-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -128,18 +128,22 @@ msgid "User already exists!"
 msgstr "Usuári@ já existe!"
 
 #: bbx/templates/common/Buscador.html:61
+msgid "Filters"
+msgstr "Filtros"
+
+#: bbx/templates/common/Buscador.html:63
 msgid "image"
 msgstr "imagem"
 
-#: bbx/templates/common/Buscador.html:64
+#: bbx/templates/common/Buscador.html:66
 msgid "video"
 msgstr "vídeo"
 
-#: bbx/templates/common/Buscador.html:67
+#: bbx/templates/common/Buscador.html:69
 msgid "audio"
 msgstr "áudio"
 
-#: bbx/templates/common/Buscador.html:70
+#: bbx/templates/common/Buscador.html:72
 msgid "file"
 msgstr "arquivo"
 
@@ -147,7 +151,7 @@ msgstr "arquivo"
 msgid "Is local"
 msgstr "local"
 
-#: bbx/templates/common/Buscador.html:79
+#: bbx/templates/common/Buscador.html:77
 msgid "Is requested"
 msgstr "requisitado"
 
@@ -179,6 +183,10 @@ msgstr "Edição múltipla"
 #: bbx/templates/common/Menu.html:8
 msgid "Menu"
 msgstr "Menu"
+
+#: bbx/templates/common/Menu.html:17 bbx/templates/common/Menu.html.py:25
+msgid "rede"
+msgstr ""
 
 #: bbx/templates/common/MessageSearch.html:1
 msgid "Search at "

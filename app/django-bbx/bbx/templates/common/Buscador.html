@@ -58,6 +58,8 @@
     });
 
     %>
+    <span class="title">{% trans "Filters" %}</span>
+
     <a href="<% print(parseLink(currentUrl, typeFilters, 'imagem')) %>" alt="{% trans "image" %}">
       <div class="file-type image <% print(currentFilter['imagem']) %>">&nbsp;</div>
     </a>
@@ -70,14 +72,9 @@
     <a href="<% print(parseLink(currentUrl, typeFilters, 'arquivo')) %>" alt="{% trans "file" %}">
       <div class="file-type arquivo <% print(currentFilter['arquivo']) %>">&nbsp</div>
     </a>
-  </div>
-  <div id="search-options">
-    <span>
-      <input type="checkbox" name="is_local" id="is_local"> {% trans "Is local" %}
-    </span>
-    <span>
-      <input type="checkbox" name="is_requested" id="is_requested"> {% trans "Is requested" %}
-    </span>
+    <div class="separator"></div>
+    <div id="is_local" alt="{% trans "Is local" %}">&nbsp;</div>
+    <div id="is_requested" alt="{% trans "Is requested" %}">&nbsp;</div>
   </div>
 </div>
 <div id="header-results">

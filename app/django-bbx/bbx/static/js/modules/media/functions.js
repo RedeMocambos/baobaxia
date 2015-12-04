@@ -116,7 +116,7 @@ define([
 	    
 	// adiciona opcao de busca se existir
 	_.each(validSearchOptions, function(optionSearch) {
-	    if ($('#' + optionSearch).attr('checked')) {
+	    if ($('#' + optionSearch).hasClass('active')) {
 		if (!tags.match(optionSearch)) {
 		    tags += '/'+ optionSearch;
 		}

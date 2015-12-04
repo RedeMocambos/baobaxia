@@ -27,7 +27,7 @@ define([
 		    currentUrl += '/bbx/search';
 		}
 		
-		if (!$('#' + searchOption).attr('checked')) {
+		if (!$('#' + searchOption).hasClass('active')) {
 		    if (_.contains(validSearchOptions, searchOption)) {
 			var urlFragments = currentUrl.split('search');
 			currentUrl = urlFragments[0] + 'search/' + searchOption;
@@ -56,9 +56,9 @@ define([
 		    var target = '#' + searchOption;
 		    $(target).on('click', function(el) {toggleSearchOption(validSearchOptions, el)});
 		    if (currentUrl.match(searchOption)) {
-			$(target).attr('checked', true);
+			$(target).addClass('active');
 		    } else {
-			$(target).attr('checked', false);
+			$(target).removeClass('active');
 		    }
 		});
 		
