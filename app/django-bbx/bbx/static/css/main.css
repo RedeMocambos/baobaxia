@@ -473,6 +473,8 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media-gallery-edit .save-media-item {background-image: url('../images/save-pq.png'); width: 24px; height: 24px; cursor: pointer; display: inline-block; margin-right: 5px }
 #media-gallery-edit .save-media-item div {font-size: 10px; margin-top: 36px; float: left; z-index: 5; width: 150px; margin-left: -20px; }
 #media-gallery-edit .link-edit-media {background-color: #88A7B5; width: 28px; height: 28px; background-repeat: no-repeat; background-position: center; border-radius: 8px; margin-top: -2px }
+.link-edit-media {background-image: url(../images/edit-media.png); width: 24px; height: 24px; display: inline-block}
+#media-view .link-edit-media {float: right }
 
 #media-gallery-edit #menu-colunas {float: right; height: 50px}
 #media-gallery-edit #menu-colunas ul {display: none}
@@ -503,6 +505,3 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 .sobre-content p {font-size: 12px}
 .sobre-content h3 {color: #197299; margin-left: 40px}
 .sobre-content h4 {color: #197299; margin-left: 40px}
-
-/* gerais */
-.link-edit-media {background-image: url(../images/edit-media.png); width: 24px; height: 24px; float: right;}
