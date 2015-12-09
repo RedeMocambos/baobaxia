@@ -1186,7 +1186,7 @@ define([
 	    });
 
 	    // TODO: passar active_columns para user preferences (sessão/cookie)
-	    var active_columns = ['thumb', 'name', 'date', 'license', 'tags'],
+	    var active_columns = ['thumb', 'info', 'tags', 'note'],
 		toggle_columns = function(column_name) {
 		    var el_name = '.' + column_name + ' input',
 			checked = $(el_name).prop('checked');

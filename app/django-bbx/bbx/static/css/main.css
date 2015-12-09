@@ -446,34 +446,34 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
  * media gallery
  */
 
-#media_gallery {padding: 10px}
-#media_gallery-edit input {width: 180px}
-#media_gallery #media_file_input {display: none}
-#media_gallery #messages span {font-size: 12px; color: #999}
-#media_gallery #progress .bar {height: 18px; background: green; width: 100px}
-#media_gallery #messages span.error {color: #ff4433; font-size: 12px}
-#media_gallery input,
-#media_gallery textarea {width: 400px}
-#media_gallery textarea#tags {width: 400px; font-size: 15px; resize: none }
+#media-gallery-create {padding: 10px}
+#media-gallery-create #media_file_input {display: none}
+#media-gallery-create #messages span {font-size: 12px; color: #999}
+#media-gallery-create #progress .bar {height: 18px; background: green; width: 100px}
+#media-gallery-create #messages span.error {color: #ff4433; font-size: 12px}
+#media-gallery-create input,
+#media-gallery-create textarea {width: 400px}
+#media-gallery-create textarea#tags {width: 400px; font-size: 15px; resize: none }
 
-#media_gallery-edit {padding: 4px}
+#media-gallery-create-edit {padding: 4px}
 #media-gallery-edit table {border-colapse: colapse; width: 100%}
-#media-gallery-edit thead td {background-color: #eee}
+#media-gallery-edit thead td {background-color: #eee; padding: 4px;}
 #media-gallery-edit thead td span {font-weight: bold; font-size: 13px}
 #media-gallery-edit thead td span.title {font-size: 15px}
-#media-gallery-edit td.operations {min-width: 70px}
+#media-gallery-edit td.operations {min-width: 70px; text-align: center}
 #media-gallery-edit input,
-#media-gallery-edit select {font-size: 10px}
+#media-gallery-edit textarea,
+#media-gallery-edit select {font-size: 13px; width: 95%; padding: 4px; border-radius: 6px; border: 1px solid #ccc }
 #media-gallery-edit .edit-link {font-size: 10px; color:#999}
-#media-gallery-edit td {border-style: none; border-top: 1px solid #ccc; padding: 4px; margin: 2px; height: 115px; text-align: center }
-#media-gallery-edit thead td.thumb {width: 150px}
-#media-gallery-edit .save-all {background-image: url('../images/save-all.png'); width: 27px; height: 25px; cursor: pointer}
+#media-gallery-edit thead td {height: 15px; padding: 4px; border: 0}
+#media-gallery-edit td {border-style: none; border-top: 15px solid #ddd; padding: 4px; margin: 2px; height: 115px; text-align: center; vertical-align: top }
+#media-gallery-edit thead td.thumb {width: 150px;}
+#media-gallery-edit .save-all {background-image: url('../images/save-all.png'); width: 27px; height: 25px; cursor: pointer; margin: 0 auto}
 #media-gallery-edit .saving-all {background-image: url('../images/buscando.gif'); width: 25px; height: 25px}
 #media-gallery-edit .save-media-item {background-image: url('../images/save-pq.png'); width: 24px; height: 24px; cursor: pointer; display: inline-block; margin-right: 5px }
 #media-gallery-edit .save-media-item div {font-size: 10px; margin-top: 36px; float: left; z-index: 5; width: 150px; margin-left: -20px; }
 #media-gallery-edit .link-edit-media {background-color: #88A7B5; width: 28px; height: 28px; background-repeat: no-repeat; background-position: center; border-radius: 8px; margin-top: -2px }
 
-#media-gallery-edit thead td {height: 52px; padding: 4px}
 #media-gallery-edit #menu-colunas {float: right; height: 50px}
 #media-gallery-edit #menu-colunas ul {display: none}
 #media-gallery-edit #menu-colunas li {font-size: 10px; z-index: 3; text-align: left; list-style: none; display: inline-block }
@@ -482,6 +482,10 @@ body.my-mucua {background: url('/images/bg-mucua.png') repeat;}
 #media-gallery-edit #menu-colunas:hover ul {display: block; float: right}
 #media-gallery-edit .tags textarea,
 #media-gallery-edit .note textarea { height: 120px }
+
+#media-gallery-edit td.info { width: 35% }
+#media-gallery-edit td.tags { width: 15% }
+#media-gallery-edit td.note { width: 35% }
 
 .field-error { border: 2px solid red !important }
 

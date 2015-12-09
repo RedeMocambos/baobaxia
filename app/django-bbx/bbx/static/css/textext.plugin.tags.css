@@ -33,7 +33,7 @@
   font-weight: bold;
 }
 
-#media_gallery .text-core .text-wrap .text-tags .text-tag .text-button,
+#media-gallery-create .text-core .text-wrap .text-tags .text-tag .text-button,
 #media_publish .text-core .text-wrap .text-tags .text-tag .text-button {
     font-size: 15px;
     font-weight: normal;

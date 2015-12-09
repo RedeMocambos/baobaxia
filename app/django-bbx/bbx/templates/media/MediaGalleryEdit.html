@@ -15,11 +15,9 @@
 	    <div id="menu-colunas">
 	      <ul class="checkboxes">
 		<li class="thumb"><input type="checkbox" name="thumb">{% trans "thumbnail" %}</li>
-		<li class="name"><input type="checkbox" name="name">{% trans "name" %}</li>
-		<li class="date"><input type="checkbox" name="date">{% trans "date" %}</li>
-		<li class="license"><input type="checkbox" name="license">{% trans "license" %}</li>
+		<li class="info"><input type="checkbox" name="info">{% trans "info" %}</li>
 		<li class="tags"><input type="checkbox" name="tags">{% trans "tags" %}</li>
-		<li class="note"><input type="checkbox" name="note">{% trans "description " %}</li>
+		<li class="note"><input type="checkbox" name="note">{% trans "description" %}</li>
 	      </ul>
 	    </div>   
 	  </td>
@@ -27,9 +25,7 @@
 	
 	<tr>
 	  <td class="thumb"><span>{% trans "Thumbnail" %}</span></td>
-	  <td class="name"><span>{% trans "Name of media" %}</span></td>
-	  <td class="date"><span>{% trans "Date" %}</span></td>
-	  <td class="license"><span>{% trans "License" %}</span></td>
+	  <td class="info"><span>{% trans "Info" %}</span></td>	  
 	  <td class="tags"><span>{% trans "Tags" %}</span></td>
 	  <td class="note"><span>{% trans "Note" %}</span></td>
 	  <td class="update"><span>{% trans "Save" %}</span></td>
@@ -39,23 +35,18 @@
 	    <span class="title">{% trans "Multiple edit" %}</span> <br/>
 	    <span>{% trans "(override particular changes)" %}</span>
 	  </td>
-	  
-	  <td class="name">
-	    <input type="text" name="all-name" class="all-name"/>
-	  </td>
-	  
-	  <td class="date">
-	    <input type="text" name="all-date" class="all-date" />
-	  </td>
-	  
-	  <td class="license">
+
+	  <td>
+	    <span class="Info">{% trans "General information" %}</span> <br/>
+	    <input type="text" name="all-name" class="all-name" placeholder='{% trans "Name" %}' /><br/>
+	    <input type="text" name="all-date" class="all-date" placeholder='{% trans "Date" %}' /><br/>
 	    <select name="license" class="all-license">
 	      <% _.each(licenses, function(value, key) { %>
 	      <option value="<%= key %>"><%= value %></option>
 	      <% }) %>
 	    </select>
 	  </td>
-
+	  
 	  <td class="tags">
 	    <textarea name="all-tags" class="all-tags"></textarea>
 	  </td>
