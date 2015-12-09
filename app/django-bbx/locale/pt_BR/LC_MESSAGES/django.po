@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-04 18:18-0200\n"
+"POT-Creation-Date: 2015-12-08 23:48-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -176,7 +176,7 @@ msgid "view as list"
 msgstr "ver como lista"
 
 #: bbx/templates/common/Header.html:24
-#: bbx/templates/media/MediaGalleryEdit.html:39
+#: bbx/templates/media/MediaGalleryEdit.html:35
 msgid "Multiple edit"
 msgstr "Edição múltipla"
 
@@ -332,7 +332,6 @@ msgid "Description:"
 msgstr "Descrição"
 
 #: bbx/templates/media/MediaGalleryCreate.html:35
-#: bbx/templates/media/MediaGalleryEdit.html:32
 #: bbx/templates/media/MediaPublish.html:99
 msgid "License"
 msgstr "Licença"
@@ -367,72 +366,83 @@ msgid "thumbnail"
 msgstr "Miniatura"
 
 #: bbx/templates/media/MediaGalleryEdit.html:18
-#: bbx/templates/media/MediaList.html:8 bbx/templates/media/MediaList.html:28
-#: media/models.py:207 repository/models.py:506
-msgid "name"
-msgstr "nome"
+msgid "info"
+msgstr "mais informações"
 
 #: bbx/templates/media/MediaGalleryEdit.html:19
-#: bbx/templates/media/MediaList.html:12 bbx/templates/media/MediaList.html:32
-#: media/models.py:212
-msgid "date"
-msgstr "data"
-
-#: bbx/templates/media/MediaGalleryEdit.html:20
-#: bbx/templates/media/MediaList.html:13 bbx/templates/media/MediaList.html:33
-#: media/models.py:233
-msgid "license"
-msgstr "licença"
-
-#: bbx/templates/media/MediaGalleryEdit.html:21
 #: bbx/templates/media/MediaList.html:19 bbx/templates/media/MediaList.html:39
 msgid "tags"
 msgstr "etiquetas"
 
-#: bbx/templates/media/MediaGalleryEdit.html:22
-msgid "description "
+#: bbx/templates/media/MediaGalleryEdit.html:20
+#: bbx/templates/media/MediaList.html:18 bbx/templates/media/MediaList.html:38
+msgid "description"
 msgstr "Descrição"
 
-#: bbx/templates/media/MediaGalleryEdit.html:29
+#: bbx/templates/media/MediaGalleryEdit.html:27
 msgid "Thumbnail"
 msgstr "Miniatura"
 
+#: bbx/templates/media/MediaGalleryEdit.html:28
+msgid "Info"
+msgstr "Informações"
+
+#: bbx/templates/media/MediaGalleryEdit.html:29
+#: bbx/templates/media/MediaGalleryEditItem.html:57
+msgid "Tags"
+msgstr "Tags"
+
 #: bbx/templates/media/MediaGalleryEdit.html:30
-msgid "Name of media"
-msgstr "Nome da mídia"
+msgid "Note"
+msgstr "Descrição"
 
 #: bbx/templates/media/MediaGalleryEdit.html:31
+msgid "Save"
+msgstr "Salvar"
+
+#: bbx/templates/media/MediaGalleryEdit.html:36
+msgid "(override particular changes)"
+msgstr "(sobrescreve mudanças particulares)"
+
+#: bbx/templates/media/MediaGalleryEdit.html:40
+msgid "General information"
+msgstr "Informações gerais"
+
+#: bbx/templates/media/MediaGalleryEdit.html:41
+msgid "Name"
+msgstr "Nome"
+
+#: bbx/templates/media/MediaGalleryEdit.html:42
+#: bbx/templates/media/MediaGalleryEditItem.html:32
 #: bbx/templates/media/MediaPublish.html:88
 msgid "Date"
 msgstr "Data"
 
-#: bbx/templates/media/MediaGalleryEdit.html:33
-msgid "Tags"
-msgstr "Tags"
+#: bbx/templates/media/MediaGalleryEditItem.html:31
+msgid "Title"
+msgstr "Título"
 
-#: bbx/templates/media/MediaGalleryEdit.html:34
-msgid "Note"
+#: bbx/templates/media/MediaGalleryEditItem.html:62
+#: bbx/templates/media/MediaPublish.html:109
+msgid "Description"
 msgstr "Descrição"
 
-#: bbx/templates/media/MediaGalleryEdit.html:35
-msgid "Save"
-msgstr "Salvar"
-
-#: bbx/templates/media/MediaGalleryEdit.html:40
-msgid "(override particular changes)"
-msgstr "(sobrescreve mudanças particulares)"
-
-#: bbx/templates/media/MediaGalleryEditItem.html:60
+#: bbx/templates/media/MediaGalleryEditItem.html:66
 msgid "Update media"
 msgstr "Atualizar mídia"
 
-#: bbx/templates/media/MediaGalleryEditItem.html:61
+#: bbx/templates/media/MediaGalleryEditItem.html:67
 msgid "Edit media"
 msgstr "Editar mídia"
 
 #: bbx/templates/media/MediaGrid.html:35
 msgid "view/download"
 msgstr "ver/baixar"
+
+#: bbx/templates/media/MediaList.html:8 bbx/templates/media/MediaList.html:28
+#: media/models.py:207 repository/models.py:506
+msgid "name"
+msgstr "nome"
 
 #: bbx/templates/media/MediaList.html:9 bbx/templates/media/MediaList.html:29
 msgid "author"
@@ -446,6 +456,16 @@ msgstr "formato"
 #: bbx/templates/media/MediaList.html:11 bbx/templates/media/MediaList.html:31
 msgid "origin"
 msgstr "origem"
+
+#: bbx/templates/media/MediaList.html:12 bbx/templates/media/MediaList.html:32
+#: media/models.py:212
+msgid "date"
+msgstr "data"
+
+#: bbx/templates/media/MediaList.html:13 bbx/templates/media/MediaList.html:33
+#: media/models.py:233
+msgid "license"
+msgstr "licença"
 
 #: bbx/templates/media/MediaList.html:14 bbx/templates/media/MediaList.html:34
 #: media/models.py:223
@@ -463,10 +483,6 @@ msgstr "é local"
 #: bbx/templates/media/MediaList.html:17 bbx/templates/media/MediaList.html:37
 msgid "status"
 msgstr "estado"
-
-#: bbx/templates/media/MediaList.html:18 bbx/templates/media/MediaList.html:38
-msgid "description"
-msgstr "Descrição"
 
 #: bbx/templates/media/MediaList.html:36
 msgid "is local?"
@@ -544,10 +560,6 @@ msgstr "Formato"
 #: bbx/templates/media/MediaPublish.html:107
 msgid "Availability"
 msgstr "Disponibilidade"
-
-#: bbx/templates/media/MediaPublish.html:109
-msgid "Description"
-msgstr "Descrição"
 
 #: bbx/templates/media/MediaPublish.html:119
 msgid "Delete media"
@@ -857,6 +869,12 @@ msgstr "Problema ao remover mídia"
 #: repository/management/commands/bbxsync.py:52
 msgid "Revision is"
 msgstr "Revisão é"
+
+#~ msgid "description "
+#~ msgstr "Descrição"
+
+#~ msgid "Name of media"
+#~ msgstr "Nome da mídia"
 
 #~ msgid "remote"
 #~ msgstr "remoto"
