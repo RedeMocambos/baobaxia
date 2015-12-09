@@ -38,8 +38,8 @@
 
 	  <td>
 	    <span class="Info">{% trans "General information" %}</span> <br/>
-	    <input type="text" name="all-name" class="all-name" placeholder='{% trans "Name" %}' /><br/>
-	    <input type="text" name="all-date" class="all-date" placeholder='{% trans "Date" %}' /><br/>
+	    <input type="text" name="all-name" class="all-name" placeholder="{% trans "Name" %}" /><br/>
+	    <input type="text" name="all-date" class="all-date" placeholder="{% trans "Date" %}" /><br/>
 	    <select name="license" class="all-license">
 	      <% _.each(licenses, function(value, key) { %>
 	      <option value="<%= key %>"><%= value %></option>
@@ -48,11 +48,11 @@
 	  </td>
 	  
 	  <td class="tags">
-	    <textarea name="all-tags" class="all-tags"></textarea>
+	    <textarea placeholder="{% trans "Tags" %}" name="all-tags" class="all-tags"></textarea>
 	  </td>
 	  
 	  <td class="note">
-	    <textarea name="all-note" class="all-note"></textarea>
+	    <textarea placeholder="{% trans "Description" %}" name="all-note" class="all-note"></textarea>
 	  </td>
 
 	  <td class="operations">

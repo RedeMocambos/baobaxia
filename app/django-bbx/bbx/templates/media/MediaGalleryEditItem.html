@@ -28,8 +28,8 @@
     <input type="hidden" name="note-<%= media.uuid %>" value="<%= media.note %>" class="<%= media.uuid %>" />
     <input type="hidden" name="media_file-<%= media.uuid %>" value="<%= media.media_file %>" class="<%= media.media_file %> <%= media.uuid %>" />
     
-    <input type="text" name="name-<%= media.uuid %>" value="<%= media.name %>" class="name <%= media.uuid %>" /><br/>
-    <input type="text" name="date-<%= media.uuid %>" class="date <%= media.uuid %>" value="<%= media.date %>"/><br/>
+    <input placeholder="{% trans "Title" %}" type="text" name="name-<%= media.uuid %>" value="<%= media.name %>" class="name <%= media.uuid %>" /><br/>
+    <input placeholder="{% trans "Date" %}" type="text" name="date-<%= media.uuid %>" class="date <%= media.uuid %>" value="<%= media.date %>"/><br/>
       <select name="license-<%= media.uuid %>" class="license <%= media.uuid %>">
 	<% _.each(licenses, function(value, key) { %>
 	<option value="<%= key %>" <% if (media.license == key) { %>selected<% } %>><%= value %></option>
@@ -54,12 +54,12 @@
 
   <!-- tags -->  
   <td class="tags">
-    <textarea name="tags-<%= media.uuid %>" class="tags <%= media.uuid %>"><% _.each(media.tags, function(tagName) { %><%= tagName %>, <% }); %></textarea>
+    <textarea placeholder="{% trans "Tags" %}" name="tags-<%= media.uuid %>" class="tags <%= media.uuid %>"><% _.each(media.tags, function(tagName) { %><%= tagName %>, <% }); %></textarea>
   </td>
 
   <!-- note -->
   <td class="note">
-    <textarea name="note-<%= media.uuid %>" class="note <%= media.uuid %>" %><%= media.note %></textarea>
+    <textarea placeholder="{% trans "Description" %}" name="note-<%= media.uuid %>" class="note <%= media.uuid %>" %><%= media.note %></textarea>
   </td>
   
   <td class="operations">
