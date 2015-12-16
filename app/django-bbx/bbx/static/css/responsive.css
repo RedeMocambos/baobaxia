@@ -9,3 +9,11 @@
 @media only screen and (max-width: 1359px) {
     #filters-block {margin-left: 10px;}
 }
+
+@media only screen and (max-width: 1270px) {
+    #buscador textarea#caixa_busca { width: 350px;}
+}
+
+@media only screen and (max-width: 1024px) {
+    #buscador textarea#caixa_busca { width: 250px;}
+}

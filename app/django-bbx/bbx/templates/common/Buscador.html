@@ -9,76 +9,43 @@
     </form>
   </div>
   <div id="filters-block">
-    <%
-       var currentFilter = {},
-       typeFilters = ['video', 'audio', 'imagem', 'arquivo'],
-       currentUrl = Backbone.history.location.hash;
+<%
+// define lista de filtros
+var currentFilter = {},
+    typeFilters = ['video', 'audio', 'imagem', 'arquivo'],
+    currentUrl = Backbone.history.location.hash;
 
-       var parseLink = function(url, typeFilters, type) {
-       var urlParse = '',
-       urlFrags = [];
-
-       // remove limit e sequencia
-       url = url.split('/limit')[0];
-
-       // completa url caso nao seja 'search'
-       if (!url.match('search')) {
-       // completa url para caso de 'mocambola'
-       if (url.match('mocambola')) {
-       url = url.replace('/mocambola', '/bbx/search');
-       } else {
-       url += '/bbx/search';
-       }
-       }
-
-       _.each(typeFilters, function(t) {
-       url = url.replace(t, '');
-       url = url.replace('//', '/');
-       });
-
-       urlFrags = url.split('/search');
-       urlParse = urlFrags[0] + '/search/' + type;
-       if (urlFrags.length > 1) {
-    urlParse += urlFrags[1];
-    }
-    // remove / final
-    if (urlParse.substring(0, urlParse.length -1) === '/') {
-    urlParse = urlParse.substring(0, urlParse.length -1);
-    }
-    return urlParse;
-    }
-
-    // css
-    _.each(typeFilters, function(filterName) {
+// css
+_.each(typeFilters, function(filterName) {
     if (currentUrl.match(filterName)) {
-    currentFilter[filterName] = 'current';
+	currentFilter[filterName] = 'current';
     } else {
-    currentFilter[filterName] = '';
+	currentFilter[filterName] = '';
     }
-    });
-
+});
     %>
     <span class="title">{% trans "Filters" %}</span>
 
-    <a href="<% print(parseLink(currentUrl, typeFilters, 'imagem')) %>" alt="{% trans "image" %}">
+    <a href="<% print(parseFilterLink(currentUrl, typeFilters, 'imagem')) %>" alt="{% trans "image" %}">
       <div class="file-type image <% print(currentFilter['imagem']) %>">&nbsp;</div>
     </a>
-    <a href="<% print(parseLink(currentUrl, typeFilters, 'video')) %>" alt="{% trans "video" %}">
+    <a href="<% print(parseFilterLink(currentUrl, typeFilters, 'video')) %>" alt="{% trans "video" %}">
       <div class="file-type video <% print(currentFilter['video']) %>">&nbsp;</div>
     </a>
-    <a href="<% print(parseLink(currentUrl, typeFilters, 'audio')) %>" alt="{% trans "audio" %}">
+    <a href="<% print(parseFilterLink(currentUrl, typeFilters, 'audio')) %>" alt="{% trans "audio" %}">
       <div class="file-type audio <% print(currentFilter['audio']) %>">&nbsp;</div>
     </a>
-    <a href="<% print(parseLink(currentUrl, typeFilters, 'arquivo')) %>" alt="{% trans "file" %}">
+    <a href="<% print(parseFilterLink(currentUrl, typeFilters, 'arquivo')) %>" alt="{% trans "file" %}">
       <div class="file-type arquivo <% print(currentFilter['arquivo']) %>">&nbsp</div>
     </a>
     <div class="separator"></div>
     <div id="is_local" alt="{% trans "Is local" %}">&nbsp;</div>
     <div id="is_requested" alt="{% trans "Is requested" %}">&nbsp;</div>
+    <div class="separator"></div>
+    <div id="itens_per_page"><input type="number" name="itens_per_page" value="<% print(getLimit()); %>"> <span>{% trans "per page" %}</span></div>
   </div>
 </div>
 <div id="header-results">
   <div id="result-string"></div>
   <div id="back-to-results" class="menu-buscador"></div>
-  <div id="medias-length"></div>
 </div>

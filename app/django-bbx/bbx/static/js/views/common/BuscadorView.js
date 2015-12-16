@@ -44,13 +44,19 @@ define([
 	    if ($('#buscador').html() == "" ||
 		(typeof $('#buscador').html() === "undefined")) {
 		var data = {
-		    config: config
+		    config: config,
+		    parseFilterLink: BBXFunctions.parseFilterLink,
+		    getLimit: BBXFunctions.getLimit
 		}
 		$('#header-bottom').prepend(_.template(BuscadorTpl, data));
-		$('head').append('<link rel="stylesheet" href="/css/textext.core.css" type="text/css" />');		    
-		$('head').append('<link rel="stylesheet" href="/css/textext.plugin.tags.css" type="text/css" />');
-		$('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');
 
+		// adiciona css se nao tiver sido carregado
+		if (_.isEmpty($('head').find('link[href="/css/textext.core.css"]'))) {
+		    $('head').prepend('<link rel="stylesheet" href="/css/textext.core.css" type="text/css" />');		    
+		    $('head').prepend('<link rel="stylesheet" href="/css/textext.plugin.tags.css" type="text/css" />');
+		    $('head').prepend('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');
+		}
+		
 		// adiciona eventos de search options
 		_.each(validSearchOptions, function(searchOption) {
 		    var target = '#' + searchOption;
@@ -59,6 +65,13 @@ define([
 			$(target).addClass('active');
 		    } else {
 			$(target).removeClass('active');
+		    }
+		});
+
+		// adiciona evento de definir limit
+		$('#itens_per_page input').on('keydown', function(e) {
+		    if (e.which === 13) {
+			window.location = MediaFunctions.parseUrlSearch(MediaFunctions.__getTagsFromUrl());
 		    }
 		});
 		

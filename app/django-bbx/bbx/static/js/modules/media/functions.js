@@ -95,11 +95,12 @@ define([
      * @param {Array} tags Array de tags/termos
      * @returns {String} String URL com busca a partir das tags recebidas
      */        
-    var __parseUrlSearch = function(tags) {
+    var parseUrlSearch = function(tags) {
 	var config = __getConfig(),
 	    validSearchOptions = __getValidSearchOptions(),
 	    current_url = decodeURI(Backbone.history.fragment),
-	    complement = '';
+	    complement = '',
+	    itens_per_page = $('#itens_per_page input').val();
 	
 	if (_.isArray(tags)) {
 	    tags = tags.join('/');
@@ -125,6 +126,10 @@ define([
 
 	if (current_url.match('/shuffle')) {
 	    complement += '/shuffle';
+	}
+
+	if (itens_per_page) {
+	    complement += '/limit/' + itens_per_page;
 	}
 	
 	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + tags + complement;
@@ -222,13 +227,13 @@ define([
 				   var tagRemove = $(el).children().children().html(),
 				       tags = tags_str.replace(tagRemove, '');
 				   
-				   window.location = __parseUrlSearch(tags);
+				   window.location = parseUrlSearch(tags);
 			       }
 			   }
 		       }
 		     })
 	    .bind('tagClick', function(e, tag, value, callback) {
-		window.location = __parseUrlSearch(value);
+		window.location = parseUrlSearch(value);
 	    })
 	    .bind('enterKeyPress', function(e) {
 		var textext = $(e.target).textext()[0],
@@ -244,7 +249,7 @@ define([
 		// TODO: pensar como resolver algumas questões de busca
 		// -> a busca atual pega: ["mercado sul" ocupação], mas não pega [mercado sul ocupação] (considera como uma tag)
 		
-		window.location = __parseUrlSearch(tags_str);
+		window.location = parseUrlSearch(tags_str);
 	    })
 	    .bind('removeTag', function(tag) {
 		console.log('removeTag: ' + tag);
@@ -725,18 +730,7 @@ define([
 		if (typeof callback === 'function') {
 		    // execute callback
 		    callback(mediaData);
-		    var mediaLength = _.size(mediaData.medias),
-		    message = "";
-		    
-		    if (mediaLength > 1) {
-			message = "Exibindo " + _.size(mediaData.medias) + " resultados" ;
-		    } else if (mediaLength == 1) {
-			message = "Exibindo " + _.size(mediaData.medias) + " resultado" ;
-		    } else if (mediaLength === 0) {
-			message = "Nenhum resultado encontrado";
-		    }
-		    
-		    $('#medias-length').html(message);
+		    // _.size(mediaData.medias) -> size
 		}
 	    }
 	});
@@ -1615,6 +1609,7 @@ define([
 	__getTagsFromUrl: __getTagsFromUrl,
 	__parseMenuSearch: __parseMenuSearch,
 	parseThumb: parseThumb,
+	parseUrlSearch: parseUrlSearch,
 	getThumb: getThumb,
 	parsePagination: parsePagination
     }

@@ -1,6 +1,6 @@
 {% load i18n %}
 <div>
-  <h5>{% trans "mucua" %}</h5>
+  <h5><%= '{% trans "mucua" %}'.toUpperCase() %></h5>
   <h3>
     <a href="<% print(BBX.config.interfaceUrl + BBX.config.repository + '/' + mucua.description) %>"><%=mucua.description%></a>
   </h3>

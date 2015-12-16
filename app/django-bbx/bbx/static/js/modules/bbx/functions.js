@@ -773,7 +773,54 @@ define([
 	return text;
     }
 
+    /**
+     * dá saída do link de filtro
+     *
+     * @param {String} url Url atual
+     * @param {Array} typeFilters Lista dos filtros suportados
+     * @param {String} type String Nome do filtro
+     * @returns {String} retorna url
+     */    
+    var parseFilterLink = function(url, typeFilters, type) {
+	var urlParse = '',
+	    urlFrags = [];
+	// remove limit e sequencia
+	url = url.split('/limit')[0];
+	
+	// completa url caso nao seja 'search'
+	if (!url.match('search')) {
+	    // completa url para caso de 'mocambola'
+	    if (url.match('mocambola')) {
+		url = url.replace('/mocambola', '/bbx/search');
+	    } else {
+		url += '/bbx/search';
+	    }
+	}
+	_.each(typeFilters, function(t) {
+	    url = url.replace(t, '');
+	    url = url.replace('//', '/');
+	});
+	
+	urlFrags = url.split('/search');
+	urlParse = urlFrags[0] + '/search/' + type;
+	if (urlFrags.length > 1) {
+	    urlParse += urlFrags[1];
+	}
+	// remove / final
+	if (urlParse.substring(0, urlParse.length -1) === '/') {
+	    urlParse = urlParse.substring(0, urlParse.length -1);
+	}
+	return urlParse;
+    }
 
+    /**
+     * retorna parametro limit
+     *
+     * @returns {Integer} Valor de limit
+     */
+    var getLimit = function() {
+	return Backbone.history.location.hash.split('limit/')[1];
+    }
     
     // public functions are defined above
     return {
@@ -787,7 +834,9 @@ define([
 	setNavigationVars: setNavigationVars,
 	formatDate: formatDate,
 	checkFunctionalTag: checkFunctionalTag,
-	truncate: truncate
+	truncate: truncate,
+	parseFilterLink: parseFilterLink,
+	getLimit: getLimit
     }
 });
     
