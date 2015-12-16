@@ -513,7 +513,7 @@ msgstr "local"
 
 #: bbx/templates/media/MediaList.html:91
 msgid "request"
-msgstr "requisitado"
+msgstr "requisitar"
 
 #: bbx/templates/media/MediaMocambola.html:4
 msgid "content published by mocambola"
