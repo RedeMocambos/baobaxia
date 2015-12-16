@@ -522,10 +522,11 @@ define([
 	    offset = offset || 20,
 	    config = __getConfig(),
 	    urlApi = url.split('/limit')[0] + '/count' || url + '/count',
+	    defaultLimit = 20,
 	    urlInterface = Backbone.history.location.href.split('/limit')[0],
 	    pagination = {
 		'totalMedia': null,
-		'itensPerPage': 20,
+		'itensPerPage': getLimit() || defaultLimit,
 		'limit': limit,
 		'offset': offset,
 		'totalPages': null,
@@ -1582,6 +1583,15 @@ define([
 	window.location.replace(url);
     }
 
+    /**
+     * retorna parametro limit
+     *
+     * @returns {Integer} Valor de limit
+     */
+    var getLimit = function() {
+	return Backbone.history.location.hash.split('limit/')[1];
+    }
+    
     // funções públicas são definidas abaixo
     return {
 	init: init,
@@ -1611,6 +1621,7 @@ define([
 	parseThumb: parseThumb,
 	parseUrlSearch: parseUrlSearch,
 	getThumb: getThumb,
-	parsePagination: parsePagination
+	parsePagination: parsePagination,
+	getLimit: getLimit
     }
 });

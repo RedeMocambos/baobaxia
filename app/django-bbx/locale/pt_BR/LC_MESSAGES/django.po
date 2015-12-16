@@ -194,7 +194,7 @@ msgstr "Buscar em "
 
 #: bbx/templates/common/MucuaProfile.html:3
 msgid "mucua"
-msgstr "mucuas"
+msgstr "mucua"
 
 #: bbx/templates/common/MucuaProfile.html:22
 msgid "Collection:"

@@ -813,14 +813,6 @@ define([
 	return urlParse;
     }
 
-    /**
-     * retorna parametro limit
-     *
-     * @returns {Integer} Valor de limit
-     */
-    var getLimit = function() {
-	return Backbone.history.location.hash.split('limit/')[1];
-    }
     
     // public functions are defined above
     return {
@@ -835,8 +827,7 @@ define([
 	formatDate: formatDate,
 	checkFunctionalTag: checkFunctionalTag,
 	truncate: truncate,
-	parseFilterLink: parseFilterLink,
-	getLimit: getLimit
+	parseFilterLink: parseFilterLink
     }
 });
     

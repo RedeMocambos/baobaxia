@@ -46,7 +46,7 @@ define([
 		var data = {
 		    config: config,
 		    parseFilterLink: BBXFunctions.parseFilterLink,
-		    getLimit: BBXFunctions.getLimit
+		    getLimit: MediaFunctions.getLimit
 		}
 		$('#header-bottom').prepend(_.template(BuscadorTpl, data));
 
