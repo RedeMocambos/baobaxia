@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-08 23:48-0200\n"
+"POT-Creation-Date: 2015-12-16 01:39-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,32 +126,36 @@ msgstr ""
 msgid "User already exists!"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:61
+#: bbx/templates/common/Buscador.html:27
 msgid "Filters"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:63
+#: bbx/templates/common/Buscador.html:29
 msgid "image"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:66
+#: bbx/templates/common/Buscador.html:32
 msgid "video"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:69
+#: bbx/templates/common/Buscador.html:35
 msgid "audio"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:72
+#: bbx/templates/common/Buscador.html:38
 msgid "file"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:76
+#: bbx/templates/common/Buscador.html:42
 msgid "Is local"
 msgstr ""
 
-#: bbx/templates/common/Buscador.html:77
+#: bbx/templates/common/Buscador.html:43
 msgid "Is requested"
+msgstr ""
+
+#: bbx/templates/common/Buscador.html:45
+msgid "per page"
 msgstr ""
 
 #: bbx/templates/common/Footer.html:2
@@ -184,7 +188,7 @@ msgid "Menu"
 msgstr ""
 
 #: bbx/templates/common/Menu.html:17 bbx/templates/common/Menu.html.py:25
-msgid "rede"
+msgid "network"
 msgstr ""
 
 #: bbx/templates/common/MessageSearch.html:1
@@ -372,6 +376,7 @@ msgid "Info"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEdit.html:29
+#: bbx/templates/media/MediaGalleryEdit.html:51
 #: bbx/templates/media/MediaGalleryEditItem.html:57
 msgid "Tags"
 msgstr ""
@@ -402,13 +407,14 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: bbx/templates/media/MediaGalleryEditItem.html:31
-msgid "Title"
-msgstr ""
-
+#: bbx/templates/media/MediaGalleryEdit.html:55
 #: bbx/templates/media/MediaGalleryEditItem.html:62
 #: bbx/templates/media/MediaPublish.html:109
 msgid "Description"
+msgstr ""
+
+#: bbx/templates/media/MediaGalleryEditItem.html:31
+msgid "Title"
 msgstr ""
 
 #: bbx/templates/media/MediaGalleryEditItem.html:66
