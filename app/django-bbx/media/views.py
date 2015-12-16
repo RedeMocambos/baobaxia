@@ -150,7 +150,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         
         # se passado na url, aleatoriza retorno (shuffle como palavra reservada)
         if (args.find('shuffle') != -1):
-            args = args.split('shuffle')[0]
+            args = ''.join(args.split('shuffle'))
             shuffle = True
         
         default_limit = 20
