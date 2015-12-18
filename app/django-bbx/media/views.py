@@ -138,6 +138,7 @@ def media_list(request, repository, mucua, args=None, format=None):
         params = []
         return_count = False
         shuffle = False
+        license_params = ''
 
         # remove ultimo caractere
         if args[:-1] == '/':
@@ -153,6 +154,30 @@ def media_list(request, repository, mucua, args=None, format=None):
             args = ''.join(args.split('shuffle'))
             shuffle = True
         
+        # se passado na url, adiciona busca por licenca (license como palavra reservada)
+        if (args.find('license') != -1):
+            license_params = args.split('license/')[1].split('/')[0]
+
+            """ TODO: move licenses to a dynamic list """
+            accepted_licenses = ['gplv3',
+                                 'gfdl',
+                                 'lgplv3',
+                                 'agplv3',
+                                 'copyleft',
+                                 'clnc_educ',
+                                 'cc',
+                                 'cc_nc',
+                                 'cc_ci',
+                                 'cc_ci_nc',
+                                 'cc_sd',
+                                 'cc_sd_nc'
+                                 ]
+            if license_params in accepted_licenses:
+                args = args.split('license/' + license_params + '/')[0] + args.split('license/' + license_params + '/')[1]
+            else:
+                license_params = ""
+                args = args.split('license/')[0] + args.split('license/')[1]
+
         default_limit = 20
         limiting_params = []
         """ fields that if passed will make a boolean check """
@@ -267,7 +292,12 @@ def media_list(request, repository, mucua, args=None, format=None):
                     
                     
                 term_index += 1
-                    
+                
+                """ license search """
+                if license_params:
+                    term_sql += " AND license=?"
+                    params.append(license_params)
+        
         if (len(term_sql) > 0):
             term_sql = ' HAVING (' + term_sql + ')'
 
