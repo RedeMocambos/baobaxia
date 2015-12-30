@@ -129,7 +129,7 @@ define([
 	}
 
 	if (itens_per_page) {
-	    complement += '/limit/' + itens_per_page;
+	    complement += '/limit/0/' + itens_per_page;
 	}
 	
 	return config.interfaceUrl + config.MYREPOSITORY + '/' + config.mucua + '/bbx/search/' + tags + complement;
@@ -1589,7 +1589,12 @@ define([
      * @returns {Integer} Valor de limit
      */
     var getLimit = function() {
-	return Backbone.history.location.hash.split('limit/')[1];
+	var limit = Backbone.history.location.hash.split('limit/')[1];
+	if (typeof limit !== 'undefined') {
+	    limit = limit.split('/')[1];
+	}
+	return limit;
+	
     }
     
     // funções públicas são definidas abaixo
