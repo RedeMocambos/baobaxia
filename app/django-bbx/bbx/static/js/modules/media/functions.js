@@ -510,6 +510,106 @@ define([
 	window.scrollTo(0, 0);
     }
 
+    
+    /**
+     * Prepara saída da paginação de busca
+     *
+     * @param {Object} pagination Objeto com variáveis internas
+     * @returns {Object} htmlOutput Retorna elementos html separados
+     */
+    var __preparePagination = function(pagination) {
+	// laço percorre páginas para montar paginador
+	var jumpPage = 0,         // cria o '...' quando tem muitos registros
+	    currentPage = pagination.currentPage,
+	    offset = pagination.offset,
+	    itensPerPage = pagination.itensPerPage,
+	    totalPages = pagination.totalPages,
+	    totalMedia = pagination.totalMedia,
+	    limit = pagination.limit,
+	    maxPages = pagination.maxPages,
+	    url = pagination.url,
+	    page = 0,
+	    backPage = 0,
+	    currentPage = 0,
+	    htmlOutput = {
+		back: '',
+		next: '',
+		count: '',
+	    },
+	    nextLimit = 0,
+	    nextOffset = 0,
+	    backLimit = 0,
+	    backOffset = 0,
+	    urlBack = '',
+	    urlNext = '',
+	    pageNumber = 0;
+	
+	for (page = 1; page <= totalPages; page++) {
+	    // se for pagina atual
+	    currentPage = Math.floor((limit + offset) / itensPerPage);   // indicador numérico da página atual
+	    
+	    if (currentPage === page) {
+		nextPage = page + 1;
+		backPage = page - 1;
+		currentPage = page;	
+		url = (url[url.length -1] === '/') ?  url.substr(0, url.length -1): url;  // remove '/' do final, se houver	 
+		jumpPage = 0;
+		
+		// se proxima pagina menor que total, escreve link de next
+		if (nextPage <= totalPages) {
+		    nextLimit = ((page + 1) * itensPerPage) - itensPerPage;
+		    nextOffset = itensPerPage;
+		    urlNext = url + "/limit/" + nextLimit + "/" + nextOffset;
+		    htmlOutput.next = '<a class="next" href="' + urlNext + '" alt="{% trans "next" %}"><div></div></a>';
+		} else {
+		    htmlOutput.next = '';
+		}
+		
+		if (backPage > 0) {
+		    backLimit = ((page -1) * itensPerPage) - itensPerPage;
+		    backOffset = itensPerPage;
+		    urlBack = url;
+		    
+		    // different url for first
+		    if (backLimit != '0') {
+    			urlBack += "/limit/" + backLimit + "/" + backOffset;;
+		    }
+		    
+		    htmlOutput.back = '<a class="back" href="' + urlBack + '" alt="{% trans "back" %}"><div></div></a>';
+		} else {
+		    htmlOutput.back = '';
+		}
+		
+		htmlOutput.count += "<strong>" +  page + "</strong>";
+		
+		// se for outra página que não a atual
+	    } else {
+		if ((page >= currentPage - maxPages && page <= currentPage + maxPages)
+		    ||
+		    (page === 1 || page === totalPages)
+		   ) {
+		    pageNumber = (page * itensPerPage) - itensPerPage;
+		    
+		    // different url for first
+		    if (pageNumber == '0') {
+			urlHtml = url;
+		    } else {
+			urlHtml = url + '/limit/' + pageNumber + '/' + itensPerPage;
+		    }
+		    
+		    htmlOutput.count += '<a href="' + urlHtml + '">' + page + '</a>';
+		} else {
+		    if (jumpPage === 0) {
+			htmlOutput.count += '......';
+		    }
+   		    jumpPage ++;
+		}
+	    }  
+	}
+	
+	return htmlOutput;
+    }
+    
     /**
      * Dá saída da paginação de busca
      *
@@ -530,7 +630,7 @@ define([
 		'limit': limit,
 		'offset': offset,
 		'totalPages': null,
-		'maxPages': 9,
+		'maxPages': 6,
 		'url': urlInterface
 	    },
 	    media = new MediaModel([], {url: urlApi});
@@ -538,9 +638,10 @@ define([
 	    success: function() {
 		pagination.totalMedia = media.attributes.count;
 		pagination.totalPages = Math.ceil(pagination.totalMedia / pagination.itensPerPage);
-		BBX.mediaPagination = pagination;
-		$('#pagination-top').html(_.template(MediaPaginationTpl, BBX.mediaPagination));
-		$('#pagination-bottom').html(_.template(MediaPaginationTpl, BBX.mediaPagination));
+		pagination.htmlOutput = __preparePagination(pagination);
+		
+		$('#pagination-top').html(_.template(MediaPaginationTpl, pagination));
+		$('#pagination-bottom').html(_.template(MediaPaginationTpl, pagination));
 	    }
 	});		    
     }
