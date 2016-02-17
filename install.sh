@@ -32,8 +32,17 @@ create_user() {
 
 # dependencies: se for deb pkg, tirar
 apt-get update
-apt-get install git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff5-dev libjpeg62-turbo-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext
+COMMON_PKG="git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff5-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext"
+DEBIAN_PKG="libjpeg62-turbo-dev"
+UBUNTU_PKG="libjpeg-turbo8-dev"
 
+if [ -n "$(grep -i ubuntu /etc/os-release )" ]; then
+  PACKAGES="$COMMON_PKG $UBUNTU_PKG"
+else
+  PACKAGES="$COMMON_PKG $DEBIAN_PKG"
+fi
+
+apt-get install -y $PACKAGES || echo "Error!" && exit 1
 
 ### cria diretorio basico
 mkdir -p $DEFAULT_REPOSITORY_DIR
@@ -297,8 +306,8 @@ cp $INSTALL_DIR/baobaxia/bin/gunicorn_start.sh.example $INSTALL_DIR/bin/gunicorn
 sed -i "s:_domain_:${BBX_DIR_NAME}:g" $INSTALL_DIR/bin/gunicorn_start.sh
 touch $INSTALL_DIR/log/gunicorn_supervisor.log
 chmod +x $INSTALL_DIR/bin/gunicorn_start.sh
-chmod 775 $INSTALL_DIR/log/gunicorn_supervisor.log 
-chown $USER_BBX:$USER_BBX $INSTALL_DIR/log/gunicorn_supervisor.log 
+chmod 775 $INSTALL_DIR/log/gunicorn_supervisor.log
+chown $USER_BBX:$USER_BBX $INSTALL_DIR/log/gunicorn_supervisor.log
 
 
 # 7) recriar mucuas da rede no django-bbx (mucuaLocal)
@@ -386,4 +395,3 @@ echo "       /                                                                  
 echo "      BAOBÁXIA                                 Software LIVRE! GPLv3                 "
 
 echo ""
-
