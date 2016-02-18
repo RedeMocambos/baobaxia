@@ -42,7 +42,7 @@ else
   PACKAGES="$COMMON_PKG $DEBIAN_PKG"
 fi
 
-apt-get install -y $PACKAGES || echo "Error!" && exit 1
+apt-get install -y $PACKAGES || exit 1
 
 ### cria diretorio basico
 mkdir -p $DEFAULT_REPOSITORY_DIR
