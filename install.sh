@@ -158,7 +158,7 @@ case "$PROTOCOL" in
 	cd $DEFAULT_REPOSITORY_DIR
 	git clone $REPO_NAME
 	;;
-    local|LOCAL|*) PROTOCOL='local'
+  local|LOCAL|*) PROTOCOL='local'
 	read -p "Defina a pasta do repositório para espelhar (padrão: /root/baobaxia/mocambos):" MIRROR_REPOSITORY_FOLDER
 	case $MIRROR_REPOSITORY_FOLDER in
 	    '') MIRROR_REPOSITORY_FOLDER="/root/baobaxia/mocambos" ;;
@@ -179,7 +179,11 @@ echo ""
 echo "Definindo usuário git para usuário do baobáxia ($USER_BBX) ..."
 echo "Criando novo repositório na mucua $MUCUA ..."
 su - $USER_BBX -c "
-cd $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME;
+if [ -d $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME ]; then
+  cd $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME;
+else
+  mkdir $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME;
+fi
 git config --global user.name 'Exu do BBX';
 git config --global user.email 'exu@mocambos.org';
 git init . ;
