@@ -353,7 +353,7 @@ chmod +x $INSTALL_DIR/bin/update-templates.sh
 echo ""
 echo "Ativando o Baobáxia ..."
 supervisorctl restart bbx
-supervisorctl restart celeryd
+supervisorctl restart celery
 
 
 echo ""
