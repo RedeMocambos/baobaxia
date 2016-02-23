@@ -32,8 +32,17 @@ create_user() {
 
 # dependencies: se for deb pkg, tirar
 apt-get update
-apt-get install git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff5-dev libjpeg62-turbo-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext
+COMMON_PKG="git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff5-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext"
+DEBIAN_PKG="libjpeg62-turbo-dev"
+UBUNTU_PKG="libjpeg-turbo8-dev"
 
+if [ -n "$(grep -i ubuntu /etc/os-release )" ]; then
+  PACKAGES="$COMMON_PKG $UBUNTU_PKG"
+else
+  PACKAGES="$COMMON_PKG $DEBIAN_PKG"
+fi
+
+apt-get install -y $PACKAGES || exit 1
 
 ### cria diretorio basico
 mkdir -p $DEFAULT_REPOSITORY_DIR
@@ -149,7 +158,7 @@ case "$PROTOCOL" in
 	cd $DEFAULT_REPOSITORY_DIR
 	git clone $REPO_NAME
 	;;
-    local|LOCAL|*) PROTOCOL='local'
+  local|LOCAL|*) PROTOCOL='local'
 	read -p "Defina a pasta do repositório para espelhar (padrão: /root/baobaxia/mocambos):" MIRROR_REPOSITORY_FOLDER
 	case $MIRROR_REPOSITORY_FOLDER in
 	    '') MIRROR_REPOSITORY_FOLDER="/root/baobaxia/mocambos" ;;
@@ -170,7 +179,11 @@ echo ""
 echo "Definindo usuário git para usuário do baobáxia ($USER_BBX) ..."
 echo "Criando novo repositório na mucua $MUCUA ..."
 su - $USER_BBX -c "
-cd $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME;
+if [ -d $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME ]; then
+  cd $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME;
+else
+  mkdir $DEFAULT_REPOSITORY_DIR/$DEFAULT_REPOSITORY_NAME;
+fi
 git config --global user.name 'Exu do BBX';
 git config --global user.email 'exu@mocambos.org';
 git init . ;
@@ -297,8 +310,8 @@ cp $INSTALL_DIR/baobaxia/bin/gunicorn_start.sh.example $INSTALL_DIR/bin/gunicorn
 sed -i "s:_domain_:${BBX_DIR_NAME}:g" $INSTALL_DIR/bin/gunicorn_start.sh
 touch $INSTALL_DIR/log/gunicorn_supervisor.log
 chmod +x $INSTALL_DIR/bin/gunicorn_start.sh
-chmod 775 $INSTALL_DIR/log/gunicorn_supervisor.log 
-chown $USER_BBX:$USER_BBX $INSTALL_DIR/log/gunicorn_supervisor.log 
+chmod 775 $INSTALL_DIR/log/gunicorn_supervisor.log
+chown $USER_BBX:$USER_BBX $INSTALL_DIR/log/gunicorn_supervisor.log
 
 
 # 7) recriar mucuas da rede no django-bbx (mucuaLocal)
@@ -344,7 +357,7 @@ chmod +x $INSTALL_DIR/bin/update-templates.sh
 echo ""
 echo "Ativando o Baobáxia ..."
 supervisorctl restart bbx
-supervisorctl restart celeryd
+supervisorctl restart celery
 
 
 echo ""
@@ -386,4 +399,3 @@ echo "       /                                                                  
 echo "      BAOBÁXIA                                 Software LIVRE! GPLv3                 "
 
 echo ""
-
