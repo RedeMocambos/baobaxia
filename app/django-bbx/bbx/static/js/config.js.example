@@ -21,7 +21,8 @@ BBX.config = {
     "MYMUCUA":"dpadua",
     "MYREPOSITORY": "mocambos",
     "userLang": "pt_BR",
-    "defaultHome": '/#mocambos/rede/bbx/search'    
+//    "defaultHome": '/#mocambos/rede/bbx/search'    
+    "defaultHome": '/#/mocambos/mucuas'
 }
 /***
  * NÃO EDITAR DAQUI EM DIANTE
