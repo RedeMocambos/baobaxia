@@ -6,7 +6,8 @@ define([
     'modules/media/functions',
     'modules/mocambola/model',
     'text!/templates/' + BBX.userLang + '/mocambola/HomeMocambola.html',
-], function($, _, Backbone, BBXFunctions, MediaFunctions, MocambolaModel, HomeMocambolaTpl) {
+    'text!/templates/' + BBX.userLang + '/mocambola/AvailableLangs.html',
+], function($, _, Backbone, BBXFunctions, MediaFunctions, MocambolaModel, HomeMocambolaTpl, AvailableLangsTpl) {
     var HomeMocambola = Backbone.View.extend({
 	el: "body",    
 
@@ -50,6 +51,31 @@ define([
 		    data.mocambola.avatar = BBXFunctions.getAvatar();
 		    $('#content').html(_.template(HomeMocambolaTpl, data));
 		    MediaFunctions.getMediaByMocambola('all', username, limit);
+
+		    // get languages
+		    $.ajax({
+			url: config.apiUrl + '/lang/available',
+			type: 'GET',
+			success: function(data) {
+			    BBX.langs = data.availableLangs;
+			    $('#default-language').html(_.template(AvailableLangsTpl));
+			    $('#change-language-btn').click(function() {
+				$('#change-language select').enable(true);
+			    });
+			    $('#default-language').change(function() {
+				var new_lang = $('#default-language').val();
+				$('#change-language .message').css({"display": "inline"});
+				$.post(config.apiUrl + '/lang/change_interface_lang', {
+				    'current_lang': BBX.userLang,			    
+				    'new_lang': new_lang
+				}, function (data) {
+				    BBX.userLang = new_lang;
+				    location.reload()
+				});
+			    });
+			}
+		    });
+		    
 		    BBX.mocambola = '';
 		    clearInterval(getMocambolaLoad);
 		}

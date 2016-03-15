@@ -393,6 +393,9 @@ td.status {font-weight: bold}
 #mocambola-home .actions h4.link a {color: #5EA933; font-size: 18px;}
 #mocambola-home .actions h4 .button {background: url('/images/add-content.png') no-repeat; width: 20px; height: 20px; display: inline-block}
 #mucua-home #mucua-profile img {float: left; background: #1175a0}
+#mocambola-home .message {display: none; background: url('/images/loading-pq.gif') no-repeat; color: #999; font-size: 13px; font-weight: normal; padding: 5px; padding-left: 50px;}
+#mocambola-home #change-language-btn {font-weight: normal; cursor: pointer}
+
 
 /*
  * repository

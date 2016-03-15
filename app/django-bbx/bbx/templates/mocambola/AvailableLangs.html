@@ -1,0 +1,4 @@
+{% load i18n %}
+<% _.each(BBX.langs, function(lang) { %>
+	<option value="<%= lang[0] %>" <% if (lang[0] === BBX.userLang) { print('selected'); } %> ><%= lang[0] %></option>
+<% }); %>

@@ -6,6 +6,14 @@
   </div>
 <% if (config.userData.username == mocambola.username) { %>
   <div class="actions">
+    <h4 id="change-language">
+      {% trans "Enabled language: " %}
+      <select id="default-language" disabled>
+      </select>
+      <a id="change-language-btn">{% trans "change language" %}</a>
+      <div class=""></div>
+      <div class="message">{% trans "parsing templates for new language..." %}</div>
+    </h4>  
     <h4 class="link">
       <a href="#<%= config.repository %>/<%= config.mucua %>/media"><div class="button">&nbsp;</div> {% trans "Publish new content" %}</a>
     </h4>
