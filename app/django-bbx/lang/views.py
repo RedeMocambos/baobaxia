@@ -20,13 +20,48 @@ from bbx.utils import logger
 
 @api_view(['GET'])
 def default_lang(request):
-    
+
     response_data = {
         'defaultLang': LANGUAGE_CODE
     }
     logger.info('default_lang')
     return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
 
+@api_view(['POST'])
+def change_interface_lang(request):
+    logger.info('change default lang')
+    
+    new_lang = request.POST.get('new_lang').encode('utf-8')
+    current_lang = request.POST.get('current_lang').encode('utf-8')
+    response_data = {
+        'new_lang' : new_lang
+    }
+    logger.info(current_lang)
+    logger.info(new_lang)
+    
+    # change default language at bbx application
+    bbx_config_file = os.path.join(os.getcwd(), 'bbx/static/js/config.js')
+    current_lang = current_lang.encode('utf-8')
+    new_lang = new_lang.encode('utf-8')
+    
+    lines = []    
+    with open(bbx_config_file) as infile:
+        for line in infile:
+            line = line.replace(current_lang, new_lang)
+            lines.append(line)
+    with open(bbx_config_file, 'w') as outfile:
+        for line in lines:
+            outfile.write(line)
+
+    # precisa rodar update_templates
+    # precisa rodar collectstatic
+    
+    from django.core.management import call_command
+    call_command('update_templates', new_lang, interactive=False)
+    call_command('collectstatic', interactive=False)    
+    
+    return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+    
 @api_view(['GET'])
 def available_langs(request):
     
