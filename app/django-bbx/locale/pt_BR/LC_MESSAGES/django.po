@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-16 01:39-0200\n"
+"POT-Creation-Date: 2016-03-15 14:58-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,6 +48,10 @@ msgstr "Espanhol"
 #: bbx/settings.example.py:38 bbx/settings.py:28
 msgid "Brazilian Portuguese"
 msgstr "Português do Brasil"
+
+#: bbx/settings.example.py:39 bbx/settings.py:29
+msgid "Italian"
+msgstr "Italiano"
 
 #: bbx/templates/admin/base_site.html:4 bbx/templates/admin/base_site.html:7
 msgid "Baobaxia Garden"
@@ -523,15 +527,7 @@ msgstr "conteúdo publicado pel@ mocambola"
 msgid "new content"
 msgstr "novo conteúdo"
 
-#: bbx/templates/media/MediaPagination.html:24
-msgid "next"
-msgstr "avançar"
-
-#: bbx/templates/media/MediaPagination.html:38
-msgid "back"
-msgstr "anterior"
-
-#: bbx/templates/media/MediaPagination.html:76
+#: bbx/templates/media/MediaPagination.html:6
 msgid "total:"
 msgstr "total:"
 
@@ -628,10 +624,22 @@ msgid "request local copy"
 msgstr "solicitar cópia local"
 
 #: bbx/templates/mocambola/HomeMocambola.html:10
+msgid "Enabled language: "
+msgstr "Língua habilitada"
+
+#: bbx/templates/mocambola/HomeMocambola.html:13
+msgid "change language"
+msgstr "alterar língua"
+
+#: bbx/templates/mocambola/HomeMocambola.html:15
+msgid "parsing templates for new language..."
+msgstr "gerando templates para nova língua..."
+
+#: bbx/templates/mocambola/HomeMocambola.html:18
 msgid "Publish new content"
 msgstr "Publicar novo conteúdo"
 
-#: bbx/templates/mocambola/HomeMocambola.html:13
+#: bbx/templates/mocambola/HomeMocambola.html:21
 msgid "Publish new gallery"
 msgstr "Publicar nova galeria"
 
@@ -639,15 +647,15 @@ msgstr "Publicar nova galeria"
 msgid "Mucuas"
 msgstr "Mucuas"
 
-#: lang/views.py:44
+#: lang/views.py:79
 msgid "Language not installed: "
 msgstr "Língua não instalada: "
 
-#: lang/views.py:59
+#: lang/views.py:94
 msgid "Module does not exists: "
 msgstr "Módulo não existe: "
 
-#: lang/views.py:68
+#: lang/views.py:103
 msgid "Template does not exists: "
 msgstr "Template não existe: "
 
@@ -755,23 +763,26 @@ msgstr "Essa mídia já existe. Atualizada."
 msgid "New media created"
 msgstr "Nova mídia criada"
 
-#: media/views.py:414
+#: media/views.py:444
 msgid "updated media - OK"
 msgstr "mídia atualizada - OK"
 
-#: media/views.py:417 media/views.py:492
+#: media/views.py:447 media/views.py:522
 msgid "error while creating media"
 msgstr "erro ao criar a mídia"
 
-#: media/views.py:622
+#: media/views.py:652
+#, fuzzy, python-format
 msgid "Requested media of uuid %(uuid)s"
 msgstr "Mídia de uuid %s requisitada"
 
-#: media/views.py:635
+#: media/views.py:665
+#, fuzzy, python-format
 msgid "Dropped media of uuid %(uuid)s"
 msgstr "Removida mídia de uuid %s"
 
-#: media/views.py:649
+#: media/views.py:679
+#, fuzzy, python-format
 msgid "Removed media of uuid %(uuid)s"
 msgstr "Mídia de uuid %s requisitada"
 
@@ -875,6 +886,12 @@ msgstr "Problema ao remover mídia"
 #: repository/management/commands/bbxsync.py:52
 msgid "Revision is"
 msgstr "Revisão é"
+
+#~ msgid "next"
+#~ msgstr "avançar"
+
+#~ msgid "back"
+#~ msgstr "anterior"
 
 #~ msgid "description "
 #~ msgstr "Descrição"

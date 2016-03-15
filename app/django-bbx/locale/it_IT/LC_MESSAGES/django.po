@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-16 01:39-0200\n"
+"POT-Creation-Date: 2016-03-15 14:58-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,6 +47,10 @@ msgstr "Spagnolo"
 #: bbx/settings.example.py:38 bbx/settings.py:28
 msgid "Brazilian Portuguese"
 msgstr "Portoghese Brasiliano"
+
+#: bbx/settings.example.py:39 bbx/settings.py:29
+msgid "Italian"
+msgstr ""
 
 #: bbx/templates/admin/base_site.html:4 bbx/templates/admin/base_site.html:7
 msgid "Baobaxia Garden"
@@ -261,7 +265,9 @@ msgstr "Partner: Fondazione Banca del Brasile, FBB"
 
 #: bbx/templates/common/Sobre.html:24
 msgid "This project has the Banco do Brasil Foundation Support."
-msgstr "Questo progetto é realizzato in partnership con la Fondazione Banca de Brasile."
+msgstr ""
+"Questo progetto é realizzato in partnership con la Fondazione Banca de "
+"Brasile."
 
 #: bbx/templates/common/UsageBar.html:5
 msgid "others:"
@@ -507,15 +513,7 @@ msgstr "media pubblicati dal mocambola"
 msgid "new content"
 msgstr "nuovi media"
 
-#: bbx/templates/media/MediaPagination.html:24
-msgid "next"
-msgstr "prossimo"
-
-#: bbx/templates/media/MediaPagination.html:38
-msgid "back"
-msgstr "precedente"
-
-#: bbx/templates/media/MediaPagination.html:76
+#: bbx/templates/media/MediaPagination.html:6
 msgid "total:"
 msgstr "totale"
 
@@ -612,10 +610,23 @@ msgid "request local copy"
 msgstr "richiedi copia locale"
 
 #: bbx/templates/mocambola/HomeMocambola.html:10
+msgid "Enabled language: "
+msgstr ""
+
+#: bbx/templates/mocambola/HomeMocambola.html:13
+msgid "change language"
+msgstr ""
+
+#: bbx/templates/mocambola/HomeMocambola.html:15
+#, fuzzy
+msgid "parsing templates for new language..."
+msgstr "Aggiornando i templates..."
+
+#: bbx/templates/mocambola/HomeMocambola.html:18
 msgid "Publish new content"
 msgstr "Pubblicare un nuovo media"
 
-#: bbx/templates/mocambola/HomeMocambola.html:13
+#: bbx/templates/mocambola/HomeMocambola.html:21
 msgid "Publish new gallery"
 msgstr "Pubblicare una nuova galleria"
 
@@ -623,15 +634,15 @@ msgstr "Pubblicare una nuova galleria"
 msgid "Mucuas"
 msgstr "Mucuas"
 
-#: lang/views.py:44
+#: lang/views.py:79
 msgid "Language not installed: "
 msgstr "Lingua non installata"
 
-#: lang/views.py:59
+#: lang/views.py:94
 msgid "Module does not exists: "
 msgstr "Modulo non esiste."
 
-#: lang/views.py:68
+#: lang/views.py:103
 msgid "Template does not exists: "
 msgstr "Il template non esiste"
 
@@ -739,25 +750,25 @@ msgstr "Questo media già esiste. Aggiornato"
 msgid "New media created"
 msgstr "Nuovo media creato"
 
-#: media/views.py:414
+#: media/views.py:444
 msgid "updated media - OK"
 msgstr "media aggiornato - OK"
 
-#: media/views.py:417 media/views.py:492
+#: media/views.py:447 media/views.py:522
 msgid "error while creating media"
 msgstr "errore nel creare il media"
 
-#: media/views.py:622
+#: media/views.py:652
 #, python-format
 msgid "Requested media of uuid %(uuid)s"
 msgstr "Richiesta media con uuid %(uuid)s"
 
-#: media/views.py:635
+#: media/views.py:665
 #, python-format
 msgid "Dropped media of uuid %(uuid)s"
 msgstr "Rimossa copia dei media con uuid %(uuid)s"
 
-#: media/views.py:649
+#: media/views.py:679
 #, python-format
 msgid "Removed media of uuid %(uuid)s"
 msgstr "Eliminati media con uuid %(uuid)s"
@@ -862,3 +873,9 @@ msgstr "Problema nell'eliminare"
 #: repository/management/commands/bbxsync.py:52
 msgid "Revision is"
 msgstr "La revisione è"
+
+#~ msgid "next"
+#~ msgstr "prossimo"
+
+#~ msgid "back"
+#~ msgstr "precedente"
