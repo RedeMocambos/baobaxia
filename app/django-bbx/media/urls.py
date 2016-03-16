@@ -11,8 +11,8 @@ urlpatterns = patterns(
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/remove$', 'media_remove'),   
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/request$', 'media_request_copy'),
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/token', 'media_token'),
-    url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/last/' +
-        '(?P<qtd>[\d]*)$', 'media_last'),
+    url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/last/limit/' +
+        '(?P<limit>[\d]*)$', 'media_last'),
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/last',
         'media_last'),
     url(r'^(?P<repository>\w+)/(?P<mucua>rede)/bbx/search/' +
