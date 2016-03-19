@@ -605,9 +605,9 @@ def show_image(request, repository, mucua, uuid, width, height, format_type):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
-    if (width != '') & (height == '00'):
+    if (width != '') & (height == '0'):
         size = str(width)
-    elif (width == '00') & (height != ''):
+    elif (width == '0') & (height != ''):
         size = 'x' + str(height)
     elif (width != '') & (height != ''):
         size = str(width) + 'x' + str(height)

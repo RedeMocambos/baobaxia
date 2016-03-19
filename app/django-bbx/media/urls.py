@@ -4,7 +4,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = patterns(
     'media.views',
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/' +
-        '(?P<width>[0-9]{2,4})x(?P<height>[0-9]{2,4})\.(?P<format_type>[a-zA-Z]{3,4})$', 'show_image'),   
+        '(?P<width>[0-9]{1,4})x(?P<height>[0-9]{1,4})\.(?P<format_type>[a-zA-Z]{3,4})$', 'show_image'),   
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/url$', 'media_url'),   
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/whereis$', 'media_where_is'),   
     url(r'^(?P<repository>\w+)/(?P<mucua>[a-zA-Z0-9\-]+)/media/(?P<uuid>[a-z0-9\-]+)/drop$', 'media_drop_copy'),   
