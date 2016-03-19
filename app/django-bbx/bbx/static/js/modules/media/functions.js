@@ -355,10 +355,10 @@ define([
 		}, 100);
 	    }
 	    // get configured value or load defaults
-	    if (typeof(BBX.config.images.fullSize) !== 'undefined') {
+	    if (typeof(BBX.config.images) !== 'undefined') {
 		data.paramsGallery = {'width' : BBX.config.images.fullSize.width,'height' : BBX.config.images.fullSize.height}
 	    } else {
-		data.paramsGallery = {'width': '0', 'height': window.innerHeigh};
+		data.paramsGallery = {'width': '0', 'height': window.innerHeight};
 	    }
 	    // load function to template
 	    data.swapImageUrl = swapImageUrl;
