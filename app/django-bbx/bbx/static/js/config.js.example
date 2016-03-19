@@ -20,8 +20,14 @@ BBX.config = {
     "interfaceUrl": "/#",
     "MYMUCUA":"dpadua",
     "MYREPOSITORY": "mocambos",
-    "userLang": "pt_BR",
-    "defaultHome": '/#mocambos/rede/bbx/search'    
+    "userLang": "es_ES",
+    "defaultHome": '/#mocambos/rede/bbx/search',
+    "images" : {
+	"fullSize": {
+	    "width": "0",
+	    "height": window.innerHeigh
+	}
+    }
 }
 /***
  * NÃO EDITAR DAQUI EM DIANTE

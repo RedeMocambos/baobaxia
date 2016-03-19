@@ -354,8 +354,13 @@ define([
 		    }
 		}, 100);
 	    }
-	    // TODO: mover para um local configurável
-	    data.paramsGallery = {'width': '00', 'height': '600' };
+	    // get configured value or load defaults
+	    if (typeof(BBX.config.images.fullSize) !== 'undefined') {
+		data.paramsGallery = {'width' : BBX.config.images.fullSize.width,'height' : BBX.config.images.fullSize.height}
+	    } else {
+		data.paramsGallery = {'width': '0', 'height': window.innerHeigh};
+	    }
+	    // load function to template
 	    data.swapImageUrl = swapImageUrl;
 	    
 	    $(target).html(_.template(MediaGridTpl, data));
