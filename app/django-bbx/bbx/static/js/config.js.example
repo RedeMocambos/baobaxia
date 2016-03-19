@@ -25,7 +25,7 @@ BBX.config = {
     "images" : {
 	"fullSize": {
 	    "width": "0",
-	    "height": window.innerHeigh
+	    "height": window.innerHeight
 	}
     }
 }
