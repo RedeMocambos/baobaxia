@@ -615,7 +615,9 @@ def show_image(request, repository, mucua, uuid, width, height, format_type):
     image = get_thumbnail(media.media_file, size,
                           crop='center', quality=99)
     
-    return Response({'url': image.url})
+    return Response({'url': image.url,
+                     'height': image.height,
+                     'width': image.width})
 
 
 @api_view(['GET'])
