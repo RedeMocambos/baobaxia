@@ -347,8 +347,13 @@ define([
 		var getUrlInterval = setInterval(function() {
 		    if (typeof BBX.tmp.imageThumb[media.uuid] !== 'undefined') {
 			if (typeof BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height] !== 'undefined') {
-			    var url = BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height];
+			    var url = BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height].url,
+				width = BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height].width,
+				height = BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height].height;
+				
 			    $(el).attr('href', url);
+			    $(el).attr('width', width);
+			    $(el).attr('height', height);			    
 			    clearInterval(getUrlInterval);
 			}
 		    }
@@ -856,7 +861,10 @@ define([
 	var thumbInterval = setInterval(function() {
 	    if (typeof BBX.tmp.imageThumb[media.uuid] !== 'undefined') {
 		if (typeof BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height] !== 'undefined') {
-		    media.url = BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height];
+		    media.url = BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height].url;
+		    media.width = BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height].width;
+		    media.height = BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height].height;
+		    
 		    var tmpImage = new Image();
 		    tmpImage.src = media.url;
 		    tmpImage.onload = function() {
@@ -867,10 +875,9 @@ define([
 			} else {
 			    $('.media-image-container').prepend('<img id="media-' + media.uuid + '" src="' + media.url + '" />');
 			}
-			var width = (params.width !== '00' && params.width < tmpImage.naturalWidth) ? params.width : tmpImage.naturalWidth;
-			var height = (params.height !== '00' && params.height < tmpImage.naturalHeight) ? params.height : tmpImage.naturalHeight;
-  			$('#media-' + media.uuid).prop('width', width);
-			$('#media-' + media.uuid).prop('height', height);
+			
+  			$('#media-' + media.uuid).prop('width', media.width);
+			$('#media-' + media.uuid).prop('height', media.height);
 		    }
 		    clearInterval(thumbInterval);
 		}
@@ -900,7 +907,11 @@ define([
 		if (typeof BBX.tmp.imageThumb[media.uuid] === 'undefined') {
 		    BBX.tmp.imageThumb[media.uuid] = [];
 		}
-		BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height] = mediaLoad.attributes.url;
+		BBX.tmp.imageThumb[media.uuid][params.width + 'x' + params.height] = {
+		    'url': mediaLoad.attributes.url,
+		    'width': mediaLoad.attributes.width,
+		    'height': mediaLoad.attributes.height
+		}
 	    }
 	});
     }

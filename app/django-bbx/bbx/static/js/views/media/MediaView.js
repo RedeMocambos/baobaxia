@@ -20,8 +20,10 @@ define([
 		media = '',
 		url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid,
 		urlWhereis = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/whereis',
-		userData = localStorage.userData;
-
+		userData = localStorage.userData,
+		mediaWidth = (typeof(BBX.config.images.mediaView) !== 'undefined') ? BBX.config.images.mediaView.width : '0', // default value if size unset at config.js
+		mediaHeight = (typeof(BBX.config.images.mediaView) !== 'undefined') ? BBX.config.images.mediaView.height : '300'; // default value if size unset at config.js
+	    
 	    // pergunta se vai excluir cópia local do arquivo
 	    var askDrop = function() {
 		var config = BBX.config,		    
@@ -61,7 +63,7 @@ define([
 		    clearInterval(focus);
 		}
 	    }, 500);
-	    
+
 	    media = MediaFunctions.getMedia(url, function(data) {
 		data.formatDate = BBXFunctions.formatDate;
 		data.media = data.medias[0];
@@ -80,7 +82,7 @@ define([
 		    $('.request-copy').addClass('requested-copy').removeClass('request-copy');		    
 		});
 		
-	    }, {'width': '00', 'height': '300' });
+	    }, {'width': mediaWidth, 'height': mediaHeight });
 	    
 	    // who has the file
 	    var dataWhereis = new MediaModel([], {url: urlWhereis});

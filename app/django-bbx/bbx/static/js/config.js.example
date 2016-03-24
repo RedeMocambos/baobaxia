@@ -26,6 +26,10 @@ BBX.config = {
 	"fullSize": {
 	    "width": "0",
 	    "height": window.innerHeight
+	},
+	"mediaView": {
+	    "width": "0",
+	    "height": "400"
 	}
     }
 }
