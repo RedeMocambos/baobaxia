@@ -1611,6 +1611,12 @@ define([
 		url += '/bbx/search';
 	    }
 	}
+
+	// remove shuffle
+	if (url.match('shuffle')) {
+	    matches = url.match('(.*)/shuffle(.*)$');
+	    url = matches[1] + matches[2];
+	}
 	
 	__check_ordering = function(url, multiple) {
 	    var multiple = multiple || false;
