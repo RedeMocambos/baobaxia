@@ -52,6 +52,8 @@ define([
 		var compiledContent = _.template(LoginTemplate, data);
 		$('#content').html(compiledContent);
 
+		// set focus to login
+		$('#mocambola').focus();
 	    }
 	    
 	    // get mucuas 
