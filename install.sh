@@ -16,6 +16,15 @@ PACK_DIR='/root/baobaxia'
 BBX_LOCAL_REPO='/root/baobaxia'
 BBX_REMOTE_REPO='https://github.com/RedeMocambos/baobaxia'
 
+while getopts i:s:-: opts; do
+   case ${opts} in
+      -)
+         case "${OPTARG}" in
+           reconfigure-no-net) NET="no";;
+         esac ;;
+   esac
+done
+
 create_user() {
     USERNAME=$1
     USER_UID=$2
@@ -30,28 +39,30 @@ create_user() {
 
 # PRE: pkgs:
 
-# dependencies: se for deb pkg, tirar
-COMMON_PKG="git git-annex-standalone nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff5-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext"
-DEBIAN_PKG="libjpeg62-turbo-dev"
-UBUNTU_PKG="libjpeg-turbo8-dev"
+if [[ "$NET" != "no" ]]; then
+  # dependencies: se for deb pkg, tirar
+  COMMON_PKG="git git-annex-standalone nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff5-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext"
+  DEBIAN_PKG="libjpeg62-turbo-dev"
+  UBUNTU_PKG="libjpeg-turbo8-dev"
 
-if [ ! -f /usr/bin/lsb_release ]; then
+  if [ ! -f /usr/bin/lsb_release ]; then
+    apt-get update
+    apt-get install -y lsb-release
+  fi
+  DISTRO_VERSION="$(lsb_release -c -s)"
+
+  if [ -n "$(grep -i ubuntu /etc/os-release )" ]; then
+    PACKAGES="$COMMON_PKG $UBUNTU_PKG"
+  else
+    PACKAGES="$COMMON_PKG $DEBIAN_PKG"
+  fi
+
+  wget -q -O- http://neuro.debian.net/lists/${DISTRO_VERSION}.gr.full > /etc/apt/sources.list.d/neurodebian.sources.list
+  apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 0xA5D32F012649A5A9
+
   apt-get update
-  apt-get install -y lsb-release
+  apt-get install -y $PACKAGES || exit 1
 fi
-DISTRO_VERSION="$(lsb_release -c -s)"
-
-if [ -n "$(grep -i ubuntu /etc/os-release )" ]; then
-  PACKAGES="$COMMON_PKG $UBUNTU_PKG"
-else
-  PACKAGES="$COMMON_PKG $DEBIAN_PKG"
-fi
-
-wget -q -O- http://neuro.debian.net/lists/${DISTRO_VERSION}.gr.full > /etc/apt/sources.list.d/neurodebian.sources.list
-apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 0xA5D32F012649A5A9
-
-apt-get update
-apt-get install -y $PACKAGES || exit 1
 
 ### cria diretorio basico
 mkdir -p $DEFAULT_REPOSITORY_DIR
@@ -254,39 +265,41 @@ sed -i "s/dpadua/${MUCUA}/" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/static/js/c
 
 
 ### instalacao do baobaxia
-echo ""
-echo "Criando ambiente virtual do python ..."
-pip install --upgrade pip
-# atualiza mapa das variaveis de ambiente
-hash -r
-# cria ambiente virtual
-pip install virtualenv
-#cp $PACK_DIR/$PACK_FILE $INSTALL_DIR/
-chown root:$USER_BBX $INSTALL_DIR/envs
-chmod 775 $INSTALL_DIR/envs
-#xhost +
-su - $USER_BBX -c "
-virtualenv $INSTALL_DIR/envs/bbx ;
-. $INSTALL_DIR/envs/bbx/bin/activate ;
-pip install --upgrade setuptools ;
-cd $INSTALL_DIR;
-pip install argparse;
-pip install django==1.6.7;
-pip install django-extensions;
-pip install djangorestframework==2.4.4;
-pip install gunicorn;
-pip install six;
-pip install Pillow;
-pip install sorl-thumbnail;
-pip install south;
-pip install wheel;
-pip install wsgiref;
-pip install python-magic;
-pip install python-memcached;
-pip install longerusername;
-pip install djangorestframework-jwt;
-pip install celery==3.1.14
-"
+if [[ "$NET" != "no" ]]; then
+  echo ""
+  echo "Criando ambiente virtual do python ..."
+  pip install --upgrade pip
+  # atualiza mapa das variaveis de ambiente
+  hash -r
+  # cria ambiente virtual
+  pip install virtualenv
+  #cp $PACK_DIR/$PACK_FILE $INSTALL_DIR/
+  chown root:$USER_BBX $INSTALL_DIR/envs
+  chmod 775 $INSTALL_DIR/envs
+  #xhost +
+  su - $USER_BBX -c "
+  virtualenv $INSTALL_DIR/envs/bbx ;
+  . $INSTALL_DIR/envs/bbx/bin/activate ;
+  pip install --upgrade setuptools ;
+  cd $INSTALL_DIR;
+  pip install argparse;
+  pip install django==1.6.7;
+  pip install django-extensions;
+  pip install djangorestframework==2.4.4;
+  pip install gunicorn;
+  pip install six;
+  pip install Pillow;
+  pip install sorl-thumbnail;
+  pip install south;
+  pip install wheel;
+  pip install wsgiref;
+  pip install python-magic;
+  pip install python-memcached;
+  pip install longerusername;
+  pip install djangorestframework-jwt;
+  pip install celery==3.1.14
+  "
+fi
 
 echo ""
 echo "Definindo permissões do baobáxia ..."
