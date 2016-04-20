@@ -1,13 +1,13 @@
 {% load i18n %}
 <div id="sidebar">
-  <% if (_.isEmpty(BBX.config.profile)) { %><div id="link-login"><a class="" href='#login'>{% trans "do login" %}</a></div><% } %>
+  <% if (_.isEmpty(BBX.config.profile)) { %><div id="link-login"><a class="" href='#login' title="{% trans "do login" %}">{% trans "do login" %}</a></div><% } %>
   <div id="user-profile"></div>
   <div class="sidebar-inner">
     <div id="mucua-profile"></div>
 
     <div id="box-mucuas">
       <h3 id="btn-list-mucuas"><div class="mucua-grey"></div><%= '{% trans "mucuas" %}'.toUpperCase() %></h3>
-      <h5 id="visualize-rede">{% trans "browse the network" %}</h5>
+      <h5 id="visualize-rede" title="{% trans "browse the network" %}">{% trans "browse the network" %}</h5>
     </div>
 
     <div id="list-mucuas-container">

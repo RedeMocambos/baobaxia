@@ -1,15 +1,15 @@
 {% load i18n %}
 <div id="header-top">
-   <div id="header-image"><a id="logo-baobaxia" href="<%= BBX.config.defaultHome %>"><img src="images/logo-baobaxia.png" border="0"></a></div>
+   <div id="header-image"><a id="logo-baobaxia" href="<%= BBX.config.defaultHome %>"><img src="images/logo-baobaxia.png" border="0" alt="Baobáxia"></a></div>
   <p class="posicoes">{% trans "Header" %}</p>
   <div id="title-mucua">
   </div>
 </div>
 <div id="header-bottom">
   <div class="media-display-type">
-    <a alt="{% trans 'shuffle' %}"><div class="shuffle"></div></a>
-    <a alt="{% trans 'view as grid' %}"><div class="grid"></div></a>
-    <a alt="{% trans 'view as list' %}"><div class="list"></div></a>
+    <a alt="{% trans 'shuffle' %}"><div class="shuffle" title="{% trans 'shuffle' %}"></div></a>
+    <a alt="{% trans 'view as grid' %}"><div class="grid" title="{% trans 'view as grid' %}"></div></a>
+    <a alt="{% trans 'view as list' %}"><div class="list" title="{% trans 'view as list' %}"></div></a>
     <% if (isLogged()) {
          if (isEditable) {
        %>
@@ -21,7 +21,7 @@ var url = Backbone.history.location.href,
     var orderby = (url.match('orderby')) ? '/orderby/' + url.split('/orderby/')[1] : '';
 
 print(orderby + limit); 
-    %>/edit" alt="{% trans 'Multiple edit' %}"><div class="multiple-edit"></div></a>
+    %>/edit" alt="{% trans 'Multiple edit' %}"><div class="multiple-edit" title="{% trans 'Multiple edit' %}"></div></a>
     <%   }
        } %>
     

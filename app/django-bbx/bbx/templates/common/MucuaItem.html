@@ -1,5 +1,5 @@
 <% _.each(mucuas, function(mucua) { %>
 <div class="cell-mucua">
-  <a href="<%=config.interfaceUrl%><%=config.MYREPOSITORY %>/<%= mucua.description %>/bbx/search"><%= mucua.description %></a>
+  <a href="<%=config.interfaceUrl%><%=config.MYREPOSITORY %>/<%= mucua.description %>/bbx/search" title="<%= mucua.description %>" alt="<%= mucua.description %>"><%= mucua.description %></a>
 </div>
 <% }); %>

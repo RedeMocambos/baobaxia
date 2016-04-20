@@ -2,7 +2,7 @@
 <div id="tags">
   <% _.each(tags, function(tag) { %>
   <div class="tag-item">
-    <a href="<% print(BBX.config.interfaceUrl + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/' + tag.name) %>" rel="<%= tag.tag_count %>"><%= tag.name %></a>
+    <a href="<% print(BBX.config.interfaceUrl + BBX.config.repository + '/' + BBX.config.mucua + '/bbx/search/' + tag.name) %>" rel="<%= tag.tag_count %>" title="<%= tag.name %>" alt="<%= tag.name %>"><%= tag.name %></a>
   </div>
   <% }) %>
 </div>

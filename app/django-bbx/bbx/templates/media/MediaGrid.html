@@ -6,7 +6,7 @@
     <!-- edit button if logged -->
     <% if (BBXFunctions.isLogged()) { %>
     <div class="edit">
-      <a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">
+      <a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit" title="{% trans 'edit' %}" alt="{% trans 'edit' %}">
 	<img src="images/edit-media-pq.png" />
       </a>
     </div>
@@ -32,12 +32,12 @@
       </a>
       <% } else if (media.type == 'arquivo') { %>     
       <a href="<%= media.url %>">
-	<img class="<%= media.type %>" alt="<%= media.type%>" src="images/icon-arquivo-active.png" /><br/>{% trans "view/download" %}
+	<img class="<%= media.type %>" title="<%= media.type %>" alt="<%= media.type%>" src="images/icon-arquivo-active.png" /><br/>{% trans "view/download" %}
       </a>
       <% } %>
     </div>
     <% } else { %>
-    <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+    <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>" title="{% trans 'view media' %} <%= media.name %>" alt="{% trans 'view media' %}">
       <div class="icon-media not_local">
 	<img alt="<%= media.type%>" src="images/icon-<%=media.type%>-active.png" /><br/>
       </div>
@@ -47,7 +47,7 @@
   </div>
   <div class="title">
     <span>    
-      <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>">
+      <a href="#<%= media.repository %>/<%= media.origin %>/media/<%= media.uuid %>"  title="<%= media.name %>"">
 	<% print(BBXFunctions.truncate(media.name, 35, '...')); %>
       </a>
     </span>

@@ -27,20 +27,20 @@ _.each(typeFilters, function(filterName) {
     <span class="title">{% trans "Filters" %}</span>
 
     <a href="<% print(parseFilterLink(currentUrl, typeFilters, 'imagem')) %>" alt="{% trans "image" %}">
-      <div class="file-type image <% print(currentFilter['imagem']) %>">&nbsp;</div>
+      <div class="file-type image <% print(currentFilter['imagem']) %>" title="{% trans "image" %}">&nbsp;</div>
     </a>
     <a href="<% print(parseFilterLink(currentUrl, typeFilters, 'video')) %>" alt="{% trans "video" %}">
-      <div class="file-type video <% print(currentFilter['video']) %>">&nbsp;</div>
+      <div class="file-type video <% print(currentFilter['video']) %>" title="{% trans "video" %}">&nbsp;</div>
     </a>
     <a href="<% print(parseFilterLink(currentUrl, typeFilters, 'audio')) %>" alt="{% trans "audio" %}">
-      <div class="file-type audio <% print(currentFilter['audio']) %>">&nbsp;</div>
+      <div class="file-type audio <% print(currentFilter['audio']) %>" title="{% trans "audio" %}">&nbsp;</div>
     </a>
     <a href="<% print(parseFilterLink(currentUrl, typeFilters, 'arquivo')) %>" alt="{% trans "file" %}">
-      <div class="file-type arquivo <% print(currentFilter['arquivo']) %>">&nbsp</div>
+      <div class="file-type arquivo <% print(currentFilter['arquivo']) %>" title="{% trans "file" %}">&nbsp</div>
     </a>
     <div class="separator"></div>
-    <div id="is_local" alt="{% trans "Is local" %}">&nbsp;</div>
-    <div id="is_requested" alt="{% trans "Is requested" %}">&nbsp;</div>
+    <div id="is_local" title="{% trans "Is local" %}">&nbsp;</div>
+    <div id="is_requested" title="{% trans "Is requested" %}">&nbsp;</div>
     <div class="separator"></div>
     <div id="itens_per_page"><input type="number" name="itens_per_page" value="<% print(getLimit()); %>"> <span>{% trans "per page" %}</span></div>
   </div>

@@ -13,7 +13,7 @@
     <li class="rede current">
       <div class="esq"></div>
       <div class="link">
-	<a href="#<%= config.repository %>/rede/<%= config.subroute %>">
+	<a href="#<%= config.repository %>/rede/<%= config.subroute %>" title="{% trans "network" %}">
 	  <div>{% trans "network" %}</div>
 	</a>
         </div>
@@ -21,7 +21,7 @@
     </li>
     <% } else {%>
     <li class="rede">    
-      <a href="#<%= config.MYREPOSITORY %>/rede/<%= config.subroute %>">
+      <a href="#<%= config.MYREPOSITORY %>/rede/<%= config.subroute %>" title="{% trans "network" %}">
 	  <div>{% trans "network" %}</div>
     </li>
     <% } %>
@@ -30,12 +30,12 @@
        if ((matches[1] === config.MYMUCUA) || (!currentUrl.match(/rede/) && config.mucua != config.MYMUCUA && config.mucua != 'rede')) { %>
     <li class="mucua current">
       <div class="esq"></div>
-      <div class="link"><a href="#<%= config.repository %>/<%= config.mucua %>/<%= config.subroute %>"><%= config.mucua %></a></div>
+      <div class="link"><a href="#<%= config.repository %>/<%= config.mucua %>/<%= config.subroute %>" title="<%= config.mucua %>"><%= config.mucua %></a></div>
       <div class="dir"></div>
     </li>
     <% } else { %>
     <li class="mucua">    
-      <a href="#<%= config.MYREPOSITORY %>/<%= config.MYMUCUA %>/<%= config.subroute %>"><%= config.MYMUCUA %></a>
+      <a href="#<%= config.MYREPOSITORY %>/<%= config.MYMUCUA %>/<%= config.subroute %>" title="<%= config.MYMUCUA %>"><%= config.MYMUCUA %></a>
     </li>
     <% } %>
     <% _.each(lastVisitedMucuas, function(mucuaName, i) {

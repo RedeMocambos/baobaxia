@@ -7,7 +7,7 @@
     <div class="block-2 content-div">
       <% if (isLogged()) { %>
       <div class="link-edit-media">
-	<a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit">
+	<a href="<%= '#' + media.repository + '/' + media.origin +  '/media/' + media.uuid %>/edit" title="{% trans 'edit media' %}">
 	  <img src="images/edit-media.png" />
 	</a>
       </div>
@@ -15,28 +15,28 @@
       
       <table class="block-title">
 	<tr>
-	  <td class="left">Por</td>
-	  <td class="right"><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>"><%= media.author.split('@')[0] %></a></td>
+	  <td class="left">{% trans "By" %}</td>
+	  <td class="right"><a href="<% print('#' + media.repository + '/' + media.origin + '/mocambola/' + media.author) %>" title="{% trans "By" %}: <%= media.author %>"><%= media.author.split('@')[0] %></a></td>
 	</tr>
 	<tr>
-	  <td class="left">Data</td>
-	  <td class="right"><%= formatDate(media.date) %></td>
+	  <td class="left">{% trans "Date" %}</td>
+	  <td class="right" title="{% trans "Date" %}: <%= media.date %>"><%= formatDate(media.date) %></td>
 	</tr>
 	<tr>
-	  <td class="left">Mucua</td>
-	  <td class="right"><a href="<% print('#' + media.repository + '/' + media.origin) %>"><%= media.origin %></a></td>
+	  <td class="left">{% trans "Mucua" %}</td>
+	  <td class="right"><a href="<% print('#' + media.repository + '/' + media.origin) %>" title="{% trans "mucua" %}: <%= media.origin %>" alt="{% trans "mucua" %}: <%= media.origin %>"><%= media.origin %></a></td>
 	</tr>
 	<tr>
-	  <td class="left">Formato</td>
-	  <td class="right"><%= media.format %></td>
+	  <td class="left">{% trans "Format" %}</td>
+	  <td class="right" title="{% trans "Format" %}: <%= media.format %>"><%= media.format %></td>
 	</tr>
 	<tr>
-	  <td class="left">Tamanho</td>
-	  <td class="right">0GB</td>
+	  <td class="left">{% trans "Size" %}</td>
+	  <td class="right" title="{% trans "Size" %}">0GB</td>
 	</tr>
 	<tr>
-	  <td class="left">Licença</td>
-	  <td class="right license-image license-<%= media.license %>"></td>
+	  <td class="left">{% trans "License" %}</td>
+	  <td class="right license-image license-<%= media.license %>" title="<%= media.license %>"></td>
 	</tr>
       </table>
       
@@ -47,13 +47,13 @@
       <div class="blocks">
 	<p class="tags">
 	  <% _.each(media.tags, function(tagName) { %>
-	  <a href="<% print('#' + media.repository + '/' + media.origin +  '/bbx/search/' + tagName) %>"><%= tagName %></a>&nbsp;
+	  <a href="<% print('#' + media.repository + '/' + media.origin +  '/bbx/search/' + tagName) %>" title="<%= tagName %>"><%= tagName %></a>&nbsp;
 	  <% }); %>
 	</p>      
       </div>
       <% } %>
       <div class="blocks">
-	<h3 class="quem-tem title">{% trans "Who was this file?" %}</h3>	
+	<h3 class="quem-tem title">{% trans "Who has this file?" %}</h3>	
 	<p class="quem-tem">
 	  <span id="whereis">&nbsp;</span>
 	</p>
@@ -83,10 +83,10 @@
 	<% } else if (media.type == 'audio') { %>
 	<audio controls src="<%= media.url %>" />
 	<% } else if (media.type ='arquivo') { %>
-	<a href="<%= media.url %>" class="download" alt="baixar"><div class="download">&nbsp;</div>baixar </a>
+	<a href="<%= media.url %>" class="download" title="{% trans "download" %}"><div class="download">&nbsp;</div>{% trans "download" %} </a>
 	<% } %>
       <% } else { %>
-      Sem visualização disponível
+      {% trans "No visualization available" %}
       <% } %>
 
       <% if (media.note != '') { %>
@@ -100,9 +100,9 @@
     <% if (media.is_local) { %>
     <div class="blocks">
       <% if (media.type !=='arquivo') { %>
-      <a href="<%= media.url %>" class="download" alt="baixar"><div class="download">&nbsp;</div>baixar </a>
+      <a href="<%= media.url %>" class="download" alt="baixar" title="{% trans "download" %}"><div class="download">&nbsp;</div>{% trans "download" %} </a>
       <p class="">
-      Conteúdo local
+      {% trans "Local content" %}
       </p>
       <% } %>
     </div>
