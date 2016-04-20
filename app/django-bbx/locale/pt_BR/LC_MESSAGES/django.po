@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-15 14:58-0300\n"
+"POT-Creation-Date: 2016-04-20 18:26-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,6 +78,7 @@ msgid "Mocambola"
 msgstr "Mocambola"
 
 #: bbx/templates/auth/LoginTemplate.html:26
+#: bbx/templates/media/MediaView.html:26
 msgid "Mucua"
 msgstr "Mucua"
 
@@ -135,25 +136,25 @@ msgstr "Usuári@ já existe!"
 msgid "Filters"
 msgstr "Filtros"
 
-#: bbx/templates/common/Buscador.html:29
+#: bbx/templates/common/Buscador.html:29 bbx/templates/common/Buscador.html:30
 msgid "image"
 msgstr "imagem"
 
-#: bbx/templates/common/Buscador.html:32
+#: bbx/templates/common/Buscador.html:32 bbx/templates/common/Buscador.html:33
 msgid "video"
 msgstr "vídeo"
 
-#: bbx/templates/common/Buscador.html:35
+#: bbx/templates/common/Buscador.html:35 bbx/templates/common/Buscador.html:36
 msgid "audio"
 msgstr "áudio"
 
-#: bbx/templates/common/Buscador.html:38
+#: bbx/templates/common/Buscador.html:38 bbx/templates/common/Buscador.html:39
 msgid "file"
 msgstr "arquivo"
 
 #: bbx/templates/common/Buscador.html:42
 msgid "Is local"
-msgstr "local"
+msgstr "É local"
 
 #: bbx/templates/common/Buscador.html:43
 msgid "Is requested"
@@ -192,7 +193,8 @@ msgstr "Edição múltipla"
 msgid "Menu"
 msgstr "Menu"
 
-#: bbx/templates/common/Menu.html:17 bbx/templates/common/Menu.html.py:25
+#: bbx/templates/common/Menu.html:16 bbx/templates/common/Menu.html.py:17
+#: bbx/templates/common/Menu.html:24 bbx/templates/common/Menu.html.py:25
 msgid "network"
 msgstr "rede"
 
@@ -201,6 +203,7 @@ msgid "Search at "
 msgstr "Buscar em "
 
 #: bbx/templates/common/MucuaProfile.html:3
+#: bbx/templates/media/MediaView.html:27
 msgid "mucua"
 msgstr "mucua"
 
@@ -301,6 +304,10 @@ msgstr "espaço demandado:"
 msgid "support / about baobaxia"
 msgstr "apoio / sobre o baobáxia"
 
+#: bbx/templates/common/UserProfile.html:13
+msgid "Logout"
+msgstr "Sair"
+
 #: bbx/templates/media/BackToSearch.html:4
 msgid "back to search"
 msgstr "voltar para a busca"
@@ -341,6 +348,7 @@ msgstr "Descrição"
 
 #: bbx/templates/media/MediaGalleryCreate.html:35
 #: bbx/templates/media/MediaPublish.html:99
+#: bbx/templates/media/MediaView.html:38
 msgid "License"
 msgstr "Licença"
 
@@ -424,6 +432,7 @@ msgstr "Nome"
 #: bbx/templates/media/MediaGalleryEdit.html:42
 #: bbx/templates/media/MediaGalleryEditItem.html:32
 #: bbx/templates/media/MediaPublish.html:88
+#: bbx/templates/media/MediaView.html:22 bbx/templates/media/MediaView.html:23
 msgid "Date"
 msgstr "Data"
 
@@ -445,9 +454,17 @@ msgstr "Atualizar mídia"
 msgid "Edit media"
 msgstr "Editar mídia"
 
+#: bbx/templates/media/MediaGrid.html:9
+msgid "edit"
+msgstr "editar"
+
 #: bbx/templates/media/MediaGrid.html:35
 msgid "view/download"
 msgstr "ver/baixar"
+
+#: bbx/templates/media/MediaGrid.html:40
+msgid "view media"
+msgstr "visualizar mídia"
 
 #: bbx/templates/media/MediaList.html:8 bbx/templates/media/MediaList.html:28
 #: media/models.py:207 repository/models.py:506
@@ -513,7 +530,7 @@ msgstr "requisitado"
 
 #: bbx/templates/media/MediaList.html:85
 msgid "is_local"
-msgstr "local"
+msgstr "é local"
 
 #: bbx/templates/media/MediaList.html:91
 msgid "request"
@@ -556,6 +573,7 @@ msgid "Author"
 msgstr "Author"
 
 #: bbx/templates/media/MediaPublish.html:97
+#: bbx/templates/media/MediaView.html:30 bbx/templates/media/MediaView.html:31
 msgid "Format"
 msgstr "Formato"
 
@@ -607,13 +625,38 @@ msgstr "Erro ao atualizar a mídia!"
 msgid "Media updated!"
 msgstr "Mídia atualizada!"
 
+#: bbx/templates/media/MediaView.html:10
+msgid "edit media"
+msgstr "editar mídia"
+
+#: bbx/templates/media/MediaView.html:18 bbx/templates/media/MediaView.html:19
+msgid "By"
+msgstr "Por"
+
+#: bbx/templates/media/MediaView.html:34 bbx/templates/media/MediaView.html:35
+msgid "Size"
+msgstr "Tamanho"
+
 #: bbx/templates/media/MediaView.html:56
-msgid "Who was this file?"
-msgstr "quem tem esse arquivo?"
+msgid "Who has this file?"
+msgstr "Quem tem esse arquivo?"
 
 #: bbx/templates/media/MediaView.html:63
 msgid "Drop local copy"
 msgstr "Apagar cópia local"
+
+#: bbx/templates/media/MediaView.html:86
+#: bbx/templates/media/MediaView.html:103
+msgid "download"
+msgstr "ver/baixar"
+
+#: bbx/templates/media/MediaView.html:89
+msgid "No visualization available"
+msgstr "Sem visualização disponível"
+
+#: bbx/templates/media/MediaView.html:105
+msgid "Local content"
+msgstr "Conteúdo local"
 
 #: bbx/templates/media/MessageRequest.html:3
 msgid "local copy requested - pending"
@@ -625,7 +668,7 @@ msgstr "solicitar cópia local"
 
 #: bbx/templates/mocambola/HomeMocambola.html:10
 msgid "Enabled language: "
-msgstr "Língua habilitada"
+msgstr "Língua habilitada: "
 
 #: bbx/templates/mocambola/HomeMocambola.html:13
 msgid "change language"
@@ -771,18 +814,15 @@ msgstr "mídia atualizada - OK"
 msgid "error while creating media"
 msgstr "erro ao criar a mídia"
 
-#: media/views.py:652
-#, fuzzy, python-format
+#: media/views.py:654
 msgid "Requested media of uuid %(uuid)s"
 msgstr "Mídia de uuid %s requisitada"
 
-#: media/views.py:665
-#, fuzzy, python-format
+#: media/views.py:667
 msgid "Dropped media of uuid %(uuid)s"
 msgstr "Removida mídia de uuid %s"
 
-#: media/views.py:679
-#, fuzzy, python-format
+#: media/views.py:681
 msgid "Removed media of uuid %(uuid)s"
 msgstr "Mídia de uuid %s requisitada"
 
@@ -911,17 +951,8 @@ msgstr "Revisão é"
 #~ msgid "archive"
 #~ msgstr "arquivo"
 
-#~ msgid "By"
-#~ msgstr "Por"
-
-#~ msgid "Size"
-#~ msgstr "Tamanho"
-
 #~ msgid "who was this file?"
 #~ msgstr "quem tem esse arquivo?"
-
-#~ msgid "Local content"
-#~ msgstr "Conteúdo local"
 
 #~ msgid "cloud"
 #~ msgstr "nuvem"
