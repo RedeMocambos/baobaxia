@@ -1,16 +1,14 @@
 define([
     'jquery', 
     'lodash',
-    'backbone', 
+    'backbone',
+    'template_manager', 
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!/templates/' + BBX.userLang + '/media/MediaView.html',
-    'text!/templates/' + BBX.userLang + '/media/MessageRequest.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaDropMessage.html',
+    'text!/templates/' + BBX.userLang + '/media/MediaView.html',    
     'text!/templates/' + BBX.userLang + '/media/BackToSearch.html',
-    'text!/templates/' + BBX.userLang + '/media/MucuaHasFile.html',
-], function($, _, Backbone, BBXFunctions, MediaFunctions, MediaModel, MediaViewTpl, MessageRequestTpl, MediaDropMessageTpl, BackToSearchTpl, MucuaHasFileTpl){
+], function($, _, Backbone, TemplateManagerInstance, BBXFunctions, MediaFunctions, MediaModel, MediaViewTpl, BackToSearchTpl){
     
     var MediaView = Backbone.View.extend({
 	
@@ -26,21 +24,23 @@ define([
 	    
 	    // pergunta se vai excluir cópia local do arquivo
 	    var askDrop = function() {
-		var config = BBX.config,		    
-		    dropMedia = confirm(MediaDropMessageTpl);
+		var config = BBX.config;
 		
-		if (dropMedia) {
-		    var urlDrop = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid + '/drop',
-			mediaDrop = new MediaModel([], {url: urlDrop});
-		    
-		    mediaDrop.fetch({
-			success: function() {
-			    setTimeout(function(){
-				window.location.reload();
-			    }, 500);
-			}
-		    });
-		}
+		TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaDropMessage.html', function (MediaDropMessageTpl) {
+		    var dropMedia = confirm(MediaDropMessageTpl);
+		    if (dropMedia) {
+			var urlDrop = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid + '/drop',
+			    mediaDrop = new MediaModel([], {url: urlDrop});
+			
+			mediaDrop.fetch({
+			    success: function() {
+				setTimeout(function(){
+				    window.location.reload();
+				}, 500);
+			    }
+			});
+		    }		    
+		});
 	    }
 	    
 	    if (userData) {
@@ -75,11 +75,20 @@ define([
 		$('#content').html(_.template(MediaViewTpl, data));
 		$('#drop-local-copy').on('click', function() {askDrop(media)});
 		if (!data.media.is_local) {
-		    $('#message-request').html(_.template(MessageRequestTpl, data));
+		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MessageRequest.html', function(MessageRequestTpl) {
+			$('#message-request').html(_.template(MessageRequestTpl, data));
+		    });
+		    
 		}
 		MediaFunctions.bindRequest(uuid, '.request-copy', function() {
-		    $('#message-request').html(_.template(MessageRequestTpl, data));
-		    $('.request-copy').addClass('requested-copy').removeClass('request-copy');		    
+		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MessageRequest.html', function(MessageRequestTpl) {
+			var requestData =  {
+			    'media': {'is_requested': true}
+			};
+			
+			$('#message-request').html(_.template(MessageRequestTpl, requestData));
+			$('.request-copy').addClass('requested-copy').removeClass('request-copy');
+		    });		    
 		});
 		
 	    }, {'width': mediaWidth, 'height': mediaHeight });
@@ -88,13 +97,15 @@ define([
 	    var dataWhereis = new MediaModel([], {url: urlWhereis});
 	    dataWhereis.fetch({
 		success: function() {
-		    var mucuas = dataWhereis.attributes.whereis;		    
-		    _.each(mucuas, function(mucua) {
-			var data = {
-			    config: config,
-			    mucua: mucua
-			};
-			$('#whereis').append(_.template(MucuaHasFileTpl, data));
+		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MucuaHasFile', function(MucuaHasFileTpl) {
+			var mucuas = dataWhereis.attributes.whereis;
+			_.each(mucuas, function(mucua) {
+			    var data = {
+				config: config,
+				mucua: mucua
+			    };
+			    $('#whereis').append(_.template(MucuaHasFileTpl, data));
+			});
 		    });
 		}
 	    });

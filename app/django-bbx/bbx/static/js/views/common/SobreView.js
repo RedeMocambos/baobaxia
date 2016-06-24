@@ -2,8 +2,7 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'text!/templates/' + BBX.userLang + '/common/Sobre.html',
-], function($, _, Backbone, SobreTpl){
+], function($, _, Backbone){
     var SobreView = Backbone.View.extend({
 	render: function() {
 	    var config = BBX.config,
@@ -17,7 +16,10 @@ define([
 	    
 	    BBXFunctions.renderSidebar();
 	    BBXFunctions.renderUsage();
-	    $('#content').html(_.template(SobreTpl));
+
+	    $.get('/templates/' + BBX.userLang + '/common/Sobre.html', function(SobreTpl) {
+		$('#content').html(_.template(SobreTpl));
+	    });
 	}
     });
     return SobreView;

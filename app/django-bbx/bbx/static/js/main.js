@@ -64,6 +64,7 @@ require.config({
         text: 'lib/require/text',
 	fileupload_iframe_transport: 'lib/jquery.iframe-transport',
 	fileupload: 'lib/jquery.fileupload',
+	template_manager: 'lib/template.manager',
     },
     waitSeconds: 200
 });
