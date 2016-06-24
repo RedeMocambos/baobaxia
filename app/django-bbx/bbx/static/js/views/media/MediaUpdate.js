@@ -9,10 +9,9 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!/templates/' + BBX.userLang + '/media/MediaPublish.html',
     'text!/templates/' + BBX.userLang + '/media/MediaConfirmRemoveMessage.html',
     'text!/templates/' + BBX.userLang + '/media/MediaRemoveMessage.html',
-], function($, _, jQueryForm, Backbone, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MediaPublishTpl, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
+], function($, _, jQueryForm, Backbone, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
     var MediaUpdate = Backbone.View.extend({
 	
 	__swapLicence: function() {
@@ -76,50 +75,53 @@ define([
 			pageTitle: 'Editar conteúdo'
 		    }
 		    BBX.media = media;
-		    var compiledTpl = _.template(MediaPublishTpl, data);
-		    MediaFunctions.__parseMenuSearch();
-		    
-		    $('#content').html(compiledTpl);  
-		    $('#origin').append("<option value='" + media.attributes.origin + "'>" + media.attributes.origin + "</option>");
-		    $('#origin').prop('disabled', true);
-		    
-		    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
-		    var tags_arr = media.attributes.tags,
-			tags_str = tags_arr.join('/');
-		    $('#tags').textext({
-			plugins : 'tags autocomplete ajax',
-			tagsItems: tags_arr,
-			ajax : {
-			    url : urlApiTags,
-			    dataType : 'json'
-			},
+
+		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaPublish.html', function(MediaPublishTpl) {		    
+			var compiledTpl = _.template(MediaPublishTpl, data);
+			$('#content').html(compiledTpl);
+
+			MediaFunctions.__parseMenuSearch();
+			
+			$('#origin').append("<option value='" + media.attributes.origin + "'>" + media.attributes.origin + "</option>");
+			$('#origin').prop('disabled', true);
+			
+			var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
+			var tags_arr = media.attributes.tags,
+			    tags_str = tags_arr.join('/');
+			$('#tags').textext({
+			    plugins : 'tags autocomplete ajax',
+			    tagsItems: tags_arr,
+			    ajax : {
+				url : urlApiTags,
+				dataType : 'json'
+			    },
+			});
+			
+			// eventos		  
+			$('#license').on('change', swapLicense);
+			
+			$('#submit').on('click', function() { updateMedia(); });
+			$('#view-media').on('click', function() { 
+			    window.location.href = urlMediaView;
+			});
+			$('#delete-media').on('click', function() {
+			    var deleteMedia = confirm(MediaConfirmRemoveMessageTpl);
+			    if (deleteMedia) {
+				var urlDelete = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid + '/remove',
+				    mediaDelete = new MediaModel([], {url: urlDelete}),
+				    urlRedirect = config.interfaceUrl + config.repository + '/' +  config.mucua + '/bbx/search';
+				
+				mediaDelete.fetch({
+				    success: function() {
+					$('.buttons').prepend(MediaRemoveMessageTpl);
+					setTimeout(function(){
+					    window.location.href = urlRedirect;
+					}, 1000);
+				    }
+				});
+			    }	
+			});
 		    });
-		    
-		    // eventos		  
-		    $('#license').on('change', swapLicense);
-		    
-		    $('#submit').on('click', function() { updateMedia(); });
-		    $('#view-media').on('click', function() { 
-			window.location.href = urlMediaView;
-		    });
-		    $('#delete-media').on('click', function() {
-			var deleteMedia = confirm(MediaConfirmRemoveMessageTpl);
-			if (deleteMedia) {
-			    var urlDelete = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid + '/remove',
-				mediaDelete = new MediaModel([], {url: urlDelete}),
-				urlRedirect = config.interfaceUrl + config.repository + '/' +  config.mucua + '/bbx/search';
-			    
-			    mediaDelete.fetch({
-				success: function() {
-				    $('.buttons').prepend(MediaRemoveMessageTpl);
-				    setTimeout(function(){
-					window.location.href = urlRedirect;
-				    }, 1000);
-				}
-			    });
-			}	
-		    });
-		    
 		}
 	    });
 	},

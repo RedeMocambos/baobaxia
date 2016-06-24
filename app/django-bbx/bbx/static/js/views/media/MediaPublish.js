@@ -7,12 +7,8 @@ define([
     'modules/media/functions',
     'modules/media/model',
     'modules/mucua/model',
-    'modules/mucua/collection',
-    'text!/templates/' + BBX.userLang + '/media/MediaPublish.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaPublishInvalidFileType.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateValidationErrorMessage.html',    
-    'text!/templates/' + BBX.userLang + '/common/PermissionDenied.html'
-], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaPublishTpl, MediaPublishInvalidFileTypeTpl, MediaGalleryCreateValidationErrorMessageTpl, PermissionDeniedTpl){
+    'modules/mucua/collection'
+], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection){
     
     var MediaPublish = Backbone.View.extend({	
 	render: function(){
@@ -24,11 +20,13 @@ define([
 		mucuas = null;
 
 	    if (!BBXFunctions.isLogged()) {
-		$('#content').html(PermissionDeniedTpl);
-		setTimeout(function() {
-		    document.location.hash = BBXFunctions.getDefaultHome();
-		}, 2000);
-		return false
+		TemplateManager.get('/templates/' + BBX.userLang + '/common/PermissionDenied', function(PermissionDeniedTpl) {
+		    $('#content').html(PermissionDeniedTpl);
+		    setTimeout(function() {
+			document.location.hash = BBXFunctions.getDefaultHome();
+		    }, 2000);
+		    return false
+		}
 	    }
 	    
 	    // begin of function definitions
@@ -90,8 +88,10 @@ define([
 	    // session user data
 	    config.userData = localStorage.userData;
 	    data = __prepareFormData();
-	    
-	    $('#content').html(_.template(MediaPublishTpl, data));
+
+	    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaPublish', function(MediaPublishTpl) {
+		$('#content').html(_.template(MediaPublishTpl, data));
+	    });
 	    MediaFunctions.__parseMenuSearch();
 	    
 	    $('#media_publish .bloco-2').hide();
@@ -178,11 +178,13 @@ define([
 			validTypes: MediaFunctions.getValidMimeTypes(),
 			format: format
 		    }
+
+		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaPublishInvalidFileType', function(MediaPublishInvalidFileType) {
+			$("#messages").html(_.template(MediaPublishInvalidFileTypeTpl, data));
+			$('#messages .error-bar').fadeIn(0,0, function() {});
+			$('#messages .error-bar').fadeTo(3000, 0, function() {});
+		    });
 		    
-		    $("#messages").html(_.template(MediaPublishInvalidFileTypeTpl, data));
-		    $('#messages .error-bar').fadeIn(0,0, function() {});
-		    $('#messages .error-bar').fadeTo(3000, 0, function() {});
-		    console.log('abcd');
 		    return false;
 		}
 	    }
@@ -206,7 +208,9 @@ define([
 		});
 		
 		if (validationError.length > 0) {
-		    $('#messages').html(_.template(MediaGalleryCreateValidationErrorMessageTpl));
+		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaGalleryCreateValidationErrorMessage', function(MediaGalleryCreateValidationErrorMessage) {
+			$('#messages').html(_.template(MediaGalleryCreateValidationErrorMessageTpl));
+		    });
 		    return false;
 		} else {
 		    return true;
