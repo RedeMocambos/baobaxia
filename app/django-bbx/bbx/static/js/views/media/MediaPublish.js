@@ -26,7 +26,7 @@ define([
 			document.location.hash = BBXFunctions.getDefaultHome();
 		    }, 2000);
 		    return false
-		}
+		});
 	    }
 	    
 	    // begin of function definitions
