@@ -8,10 +8,8 @@ define([
     'modules/repository/model',
     'modules/mucua/model',
     'modules/mucua/collection',
-    'modules/mocambola/model',
-    'text!/templates/' + BBX.userLang + '/auth/LoginTemplate.html',
-    'text!/templates/' + BBX.userLang + '/common/HeaderHome.html',
-], function($, _, Backbone, jQueryJson, AuthFunctions, BBXFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel, LoginTemplate, HeaderHomeTpl){
+    'modules/mocambola/model'
+], function($, _, Backbone, jQueryJson, AuthFunctions, BBXFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel){
     var LoginView = Backbone.View.extend({
 	el: "body",
 	
@@ -34,14 +32,16 @@ define([
 	    var config = BBX.config;
 	    
 	    var __parseTemplate = function(data) {
-		$('#header').html(_.template(HeaderHomeTpl));
-		
-		// link para pagina default  bbx/search
-		$('#header').on('click', function() {
-		    $('#header').unbind('click');
-		    window.location.href = BBXFunctions.getDefaultHome();
+		TemplateManager.get('/templates/' + BBX.userLang + '/common/HeaderHome', function(HeaderHomeTpl) {
+		    $('#header').html(_.template(HeaderHomeTpl));
+
+		    // link para pagina default  bbx/search
+		    $('#header').on('click', function() {
+			$('#header').unbind('click');
+			window.location.href = BBXFunctions.getDefaultHome();
+		    });
 		});
-		
+		    
 		// clean sidebar
 		$('#sidebar').remove();
 		
@@ -49,11 +49,13 @@ define([
 		$('body').removeClass().addClass("home login");
 		
 		// parse content
-		var compiledContent = _.template(LoginTemplate, data);
-		$('#content').html(compiledContent);
-
-		// set focus to login
-		$('#mocambola').focus();
+		TemplateManager.get('/templates/' + BBX.userLang + '/auth/LoginTemplateTpl', function(LoginTemplateTpl) {
+		    var compiledContent = _.template(LoginTemplateTpl, data);
+		    $('#content').html(compiledContent);
+		    
+		    // set focus to login
+		    $('#mocambola').focus();
+		});
 	    }
 	    
 	    // get mucuas 
