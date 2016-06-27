@@ -11,15 +11,8 @@ define([
     'modules/media/functions',
     'modules/media/model',
     'modules/mucua/model',
-    'modules/mucua/collection',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreate.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEdit.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateErrorMessage.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateValidationErrorMessage.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage.html',
-    'text!/templates/' + BBX.userLang + '/common/PermissionDenied.html'
-], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryCreateTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaGalleryCreateErrorMessageTpl, MediaGalleryCreateValidationErrorMessageTpl, MediaGalleryCreateMessageTpl, PermissionDeniedTpl){
+    'modules/mucua/collection'
+], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection){
     
     var MediaGalleryCreate = Backbone.View.extend({	
 	render: function(){
@@ -29,7 +22,9 @@ define([
 		mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.MYREPOSITORY + '/mucuas'});
 
 	    if (!BBXFunctions.isLogged()) {
-		$('#content').html(PermissionDeniedTpl);
+		TemplateManager.get('/templates/' + BBX.userLang + '/common/PermissionDenied', function(PermissionDeniedTpl) {
+		    $('#content').html(PermissionDeniedTpl);
+		});
 		setTimeout(function() {
 		    document.location.hash = BBXFunctions.getDefaultHome();
 		}, 2000);
@@ -77,8 +72,10 @@ define([
 		});
 		
 		if (validationError.length > 0) {
-		    $('#messages').html(_.template(MediaGalleryCreateValidationErrorMessageTpl));
-		    return false;
+		    TemplateManager.get('/templates/' + BBX.userLang + '/media/CreateValidationErrorMessage', function(MediaGalleryCreateValidationErrorMessageTpl) {
+			$('#messages').html(_.template(MediaGalleryCreateValidationErrorMessageTpl));
+			return false;
+		    });
 		} else {
 		    return true;
 		}
@@ -108,19 +105,22 @@ define([
 				uuid: dataResult.result.uuid
 			    }
 			};
-			$('#messages').append(_.template(MediaGalleryCreateMessageTpl, data));
-			var overallProgress = $('#fileupload').fileupload('progress');
-			if (overallProgress.loaded === overallProgress.total) {
-			    var terms = $('#fileupload').find('input[name="tags"]').val(),
-				gallery_url = '';
 
-			    terms = terms.substring(0, terms.length).replace(/\"/g,'');
-			    terms = terms.replace(/,/g, '/');
-			    console.log(terms);
-			    gallery_url = config.interfaceUrl + config.MYREPOSITORY + '/' + dataResult.result.origin + '/media/gallery/' + terms + '/edit';
-			    
-			    window.location.replace(gallery_url);
-			}
+			TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage', function(MediaGalleryCreateMessageTpl) {
+			    $('#messages').append(_.template(MediaGalleryCreateMessageTpl, data));
+			    var overallProgress = $('#fileupload').fileupload('progress');
+			    if (overallProgress.loaded === overallProgress.total) {
+				var terms = $('#fileupload').find('input[name="tags"]').val(),
+				    gallery_url = '';
+				
+				terms = terms.substring(0, terms.length).replace(/\"/g,'');
+				terms = terms.replace(/,/g, '/');
+				
+				gallery_url = config.interfaceUrl + config.MYREPOSITORY + '/' + dataResult.result.origin + '/media/gallery/' + terms + '/edit';
+				
+				window.location.replace(gallery_url);
+			    }
+			});
 		    },
 
 		    progressall: function (e, data) {
@@ -137,8 +137,10 @@ define([
 			    errorThrown: errorThrown
 			};
 			$('#messages').remove('img')[0];
-			$('#messages').append(_.template(MediaGalleryCreateErrorMessageTpl, data));
-			console.log('error at upload');
+			
+			TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaGalleryCreateErrorMessage', function(MediaGalleryCreateErrorMessageTpl) {
+			    $('#messages').append(_.template(MediaGalleryCreateErrorMessageTpl, data));
+			});
 		    }
 		});
 	    }
@@ -160,8 +162,9 @@ define([
 	    data.media.author = config.userData.username;
 	    
 	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');
-	    $('#content').html(_.template(MediaGalleryCreateTpl, data));
-	    
+	    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaGalleryCreate', function(MediaGalleryCreateTpl) {	    
+		$('#content').html(_.template(MediaGalleryCreateTpl, data));
+	    });
 	    // tags
 	    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
 	    
