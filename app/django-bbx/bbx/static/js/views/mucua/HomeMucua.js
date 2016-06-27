@@ -6,11 +6,8 @@ define([
     'modules/media/model',
     'modules/media/collection',
     'modules/media/functions',
-    'modules/mocambola/model',
-    'text!/templates/' + BBX.userLang + '/common/UserProfile.html',
-    'text!/templates/' + BBX.userLang + '/common/MucuaProfile.html',
-    'text!/templates/' + BBX.userLang + '/mucua/HomeMucua.html',
-], function($, _, Backbone, MucuaModel, MediaModel, MediaCollection, MediaFunctions, MocambolaModel, UserProfileTpl, MucuaProfileTpl, HomeMucuaTpl) {
+    'modules/mocambola/model'
+], function($, _, Backbone, MucuaModel, MediaModel, MediaCollection, MediaFunctions, MocambolaModel) {
     var MucuaView = Backbone.View.extend({
 	el: "body",
 	
