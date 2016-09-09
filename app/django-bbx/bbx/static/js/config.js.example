@@ -20,7 +20,7 @@ BBX.config = {
     "interfaceUrl": "/#",
     "MYMUCUA":"dpadua",
     "MYREPOSITORY": "mocambos",
-    "userLang": "es_ES",
+    "userLang": "pt_BR",
     "defaultHome": '/#mocambos/rede/bbx/search',
     "images" : {
 	"fullSize": {
