@@ -6,8 +6,7 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!/templates/' + BBX.userLang + '/media/BackToSearch.html',
-], function($, _, Backbone, TemplateManagerInstance, BBXFunctions, MediaFunctions, MediaModel, BackToSearchTpl){
+], function($, _, Backbone, TemplateManagerInstance, BBXFunctions, MediaFunctions, MediaModel){
     
     var MediaView = Backbone.View.extend({
 	
