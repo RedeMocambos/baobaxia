@@ -38,7 +38,7 @@ define([
 		TemplateManager.get('/templates/' + BBX.userLang + '/auth/Register', function(RegisterTpl) {
 		    var compiledContent = _.template(RegisterTpl, data);
 		    $('#content').html(compiledContent);
-		}
+		});
 	    }
 	    
 	    var config = BBX.config;

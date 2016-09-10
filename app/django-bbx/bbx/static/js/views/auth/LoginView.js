@@ -49,7 +49,7 @@ define([
 		$('body').removeClass().addClass("home login");
 		
 		// parse content
-		TemplateManager.get('/templates/' + BBX.userLang + '/auth/LoginTemplateTpl', function(LoginTemplateTpl) {
+		TemplateManager.get('/templates/' + BBX.userLang + '/auth/LoginTemplate', function(LoginTemplateTpl) {
 		    var compiledContent = _.template(LoginTemplateTpl, data);
 		    $('#content').html(compiledContent);
 		    

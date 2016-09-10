@@ -6,9 +6,8 @@ define([
     'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!/templates/' + BBX.userLang + '/media/MediaView.html',    
     'text!/templates/' + BBX.userLang + '/media/BackToSearch.html',
-], function($, _, Backbone, TemplateManagerInstance, BBXFunctions, MediaFunctions, MediaModel, MediaViewTpl, BackToSearchTpl){
+], function($, _, Backbone, TemplateManagerInstance, BBXFunctions, MediaFunctions, MediaModel, BackToSearchTpl){
     
     var MediaView = Backbone.View.extend({
 	
@@ -26,7 +25,7 @@ define([
 	    var askDrop = function() {
 		var config = BBX.config;
 		
-		TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaDropMessage.html', function (MediaDropMessageTpl) {
+		TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaDropMessage', function (MediaDropMessageTpl) {
 		    var dropMedia = confirm(MediaDropMessageTpl);
 		    if (dropMedia) {
 			var urlDrop = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid + '/drop',
@@ -70,18 +69,23 @@ define([
 		data.config = config;
 		data.baseUrl = BBXFunctions.getDefaultHome();
 		data.isLogged = BBXFunctions.isLogged;
-		$('#header-bottom').append(_.template(BackToSearchTpl, data));
 		
-		$('#content').html(_.template(MediaViewTpl, data));
+		TemplateManager.get('/templates/' + BBX.userLang + '/media/BackToSearch', function(BackToSearchTpl) {
+		    $('#header-bottom').append(_.template(BackToSearchTpl, data));
+		});
+		
+		TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaView', function(MediaViewTpl) {
+		    $('#content').html(_.template(MediaViewTpl, data));
+		});
 		$('#drop-local-copy').on('click', function() {askDrop(media)});
 		if (!data.media.is_local) {
-		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MessageRequest.html', function(MessageRequestTpl) {
+		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MessageRequest', function(MessageRequestTpl) {
 			$('#message-request').html(_.template(MessageRequestTpl, data));
 		    });
 		    
 		}
 		MediaFunctions.bindRequest(uuid, '.request-copy', function() {
-		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MessageRequest.html', function(MessageRequestTpl) {
+		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MessageRequest', function(MessageRequestTpl) {
 			var requestData =  {
 			    'media': {'is_requested': true}
 			};
