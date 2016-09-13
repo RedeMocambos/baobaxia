@@ -49,8 +49,8 @@ define([
 		$('body').removeClass().addClass("home login");
 		
 		// parse content
-		TemplateManager.get('/templates/' + BBX.userLang + '/auth/LoginTemplateTpl', function(LoginTemplateTpl) {
-		    var compiledContent = _.template(LoginTemplateTpl, data);
+		TemplateManager.get('/templates/' + BBX.userLang + '/auth/LoginTemplate', function(LoginTemplate) {
+		    var compiledContent = _.template(LoginTemplate, data);
 		    $('#content').html(compiledContent);
 		    
 		    // set focus to login

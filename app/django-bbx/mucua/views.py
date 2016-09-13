@@ -178,7 +178,9 @@ def mucua_add_group(request, uuid, group, repository=None):
 @renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
 def mucua_get_territory(request, uuid=None, repository=None):
     try:     
+        logger.debug(_(u"MUCUA UUID: %s") % uuid)
         mucua = Mucua.objects.get(uuid=uuid)
+        logger.debug(_(u"MUCUA name: %s") % mucua.description)
     except:
         return Response(_("Mucua not found"))
     

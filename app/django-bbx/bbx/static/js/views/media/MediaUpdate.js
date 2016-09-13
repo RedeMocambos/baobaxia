@@ -76,7 +76,7 @@ define([
 		    }
 		    BBX.media = media;
 
-		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaPublish.html', function(MediaPublishTpl) {		    
+		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaPublish', function(MediaPublishTpl) {		    
 			var compiledTpl = _.template(MediaPublishTpl, data);
 			$('#content').html(compiledTpl);
 

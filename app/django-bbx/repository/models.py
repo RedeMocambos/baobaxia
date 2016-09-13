@@ -394,14 +394,14 @@ def git_annex_remove_tag(media, namespace, tag):
                            namespace, tag)
 
 
-def git_annex_group_add(repository_path, mucua, group):
+def git_annex_group_add(repository_path, mucua_uuid, group):
     u"""Adiciona a Mucua no grupo."""
-    cmd = 'git annex group ' + mucua + ' ' + group
+    cmd = 'git annex group ' + mucua_uuid + ' ' + group
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path,
                             stdout=subprocess.PIPE)
     output, error = pipe.communicate()
-    logger.debug(error)
-    logger.debug(output)
+    logger.debug("E > %s", error)
+    logger.debug("O > %s", output)
     return output
 
 
@@ -417,9 +417,9 @@ def git_annex_group_del(repository_path, mucua, group):
     return output
 
 
-def git_annex_group_list(repository_path, group, mucua=None):
+def git_annex_group_list(repository_path, mucua_uuid=None):
     u"""Lista todos os grupos ou de uma dada mucua"""
-    if mucua == None:
+    if mucua_uuid == None:
         from mucua.models import Mucua
         mucuas = Mucua.objects.all()
         group_set = set()
@@ -436,13 +436,15 @@ def git_annex_group_list(repository_path, group, mucua=None):
                     group_set.add(group)
         return list(group_set)
     else:
-        cmd = 'git annex group ' + mucua.get_description()
+#        from mucua.models import Mucua
+#        mucua = Mucua.objects.get(uuid=mucua_uuid)
+        cmd = 'git annex group ' + mucua_uuid
         logger.debug("Command: " + cmd)
         pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path,
                                 stdout=subprocess.PIPE)
         output, error = pipe.communicate()
-        logger.debug(error)
-        logger.debug(output)
+        logger.debug('E > %s', error)
+        logger.debug('O > %s', output)
         if output != '':
             return output.split()
         else:

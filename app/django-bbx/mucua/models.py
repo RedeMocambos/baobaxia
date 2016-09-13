@@ -220,7 +220,9 @@ class Mucua(models.Model):
         groups = git_annex_group_list(repository.get_path(),
                                       self.uuid)
         territory = ''
+        logger.debug('Grupos:')
         for group in groups:
+            logger.debug('> %s', group)
             if group.startswith('t:'):
                 territory = group
 
@@ -235,10 +237,12 @@ class Mucua(models.Model):
                 return []
 
         actual_territory = self.get_territory(repository)
-        if actual_territory != '':
+        logger.debug("Territory: %s ", actual_territory)
+        if actual_territory == '':
             if territory.startswith('t:'):
+                logger.debug("Check!")
                 git_annex_group_add(repository.get_path(),
-                                    self.get_description(),
+                                    self.uuid,
                                     territory)
                 return _("Mucua enraizada em " + territory)
             else:
