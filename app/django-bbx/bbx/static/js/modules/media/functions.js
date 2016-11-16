@@ -14,43 +14,18 @@ define([
     'textext',
     'textext_ajax',
     'textext_autocomplete',
-    'modules/bbx/functions',
     'modules/media/model',
     'modules/media/collection',
     'modules/mucua/model',
     'modules/tag/model',
-    'text!/templates/' + BBX.userLang + '/media/MediaDestaquesMucua.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaNovidades.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaMocambola.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaRelated.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaResults.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGrid.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaList.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaPagination.html',
-    'text!/templates/' + BBX.userLang + '/media/MessageRequest.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaRequestedList.html',
-    'text!/templates/' + BBX.userLang + '/common/ResultsMessage.html',
-    'text!/templates/' + BBX.userLang + '/common/SearchTagsMenu.html',
-    'text!/templates/' + BBX.userLang + '/common/TagCloud.html',
-    'text!/templates/' + BBX.userLang + '/common/MessageSearch.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEdit.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryEditItem.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaUpdatedMessage.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage.html'
-], function($, _, Backbone, TagCloud, Fancybox, FancyboxButtons, FancyboxMedia, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaModel, MediaCollection, MucuaModel, TagModel, MediaDestaquesMucuaTpl, MediaNovidadesTpl, MediaMocambolaTpl, MediaRelatedTpl, MediaResultsTpl, MediaGridTpl, MediaListTpl, MediaPaginationTpl, MessageRequestTpl, MediaRequestedListTpl, ResultsMessageTpl, SearchTagsMenuTpl, TagCloudTpl, MessageSearchTpl, MediaGalleryEditTpl, MediaGalleryEditItemTpl, MediaUpdatedMessageTpl, MediaUpdateErrorMessageTpl){
+], function($, _, Backbone, TagCloud, Fancybox, FancyboxButtons, FancyboxMedia, Textext, TextextAjax, TextextAutocomplete, MediaModel, MediaCollection, MucuaModel, TagModel){
     /**
      * Funções gerais de media
      *
      * @exports media/functions
      */
 
-    /** @global */
-    this.BBXFunctions = BBXFunctions;
-    
     var init = function() {
-	/** Inicializa media functions */
-	this.functions = {};
-	this.functions.BBXFunctions = BBXFunctions;
     }
 
     /**
@@ -75,8 +50,10 @@ define([
 		config: __getConfig(),
 		message: message
 	    }
-	
-	$(target).html(_.template(ResultsMessageTpl, data));	
+
+	BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/common/ResultsMessage', function (ResultsMessageTpl) {
+	    $(target).html(_.template(ResultsMessageTpl, data));
+	});
     };
 
 
@@ -200,7 +177,7 @@ define([
 	    tags_str = tags_arr.join('/'),
 	    urlApiTags = config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/',
 	    validSearchOptions = __getValidSearchOptions();
-	
+
 	// remove opcoes de busca da exibição dos termos
 	_.each(validSearchOptions, function(optionSearch) {
 	    tags_arr = _.without(tags_arr, optionSearch);
@@ -209,8 +186,10 @@ define([
 	if (!_.isEmpty(tags_arr)) {
 	    $('#caixa_busca').val('');
 	} else {
-	    $('#caixa_busca').html(_.template(MessageSearchTpl));
-	    $('#caixa_busca').css('color', '#bbb');
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/common/MessageSearch', function (MessageSearchTpl) {
+		$('#caixa_busca').html(_.template(MessageSearchTpl));
+		$('#caixa_busca').css('color', '#bbb');
+	    });
 	}
 	var limpaBusca = function() {
 	    $('#caixa_busca').val('');
@@ -367,8 +346,10 @@ define([
 	    }
 	    // load function to template
 	    data.swapImageUrl = swapImageUrl;
-	    
-	    $(target).html(_.template(MediaGridTpl, data));
+
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGrid', function (MediaGridTpl) {	    
+		$(target).html(_.template(MediaGridTpl, data));
+	    });
 
 	    // carrega galeria (fancybox)
 	    $('head').append('<link rel="stylesheet" href="/css/jquery.fancybox.css" type="text/css" />');
@@ -406,13 +387,17 @@ define([
 	    break;
 	case 'list':
 	    data.bindRequest = bindRequest;
-	    $(target).html(_.template(MediaListTpl, data));
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaList', function (MediaListTpl) {
+		$(target).html(_.template(MediaListTpl, data));
+	    });
 	    
 	    _.each($('.request-copy'), function(item) {
 		var uuid = $(item).attr('value'),
 		    className = '#request-copy-' + $(item).attr('value'),
 		    callback = function() {
-			$(className).parent().removeClass().addClass('requested').html(MediaRequestedListTpl);
+			BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaRequestedList', function (MediaRequestedListTpl) {
+			    $(className).parent().removeClass().addClass('requested').html(MediaRequestedListTpl);
+			});
 		    };
 		bindRequest(uuid, className, callback);
 	    });
@@ -649,9 +634,11 @@ define([
 		pagination.totalMedia = media.attributes.count;
 		pagination.totalPages = Math.ceil(pagination.totalMedia / pagination.itensPerPage);
 		pagination.htmlOutput = __preparePagination(pagination);
-		
-		$('#pagination-top').html(_.template(MediaPaginationTpl, pagination));
-		$('#pagination-bottom').html(_.template(MediaPaginationTpl, pagination));
+
+		BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaPagination', function (MediaPaginationTpl) {
+		    $('#pagination-top').html(_.template(MediaPaginationTpl, pagination));
+		    $('#pagination-bottom').html(_.template(MediaPaginationTpl, pagination));
+		});
 	    }
 	});		    
     }
@@ -1051,8 +1038,9 @@ define([
 	var callback = callback || null,
 	    limit = limit || 25,
 	    tag = new TagModel([], {url: url});
-	    
+	console.log('tagcloud');
 	tag.fetch({
+	    url: url,
 	    success: function() {
 		var tags = tag.attributes,
 		    data = {},
@@ -1066,17 +1054,18 @@ define([
 		}		
 		
 		//data = equalizeTags(data);
-		
-		$(el).html(_.template(TagCloudTpl, data));		
-		__parseTagCloud(el)
-				
-		if (typeof callback === 'function') {
-		    callback(true);
-		}
+		BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/common/TagCloud', function (TagCloudTpl) {
+		    $(el).html(_.template(TagCloudTpl, data));
+		    __parseTagCloud(el)
+
+		    if (typeof callback === 'function') {
+			callback(true);
+		    }
+		});
 	    }
 	});	
     }
-    
+
     /**
      * retorna nuvem de tags e ativa biblioteca tagcloud
      * 
@@ -1113,11 +1102,14 @@ define([
 	
 	getMedia(url, function(data){
 	    __parseMenuSearch();
-	    $(el).html(_.template(MediaDestaquesMucuaTpl));
-	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
-	    
-	    BBX.data = data;
-	    showMediaBy('grid', '#destaques-mucua .media');
+
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaDestaquesMucua', function (MediaDestaquesMucuaTpl) {
+		$(el).html(_.template(MediaDestaquesMucuaTpl));
+		data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
+		
+		BBX.data = data;
+		showMediaBy('grid', '#destaques-mucua .media');
+	    });
 	}, {'width': 190, 'height': 132 });
     };
 
@@ -1136,11 +1128,14 @@ define([
 	
 	getMedia(url, function(data){
 	    __parseMenuSearch();
-	    $(el).append(_.template(MediaDestaquesMucuaTpl));
-	    data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
-	    
-	    BBX.data = data;
-	    showMediaBy('grid', '#destaques-mucua .media', true);
+
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaDestaquesMucua', function (MediaDestaquesMucuaTpl) {
+		$(el).append(_.template(MediaDestaquesMucuaTpl));
+		data.message = 'Nenhuma media na mucua ' + config.mucua + ' encontrada.';
+		
+		BBX.data = data;
+		showMediaBy('grid', '#destaques-mucua .media', true);
+	    });
 	}, {'width': 190, 'height': 132 });
     };
 
@@ -1160,14 +1155,16 @@ define([
 	console.log('getMediaByNovidades');
 	
 	getMedia(url, function(data){
-	    $(el).append(_.template(MediaNovidadesTpl));
-	    data.message = 'Nenhuma novidade em ' + config.mucua + '.';
-
-	    // TODO: quando tem mais de um bloco de dados (ex: ultimas novidades E conteudo destacado), pensar em como guardar duas ou mais listas de media
-	    BBX.data = data;
-	    showMediaBy('grid', '#novidades-mucua .media', true);
-	    //$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
-	    //$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaNovidades', function (MediaNovidadesTpl) {
+		$(el).append(_.template(MediaNovidadesTpl));
+		data.message = 'Nenhuma novidade em ' + config.mucua + '.';
+		
+		// TODO: quando tem mais de um bloco de dados (ex: ultimas novidades E conteudo destacado), pensar em como guardar duas ou mais listas de media
+		BBX.data = data;
+		showMediaBy('grid', '#novidades-mucua .media', true);
+		//$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
+		//$('.media-display-type .list').on('click', function(){ showMediaBy('list')});
+	    });
 	}, {'width': 190, 'height': 132 });
     };
 
@@ -1184,13 +1181,15 @@ define([
 	    url = config.apiUrl + '/' + config.repository + '/' + config.mucua + '/media/' + uuid + '/related' + '/' + limit;
 	
 	getMedia(url, function(data){
-	    $('#content').append(_.template(MediaRelatedTpl));
-	    data.message = 'Nenhuma media relacionada encontrada.';
-
-	    BBX.data = data;
-	    showMediaBy('', '#media-related .media');
-	    $('.media-display-type .grid').on('click', function(){ showByGrid()});	    
-	    $('.media-display-type .list').on('click', function(){ showByList()});	    
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaRelated', function (MediaRelatedTpl) {
+		$('#content').append(_.template(MediaRelatedTpl));
+		data.message = 'Nenhuma media relacionada encontrada.';
+		
+		BBX.data = data;
+		showMediaBy('', '#media-related .media');
+		$('.media-display-type .grid').on('click', function(){ showByGrid()});	    
+		$('.media-display-type .list').on('click', function(){ showByList()});
+	    });
 	});
     };
 
@@ -1220,18 +1219,21 @@ define([
 	getMedia(url, function(data){
 	    // TODO: implementar busca filtrando por mocambola
 	    __parseMenuSearch();
-	    $('#content').append(_.template(MediaMocambolaTpl));
-	    data.message = 'Mocambola ainda nao publicou nenhum conteudo.';
-	    
-	    BBX.data = data;
-	    showMediaBy('', '#media-mocambola .media');
 
-	    var click = $('.media-display-type .list').data('events');
-	    if (typeof click === 'undefined') {
-		$('.media-display-type .shuffle').on('click', function(){ shuffleMedia()});	    
-		$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
-		$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
-	    }
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaMocambola', function (MediaMocambolaTpl) {
+		$('#content').append(_.template(MediaMocambolaTpl));
+		data.message = 'Mocambola ainda nao publicou nenhum conteudo.';
+		
+		BBX.data = data;
+		showMediaBy('', '#media-mocambola .media');
+		
+		var click = $('.media-display-type .list').data('events');
+		if (typeof click === 'undefined') {
+		    $('.media-display-type .shuffle').on('click', function(){ shuffleMedia()});	    
+		    $('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
+		    $('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
+		}
+	    });
 	}, {'width': 190, 'height': 132 });
     };
 
@@ -1290,11 +1292,13 @@ define([
 	    data.licenses = getMediaLicenses();
 	    data.parseThumb = parseThumb;
 	    data.baseUrlEdit = config.interfaceUrl + config.repository + '/' + config.mucua + '/media/',
-	    
-	    $('#content').html(_.template(MediaGalleryEditTpl, data));
-	    _.each(data.medias, function(media) {
-		data.media = media;
-		$('#media-gallery-edit tbody').append(_.template(MediaGalleryEditItemTpl, data));
+
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryEditItem', function (MediaGalleryEditItemTpl) {
+		$('#content').html(_.template(MediaGalleryEditTpl, data));
+		_.each(data.medias, function(media) {
+		    data.media = media;
+		    $('#media-gallery-edit tbody').append(_.template(MediaGalleryEditItemTpl, data));
+		});
 	    });
 
 	    // TODO: passar active_columns para user preferences (sessão/cookie)
@@ -1375,10 +1379,12 @@ define([
 			    }			    
 			} else {
 			    $(elem).css('background-image', 'url(../images/error.png)');
-			    $(elem).append( MediaUpdateErrorMessageTpl);
-			    setTimeout(function(){
-				$(elem + ' div').fadeOut(1000)
-			    }, 2000);     
+			    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage', function (MediaUpdateErrorMessageTpl) {
+				$(elem).append( MediaUpdateErrorMessageTpl);
+				setTimeout(function(){
+				    $(elem + ' div').fadeOut(1000)
+				}, 2000);
+			    });
 			}
 		    });
 		});
@@ -1399,11 +1405,13 @@ define([
 			$(elem).css('background-image', 'url(../images/saved-pq.png)');
 		    } else {
 			$(elem).css('background-image', 'url(../images/error.png)');
-			$(elem).append( MediaUpdateErrorMessageTpl);
-			setTimeout(function(){
-			    $(elem).css('background-image', 'url(../images/save.png)');
-			    $(elem + ' div').fadeOut(1000)
-			}, 2000);     
+			BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaUpdateErrorMessage', function (MediaUpdateErrorMessageTpl) {
+			    $(elem).append( MediaUpdateErrorMessageTpl);
+			    setTimeout(function(){
+				$(elem).css('background-image', 'url(../images/save.png)');
+				$(elem + ' div').fadeOut(1000)
+			    }, 2000);
+			});
 		    }
 		});
 	    });
@@ -1473,20 +1481,23 @@ define([
 	    }	    
 	    
 	    $('#imagem-busca').prop('src', config.imagePath + '/buscar.png');
-	    $('#content').html(_.template(MediaResultsTpl));
-	    data.message = 'Nenhuma media encontrada para essa busca';
 	    
-	    BBX.data = data;
-	    showMediaBy('', '#media-results .media');
-	    
-	    // todo: verificar se ja existe um evento associado; se nao tiver, adiciona - quebrado
-	    var click = $('.media-display-type .all').data('events');
-	    if (typeof click === 'undefined') {
-		$('.media-display-type .shuffle').on('click', function(){ shuffleMedia()});
-		//$('.media-display-type .all').on('click', function(){ changeMediaLimit()});	    
-		$('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
-		$('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
-	    }
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaResults', function (MediaResultsTpl) {
+		$('#content').html(_.template(MediaResultsTpl));
+		data.message = 'Nenhuma media encontrada para essa busca';
+		
+		BBX.data = data;
+		showMediaBy('', '#media-results .media');
+		
+		// todo: verificar se ja existe um evento associado; se nao tiver, adiciona - quebrado
+		var click = $('.media-display-type .all').data('events');
+		if (typeof click === 'undefined') {
+		    $('.media-display-type .shuffle').on('click', function(){ shuffleMedia()});
+		    //$('.media-display-type .all').on('click', function(){ changeMediaLimit()});	    
+		    $('.media-display-type .grid').on('click', function(){ showMediaBy('grid')});	    
+		    $('.media-display-type .list').on('click', function(){ showMediaBy('list')});	    
+		}
+	    });
 	}, {'width': 190, 'height': 132 });
     };
 

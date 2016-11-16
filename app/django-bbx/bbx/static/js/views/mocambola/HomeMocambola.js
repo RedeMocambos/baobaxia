@@ -2,10 +2,9 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'modules/bbx/functions',
     'modules/media/functions',
     'modules/mocambola/model'
-], function($, _, Backbone, BBXFunctions, MediaFunctions, MocambolaModel) {
+], function($, _, Backbone, MediaFunctions, MocambolaModel) {
     var HomeMocambola = Backbone.View.extend({
 	el: "body",    
 
@@ -36,8 +35,10 @@ define([
 	    
 	    config.userData = JSON.parse(localStorage.userData);
 	    data.config = config;
+	    BBX.TemplateManager = TemplateManager;
 	    BBXFunctions.renderUsage();
 	    BBXFunctions.renderSidebar();
+	    
 	    // get mocambola data
 	    this.__getMocambola(username);
 	    var mocambolaDOM = '';
@@ -47,7 +48,7 @@ define([
 		    data.mocambola = mocambolaDOM;
 		    
 		    data.mocambola.avatar = BBXFunctions.getAvatar();
-		    TemplateManager.get('/templates/' + BBX.userLang + '/mocambola/HomeMocambola', function(HomeMocambolaTpl) {
+		    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/mocambola/HomeMocambola', function(HomeMocambolaTpl) {
 			$('#content').html(_.template(HomeMocambolaTpl, data));
 			MediaFunctions.getMediaByMocambola('all', username, limit);
 			
@@ -57,7 +58,7 @@ define([
 			    type: 'GET',
 			    success: function(data) {
 				BBX.langs = data.availableLangs;
-				TemplateManager.get('/templates/' + BBX.userLang + '/mocambola/AvailableLangs', function(AvailableLangsTpl) {
+				BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/mocambola/AvailableLangs', function(AvailableLangsTpl) {
 				    $('#default-language').html(_.template(AvailableLangsTpl));
 				    $('#change-language-btn').click(function() {
 					$('#change-language select').enable(true);

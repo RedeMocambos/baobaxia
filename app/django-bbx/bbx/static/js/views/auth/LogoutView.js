@@ -2,9 +2,8 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'modules/bbx/functions',
     'modules/auth/functions',
-], function($, _, Backbone, jQueryJson, AuthFunctions){
+], function($, _, Backbone, AuthFunctions){
     var LogoutView = Backbone.View.extend({
 
 	// TODO: move from here to AuthFuntions and solve scope problem

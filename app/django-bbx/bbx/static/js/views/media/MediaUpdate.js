@@ -6,12 +6,9 @@ define([
     'textext',
     'textext_ajax',
     'textext_autocomplete',
-    'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-    'text!/templates/' + BBX.userLang + '/media/MediaConfirmRemoveMessage.html',
-    'text!/templates/' + BBX.userLang + '/media/MediaRemoveMessage.html',
-], function($, _, jQueryForm, Backbone, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MediaConfirmRemoveMessageTpl, MediaRemoveMessageTpl){
+], function($, _, jQueryForm, Backbone, Textext, TextextAjax, TextextAutocomplete, MediaFunctions, MediaModel){
     var MediaUpdate = Backbone.View.extend({
 	
 	__swapLicence: function() {
@@ -76,7 +73,7 @@ define([
 		    }
 		    BBX.media = media;
 
-		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaPublish.html', function(MediaPublishTpl) {		    
+		    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaPublish', function(MediaPublishTpl) {		    
 			var compiledTpl = _.template(MediaPublishTpl, data);
 			$('#content').html(compiledTpl);
 
@@ -105,21 +102,25 @@ define([
 			    window.location.href = urlMediaView;
 			});
 			$('#delete-media').on('click', function() {
-			    var deleteMedia = confirm(MediaConfirmRemoveMessageTpl);
-			    if (deleteMedia) {
-				var urlDelete = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid + '/remove',
-				    mediaDelete = new MediaModel([], {url: urlDelete}),
-				    urlRedirect = config.interfaceUrl + config.repository + '/' +  config.mucua + '/bbx/search';
-				
-				mediaDelete.fetch({
-				    success: function() {
-					$('.buttons').prepend(MediaRemoveMessageTpl);
-					setTimeout(function(){
-					    window.location.href = urlRedirect;
-					}, 1000);
-				    }
-				});
-			    }	
+			    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaConfirmRemoveMessage', function (MediaConfirmRemoveMessageTpl) {
+				var deleteMedia = confirm(MediaConfirmRemoveMessageTpl);
+				if (deleteMedia) {
+				    var urlDelete = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid + '/remove',
+					mediaDelete = new MediaModel([], {url: urlDelete}),
+					urlRedirect = config.interfaceUrl + config.repository + '/' +  config.mucua + '/bbx/search';
+				    
+				    mediaDelete.fetch({
+					success: function() {
+					    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaRemoveMessage', function (MediaRemoveMessageTpl) {
+						$('.buttons').prepend(MediaRemoveMessageTpl);
+						setTimeout(function(){
+						    window.location.href = urlRedirect;
+						}, 1000);
+					    });
+					}
+				    });
+				}
+			    });
 			});
 		    });
 		}

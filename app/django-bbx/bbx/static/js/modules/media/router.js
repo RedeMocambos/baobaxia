@@ -2,7 +2,6 @@ define([
     'jquery', 
     'backbone',
     'backbone_subroute',
-    'modules/bbx/functions',
     'modules/media/model', 
     'modules/media/collection',
     'views/media/MediaView', 
@@ -10,7 +9,7 @@ define([
     'views/media/MediaGalleryCreate',
     'views/media/MediaGalleryEdit',
     'views/media/MediaUpdate',
-], function($, Backbone, Backbone_Subroute, BBXFunctions, MediaModel, MediaCollection, MediaViewView, MediaPublishView, MediaGalleryCreateView, MediaGalleryEditView, MediaUpdateView){
+], function($, Backbone, Backbone_Subroute, MediaModel, MediaCollection, MediaViewView, MediaPublishView, MediaGalleryCreateView, MediaGalleryEditView, MediaUpdateView){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    'gallery': 'gallery_create',

@@ -2,12 +2,11 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'modules/bbx/functions',
     'modules/media/functions',
     'modules/repository/model',
     'modules/mucua/model',
     'text!/templates/' + BBX.userLang + '/repository/ListMucuas.html',
-], function($, _, Backbone, BBXFunctions, MediaFunctions, RepositoryModel, MucuaModel, ListMucuasTpl) {
+], function($, _, Backbone, MediaFunctions, RepositoryModel, MucuaModel, ListMucuasTpl) {
     var ListMucuas = Backbone.View.extend({
 	el: "body", 
 

@@ -7,12 +7,11 @@ define([
     'textext',
     'textext_ajax',
     'textext_autocomplete',
-    'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
     'modules/mucua/model',
     'modules/mucua/collection'
-], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection){
+], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, MediaFunctions, MediaModel, MucuaModel, MucuaCollection){
     
     var MediaGalleryCreate = Backbone.View.extend({	
 	render: function(){
@@ -22,7 +21,7 @@ define([
 		mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.MYREPOSITORY + '/mucuas'});
 
 	    if (!BBXFunctions.isLogged()) {
-		TemplateManager.get('/templates/' + BBX.userLang + '/common/PermissionDenied', function(PermissionDeniedTpl) {
+		BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/common/PermissionDenied', function(PermissionDeniedTpl) {
 		    $('#content').html(PermissionDeniedTpl);
 		});
 		setTimeout(function() {
@@ -72,7 +71,7 @@ define([
 		});
 		
 		if (validationError.length > 0) {
-		    TemplateManager.get('/templates/' + BBX.userLang + '/media/CreateValidationErrorMessage', function(MediaGalleryCreateValidationErrorMessageTpl) {
+		    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/CreateValidationErrorMessage', function(MediaGalleryCreateValidationErrorMessageTpl) {
 			$('#messages').html(_.template(MediaGalleryCreateValidationErrorMessageTpl));
 			return false;
 		    });
@@ -106,7 +105,7 @@ define([
 			    }
 			};
 
-			TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage', function(MediaGalleryCreateMessageTpl) {
+			BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage', function(MediaGalleryCreateMessageTpl) {
 			    $('#messages').append(_.template(MediaGalleryCreateMessageTpl, data));
 			    var overallProgress = $('#fileupload').fileupload('progress');
 			    if (overallProgress.loaded === overallProgress.total) {
@@ -138,7 +137,7 @@ define([
 			};
 			$('#messages').remove('img')[0];
 			
-			TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaGalleryCreateErrorMessage', function(MediaGalleryCreateErrorMessageTpl) {
+			BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryCreateErrorMessage', function(MediaGalleryCreateErrorMessageTpl) {
 			    $('#messages').append(_.template(MediaGalleryCreateErrorMessageTpl, data));
 			});
 		    }
@@ -162,7 +161,7 @@ define([
 	    data.media.author = config.userData.username;
 	    
 	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');
-	    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaGalleryCreate', function(MediaGalleryCreateTpl) {	    
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryCreate', function(MediaGalleryCreateTpl) {	    
 		$('#content').html(_.template(MediaGalleryCreateTpl, data));
 	    });
 	    // tags

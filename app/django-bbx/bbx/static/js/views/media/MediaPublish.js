@@ -3,12 +3,11 @@ define([
     'lodash',
     'jquery_form',
     'backbone', 
-    'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
     'modules/mucua/model',
     'modules/mucua/collection'
-], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection){
+], function($, _, JQueryForm, Backbone, MediaFunctions, MediaModel, MucuaModel, MucuaCollection){
     
     var MediaPublish = Backbone.View.extend({	
 	render: function(){
@@ -20,7 +19,7 @@ define([
 		mucuas = null;
 
 	    if (!BBXFunctions.isLogged()) {
-		TemplateManager.get('/templates/' + BBX.userLang + '/common/PermissionDenied', function(PermissionDeniedTpl) {
+		BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/common/PermissionDenied', function(PermissionDeniedTpl) {
 		    $('#content').html(PermissionDeniedTpl);
 		    setTimeout(function() {
 			document.location.hash = BBXFunctions.getDefaultHome();
@@ -89,7 +88,7 @@ define([
 	    config.userData = localStorage.userData;
 	    data = __prepareFormData();
 
-	    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaPublish', function(MediaPublishTpl) {
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaPublish', function(MediaPublishTpl) {
 		$('#content').html(_.template(MediaPublishTpl, data));
 	    });
 	    MediaFunctions.__parseMenuSearch();
@@ -179,7 +178,7 @@ define([
 			format: format
 		    }
 
-		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaPublishInvalidFileType', function(MediaPublishInvalidFileType) {
+		    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaPublishInvalidFileType', function(MediaPublishInvalidFileType) {
 			$("#messages").html(_.template(MediaPublishInvalidFileTypeTpl, data));
 			$('#messages .error-bar').fadeIn(0,0, function() {});
 			$('#messages .error-bar').fadeTo(3000, 0, function() {});
@@ -208,7 +207,7 @@ define([
 		});
 		
 		if (validationError.length > 0) {
-		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaGalleryCreateValidationErrorMessage', function(MediaGalleryCreateValidationErrorMessage) {
+		    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryCreateValidationErrorMessage', function(MediaGalleryCreateValidationErrorMessage) {
 			$('#messages').html(_.template(MediaGalleryCreateValidationErrorMessageTpl));
 		    });
 		    return false;

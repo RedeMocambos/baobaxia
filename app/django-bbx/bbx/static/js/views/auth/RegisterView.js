@@ -3,12 +3,11 @@ define([
     'lodash',
     'backbone',
     'modules/auth/functions',
-    'modules/bbx/functions',
     'modules/mucua/model',
     'modules/mucua/collection',
     'modules/mocambola/model',
     'views/auth/LoginView'
-], function($, _, Backbone, AuthFunctions, BBXFunctions, MucuaModel, MucuaCollection, MocambolaModel, LoginView){
+], function($, _, Backbone, AuthFunctions, MucuaModel, MucuaCollection, MocambolaModel, LoginView){
     var RegisterView = Backbone.View.extend({
 	el: "body",
 	
@@ -35,7 +34,7 @@ define([
 		$('body').removeClass().addClass("home register login");
 		
 		// parse content
-		TemplateManager.get('/templates/' + BBX.userLang + '/auth/Register', function(RegisterTpl) {
+		BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/auth/Register', function(RegisterTpl) {
 		    var compiledContent = _.template(RegisterTpl, data);
 		    $('#content').html(compiledContent);
 		});

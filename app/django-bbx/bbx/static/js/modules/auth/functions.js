@@ -12,7 +12,6 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'modules/bbx/functions',
     'modules/mocambola/model',
     'text!/templates/' + BBX.userLang + '/auth/LoginOk.html',
     'text!/templates/' + BBX.userLang + '/auth/LoginFailed.html',
@@ -21,7 +20,7 @@ define([
     'text!/templates/' + BBX.userLang + '/auth/FillPassword.html',
     'text!/templates/' + BBX.userLang + '/auth/UserExists.html',
     'text!/templates/' + BBX.userLang + '/auth/UserCreationError.html',
-], function($, _, Backbone, BBXFunctions, MocambolaModel, LoginOkTpl, LoginFailedTpl, PasswordMustMatchTpl, FillUserTpl, FillPasswordTpl, UserExistsTpl, UserCreationErrorTpl){
+], function($, _, Backbone, MocambolaModel, LoginOkTpl, LoginFailedTpl, PasswordMustMatchTpl, FillUserTpl, FillPasswordTpl, UserExistsTpl, UserCreationErrorTpl){
     
     /**
      * Inicializa library

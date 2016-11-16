@@ -2,11 +2,9 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'template_manager', 
-    'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
-], function($, _, Backbone, TemplateManagerInstance, BBXFunctions, MediaFunctions, MediaModel){
+], function($, _, Backbone, MediaFunctions, MediaModel){
     
     var MediaView = Backbone.View.extend({
 	
@@ -24,7 +22,7 @@ define([
 	    var askDrop = function() {
 		var config = BBX.config;
 		
-		TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaDropMessage', function (MediaDropMessageTpl) {
+		BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaDropMessage', function (MediaDropMessageTpl) {
 		    var dropMedia = confirm(MediaDropMessageTpl);
 		    if (dropMedia) {
 			var urlDrop = config.apiUrl + '/' + config.repository + '/' +  config.mucua + '/media/' + uuid + '/drop',
@@ -69,22 +67,22 @@ define([
 		data.baseUrl = BBXFunctions.getDefaultHome();
 		data.isLogged = BBXFunctions.isLogged;
 		
-		TemplateManager.get('/templates/' + BBX.userLang + '/media/BackToSearch', function(BackToSearchTpl) {
+		BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/BackToSearch', function(BackToSearchTpl) {
 		    $('#header-bottom').append(_.template(BackToSearchTpl, data));
 		});
 		
-		TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaView', function(MediaViewTpl) {
+		BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaView', function(MediaViewTpl) {
 		    $('#content').html(_.template(MediaViewTpl, data));
 		});
 		$('#drop-local-copy').on('click', function() {askDrop(media)});
 		if (!data.media.is_local) {
-		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MessageRequest', function(MessageRequestTpl) {
+		    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MessageRequest', function(MessageRequestTpl) {
 			$('#message-request').html(_.template(MessageRequestTpl, data));
 		    });
 		    
 		}
 		MediaFunctions.bindRequest(uuid, '.request-copy', function() {
-		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MessageRequest', function(MessageRequestTpl) {
+		    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MessageRequest', function(MessageRequestTpl) {
 			var requestData =  {
 			    'media': {'is_requested': true}
 			};
@@ -100,7 +98,7 @@ define([
 	    var dataWhereis = new MediaModel([], {url: urlWhereis});
 	    dataWhereis.fetch({
 		success: function() {
-		    TemplateManager.get('/templates/' + BBX.userLang + '/media/MucuaHasFile', function(MucuaHasFileTpl) {
+		    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MucuaHasFile', function(MucuaHasFileTpl) {
 			var mucuas = dataWhereis.attributes.whereis;
 			_.each(mucuas, function(mucua) {
 			    var data = {

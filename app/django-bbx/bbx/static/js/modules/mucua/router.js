@@ -2,10 +2,9 @@ define([
     'jquery', 
     'backbone',
     'backbone_subroute',
-    'modules/bbx/functions',
     'modules/mucua/model',
     'views/mucua/HomeMucua',
-], function($, Backbone, BackboneSubroute, BBXFunctions, MucuaModel, HomeMucua){
+], function($, Backbone, BackboneSubroute, MucuaModel, HomeMucua){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    '*' : 'homeMucua',

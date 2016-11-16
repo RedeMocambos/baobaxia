@@ -2,9 +2,8 @@ define([
     'jquery', 
     'backbone',
     'backbone_subroute',
-    'modules/bbx/functions',
     'views/bbx/Search',
-], function($, Backbone, Backbone_Subroute, BBXFunctions, Search){
+], function($, Backbone, Backbone_Subroute, Search){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    // bbx

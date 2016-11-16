@@ -4,12 +4,11 @@ define([
     'backbone',
     'jquery_json',
     'modules/auth/functions',
-    'modules/bbx/functions',
     'modules/repository/model',
     'modules/mucua/model',
     'modules/mucua/collection',
     'modules/mocambola/model'
-], function($, _, Backbone, jQueryJson, AuthFunctions, BBXFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel){
+], function($, _, Backbone, jQueryJson, AuthFunctions, RepositoryModel, MucuaModel, MucuaCollection, MocambolaModel){
     var LoginView = Backbone.View.extend({
 	el: "body",
 	
@@ -32,7 +31,7 @@ define([
 	    var config = BBX.config;
 	    
 	    var __parseTemplate = function(data) {
-		TemplateManager.get('/templates/' + BBX.userLang + '/common/HeaderHome', function(HeaderHomeTpl) {
+		BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/common/HeaderHome', function(HeaderHomeTpl) {
 		    $('#header').html(_.template(HeaderHomeTpl));
 
 		    // link para pagina default  bbx/search
@@ -49,7 +48,7 @@ define([
 		$('body').removeClass().addClass("home login");
 		
 		// parse content
-		TemplateManager.get('/templates/' + BBX.userLang + '/auth/LoginTemplate', function(LoginTemplateTpl) {
+		BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/auth/LoginTemplate', function(LoginTemplateTpl) {
 		    var compiledContent = _.template(LoginTemplateTpl, data);
 		    $('#content').html(compiledContent);
 		    
