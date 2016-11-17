@@ -35,7 +35,6 @@ define([
 	    
 	    config.userData = JSON.parse(localStorage.userData);
 	    data.config = config;
-	    BBX.TemplateManager = TemplateManager;
 	    BBXFunctions.renderUsage();
 	    BBXFunctions.renderSidebar();
 	    
