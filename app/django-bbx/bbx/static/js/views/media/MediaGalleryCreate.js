@@ -163,6 +163,8 @@ define([
 	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');
 	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryCreate', function(MediaGalleryCreateTpl) {	    
 		$('#content').html(_.template(MediaGalleryCreateTpl, data));
+
+		loadEvents();
 	    });
 	    // tags
 	    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
@@ -177,16 +179,20 @@ define([
 		})
 	    // on select type of file, prepare upload
 	    prepareUpload();
-	    
-	    $('#media_file').on('click', function(e) {
-		var validate = validateUpload();
-		if (!validate) {
-		    e.preventDefault();
-		} else {
-		    // com validacao ok, limpa mensagens
-		    $('#messages').html();
-		}
-	    });
+
+
+	    // declara eventos
+	    var loadEvents = function() {
+		$('#media_file').on('click', function(e) {
+		    var validate = validateUpload();
+		    if (!validate) {
+			e.preventDefault();
+		    } else {
+			// com validacao ok, limpa mensagens
+			$('#messages').html();
+		    }
+		});
+	    }
 	}
     });
     

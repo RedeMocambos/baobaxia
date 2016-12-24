@@ -90,6 +90,7 @@ define([
 
 	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaPublish', function(MediaPublishTpl) {
 		$('#content').html(_.template(MediaPublishTpl, data));
+		loadEvents();
 	    });
 	    MediaFunctions.__parseMenuSearch();
 	    
@@ -150,15 +151,6 @@ define([
 		}
 	    });
 	    
-	    $('#submit').on('click', function() {
-		if (isValidFileType()) {
-		    console.log('valid');
-		    $('#form_media_publish').submit();
-		} else {
-		    console.log('invalid, error message');
-		}
-	    });
-
 	    // verifica se o tipo de arquivo é valido e retorna true/false
 	    var isValidFileType = function() {
 		var mime_type = document.getElementById('media_file').files[0].type,  // mime_type do arquivo submetido
@@ -215,28 +207,42 @@ define([
 		    return true;
 		}		
 	    }
-
-	    // verifica preenchimento de campos mínimos para fazer o upload
-	    $('#media_file').on('click', function(e) {
-		var validate = validateUpload();
-		if (!validate) {
-		    e.preventDefault();
-		} else {
-		    // com validacao ok, limpa mensagens
-		    $('#messages').html();
-		}
-	    });
 	    
-	    // validacao client side do arquivo
-	    $('#media_file').on('change', function(e) {
-		console.log('inicia o upload');
-		if (isValidFileType()) {
-		    uploadFile();
-		} else {
-		    $('#messages .error-bar').fadeIn(0,0, function() {});
-		    $('#messages .error-bar').fadeTo(3000, 0, function() {});
-		}
-	    });
+	    // declara eventos
+	    var loadEvents = function() {
+		
+		// verifica preenchimento de campos mínimos para fazer o upload
+		$('#media_file').on('click', function(e) {
+		    console.log('clicou media_file');
+		    var validate = validateUpload();
+		    if (!validate) {
+			e.preventDefault();
+		    } else {
+			// com validacao ok, limpa mensagens
+			$('#messages').html();
+		    }
+		});
+		
+		// validacao client side do arquivo
+		$('#media_file').on('change', function(e) {
+		    console.log('inicia o upload');
+		    if (isValidFileType()) {
+			uploadFile();
+		    } else {
+			$('#messages .error-bar').fadeIn(0,0, function() {});
+			$('#messages .error-bar').fadeTo(3000, 0, function() {});
+		    }
+		});
+
+		$('#submit').on('click', function() {
+		    if (isValidFileType()) {
+			console.log('valid');
+			$('#form_media_publish').submit();
+		    } else {
+			console.log('invalid, error message');
+		    }
+		});
+	    }
 	},
     });
     
