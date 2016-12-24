@@ -1293,11 +1293,15 @@ define([
 	    data.parseThumb = parseThumb;
 	    data.baseUrlEdit = config.interfaceUrl + config.repository + '/' + config.mucua + '/media/',
 
-	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryEditItem', function (MediaGalleryEditItemTpl) {
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryEdit', function (MediaGalleryEditTpl) {
 		$('#content').html(_.template(MediaGalleryEditTpl, data));
-		_.each(data.medias, function(media) {
-		    data.media = media;
-		    $('#media-gallery-edit tbody').append(_.template(MediaGalleryEditItemTpl, data));
+
+		BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryEditItem', function (MediaGalleryEditItemTpl) {
+		    $('#content').html(_.template(MediaGalleryEditTpl, data));
+		    _.each(data.medias, function(media) {
+			data.media = media;
+			$('#media-gallery-edit tbody').append(_.template(MediaGalleryEditItemTpl, data));
+		    });
 		});
 	    });
 
