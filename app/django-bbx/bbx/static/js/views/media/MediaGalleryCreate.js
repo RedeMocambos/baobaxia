@@ -34,20 +34,6 @@ define([
 	    BBXFunctions.renderUsage();
 	    MediaFunctions.__parseMenuSearch();
 	    
-	    // get mucuas list
-	    mucuas.fetch({
-		success: function() {
-		    var mucuasLength = mucuas.models.length;
-		    BBX.mucuaList = [];
-		    
-		    for (var m = 0; m < mucuasLength; m++) {
-			var mucua = mucuas.models[m].attributes;
-			BBX.mucuaList.push(mucua);
-			$('#origin').append("<option value='" + mucua.description + "'>" + mucua.description + "</option>");
-		    }
-		}
-	    });
-
 	    var validateUpload = function() {
 		var validationError = [],
 		    fields = ['#tags', '#origin'];
@@ -164,23 +150,34 @@ define([
 	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryCreate', function(MediaGalleryCreateTpl) {	    
 		$('#content').html(_.template(MediaGalleryCreateTpl, data));
 
-		loadEvents();
-	    });
-	    // tags
-	    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
-	    
-	    $('#tags')
-	        .textext({
+		// get mucuas list
+		mucuas.fetch({
+		    success: function() {
+			var mucuasLength = mucuas.models.length;
+			BBX.mucuaList = [];
+			
+			for (var m = 0; m < mucuasLength; m++) {
+			    var mucua = mucuas.models[m].attributes;
+			    BBX.mucuaList.push(mucua);
+			    $('#origin').append("<option value='" + mucua.description + "'>" + mucua.description + "</option>");
+			}
+		    }
+		});		
+
+		// tags
+		var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
+		
+		$('#tags').textext({
 		    plugins : 'autocomplete tags ajax',
 		    ajax : {
 			url : urlApiTags,
 			dataType : 'json'
 		    }
 		})
-	    // on select type of file, prepare upload
-	    prepareUpload();
-
-
+		
+		loadEvents();
+	    });
+	    
 	    // declara eventos
 	    var loadEvents = function() {
 		$('#media_file').on('click', function(e) {
@@ -191,6 +188,11 @@ define([
 			// com validacao ok, limpa mensagens
 			$('#messages').html();
 		    }
+		});
+
+		$('#media_type').on('change', function(e) {
+		    // on select type of file, prepare upload
+		    prepareUpload();
 		});
 	    }
 	}
