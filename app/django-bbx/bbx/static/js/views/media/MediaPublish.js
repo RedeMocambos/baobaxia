@@ -120,37 +120,6 @@ define([
 	    }, 50);
 	    
 	    
-	    // form upload progress meter
-	    var bar = $('.bar'),
-		percent = $('.percent'),
-		status = $('#status');
-	    
-	    $('#form_media_publish').ajaxForm({
-		beforeSend: function(xhr) {
-		    xhr.setRequestHeader('Authorization', 'JWT ' +  sessionStorage.token);
-		    status.empty();
-		    var percentVal = '0%';
-		    bar.width(percentVal)
-		    percent.html(percentVal);
-		    },
-		uploadProgress: function(event, position, total, percentComplete) {
-		    var percentVal = percentComplete + '%';
-		    bar.width(percentVal)
-		    percent.html(percentVal);
-		},
-		success: function() {
-		    var percentVal = '100%';
-		    bar.width(percentVal)
-		    percent.html(percentVal);
-		},
-		complete: function(xhr) {
-		    status.html(xhr.responseText);
-		    console.log(xhr.responseText);
-		    var mediaSerialized = eval('(' + xhr.responseText + ')');
-		    updateMedia(mediaSerialized);
-		}
-	    });
-	    
 	    // verifica se o tipo de arquivo é valido e retorna true/false
 	    var isValidFileType = function() {
 		var mime_type = document.getElementById('media_file').files[0].type,  // mime_type do arquivo submetido
@@ -210,6 +179,37 @@ define([
 	    
 	    // declara eventos
 	    var loadEvents = function() {
+		
+		// form upload progress meter
+		var bar = $('.bar'),
+		    percent = $('.percent'),
+		    status = $('#status');
+		
+		$('#form_media_publish').ajaxForm({
+		    beforeSend: function(xhr) {
+			xhr.setRequestHeader('Authorization', 'JWT ' +  sessionStorage.token);
+			status.empty();
+			var percentVal = '0%';
+			bar.width(percentVal)
+			percent.html(percentVal);
+		    },
+		    uploadProgress: function(event, position, total, percentComplete) {
+			var percentVal = percentComplete + '%';
+			bar.width(percentVal)
+			percent.html(percentVal);
+		    },
+		    success: function() {
+			var percentVal = '100%';
+			bar.width(percentVal)
+			percent.html(percentVal);
+		    },
+		    complete: function(xhr) {
+			status.html(xhr.responseText);
+			console.log(xhr.responseText);
+			var mediaSerialized = eval('(' + xhr.responseText + ')');
+			updateMedia(mediaSerialized);
+		    }
+		});
 		
 		// verifica preenchimento de campos mínimos para fazer o upload
 		$('#media_file').on('click', function(e) {
