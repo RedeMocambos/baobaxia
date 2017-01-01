@@ -11,8 +11,9 @@ define([
     'modules/media/functions',
     'modules/media/model',
     'modules/mucua/model',
-    'modules/mucua/collection'
-], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection){
+    'modules/mucua/collection',
+    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreate.html'
+], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryCreateTpl){
     
     var MediaGalleryCreate = Backbone.View.extend({	
 	render: function(){
@@ -162,9 +163,7 @@ define([
 	    data.media.author = config.userData.username;
 	    
 	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');
-	    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaGalleryCreate', function(MediaGalleryCreateTpl) {	    
-		$('#content').html(_.template(MediaGalleryCreateTpl, data));
-	    });
+	    $('#content').html(_.template(MediaGalleryCreateTpl, data));
 	    // tags
 	    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
 	    
