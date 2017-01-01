@@ -8,6 +8,7 @@ import json
 import re
 from PIL import Image, ImageOps
 import magic
+import subprocess
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -74,8 +75,7 @@ def media_file_rename(instance, new_file_name):
 def get_media_size(instance):
     u"""Retorna tamanho da mídia"""
     cmd = 'git annex info ' + instance.get_file_name() + ' --json'
-    pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(instance))
-    output, error = pipe.communicate()
+    output = subprocess.check_output(cmd, shell=True, cwd=get_file_path(instance))
 
     try:
         media_size = json.loads(output)['size'].split(' ')
