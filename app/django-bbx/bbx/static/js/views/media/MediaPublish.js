@@ -7,8 +7,10 @@ define([
     'modules/media/functions',
     'modules/media/model',
     'modules/mucua/model',
-    'modules/mucua/collection'
-], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection){
+    'modules/mucua/collection',
+    'text!/templates/' + BBX.userLang + '/media/MediaPublish.html'
+], function($, _, JQueryForm, Backbone, BBXFunctions, MediaFunctions, MediaModel, MucuaModel,
+            MucuaCollection, MediaPublishTpl){
     
     var MediaPublish = Backbone.View.extend({	
 	render: function(){
@@ -89,9 +91,8 @@ define([
 	    config.userData = localStorage.userData;
 	    data = __prepareFormData();
 
-	    TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaPublish', function(MediaPublishTpl) {
-		$('#content').html(_.template(MediaPublishTpl, data));
-	    });
+	    $('#content').html(_.template(MediaPublishTpl, data));
+
 	    MediaFunctions.__parseMenuSearch();
 	    
 	    $('#media_publish .bloco-2').hide();
