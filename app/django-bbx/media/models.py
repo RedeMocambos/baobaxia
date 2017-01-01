@@ -250,6 +250,10 @@ class Media(models.Model):
         _('number of copies'), default=1, blank=True,
         help_text=_('Number of copies of the media in the repository'))
 
+    @property 
+    def size(self):
+        return get_media_size(self)
+
     def __init__(self, *args, **kwargs):
         super(Media, self).__init__(*args, **kwargs)
         self._meta.get_field('uuid').default = force_unicode(uuid.uuid4())

@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.management.base import CommandError
 from django.core.exceptions import ValidationError
 
-from media.models import Media
+from media.models import Media, get_media_size
 from tag.models import Tag
 from repository.models import get_latest_media, get_default_repository, Repository
 from repository.models import git_annex_list_tags, git_annex_add_tag
@@ -48,13 +48,17 @@ class MediaSerializer(serializers.ModelSerializer):
     origin = serializers.SlugRelatedField(many=False, slug_field='description')
     repository = serializers.SlugRelatedField(many=False, slug_field='name')
     author = serializers.SlugRelatedField(many=False, slug_field='username')
+    size = serializers.SerializerMethodField('get_size')
+
+    def get_size(self, media):
+        return get_media_size(media)
     
     class Meta:
         model = Media
         fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
                   'format', 'license', 'media_file', 'url', 'origin',
                   'repository', 'is_local', 'is_requested', 'num_copies',
-                  'tags', 'last_modified')
+                  'tags', 'last_modified', 'size')
         depth = 1
     
     def restore_fields(self, data, files):
