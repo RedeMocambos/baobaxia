@@ -2,11 +2,10 @@ define([
     'jquery', 
     'backbone',
     'backbone_subroute',
-    'modules/bbx/functions',
     'modules/repository/model',
     'views/repository/HomeRepository',
     'views/repository/ListMucuas',
-], function($, Backbone, BackboneSubroute, BBXFunctions, RepositoryModel, HomeRepository, ListMucuas){
+], function($, Backbone, BackboneSubroute, RepositoryModel, HomeRepository, ListMucuas){
     var Router = Backbone.SubRoute.extend({
 	routes: {
 	    'mucuas' : 'listMucuas',

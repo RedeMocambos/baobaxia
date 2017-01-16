@@ -2,9 +2,8 @@ define([
     'jquery', 
     'lodash',
     'backbone',
-    'modules/bbx/functions',
     'modules/media/functions',
-], function($, _, Backbone, BBXFunctions, MediaFunctions) {
+], function($, _, Backbone, MediaFunctions) {
     var NetworkView = Backbone.View.extend({
 	el: "body",    
 

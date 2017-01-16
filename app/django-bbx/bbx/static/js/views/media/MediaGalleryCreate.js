@@ -7,13 +7,11 @@ define([
     'textext',
     'textext_ajax',
     'textext_autocomplete',
-    'modules/bbx/functions',
     'modules/media/functions',
     'modules/media/model',
     'modules/mucua/model',
-    'modules/mucua/collection',
-    'text!/templates/' + BBX.userLang + '/media/MediaGalleryCreate.html'
-], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, BBXFunctions, MediaFunctions, MediaModel, MucuaModel, MucuaCollection, MediaGalleryCreateTpl){
+    'modules/mucua/collection'
+], function($, _, JQueryForm, Backbone, FileUpload, Textext, TextextAjax, TextextAutocomplete, MediaFunctions, MediaModel, MucuaModel, MucuaCollection){
     
     var MediaGalleryCreate = Backbone.View.extend({	
 	render: function(){
@@ -23,7 +21,7 @@ define([
 		mucuas = new MucuaCollection([], {url: config.apiUrl + '/' + config.MYREPOSITORY + '/mucuas'});
 
 	    if (!BBXFunctions.isLogged()) {
-		TemplateManager.get('/templates/' + BBX.userLang + '/common/PermissionDenied', function(PermissionDeniedTpl) {
+		BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/common/PermissionDenied', function(PermissionDeniedTpl) {
 		    $('#content').html(PermissionDeniedTpl);
 		});
 		setTimeout(function() {
@@ -36,20 +34,6 @@ define([
 	    BBXFunctions.renderUsage();
 	    MediaFunctions.__parseMenuSearch();
 	    
-	    // get mucuas list
-	    mucuas.fetch({
-		success: function() {
-		    var mucuasLength = mucuas.models.length;
-		    BBX.mucuaList = [];
-		    
-		    for (var m = 0; m < mucuasLength; m++) {
-			var mucua = mucuas.models[m].attributes;
-			BBX.mucuaList.push(mucua);
-			$('#origin').append("<option value='" + mucua.description + "'>" + mucua.description + "</option>");
-		    }
-		}
-	    });
-
 	    var validateUpload = function() {
 		var validationError = [],
 		    fields = ['#tags', '#origin'];
@@ -73,7 +57,7 @@ define([
 		});
 		
 		if (validationError.length > 0) {
-		    TemplateManager.get('/templates/' + BBX.userLang + '/media/CreateValidationErrorMessage', function(MediaGalleryCreateValidationErrorMessageTpl) {
+		    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/CreateValidationErrorMessage', function(MediaGalleryCreateValidationErrorMessageTpl) {
 			$('#messages').html(_.template(MediaGalleryCreateValidationErrorMessageTpl));
 			return false;
 		    });
@@ -107,7 +91,7 @@ define([
 			    }
 			};
 
-			TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage', function(MediaGalleryCreateMessageTpl) {
+			BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryCreateMessage', function(MediaGalleryCreateMessageTpl) {
 			    $('#messages').append(_.template(MediaGalleryCreateMessageTpl, data));
 			    var overallProgress = $('#fileupload').fileupload('progress');
 			    if (overallProgress.loaded === overallProgress.total) {
@@ -139,7 +123,7 @@ define([
 			};
 			$('#messages').remove('img')[0];
 			
-			TemplateManager.get('/templates/' + BBX.userLang + '/media/MediaGalleryCreateErrorMessage', function(MediaGalleryCreateErrorMessageTpl) {
+			BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryCreateErrorMessage', function(MediaGalleryCreateErrorMessageTpl) {
 			    $('#messages').append(_.template(MediaGalleryCreateErrorMessageTpl, data));
 			});
 		    }
@@ -163,30 +147,54 @@ define([
 	    data.media.author = config.userData.username;
 	    
 	    $('head').append('<link rel="stylesheet" href="/css/textext.plugin.autocomplete.css" type="text/css" />');
-	    $('#content').html(_.template(MediaGalleryCreateTpl, data));
-	    // tags
-	    var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
-	    
-	    $('#tags')
-	        .textext({
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/media/MediaGalleryCreate', function(MediaGalleryCreateTpl) {	    
+		$('#content').html(_.template(MediaGalleryCreateTpl, data));
+
+		// get mucuas list
+		mucuas.fetch({
+		    success: function() {
+			var mucuasLength = mucuas.models.length;
+			BBX.mucuaList = [];
+			
+			for (var m = 0; m < mucuasLength; m++) {
+			    var mucua = mucuas.models[m].attributes;
+			    BBX.mucuaList.push(mucua);
+			    $('#origin').append("<option value='" + mucua.description + "'>" + mucua.description + "</option>");
+			}
+		    }
+		});		
+
+		// tags
+		var urlApiTags = Backbone.history.location.origin + config.apiUrl + '/' + config.MYREPOSITORY + '/' + config.MYMUCUA + '/tags/search/';
+		
+		$('#tags').textext({
 		    plugins : 'autocomplete tags ajax',
 		    ajax : {
 			url : urlApiTags,
 			dataType : 'json'
 		    }
 		})
-	    // on select type of file, prepare upload
-	    prepareUpload();
-	    
-	    $('#media_file').on('click', function(e) {
-		var validate = validateUpload();
-		if (!validate) {
-		    e.preventDefault();
-		} else {
-		    // com validacao ok, limpa mensagens
-		    $('#messages').html();
-		}
+		
+		loadEvents();
 	    });
+	    
+	    // declara eventos
+	    var loadEvents = function() {
+		$('#media_file').on('click', function(e) {
+		    var validate = validateUpload();
+		    if (!validate) {
+			e.preventDefault();
+		    } else {
+			// com validacao ok, limpa mensagens
+			$('#messages').html();
+		    }
+		});
+
+		$('#media_type').on('change', function(e) {
+		    // on select type of file, prepare upload
+		    prepareUpload();
+		});
+	    }
 	}
     });
     

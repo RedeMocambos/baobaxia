@@ -25,12 +25,11 @@ define([
     'text!/templates/' + BBX.userLang + '/common/UserProfile.html',
     'text!/templates/' + BBX.userLang + '/common/MucuaProfile.html'
 ], function($, _, Backbone, HeaderView, HomeMucuaView, BuscadorView, MucuaModel, RepositoryModel, TagModel, MediaFunctions, SidebarTpl, MucuaItemTpl, UsageBarTpl, UserProfileTpl, MucuaProfileTpl) {
-
     /**
      * init function of bbx functions
      *
      * @return {None}
-     */    
+     */
     var init = function() {	
 	__setConfig(BBX.config);
 	BBX.tmp = {};
@@ -76,6 +75,40 @@ define([
 	
 	avatarUrl = "images/" + defaultAvatar;
 	return avatarUrl;
+    }
+
+
+    /**
+     * render common elements for internal pages at baobaxiaOB
+     * Idea taken from: https://lostechies.com/derickbailey/2012/02/09/asynchronously-load-html-templates-for-backbone-views/
+     * Totally readapted by Fernão Lopes Ginez de Lara 2016
+     *
+     * @templateName {String} HTML template page name (without .html)
+     * @callback {Function} Callback in order to run
+     * @return {None}
+     */    
+    var getTemplateManager = function(templateName, callback){
+	// defines new global variable for templates, if not set
+	if (typeof BBX.templates === 'undefined') {
+	    BBX.templates = {};
+	}
+	
+	var templateString = templateName.replace(/\//gi, '_'),
+	    templateInstance = BBX.templates.hasOwnProperty[templateString];
+	
+	// already loaded: runs it
+	if (typeof templateInstance !== 'undefined') {
+	    callback(templateInstance);
+	} else {
+	    
+	    // not yet loaded: get it
+	    $.get(templateName + '.html', function(templateContent) {
+		// adds to loaded list
+		BBX.templates[templateName.replace(/\//gi, '_')] = templateContent;
+		
+		callback(templateContent);
+	    });
+	}
     }
     
     /**
@@ -361,7 +394,8 @@ define([
 	    }
 	}, 100);	
     }
-    
+
+
     /**
      * render elements at sidebar
      *
@@ -371,7 +405,7 @@ define([
 	var config = __getConfig(),
 	    mucuaData = {},
 	    loadMucua = false;
-	
+
 	console.log('render sidebar');
 	if (isLogged() &&
 	    ((typeof $("#user-profile").html() === "undefined") || $("#user-profile").html() === "")) {
@@ -632,7 +666,6 @@ define([
 	}, 50);	    
     }
 
-    
     /**
      * Get config data
      *
@@ -812,7 +845,6 @@ define([
 	return urlParse;
     }
 
-    
     // public functions are defined above
     return {
 	init: init,
@@ -826,7 +858,8 @@ define([
 	formatDate: formatDate,
 	checkFunctionalTag: checkFunctionalTag,
 	truncate: truncate,
-	parseFilterLink: parseFilterLink
+	parseFilterLink: parseFilterLink,
+	getTemplateManager: getTemplateManager
     }
 });
     

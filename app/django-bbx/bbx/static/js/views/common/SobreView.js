@@ -17,7 +17,7 @@ define([
 	    BBXFunctions.renderSidebar();
 	    BBXFunctions.renderUsage();
 
-	    TemplateManager.get('/templates/' + BBX.userLang + '/common/Sobre.html', function(SobreTpl) {
+	    BBXFunctions.getTemplateManager('/templates/' + BBX.userLang + '/common/Sobre.html', function(SobreTpl) {
 		$('#content').html(_.template(SobreTpl));
 	    });
 	}
