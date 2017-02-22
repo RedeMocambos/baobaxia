@@ -16,15 +16,16 @@ Definicoes do comando para atualizar o estado dos medias
 class Command(BaseCommand):
     """Atualiza o estado dos media"""
     help = 'Atualiza o estado dos media desde os numero de dias passado (por default 7 dias)'
-
+   
     def handle(self, *args, **options):
         if len(args) == 0:
-            since = 7
+            medias = Media.objects.filter(is_local=False)
+            logger.info("Atualizando todos as copias locais dos medias")
         else:
             since = int(args[0])
-        some_day_ago = timezone.now().date() - timedelta(days=since)
-        logger.info("Atualizando os medias desde o dia: " + str(some_day_ago))
-        medias = Media.objects.filter(date__gte=some_day_ago)
+            some_day_ago = timezone.now().date() - timedelta(days=since)
+            logger.info("Atualizando os medias desde o dia: " + str(some_day_ago))
+            medias = Media.objects.filter(date__gte=some_day_ago)
         
         for media in medias:
             try:
