@@ -77,10 +77,13 @@ def get_media_size(instance):
     cmd = 'git annex info ' + instance.get_file_name() + ' --json'
     output = subprocess.check_output(cmd, shell=True, cwd=get_file_path(instance))
 
+    media_size = ["0", "bytes"]
     try:
         media_size = json.loads(output)['size'].split(' ')
     except ValueError:
         logger.info('Error while trying to get file size.')
+    except KeyError:
+        logger.info('Key error while trying to get file size.')
 
     size_list = {'bytes': 'B',
                  'kilobytes': 'KB',
@@ -307,7 +310,11 @@ class Media(models.Model):
         from repository.models import git_annex_where_is
         
         data = git_annex_where_is(self)
-        whereis = json.loads(data)
+        try:
+            whereis = json.loads(data)
+        except ValueError:
+            logger.debug("Data error " + data)
+            whereis = { 'whereis': [] }
         
         index = 0
         for item in whereis['whereis']:
