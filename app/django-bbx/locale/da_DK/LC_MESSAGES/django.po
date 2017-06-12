@@ -1,0 +1,968 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-04-20 18:26-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: bbx/auth.py:60
+msgid "Error deserialing"
+msgstr "Deserialiseringsfejl"
+
+#: bbx/auth.py:68 bbx/auth.py:89
+msgid "User"
+msgstr "Bruger"
+
+#: bbx/auth.py:70
+msgid "logged in"
+msgstr "logget ind"
+
+#: bbx/auth.py:75 mocambola/views.py:66
+msgid "Exception caught, UserDoesNotExist"
+msgstr "Exception fanget, UserDoesNotExist"
+
+#: bbx/auth.py:90
+msgid "doesn't exist or password is wrong!"
+msgstr "findes ikke eller forkert password!"
+
+#: bbx/settings.example.py:36 bbx/settings.py:26
+msgid "English"
+msgstr "Engelsk"
+
+#: bbx/settings.example.py:37 bbx/settings.py:27
+msgid "Spanish"
+msgstr "Spansk"
+
+#: bbx/settings.example.py:38 bbx/settings.py:28
+msgid "Brazilian Portuguese"
+msgstr "Brasiliansk portugisisk"
+
+#: bbx/settings.example.py:39 bbx/settings.py:29
+msgid "Italian"
+msgstr "Italiensk"
+
+#: bbx/settings.example.py:39 bbx/settings.py:40
+msgid "Danish"
+msgstr "Dansk"
+
+#: bbx/templates/admin/base_site.html:4 bbx/templates/admin/base_site.html:7
+msgid "Baobaxia Garden"
+msgstr "Baobaxias baghave"
+
+#: bbx/templates/auth/FillPassword.html:2
+msgid "Fill password"
+msgstr "Udfyld adgangskode"
+
+#: bbx/templates/auth/FillUser.html:2
+msgid "Fill username field!"
+msgstr "Udfyld brugernavn"
+
+#: bbx/templates/auth/LoginFailed.html:2
+msgid "Login failed!"
+msgstr "Login mislykkedes!"
+
+#: bbx/templates/auth/LoginOk.html:2
+msgid "Login done."
+msgstr "Du er nu logget ind."
+
+#: bbx/templates/auth/LoginTemplate.html:22
+msgid "Mocambola"
+msgstr "Mocambola"
+
+#: bbx/templates/auth/LoginTemplate.html:26
+#: bbx/templates/media/MediaView.html:26
+msgid "Mucua"
+msgstr "Mucua"
+
+#: bbx/templates/auth/LoginTemplate.html:35
+#: bbx/templates/auth/Register.html:36 media/serializers.py:150
+#: repository/models.py:578
+msgid "Repository"
+msgstr "Repositorium"
+
+#: bbx/templates/auth/LoginTemplate.html:46
+msgid "password"
+msgstr "adgangskode"
+
+#: bbx/templates/auth/LoginTemplate.html:48
+msgid "lost my password"
+msgstr "jeg har glemt min adgangskode"
+
+#: bbx/templates/auth/LoginTemplate.html:49
+msgid "register"
+msgstr "registrér"
+
+#: bbx/templates/auth/PasswordMustMatch.html:2
+msgid "Passwords must match"
+msgstr "Adgangskoderne er ikke ens"
+
+#: bbx/templates/auth/Register.html:19
+msgid "Registering new user"
+msgstr "Registrerer ny bruger"
+
+#: bbx/templates/auth/Register.html:24
+msgid "Mocambola login"
+msgstr "Mocambola login"
+
+#: bbx/templates/auth/Register.html:28
+msgid "Select your mucua"
+msgstr "Selecione sua mucua"
+
+#: bbx/templates/auth/Register.html:47
+msgid "Password"
+msgstr "Senha"
+
+#: bbx/templates/auth/Register.html:49
+msgid "Password, again"
+msgstr "Senha, novamente"
+
+#: bbx/templates/auth/UserCreationError.html:2
+msgid "Could not create user!"
+msgstr "Usuário não pode ser criado"
+
+#: bbx/templates/auth/UserExists.html:2
+msgid "User already exists!"
+msgstr "Usuári@ já existe!"
+
+#: bbx/templates/common/Buscador.html:27
+msgid "Filters"
+msgstr "Filtros"
+
+#: bbx/templates/common/Buscador.html:29 bbx/templates/common/Buscador.html:30
+msgid "image"
+msgstr "imagem"
+
+#: bbx/templates/common/Buscador.html:32 bbx/templates/common/Buscador.html:33
+msgid "video"
+msgstr "vídeo"
+
+#: bbx/templates/common/Buscador.html:35 bbx/templates/common/Buscador.html:36
+msgid "audio"
+msgstr "áudio"
+
+#: bbx/templates/common/Buscador.html:38 bbx/templates/common/Buscador.html:39
+msgid "file"
+msgstr "arquivo"
+
+#: bbx/templates/common/Buscador.html:42
+msgid "Is local"
+msgstr "É local"
+
+#: bbx/templates/common/Buscador.html:43
+msgid "Is requested"
+msgstr "requisitado"
+
+#: bbx/templates/common/Buscador.html:45
+msgid "per page"
+msgstr "por página"
+
+#: bbx/templates/common/Footer.html:2
+msgid "Footer"
+msgstr "Rodapé"
+
+#: bbx/templates/common/Header.html:4
+msgid "Header"
+msgstr "Cabeçalho"
+
+#: bbx/templates/common/Header.html:10
+msgid "shuffle"
+msgstr "aleatório"
+
+#: bbx/templates/common/Header.html:11
+msgid "view as grid"
+msgstr "ver como grade"
+
+#: bbx/templates/common/Header.html:12
+msgid "view as list"
+msgstr "ver como lista"
+
+#: bbx/templates/common/Header.html:24
+#: bbx/templates/media/MediaGalleryEdit.html:35
+msgid "Multiple edit"
+msgstr "Edição múltipla"
+
+#: bbx/templates/common/Menu.html:8
+msgid "Menu"
+msgstr "Menu"
+
+#: bbx/templates/common/Menu.html:16 bbx/templates/common/Menu.html.py:17
+#: bbx/templates/common/Menu.html:24 bbx/templates/common/Menu.html.py:25
+msgid "network"
+msgstr "rede"
+
+#: bbx/templates/common/MessageSearch.html:1
+msgid "Search at "
+msgstr "Buscar em "
+
+#: bbx/templates/common/MucuaProfile.html:3
+#: bbx/templates/media/MediaView.html:27
+msgid "mucua"
+msgstr "mucua"
+
+#: bbx/templates/common/MucuaProfile.html:22
+msgid "Collection:"
+msgstr "Coleção:"
+
+#: bbx/templates/common/MucuaProfile.html:25
+msgid "more info"
+msgstr "mais informações"
+
+#: bbx/templates/common/PermissionDenied.html:3
+msgid "Permission denied"
+msgstr "Acesso negado"
+
+#: bbx/templates/common/SearchTagsMenu.html:17
+msgid "Add term to search"
+msgstr "Adicionar termo à busca"
+
+#: bbx/templates/common/Sidebar.html:3
+msgid "do login"
+msgstr "fazer login"
+
+#: bbx/templates/common/Sidebar.html:9
+msgid "mucuas"
+msgstr "Mucuas"
+
+#: bbx/templates/common/Sidebar.html:10
+msgid "browse the network"
+msgstr "visualizar a rede"
+
+#: bbx/templates/common/Sidebar.html:16
+msgid "see all mucuas"
+msgstr "ver todas as mucuas"
+
+#: bbx/templates/common/Sobre.html:4
+msgid "About Baobaxia"
+msgstr "Sobre o baobáxia"
+
+#: bbx/templates/common/Sobre.html:5
+msgid "About baobaxia page text part 1"
+msgstr ""
+
+#: bbx/templates/common/Sobre.html:9
+msgid "About baobaxia page text part 2"
+msgstr ""
+" Baobáxia é uma arquitetura distribuída, voltada para a integraçãode redes "
+"locais mesmo em localidades nas quais a conexão à internet seja instável, "
+"lenta ou ausente. Não basta usar tecnologias de informação já existentes - "
+"precisamosmoldar o próprio desenvolvimento para que atenda às demandas da "
+"sociedade. Adota comoprincípio básico e metodologia de trabalho os "
+"fundamentos do software livre, tanto nagestão das equipes de trabalho, "
+"quanto nas soluções tecnológicas que utilizará. Concebido e desenvolvido "
+"pela Rede Mocambos "
+
+#: bbx/templates/common/Sobre.html:13
+msgid "About baobaxia page text part 3"
+msgstr ""
+" Nosso código é aberto e licenciado pela GNU General Public License; "
+"atualmente, o código é versionado usando Git com um repositório no Github. "
+
+#: bbx/templates/common/Sobre.html:16
+msgid "About baobaxia page text part 4"
+msgstr ""
+" O Baobáxia é desenvolvido tendo como base o software Git Annex. Deixamos "
+"aqui nosso profundo agradecimento e apoio a Joey Hess, desenvolvedor desse "
+"maravilhoso software. =) "
+
+#: bbx/templates/common/Sobre.html:21
+msgid "Support"
+msgstr "Apoio"
+
+#: bbx/templates/common/Sobre.html:23
+msgid "Support: FBB Foundation"
+msgstr "Apoio: Fundação FBB"
+
+#: bbx/templates/common/Sobre.html:24
+msgid "This project has the Banco do Brasil Foundation Support."
+msgstr "Esse projeto conta com o apoio da Fundação Banco do Brasil."
+
+#: bbx/templates/common/UsageBar.html:5
+msgid "others:"
+msgstr "outros"
+
+#: bbx/templates/common/UsageBar.html:6
+msgid "repository:"
+msgstr "repositório:"
+
+#: bbx/templates/common/UsageBar.html:7
+msgid "available:"
+msgstr "disponível:"
+
+#: bbx/templates/common/UsageBar.html:8
+msgid "demanded space:"
+msgstr "espaço demandado:"
+
+#: bbx/templates/common/UsageBar.html:19
+msgid "support / about baobaxia"
+msgstr "apoio / sobre o baobáxia"
+
+#: bbx/templates/common/UserProfile.html:13
+msgid "Logout"
+msgstr "Sair"
+
+#: bbx/templates/media/BackToSearch.html:4
+msgid "back to search"
+msgstr "voltar para a busca"
+
+#: bbx/templates/media/MediaConfirmRemoveMessage.html:2
+msgid "Do you want to permanently remove this media?"
+msgstr "Você quer apagar permanentemente essa mídia?"
+
+#: bbx/templates/media/MediaDestaquesMucua.html:4
+msgid "mucua highlights"
+msgstr "destaques da mucua"
+
+#: bbx/templates/media/MediaDropMessage.html:2
+msgid ""
+"Do you want to drop the local copy of this media? (Remember: after dropping, "
+"you still can request the content from another mucua)."
+msgstr ""
+"Você deseja apagar a cópua local dessa mídia? (Lembre-se: depois de apagar, "
+"você poderá solicitar a mídia novamente de outra mucua)."
+
+#: bbx/templates/media/MediaGalleryCreate.html:4
+msgid "Create new gallery"
+msgstr "Publicar nova galeria"
+
+#: bbx/templates/media/MediaGalleryCreate.html:19
+#: bbx/templates/media/MediaPublish.html:10
+#: bbx/templates/media/MediaPublish.html:93
+msgid "Origin"
+msgstr "Origem"
+
+#: bbx/templates/media/MediaGalleryCreate.html:24
+msgid "Gallery name (tags)"
+msgstr "Nome da galeria (tags)"
+
+#: bbx/templates/media/MediaGalleryCreate.html:30
+msgid "Description:"
+msgstr "Descrição"
+
+#: bbx/templates/media/MediaGalleryCreate.html:35
+#: bbx/templates/media/MediaPublish.html:99
+#: bbx/templates/media/MediaView.html:38
+msgid "License"
+msgstr "Licença"
+
+#: bbx/templates/media/MediaGalleryCreate.html:46
+msgid "Select file type to start upload"
+msgstr "Selecione o tipo do arquivo para iniciar os uploads"
+
+#: bbx/templates/media/MediaGalleryCreateErrorMessage.html:2
+msgid "Error while inserting media: "
+msgstr "Erro ao criar a mídia: "
+
+#: bbx/templates/media/MediaGalleryCreateMessage.html:2
+msgid "Media inserted: "
+msgstr "Mídia inserida: "
+
+#: bbx/templates/media/MediaGalleryCreateValidationErrorMessage.html:2
+msgid "Please fill the required fields to continue!"
+msgstr "Preencha os campos obrigatórios para continuar!"
+
+#: bbx/templates/media/MediaGalleryEdit.html:4
+msgid "Edit gallery"
+msgstr "Editar galeria"
+
+#: bbx/templates/media/MediaGalleryEdit.html:13
+#: bbx/templates/media/MediaList.html:5
+msgid "Select columns..."
+msgstr "Selecione as colunas..."
+
+#: bbx/templates/media/MediaGalleryEdit.html:17
+msgid "thumbnail"
+msgstr "Miniatura"
+
+#: bbx/templates/media/MediaGalleryEdit.html:18
+msgid "info"
+msgstr "mais informações"
+
+#: bbx/templates/media/MediaGalleryEdit.html:19
+#: bbx/templates/media/MediaList.html:19 bbx/templates/media/MediaList.html:39
+msgid "tags"
+msgstr "etiquetas"
+
+#: bbx/templates/media/MediaGalleryEdit.html:20
+#: bbx/templates/media/MediaList.html:18 bbx/templates/media/MediaList.html:38
+msgid "description"
+msgstr "Descrição"
+
+#: bbx/templates/media/MediaGalleryEdit.html:27
+msgid "Thumbnail"
+msgstr "Miniatura"
+
+#: bbx/templates/media/MediaGalleryEdit.html:28
+msgid "Info"
+msgstr "Informações"
+
+#: bbx/templates/media/MediaGalleryEdit.html:29
+#: bbx/templates/media/MediaGalleryEdit.html:51
+#: bbx/templates/media/MediaGalleryEditItem.html:57
+msgid "Tags"
+msgstr "Tags"
+
+#: bbx/templates/media/MediaGalleryEdit.html:30
+msgid "Note"
+msgstr "Descrição"
+
+#: bbx/templates/media/MediaGalleryEdit.html:31
+msgid "Save"
+msgstr "Salvar"
+
+#: bbx/templates/media/MediaGalleryEdit.html:36
+msgid "(override particular changes)"
+msgstr "(sobrescreve mudanças particulares)"
+
+#: bbx/templates/media/MediaGalleryEdit.html:40
+msgid "General information"
+msgstr "Informações gerais"
+
+#: bbx/templates/media/MediaGalleryEdit.html:41
+msgid "Name"
+msgstr "Nome"
+
+#: bbx/templates/media/MediaGalleryEdit.html:42
+#: bbx/templates/media/MediaGalleryEditItem.html:32
+#: bbx/templates/media/MediaPublish.html:88
+#: bbx/templates/media/MediaView.html:22 bbx/templates/media/MediaView.html:23
+msgid "Date"
+msgstr "Data"
+
+#: bbx/templates/media/MediaGalleryEdit.html:55
+#: bbx/templates/media/MediaGalleryEditItem.html:62
+#: bbx/templates/media/MediaPublish.html:109
+msgid "Description"
+msgstr "Descrição"
+
+#: bbx/templates/media/MediaGalleryEditItem.html:31
+msgid "Title"
+msgstr "Título"
+
+#: bbx/templates/media/MediaGalleryEditItem.html:66
+msgid "Update media"
+msgstr "Atualizar mídia"
+
+#: bbx/templates/media/MediaGalleryEditItem.html:67
+msgid "Edit media"
+msgstr "Editar mídia"
+
+#: bbx/templates/media/MediaGrid.html:9
+msgid "edit"
+msgstr "editar"
+
+#: bbx/templates/media/MediaGrid.html:35
+msgid "view/download"
+msgstr "ver/baixar"
+
+#: bbx/templates/media/MediaGrid.html:40
+msgid "view media"
+msgstr "visualizar mídia"
+
+#: bbx/templates/media/MediaList.html:8 bbx/templates/media/MediaList.html:28
+#: media/models.py:207 repository/models.py:506
+msgid "name"
+msgstr "nome"
+
+#: bbx/templates/media/MediaList.html:9 bbx/templates/media/MediaList.html:29
+msgid "author"
+msgstr "autor"
+
+#: bbx/templates/media/MediaList.html:10 bbx/templates/media/MediaList.html:30
+#: media/models.py:228
+msgid "format"
+msgstr "formato"
+
+#: bbx/templates/media/MediaList.html:11 bbx/templates/media/MediaList.html:31
+msgid "origin"
+msgstr "origem"
+
+#: bbx/templates/media/MediaList.html:12 bbx/templates/media/MediaList.html:32
+#: media/models.py:212
+msgid "date"
+msgstr "data"
+
+#: bbx/templates/media/MediaList.html:13 bbx/templates/media/MediaList.html:33
+#: media/models.py:233
+msgid "license"
+msgstr "licença"
+
+#: bbx/templates/media/MediaList.html:14 bbx/templates/media/MediaList.html:34
+#: media/models.py:223
+msgid "type"
+msgstr "tipo"
+
+#: bbx/templates/media/MediaList.html:15 bbx/templates/media/MediaList.html:35
+msgid "copies"
+msgstr "cópias"
+
+#: bbx/templates/media/MediaList.html:16 media/models.py:240
+msgid "is local"
+msgstr "é local"
+
+#: bbx/templates/media/MediaList.html:17 bbx/templates/media/MediaList.html:37
+msgid "status"
+msgstr "estado"
+
+#: bbx/templates/media/MediaList.html:36
+msgid "is local?"
+msgstr "é local?"
+
+#: bbx/templates/media/MediaList.html:73
+msgid "yes"
+msgstr "sim"
+
+#: bbx/templates/media/MediaList.html:75
+msgid "no"
+msgstr "não"
+
+#: bbx/templates/media/MediaList.html:81
+#: bbx/templates/media/MediaRequestedList.html:2
+msgid "requested"
+msgstr "requisitado"
+
+#: bbx/templates/media/MediaList.html:85
+msgid "is_local"
+msgstr "é local"
+
+#: bbx/templates/media/MediaList.html:91
+msgid "request"
+msgstr "requisitar"
+
+#: bbx/templates/media/MediaMocambola.html:4
+msgid "content published by mocambola"
+msgstr "conteúdo publicado pel@ mocambola"
+
+#: bbx/templates/media/MediaNovidades.html:3
+msgid "new content"
+msgstr "novo conteúdo"
+
+#: bbx/templates/media/MediaPagination.html:6
+msgid "total:"
+msgstr "total:"
+
+#: bbx/templates/media/MediaPublish.html:16
+msgid "Title:"
+msgstr "Título:"
+
+#: bbx/templates/media/MediaPublish.html:19
+msgid "Tags:"
+msgstr "Tags:"
+
+#: bbx/templates/media/MediaPublish.html:23
+msgid "File type"
+msgstr "Tipo de arquivo"
+
+#: bbx/templates/media/MediaPublish.html:36
+msgid "No preview available"
+msgstr "Sem visualização disponível"
+
+#: bbx/templates/media/MediaPublish.html:54
+msgid "UUID:"
+msgstr "UUID:"
+
+#: bbx/templates/media/MediaPublish.html:83
+msgid "Author"
+msgstr "Author"
+
+#: bbx/templates/media/MediaPublish.html:97
+#: bbx/templates/media/MediaView.html:30 bbx/templates/media/MediaView.html:31
+msgid "Format"
+msgstr "Formato"
+
+#: bbx/templates/media/MediaPublish.html:107
+msgid "Availability"
+msgstr "Disponibilidade"
+
+#: bbx/templates/media/MediaPublish.html:119
+msgid "Delete media"
+msgstr "Apagar"
+
+#: bbx/templates/media/MediaPublish.html:124
+msgid "View media"
+msgstr "Visualizar"
+
+#: bbx/templates/media/MediaPublish.html:131
+msgid "Update"
+msgstr "Atualizar"
+
+#: bbx/templates/media/MediaPublish.html:131
+msgid "Upload file"
+msgstr "Subir arquivo"
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:3
+msgid "Invalid file type!"
+msgstr "Tipo de arquivo inválido!"
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:4
+msgid "Format is currently unsupported: "
+msgstr "Por enquanto, esse formato não é suportado: "
+
+#: bbx/templates/media/MediaPublishInvalidFileType.html:5
+msgid "Please add one of the following ones:"
+msgstr "Favor adicionar um dos seguintes tipos:"
+
+#: bbx/templates/media/MediaRelated.html:3
+msgid "related content"
+msgstr "conteúdo relacionado"
+
+#: bbx/templates/media/MediaRemoveMessage.html:2
+msgid "Media removed!"
+msgstr "Mídia removida!"
+
+#: bbx/templates/media/MediaUpdateErrorMessage.html:2
+msgid "Error while updating media!"
+msgstr "Erro ao atualizar a mídia!"
+
+#: bbx/templates/media/MediaUpdatedMessage.html:2
+msgid "Media updated!"
+msgstr "Mídia atualizada!"
+
+#: bbx/templates/media/MediaView.html:10
+msgid "edit media"
+msgstr "editar mídia"
+
+#: bbx/templates/media/MediaView.html:18 bbx/templates/media/MediaView.html:19
+msgid "By"
+msgstr "Por"
+
+#: bbx/templates/media/MediaView.html:34 bbx/templates/media/MediaView.html:35
+msgid "Size"
+msgstr "Tamanho"
+
+#: bbx/templates/media/MediaView.html:56
+msgid "Who has this file?"
+msgstr "Quem tem esse arquivo?"
+
+#: bbx/templates/media/MediaView.html:63
+msgid "Drop local copy"
+msgstr "Apagar cópia local"
+
+#: bbx/templates/media/MediaView.html:86
+#: bbx/templates/media/MediaView.html:103
+msgid "download"
+msgstr "ver/baixar"
+
+#: bbx/templates/media/MediaView.html:89
+msgid "No visualization available"
+msgstr "Sem visualização disponível"
+
+#: bbx/templates/media/MediaView.html:105
+msgid "Local content"
+msgstr "Conteúdo local"
+
+#: bbx/templates/media/MessageRequest.html:3
+msgid "local copy requested - pending"
+msgstr "cópia local requisitada - pendente"
+
+#: bbx/templates/media/MessageRequest.html:5
+msgid "request local copy"
+msgstr "solicitar cópia local"
+
+#: bbx/templates/mocambola/HomeMocambola.html:10
+msgid "Enabled language: "
+msgstr "Língua habilitada: "
+
+#: bbx/templates/mocambola/HomeMocambola.html:13
+msgid "change language"
+msgstr "alterar língua"
+
+#: bbx/templates/mocambola/HomeMocambola.html:15
+msgid "parsing templates for new language..."
+msgstr "gerando templates para nova língua..."
+
+#: bbx/templates/mocambola/HomeMocambola.html:18
+msgid "Publish new content"
+msgstr "Publicar novo conteúdo"
+
+#: bbx/templates/mocambola/HomeMocambola.html:21
+msgid "Publish new gallery"
+msgstr "Publicar nova galeria"
+
+#: bbx/templates/repository/ListMucuas.html:2
+msgid "Mucuas"
+msgstr "Mucuas"
+
+#: lang/views.py:79
+msgid "Language not installed: "
+msgstr "Língua não instalada: "
+
+#: lang/views.py:94
+msgid "Module does not exists: "
+msgstr "Módulo não existe: "
+
+#: lang/views.py:103
+msgid "Template does not exists: "
+msgstr "Template não existe: "
+
+#: lang/management/commands/update_templates.py:50
+msgid "Language code not supported:"
+msgstr "Código de linguagem não suportado:"
+
+#: lang/management/commands/update_templates.py:57
+msgid "Updating templates..."
+msgstr "Atualizando templates..."
+
+#: lang/management/commands/update_templates.py:65
+msgid "...created folder "
+msgstr "...criada pasta "
+
+#: lang/management/commands/update_templates.py:69
+msgid "Parsing templates: "
+msgstr "Compilando templates: "
+
+#: media/models.py:204
+msgid "uuid"
+msgstr "uuid"
+
+#: media/models.py:205
+msgid "Media universal unique identifier"
+msgstr "Identificador único universal de mídia"
+
+#: media/models.py:206
+msgid "No UUID"
+msgstr "Sem UUID"
+
+#: media/models.py:208
+msgid "Media name"
+msgstr "Nome da mídia"
+
+#: media/models.py:209
+msgid "No title"
+msgstr "Sem título"
+
+#: media/models.py:211
+msgid "URL"
+msgstr "URL"
+
+#: media/models.py:213
+msgid "Media creation date"
+msgstr "Data de criação da mídia"
+
+#: media/models.py:214
+msgid "last modified"
+msgstr "última modificação"
+
+#: media/models.py:216
+msgid "Last change"
+msgstr "Última alteração"
+
+#: media/models.py:217
+msgid "note"
+msgstr "anotações"
+
+#: media/models.py:218 repository/models.py:512
+msgid "Note.. use as you wish!"
+msgstr "Anotações.. use como quiser!"
+
+#: media/models.py:224
+msgid "Type of the media, like image, document, video, ..."
+msgstr "Tipo da mídia, como imagem, documento, vídeo..."
+
+#: media/models.py:234
+msgid "License of the media, like, cc, gpl, bsd, ..."
+msgstr "Licença da mídia, como cc, gpl, bsd..."
+
+#: media/models.py:241
+msgid "True if media content is available locally"
+msgstr "Verdadeiro se conteúdo de mídia está disponível localmente"
+
+#: media/models.py:244
+msgid "is requested"
+msgstr "é requisitado"
+
+#: media/models.py:245
+msgid "True if media content is awaiting a local copy"
+msgstr "Verdadeiro se o conteúdo de mídia está aguardando uma cópia local"
+
+#: media/models.py:250
+msgid "number of copies"
+msgstr "número de cópias"
+
+#: media/models.py:251
+msgid "Number of copies of the media in the repository"
+msgstr "Número de cópias da mídia no repositório"
+
+#: media/serializers.py:149
+msgid "DESERIALIZING"
+msgstr "DESERIALIZANDO"
+
+#: media/serializers.py:154
+msgid "Serialized Media"
+msgstr "Mídia serializada"
+
+#: media/serializers.py:172
+msgid "This media already exist. Updated."
+msgstr "Essa mídia já existe. Atualizada."
+
+#: media/serializers.py:179
+msgid "New media created"
+msgstr "Nova mídia criada"
+
+#: media/views.py:444
+msgid "updated media - OK"
+msgstr "mídia atualizada - OK"
+
+#: media/views.py:447 media/views.py:522
+msgid "error while creating media"
+msgstr "erro ao criar a mídia"
+
+#: media/views.py:654
+msgid "Requested media of uuid %(uuid)s"
+msgstr "Mídia de uuid %s requisitada"
+
+#: media/views.py:667
+msgid "Dropped media of uuid %(uuid)s"
+msgstr "Removida mídia de uuid %s"
+
+#: media/views.py:681
+msgid "Removed media of uuid %(uuid)s"
+msgstr "Mídia de uuid %s requisitada"
+
+#: mocambola/models.py:58
+msgid "Error deserializing"
+msgstr "Erro desserializando"
+
+#: mocambola/views.py:36
+msgid "User don\t exists"
+msgstr "Usuári@ não existe: "
+
+#: mocambola/views.py:88
+msgid "User don't exists: "
+msgstr "Usuári@ não existe: "
+
+#: mocambola/views.py:94
+msgid "Invalid user or password"
+msgstr "Usuári@ ou senha inválida"
+
+#: mucua/models.py:243
+msgid "Mucua enraizada em "
+msgstr "Mucua enraizada em "
+
+#: mucua/models.py:246
+msgid "O territorio precisa ser indicado como 't:Nome_do_territorio'"
+msgstr "O territorio precisa ser indicado como 't:Nome_do_territorio'"
+
+#: mucua/models.py:248
+msgid "A mucua esta já enraizada em "
+msgstr "A mucua esta já enraizada em "
+
+#: mucua/views.py:29
+#, python-format
+msgid "Acessing mucuas in repository: %s"
+msgstr "Acessando mucuas no repositório: %s"
+
+#: mucua/views.py:50 mucua/views.py:74 mucua/views.py:87 mucua/views.py:144
+#: mucua/views.py:157 mucua/views.py:170 mucua/views.py:183 mucua/views.py:196
+#: mucua/views.py:209
+msgid "Mucua not found"
+msgstr "Mucua não encontrada"
+
+#: mucua/views.py:160
+#, python-format
+msgid "Group %s deleted"
+msgstr "Grupo %s apagado"
+
+#: mucua/views.py:199
+#, python-format
+msgid "Territory %s deleted"
+msgstr "Grupo %s apagado"
+
+#: repository/models.py:507
+msgid "Repository name taken from available repositories"
+msgstr "Nome do repositório retirado da lista de repositórios disponíveis"
+
+#: repository/models.py:511
+msgid "notes"
+msgstr "anotações"
+
+#: repository/models.py:516
+msgid "synchronize"
+msgstr "sincronizar"
+
+#: repository/models.py:517
+msgid "Tick here to enablesyncronization of this repository"
+msgstr "Marque aqui para habilitar a sincronização desse repositório"
+
+#: repository/models.py:522
+msgid "repository"
+msgstr "repositório"
+
+#: repository/models.py:523
+msgid "repositories"
+msgstr "repositórios"
+
+#: repository/models.py:577
+msgid "CLEANING"
+msgstr "LIMPANDO"
+
+#: repository/models.py:584
+msgid "Deleting media"
+msgstr "Apagando mídia"
+
+#: repository/models.py:589
+msgid "Fingerprint"
+msgstr "Impressão digital"
+
+#: repository/models.py:592
+msgid "Media deleted."
+msgstr "Mídia apagada!"
+
+#: repository/models.py:595
+msgid "Media doesn't exist"
+msgstr "Mídia não existe"
+
+#: repository/models.py:598
+msgid "Delete problem"
+msgstr "Problema ao remover mídia"
+
+#: repository/management/commands/bbxsync.py:52
+msgid "Revision is"
+msgstr "Revisão é"
+
+#~ msgid "next"
+#~ msgstr "avançar"
+
+#~ msgid "back"
+#~ msgstr "anterior"
+
+#~ msgid "description "
+#~ msgstr "Descrição"
+
+#~ msgid "Name of media"
+#~ msgstr "Nome da mídia"
+
+#~ msgid "remote"
+#~ msgstr "remoto"
+
+#~ msgid "list all"
+#~ msgstr "listar tudo"
+
+#~ msgid "Title of medias:"
+#~ msgstr "Título das mídias"
+
+#~ msgid "archive"
+#~ msgstr "arquivo"
+
+#~ msgid "who was this file?"
+#~ msgstr "quem tem esse arquivo?"
+
+#~ msgid "cloud"
+#~ msgstr "nuvem"
+
+#~ msgid "NETWORK"
+#~ msgstr "REDE"
+
+#~ msgid "List of media found in repository.."
+#~ msgstr "Lista das mídias encontradas no repositório..."
