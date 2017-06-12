@@ -15,7 +15,7 @@ depois:
  apt-get update && apt-get install -t wheezy-backports git-annex
 
 Agora pode instalar, como usuario root, e a partir da pasta /root/, descompate o arquivo:
- tar xjvf baobaxia_20141105.tbz 
+ tar xjvf baobaxia_20150402.tbz 
 
 Agora entre em /root/baobaxia/ e pode rodar o instalador com o ./install.sh  
 
@@ -23,4 +23,4 @@ O instalador não funciona muito bem mas normalmente respondendo sempre
 sim (envio) ele funciona ;)
 
 Qualquer duvida entre no canal #redemocambos no irc.freenode.org ou
-contato @ mocambos.org.
+contato @ mocambos.net

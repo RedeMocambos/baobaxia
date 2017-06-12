@@ -211,3 +211,83 @@ def create_objects_from_files(repository=get_default_repository().name):
 
     except CommandError:
         pass
+
+def recriar_media_do_repositorio(repository=get_default_repository().name):
+    """Recria os midias no Django a partir dos medias serializados em JSON."""
+    try:
+        repository = Repository.objects.get(
+            name=repository)
+    except Repository.DoesNotExist:
+        return None
+
+    logger.info(u">>> %s" % _('DESERIALIZING'))
+    logger.info(u"%s: %s" % (_('Repository'),  repository))
+    #logger.debug(u"%s \n %s" % (_('List of media found in repository..'), get_latest_media(repository)))                                                                                                                                                                                                                                                                                                                                                                                   
+
+    from glob import glob
+    caminho = os.path.join(REPOSITORY_DIR,repository.name)
+    result = [y for x in os.walk(caminho) for y in glob(os.path.join(x[0], '*.json'))]
+
+    result = [ x for x in result if "mocambolas" not in x ]
+    logger.info(u"%s: %s" % (_('Numero'),  len(result)))
+#    logger.info(u"%s: %s" % (_('JSONS'),  result))                                                                                                                                                                                                                                                                                                                                                                                                                                         
+
+    try:
+        for serialized_media in result:
+            logger.info(u"%s: %s" % (_('Serialized Media'), serialized_media))
+            media_json_file_path = os.path.join(REPOSITORY_DIR,
+                                                repository.name,
+                                                serialized_media)
+            if os.path.isfile(media_json_file_path):
+                with  open(media_json_file_path) as media_json_file:
+                    try:
+                        data = JSONParser().parse(media_json_file)
+                    except:
+                        print u"Problem parsing JSON: " + media_json_file.read()
+                        continue
+
+                try:
+                    media = Media.objects.get(uuid=data["uuid"])
+                    serializer = MediaSerializer(media, data=data, partial=True)
+                    print serializer.is_valid()
+                    print serializer.errors
+                    serializer.object.save(is_syncing=True)
+                    logger.info(u"%s" % _('This media already exist. Updated.'))
+                except Media.DoesNotExist:
+                    serializer = MediaSerializer(data=data)
+                    print serializer.is_valid()
+                    print serializer.errors
+                    serializer.object.save(is_syncing=True)
+                    media = serializer.object
+                    logger.info(u"%s" % _('New media created'))
+
+                # Synchronize/update tags.                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                #                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                # 1) Add all tags found in the git-annex metadata and not                                                                                                                                                                                                                                                                                                                                                                                                                   
+                # already present on the media.                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                # 2) If tags from other mucuas have been deleted (are missing in                                                                                                                                                                                                                                                                                                                                                                                                            
+                # the git_annex metadata tags), remove them from this media.                                                                                                                                                                                                                                                                                                                                                                                                                
+                tags_on_media = set(git_annex_list_tags(media))
+                existing_tags = set((t.namespace, t.name) for t in media.tags.all())
+                # Add new tags to media                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                for t in tags_on_media - existing_tags:
+                    # Add tag - search for existing, if none found create new tag.                                                                                                                                                                                                                                                                                                                                                                                                          
+                    namespace, name = t
+                    try:
+                        tag = Tag.objects.get(name=unicode(name),
+                                              namespace=unicode(namespace))
+                    except Tag.DoesNotExist:
+                        tag = Tag(name=name, namespace=namespace)
+                        tag.save()
+                    media.tags.add(tag)
+
+                # Remove tags that were removed on remote media                                                                                                                                                                                                                                                                                                                                                                                                                             
+                for t in existing_tags - tags_on_media:
+                    namespace, name = t
+                    tag = Tag.objects.get(name=name, namespace=namespace)
+                    media.tags.remove(tag)
+
+
+    except CommandError:
+        pass
+
