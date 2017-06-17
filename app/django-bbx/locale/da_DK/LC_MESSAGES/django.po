@@ -118,31 +118,31 @@ msgstr "Mocambola login"
 
 #: bbx/templates/auth/Register.html:28
 msgid "Select your mucua"
-msgstr "Selecione sua mucua"
+msgstr "Vælg din mucua"
 
 #: bbx/templates/auth/Register.html:47
 msgid "Password"
-msgstr "Senha"
+msgstr "Adgangskode"
 
 #: bbx/templates/auth/Register.html:49
 msgid "Password, again"
-msgstr "Senha, novamente"
+msgstr "Gentag adgangskode"
 
 #: bbx/templates/auth/UserCreationError.html:2
 msgid "Could not create user!"
-msgstr "Usuário não pode ser criado"
+msgstr "Kunne ikke oprette bruger!"
 
 #: bbx/templates/auth/UserExists.html:2
 msgid "User already exists!"
-msgstr "Usuári@ já existe!"
+msgstr "Brugeren findes allerede!"
 
 #: bbx/templates/common/Buscador.html:27
 msgid "Filters"
-msgstr "Filtros"
+msgstr "Filtre"
 
 #: bbx/templates/common/Buscador.html:29 bbx/templates/common/Buscador.html:30
 msgid "image"
-msgstr "imagem"
+msgstr "billede"
 
 #: bbx/templates/common/Buscador.html:32 bbx/templates/common/Buscador.html:33
 msgid "video"
@@ -150,48 +150,48 @@ msgstr "vídeo"
 
 #: bbx/templates/common/Buscador.html:35 bbx/templates/common/Buscador.html:36
 msgid "audio"
-msgstr "áudio"
+msgstr "lyd"
 
 #: bbx/templates/common/Buscador.html:38 bbx/templates/common/Buscador.html:39
 msgid "file"
-msgstr "arquivo"
+msgstr "fil"
 
 #: bbx/templates/common/Buscador.html:42
 msgid "Is local"
-msgstr "É local"
+msgstr "Findes lokalt"
 
 #: bbx/templates/common/Buscador.html:43
 msgid "Is requested"
-msgstr "requisitado"
+msgstr "forespurgt"
 
 #: bbx/templates/common/Buscador.html:45
 msgid "per page"
-msgstr "por página"
+msgstr "pr. side"
 
 #: bbx/templates/common/Footer.html:2
 msgid "Footer"
-msgstr "Rodapé"
+msgstr "Sidefod"
 
 #: bbx/templates/common/Header.html:4
 msgid "Header"
-msgstr "Cabeçalho"
+msgstr "Sidehoved"
 
 #: bbx/templates/common/Header.html:10
 msgid "shuffle"
-msgstr "aleatório"
+msgstr "tilfældig rækkefølge"
 
 #: bbx/templates/common/Header.html:11
 msgid "view as grid"
-msgstr "ver como grade"
+msgstr "se ikoner"
 
 #: bbx/templates/common/Header.html:12
 msgid "view as list"
-msgstr "ver como lista"
+msgstr "se liste"
 
 #: bbx/templates/common/Header.html:24
 #: bbx/templates/media/MediaGalleryEdit.html:35
 msgid "Multiple edit"
-msgstr "Edição múltipla"
+msgstr "Redigér flere"
 
 #: bbx/templates/common/Menu.html:8
 msgid "Menu"
@@ -200,11 +200,11 @@ msgstr "Menu"
 #: bbx/templates/common/Menu.html:16 bbx/templates/common/Menu.html.py:17
 #: bbx/templates/common/Menu.html:24 bbx/templates/common/Menu.html.py:25
 msgid "network"
-msgstr "rede"
+msgstr "netværk"
 
 #: bbx/templates/common/MessageSearch.html:1
 msgid "Search at "
-msgstr "Buscar em "
+msgstr "Søg i "
 
 #: bbx/templates/common/MucuaProfile.html:3
 #: bbx/templates/media/MediaView.html:27
@@ -213,199 +213,201 @@ msgstr "mucua"
 
 #: bbx/templates/common/MucuaProfile.html:22
 msgid "Collection:"
-msgstr "Coleção:"
+msgstr "Samling:"
 
 #: bbx/templates/common/MucuaProfile.html:25
 msgid "more info"
-msgstr "mais informações"
+msgstr "mere information"
 
 #: bbx/templates/common/PermissionDenied.html:3
 msgid "Permission denied"
-msgstr "Acesso negado"
+msgstr "Adgang nægtet"
 
 #: bbx/templates/common/SearchTagsMenu.html:17
 msgid "Add term to search"
-msgstr "Adicionar termo à busca"
+msgstr "Føj til søgning"
 
-#: bbx/templates/common/Sidebar.html:3
-msgid "do login"
-msgstr "fazer login"
+#: bbx/templates/common/Sidebar.html:3 msgid "do login"
+msgstr "log ind"
 
 #: bbx/templates/common/Sidebar.html:9
 msgid "mucuas"
-msgstr "Mucuas"
+msgstr "mucuaer"
 
 #: bbx/templates/common/Sidebar.html:10
 msgid "browse the network"
-msgstr "visualizar a rede"
+msgstr "se netværket"
 
 #: bbx/templates/common/Sidebar.html:16
 msgid "see all mucuas"
-msgstr "ver todas as mucuas"
+msgstr "se alle mucuaer"
 
 #: bbx/templates/common/Sobre.html:4
 msgid "About Baobaxia"
-msgstr "Sobre o baobáxia"
-
-#: bbx/templates/common/Sobre.html:5
+msgstr "Om Baobaxia"
 msgid "About baobaxia page text part 1"
 msgstr ""
 
 #: bbx/templates/common/Sobre.html:9
 msgid "About baobaxia page text part 2"
 msgstr ""
-" Baobáxia é uma arquitetura distribuída, voltada para a integraçãode redes "
-"locais mesmo em localidades nas quais a conexão à internet seja instável, "
-"lenta ou ausente. Não basta usar tecnologias de informação já existentes - "
+"Baobáxia er en distribueret arkitektur, som er beregnet til at "
+"skabe forbindelse mellem lokale netværk, hvis internetforbindelse "
+"kan være ustabil, langsom eller helt fraværende. Den eksisterende "
+"informationsteknologi er ikke tilstrækkelig - vi er nødt til at "
+"tilpasse selve udviklingsprocessen til samfundets behov. Som "
+"grundprincip og arbejdsmetode adopterer vi principperne for fri "
+"software, hvilket både påvirker samarbejdet mellem udviklerne og "
+"de teknologiske løsninger, systemet kan anvende. Baobaxia er "
 "precisamosmoldar o próprio desenvolvimento para que atenda às demandas da "
 "sociedade. Adota comoprincípio básico e metodologia de trabalho os "
 "fundamentos do software livre, tanto nagestão das equipes de trabalho, "
-"quanto nas soluções tecnológicas que utilizará. Concebido e desenvolvido "
-"pela Rede Mocambos "
+"quanto nas soluções tecnológicas que utilizará. Baobáxia er udtænkt "
+"og udviklet af Rede Mocambos "
 
 #: bbx/templates/common/Sobre.html:13
 msgid "About baobaxia page text part 3"
 msgstr ""
-" Nosso código é aberto e licenciado pela GNU General Public License; "
-"atualmente, o código é versionado usando Git com um repositório no Github. "
+" Vores kode er åben og tilgængelig under vilkårene i GNU General Public License; "
+"koden er i øjeblikket versionsstyret i et git-repositorium på Github. "
 
 #: bbx/templates/common/Sobre.html:16
 msgid "About baobaxia page text part 4"
 msgstr ""
-" O Baobáxia é desenvolvido tendo como base o software Git Annex. Deixamos "
-"aqui nosso profundo agradecimento e apoio a Joey Hess, desenvolvedor desse "
-"maravilhoso software. =) "
+" Baobáxia er udviklet med programmet Git Annex som base. Vi ønsker "
+"her at udtrykke vores dybe teknemmlighed og støtte til Joey Hess, som "
+"har udviklet dette fantastiske program. =)"
 
 #: bbx/templates/common/Sobre.html:21
 msgid "Support"
-msgstr "Apoio"
+msgstr "Støtte"
 
 #: bbx/templates/common/Sobre.html:23
 msgid "Support: FBB Foundation"
-msgstr "Apoio: Fundação FBB"
+msgstr "Støtte: Fundação FBB"
 
 #: bbx/templates/common/Sobre.html:24
 msgid "This project has the Banco do Brasil Foundation Support."
-msgstr "Esse projeto conta com o apoio da Fundação Banco do Brasil."
+msgstr "Dette projekt er støttet af Fundação Banco do Brasil."
 
 #: bbx/templates/common/UsageBar.html:5
 msgid "others:"
-msgstr "outros"
+msgstr "øvrige:"
 
 #: bbx/templates/common/UsageBar.html:6
 msgid "repository:"
-msgstr "repositório:"
+msgstr "repositorium:"
 
 #: bbx/templates/common/UsageBar.html:7
 msgid "available:"
-msgstr "disponível:"
+msgstr "tilgængelig:"
 
 #: bbx/templates/common/UsageBar.html:8
 msgid "demanded space:"
-msgstr "espaço demandado:"
+msgstr "pladskrav:"
 
 #: bbx/templates/common/UsageBar.html:19
 msgid "support / about baobaxia"
-msgstr "apoio / sobre o baobáxia"
+msgstr "støtte / om Baobáxia"
 
 #: bbx/templates/common/UserProfile.html:13
 msgid "Logout"
-msgstr "Sair"
+msgstr "Log ud"
 
 #: bbx/templates/media/BackToSearch.html:4
 msgid "back to search"
-msgstr "voltar para a busca"
+msgstr "tilbage til søgningen"
 
 #: bbx/templates/media/MediaConfirmRemoveMessage.html:2
 msgid "Do you want to permanently remove this media?"
-msgstr "Você quer apagar permanentemente essa mídia?"
+msgstr "Ønsker du permanent at slette denne fil?"
 
 #: bbx/templates/media/MediaDestaquesMucua.html:4
 msgid "mucua highlights"
-msgstr "destaques da mucua"
+msgstr "højdepunkter fra mucuaen"
 
 #: bbx/templates/media/MediaDropMessage.html:2
 msgid ""
-"Do you want to drop the local copy of this media? (Remember: after dropping, "
-"you still can request the content from another mucua)."
+"Ønsker du at droppe den lokale kopi af denne fil?? (Husk: du "
+"kan stadig bede om at få filen fra en anden mucua)."
 msgstr ""
-"Você deseja apagar a cópua local dessa mídia? (Lembre-se: depois de apagar, "
-"você poderá solicitar a mídia novamente de outra mucua)."
+"Ønsker du at droppe den lokale kopi af denne fil?? (Husk: du "
+"kan stadig bede om at få filen fra en anden mucua)."
 
 #: bbx/templates/media/MediaGalleryCreate.html:4
 msgid "Create new gallery"
-msgstr "Publicar nova galeria"
+msgstr "Opret et nyt galleri"
 
 #: bbx/templates/media/MediaGalleryCreate.html:19
 #: bbx/templates/media/MediaPublish.html:10
 #: bbx/templates/media/MediaPublish.html:93
 msgid "Origin"
-msgstr "Origem"
+msgstr "Oprindelse"
 
 #: bbx/templates/media/MediaGalleryCreate.html:24
 msgid "Gallery name (tags)"
-msgstr "Nome da galeria (tags)"
+msgstr "Galleriets navn (tags)"
 
 #: bbx/templates/media/MediaGalleryCreate.html:30
 msgid "Description:"
-msgstr "Descrição"
+msgstr "Beskrivelse:"
 
 #: bbx/templates/media/MediaGalleryCreate.html:35
 #: bbx/templates/media/MediaPublish.html:99
 #: bbx/templates/media/MediaView.html:38
 msgid "License"
-msgstr "Licença"
+msgstr "Licens"
 
 #: bbx/templates/media/MediaGalleryCreate.html:46
 msgid "Select file type to start upload"
-msgstr "Selecione o tipo do arquivo para iniciar os uploads"
+msgstr "Vælg filtype for at påbegynde upload"
 
 #: bbx/templates/media/MediaGalleryCreateErrorMessage.html:2
 msgid "Error while inserting media: "
-msgstr "Erro ao criar a mídia: "
+msgstr "Fejl ved oprettelse af medie: "
 
 #: bbx/templates/media/MediaGalleryCreateMessage.html:2
 msgid "Media inserted: "
-msgstr "Mídia inserida: "
+msgstr "Medie oprettet: "
 
 #: bbx/templates/media/MediaGalleryCreateValidationErrorMessage.html:2
 msgid "Please fill the required fields to continue!"
-msgstr "Preencha os campos obrigatórios para continuar!"
+msgstr "Udfyld de obligatoriske felter for at fortsætte!"
 
 #: bbx/templates/media/MediaGalleryEdit.html:4
 msgid "Edit gallery"
-msgstr "Editar galeria"
+msgstr "Redigér galleri"
 
 #: bbx/templates/media/MediaGalleryEdit.html:13
 #: bbx/templates/media/MediaList.html:5
 msgid "Select columns..."
-msgstr "Selecione as colunas..."
+msgstr "Vælg kolonner..."
 
 #: bbx/templates/media/MediaGalleryEdit.html:17
 msgid "thumbnail"
-msgstr "Miniatura"
+msgstr "miniature"
 
 #: bbx/templates/media/MediaGalleryEdit.html:18
 msgid "info"
-msgstr "mais informações"
+msgstr "information"
 
 #: bbx/templates/media/MediaGalleryEdit.html:19
 #: bbx/templates/media/MediaList.html:19 bbx/templates/media/MediaList.html:39
 msgid "tags"
-msgstr "etiquetas"
+msgstr "tags"
 
 #: bbx/templates/media/MediaGalleryEdit.html:20
 #: bbx/templates/media/MediaList.html:18 bbx/templates/media/MediaList.html:38
 msgid "description"
-msgstr "Descrição"
+msgstr "beskrivelse"
 
 #: bbx/templates/media/MediaGalleryEdit.html:27
 msgid "Thumbnail"
-msgstr "Miniatura"
+msgstr "Miniature"
 
 #: bbx/templates/media/MediaGalleryEdit.html:28
 msgid "Info"
-msgstr "Informações"
+msgstr "Info"
 
 #: bbx/templates/media/MediaGalleryEdit.html:29
 #: bbx/templates/media/MediaGalleryEdit.html:51
@@ -415,138 +417,138 @@ msgstr "Tags"
 
 #: bbx/templates/media/MediaGalleryEdit.html:30
 msgid "Note"
-msgstr "Descrição"
+msgstr "Beskrivelse"
 
 #: bbx/templates/media/MediaGalleryEdit.html:31
 msgid "Save"
-msgstr "Salvar"
+msgstr "Gem"
 
 #: bbx/templates/media/MediaGalleryEdit.html:36
 msgid "(override particular changes)"
-msgstr "(sobrescreve mudanças particulares)"
+msgstr "(overskriv individuelle ændringer)"
 
 #: bbx/templates/media/MediaGalleryEdit.html:40
 msgid "General information"
-msgstr "Informações gerais"
+msgstr "Generel information"
 
 #: bbx/templates/media/MediaGalleryEdit.html:41
 msgid "Name"
-msgstr "Nome"
+msgstr "Navn"
 
 #: bbx/templates/media/MediaGalleryEdit.html:42
 #: bbx/templates/media/MediaGalleryEditItem.html:32
 #: bbx/templates/media/MediaPublish.html:88
 #: bbx/templates/media/MediaView.html:22 bbx/templates/media/MediaView.html:23
 msgid "Date"
-msgstr "Data"
+msgstr "Dato"
 
 #: bbx/templates/media/MediaGalleryEdit.html:55
 #: bbx/templates/media/MediaGalleryEditItem.html:62
 #: bbx/templates/media/MediaPublish.html:109
 msgid "Description"
-msgstr "Descrição"
+msgstr "Beskrivelse"
 
 #: bbx/templates/media/MediaGalleryEditItem.html:31
 msgid "Title"
-msgstr "Título"
+msgstr "Titel"
 
 #: bbx/templates/media/MediaGalleryEditItem.html:66
 msgid "Update media"
-msgstr "Atualizar mídia"
+msgstr "Opdatér medie"
 
 #: bbx/templates/media/MediaGalleryEditItem.html:67
 msgid "Edit media"
-msgstr "Editar mídia"
+msgstr "Redigér medie"
 
 #: bbx/templates/media/MediaGrid.html:9
 msgid "edit"
-msgstr "editar"
+msgstr "redigér"
 
 #: bbx/templates/media/MediaGrid.html:35
 msgid "view/download"
-msgstr "ver/baixar"
+msgstr "se/download"
 
 #: bbx/templates/media/MediaGrid.html:40
 msgid "view media"
-msgstr "visualizar mídia"
+msgstr "se medie"
 
 #: bbx/templates/media/MediaList.html:8 bbx/templates/media/MediaList.html:28
 #: media/models.py:207 repository/models.py:506
 msgid "name"
-msgstr "nome"
+msgstr "navn"
 
 #: bbx/templates/media/MediaList.html:9 bbx/templates/media/MediaList.html:29
 msgid "author"
-msgstr "autor"
+msgstr "forfatter"
 
 #: bbx/templates/media/MediaList.html:10 bbx/templates/media/MediaList.html:30
 #: media/models.py:228
 msgid "format"
-msgstr "formato"
+msgstr "format"
 
 #: bbx/templates/media/MediaList.html:11 bbx/templates/media/MediaList.html:31
 msgid "origin"
-msgstr "origem"
+msgstr "oprindelse"
 
 #: bbx/templates/media/MediaList.html:12 bbx/templates/media/MediaList.html:32
 #: media/models.py:212
 msgid "date"
-msgstr "data"
+msgstr "dato"
 
 #: bbx/templates/media/MediaList.html:13 bbx/templates/media/MediaList.html:33
 #: media/models.py:233
 msgid "license"
-msgstr "licença"
+msgstr "licens"
 
 #: bbx/templates/media/MediaList.html:14 bbx/templates/media/MediaList.html:34
 #: media/models.py:223
 msgid "type"
-msgstr "tipo"
+msgstr "type"
 
 #: bbx/templates/media/MediaList.html:15 bbx/templates/media/MediaList.html:35
 msgid "copies"
-msgstr "cópias"
+msgstr "kopier"
 
 #: bbx/templates/media/MediaList.html:16 media/models.py:240
 msgid "is local"
-msgstr "é local"
+msgstr "findes lokalt"
 
 #: bbx/templates/media/MediaList.html:17 bbx/templates/media/MediaList.html:37
 msgid "status"
-msgstr "estado"
+msgstr "status"
 
 #: bbx/templates/media/MediaList.html:36
 msgid "is local?"
-msgstr "é local?"
+msgstr "findes lokalt?"
 
 #: bbx/templates/media/MediaList.html:73
 msgid "yes"
-msgstr "sim"
+msgstr "ja"
 
 #: bbx/templates/media/MediaList.html:75
 msgid "no"
-msgstr "não"
+msgstr "nej"
 
 #: bbx/templates/media/MediaList.html:81
 #: bbx/templates/media/MediaRequestedList.html:2
 msgid "requested"
-msgstr "requisitado"
+msgstr "forespurgt"
 
 #: bbx/templates/media/MediaList.html:85
 msgid "is_local"
-msgstr "é local"
+msgstr "findes lokalt"
 
 #: bbx/templates/media/MediaList.html:91
 msgid "request"
-msgstr "requisitar"
+msgstr "forespørg"
 
 #: bbx/templates/media/MediaMocambola.html:4
 msgid "content published by mocambola"
-msgstr "conteúdo publicado pel@ mocambola"
+msgstr "indhold offentliggjort af mocambola"
 
 #: bbx/templates/media/MediaNovidades.html:3
 msgid "new content"
-msgstr "novo conteúdo"
+msgstr "nyt indhold"
 
 #: bbx/templates/media/MediaPagination.html:6
 msgid "total:"
@@ -554,7 +556,7 @@ msgstr "total:"
 
 #: bbx/templates/media/MediaPublish.html:16
 msgid "Title:"
-msgstr "Título:"
+msgstr "Titel:"
 
 #: bbx/templates/media/MediaPublish.html:19
 msgid "Tags:"
@@ -562,11 +564,11 @@ msgstr "Tags:"
 
 #: bbx/templates/media/MediaPublish.html:23
 msgid "File type"
-msgstr "Tipo de arquivo"
+msgstr "Filtype"
 
 #: bbx/templates/media/MediaPublish.html:36
 msgid "No preview available"
-msgstr "Sem visualização disponível"
+msgstr "Ingen forhåndsvisning"
 
 #: bbx/templates/media/MediaPublish.html:54
 msgid "UUID:"
@@ -574,153 +576,153 @@ msgstr "UUID:"
 
 #: bbx/templates/media/MediaPublish.html:83
 msgid "Author"
-msgstr "Author"
+msgstr "Forfatter"
 
 #: bbx/templates/media/MediaPublish.html:97
 #: bbx/templates/media/MediaView.html:30 bbx/templates/media/MediaView.html:31
 msgid "Format"
-msgstr "Formato"
+msgstr "Format"
 
 #: bbx/templates/media/MediaPublish.html:107
 msgid "Availability"
-msgstr "Disponibilidade"
+msgstr "Tilgængelighed"
 
 #: bbx/templates/media/MediaPublish.html:119
 msgid "Delete media"
-msgstr "Apagar"
+msgstr "Slet"
 
 #: bbx/templates/media/MediaPublish.html:124
 msgid "View media"
-msgstr "Visualizar"
+msgstr "Vis"
 
 #: bbx/templates/media/MediaPublish.html:131
 msgid "Update"
-msgstr "Atualizar"
+msgstr "Opdatér"
 
 #: bbx/templates/media/MediaPublish.html:131
 msgid "Upload file"
-msgstr "Subir arquivo"
+msgstr "Upload fil"
 
 #: bbx/templates/media/MediaPublishInvalidFileType.html:3
 msgid "Invalid file type!"
-msgstr "Tipo de arquivo inválido!"
+msgstr "Ugyldig filtype!"
 
 #: bbx/templates/media/MediaPublishInvalidFileType.html:4
 msgid "Format is currently unsupported: "
-msgstr "Por enquanto, esse formato não é suportado: "
+msgstr "Dette format understøttes p.t. ikke: "
 
 #: bbx/templates/media/MediaPublishInvalidFileType.html:5
 msgid "Please add one of the following ones:"
-msgstr "Favor adicionar um dos seguintes tipos:"
+msgstr ":Vælg en af de følgende typer:"
 
 #: bbx/templates/media/MediaRelated.html:3
 msgid "related content"
-msgstr "conteúdo relacionado"
+msgstr "relateret indhold"
 
 #: bbx/templates/media/MediaRemoveMessage.html:2
 msgid "Media removed!"
-msgstr "Mídia removida!"
+msgstr "Medie slettet!"
 
 #: bbx/templates/media/MediaUpdateErrorMessage.html:2
 msgid "Error while updating media!"
-msgstr "Erro ao atualizar a mídia!"
+msgstr "Fejl ved opdatering af medie!"
 
 #: bbx/templates/media/MediaUpdatedMessage.html:2
 msgid "Media updated!"
-msgstr "Mídia atualizada!"
+msgstr "Medie opdateret!"
 
 #: bbx/templates/media/MediaView.html:10
 msgid "edit media"
-msgstr "editar mídia"
+msgstr "redigér medie"
 
 #: bbx/templates/media/MediaView.html:18 bbx/templates/media/MediaView.html:19
 msgid "By"
-msgstr "Por"
+msgstr "Af"
 
 #: bbx/templates/media/MediaView.html:34 bbx/templates/media/MediaView.html:35
 msgid "Size"
-msgstr "Tamanho"
+msgstr "Størrelse"
 
 #: bbx/templates/media/MediaView.html:56
 msgid "Who has this file?"
-msgstr "Quem tem esse arquivo?"
+msgstr "Hvem har denne fil?"
 
 #: bbx/templates/media/MediaView.html:63
 msgid "Drop local copy"
-msgstr "Apagar cópia local"
+msgstr "Slet lokal kopi"
 
 #: bbx/templates/media/MediaView.html:86
 #: bbx/templates/media/MediaView.html:103
 msgid "download"
-msgstr "ver/baixar"
+msgstr "se/download"
 
 #: bbx/templates/media/MediaView.html:89
 msgid "No visualization available"
-msgstr "Sem visualização disponível"
+msgstr "Ingen forhåndsvisning"
 
 #: bbx/templates/media/MediaView.html:105
 msgid "Local content"
-msgstr "Conteúdo local"
+msgstr "Lokalt indhold"
 
 #: bbx/templates/media/MessageRequest.html:3
 msgid "local copy requested - pending"
-msgstr "cópia local requisitada - pendente"
+msgstr "lokal kopi forespurgt - afventende"
 
 #: bbx/templates/media/MessageRequest.html:5
 msgid "request local copy"
-msgstr "solicitar cópia local"
+msgstr "forespørg lokal kopi"
 
 #: bbx/templates/mocambola/HomeMocambola.html:10
 msgid "Enabled language: "
-msgstr "Língua habilitada: "
+msgstr "Aktivt sprog: "
 
 #: bbx/templates/mocambola/HomeMocambola.html:13
 msgid "change language"
-msgstr "alterar língua"
+msgstr "skift sprog"
 
 #: bbx/templates/mocambola/HomeMocambola.html:15
 msgid "parsing templates for new language..."
-msgstr "gerando templates para nova língua..."
+msgstr "genererer templates for nyt sprog..."
 
 #: bbx/templates/mocambola/HomeMocambola.html:18
 msgid "Publish new content"
-msgstr "Publicar novo conteúdo"
+msgstr "publicér nyt indhold"
 
 #: bbx/templates/mocambola/HomeMocambola.html:21
 msgid "Publish new gallery"
-msgstr "Publicar nova galeria"
+msgstr "Publicér nyt galleri"
 
 #: bbx/templates/repository/ListMucuas.html:2
 msgid "Mucuas"
-msgstr "Mucuas"
+msgstr "Mucuaer"
 
 #: lang/views.py:79
 msgid "Language not installed: "
-msgstr "Língua não instalada: "
+msgstr "Sprog ikke installeret: "
 
 #: lang/views.py:94
 msgid "Module does not exists: "
-msgstr "Módulo não existe: "
+msgstr "Modul kan ikke findes: "
 
 #: lang/views.py:103
 msgid "Template does not exists: "
-msgstr "Template não existe: "
+msgstr "Template kan ikke findes: "
 
 #: lang/management/commands/update_templates.py:50
 msgid "Language code not supported:"
-msgstr "Código de linguagem não suportado:"
+msgstr "Sprogkode understøttes ikke:"
 
 #: lang/management/commands/update_templates.py:57
 msgid "Updating templates..."
-msgstr "Atualizando templates..."
+msgstr "Opdaterer templates..."
 
 #: lang/management/commands/update_templates.py:65
 msgid "...created folder "
-msgstr "...criada pasta "
+msgstr "...mappe oprettet "
 
 #: lang/management/commands/update_templates.py:69
 msgid "Parsing templates: "
-msgstr "Compilando templates: "
+msgstr "Parser templates: "
 
 #: media/models.py:204
 msgid "uuid"
@@ -728,19 +730,19 @@ msgstr "uuid"
 
 #: media/models.py:205
 msgid "Media universal unique identifier"
-msgstr "Identificador único universal de mídia"
+msgstr "Universel unik ID for medie"
 
 #: media/models.py:206
 msgid "No UUID"
-msgstr "Sem UUID"
+msgstr "Ingen UUID"
 
 #: media/models.py:208
 msgid "Media name"
-msgstr "Nome da mídia"
+msgstr "Navn på medie"
 
 #: media/models.py:209
 msgid "No title"
-msgstr "Sem título"
+msgstr "Ingen titel"
 
 #: media/models.py:211
 msgid "URL"
@@ -748,66 +750,66 @@ msgstr "URL"
 
 #: media/models.py:213
 msgid "Media creation date"
-msgstr "Data de criação da mídia"
+msgstr "Medie oprettet dato"
 
 #: media/models.py:214
 msgid "last modified"
-msgstr "última modificação"
+msgstr "sidst ændret"
 
 #: media/models.py:216
 msgid "Last change"
-msgstr "Última alteração"
+msgstr "sidste ændring"
 
 #: media/models.py:217
 msgid "note"
-msgstr "anotações"
+msgstr "note"
 
 #: media/models.py:218 repository/models.py:512
 msgid "Note.. use as you wish!"
-msgstr "Anotações.. use como quiser!"
+msgstr "Notefelt... brug som du vil!"
 
 #: media/models.py:224
 msgid "Type of the media, like image, document, video, ..."
-msgstr "Tipo da mídia, como imagem, documento, vídeo..."
+msgstr "Medietype, for eksempel billede, dokument, video ..."
 
 #: media/models.py:234
 msgid "License of the media, like, cc, gpl, bsd, ..."
-msgstr "Licença da mídia, como cc, gpl, bsd..."
+msgstr "Licens for mediet, for eksempel cc, gpl, bsd..."
 
 #: media/models.py:241
 msgid "True if media content is available locally"
-msgstr "Verdadeiro se conteúdo de mídia está disponível localmente"
+msgstr "Sand hvis mediets indhold er tilgængeligt lokalt"
 
 #: media/models.py:244
 msgid "is requested"
-msgstr "é requisitado"
+msgstr "er forespurgt"
 
 #: media/models.py:245
 msgid "True if media content is awaiting a local copy"
-msgstr "Verdadeiro se o conteúdo de mídia está aguardando uma cópia local"
+msgstr "Sand hvis mediets indhold afventer en lokal kopi"
 
 #: media/models.py:250
 msgid "number of copies"
-msgstr "número de cópias"
+msgstr "antal kopier"
 
 #: media/models.py:251
 msgid "Number of copies of the media in the repository"
-msgstr "Número de cópias da mídia no repositório"
+msgstr "Antal kopier af mediet i repositoriet"
 
 #: media/serializers.py:149
 msgid "DESERIALIZING"
-msgstr "DESERIALIZANDO"
+msgstr "DESERIALISERER"
 
 #: media/serializers.py:154
 msgid "Serialized Media"
-msgstr "Mídia serializada"
+msgstr "Serialiseret medie"
 
 #: media/serializers.py:172
 msgid "This media already exist. Updated."
-msgstr "Essa mídia já existe. Atualizada."
+msgstr "Dette medie findes allerede. Opdateret."
 
 #: media/serializers.py:179
-msgid "New media created"
+msgid "Nyt medie oprettet"
 msgstr "Nova mídia criada"
 
 #: media/views.py:444
