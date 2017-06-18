@@ -814,124 +814,125 @@ msgstr "Nova mídia criada"
 
 #: media/views.py:444
 msgid "updated media - OK"
-msgstr "mídia atualizada - OK"
+msgstr "medie opdateret - OK"
 
 #: media/views.py:447 media/views.py:522
 msgid "error while creating media"
-msgstr "erro ao criar a mídia"
+msgstr "fejl ved oprettelse af medie"
 
 #: media/views.py:654
 msgid "Requested media of uuid %(uuid)s"
-msgstr "Mídia de uuid %s requisitada"
+msgstr "Medie med UUID %s er forespurgt"
 
 #: media/views.py:667
 msgid "Dropped media of uuid %(uuid)s"
-msgstr "Removida mídia de uuid %s"
+msgstr "Medie med uuid %s er slettet lokalt"
 
 #: media/views.py:681
 msgid "Removed media of uuid %(uuid)s"
-msgstr "Mídia de uuid %s requisitada"
+msgstr "Medie med uuid  %s er slettet"
 
 #: mocambola/models.py:58
 msgid "Error deserializing"
-msgstr "Erro desserializando"
+msgstr "Fejl ved deserialisering"
 
 #: mocambola/views.py:36
 msgid "User don\t exists"
-msgstr "Usuári@ não existe: "
+msgstr "Bruger findes ikke: "
 
 #: mocambola/views.py:88
 msgid "User don't exists: "
-msgstr "Usuári@ não existe: "
+msgstr "Bruger findes ikke: "
 
 #: mocambola/views.py:94
 msgid "Invalid user or password"
-msgstr "Usuári@ ou senha inválida"
+msgstr "Ugyldigt brugernavn eller password"
 
 #: mucua/models.py:243
 msgid "Mucua enraizada em "
-msgstr "Mucua enraizada em "
+msgstr "Mucua med rod i "
 
 #: mucua/models.py:246
 msgid "O territorio precisa ser indicado como 't:Nome_do_territorio'"
-msgstr "O territorio precisa ser indicado como 't:Nome_do_territorio'"
+msgstr "Navnet skal angives som 't:Territoriets_navn'"
 
 #: mucua/models.py:248
 msgid "A mucua esta já enraizada em "
-msgstr "A mucua esta já enraizada em "
+msgstr "Denne mucua har allerede rod i "
 
 #: mucua/views.py:29
 #, python-format
 msgid "Acessing mucuas in repository: %s"
-msgstr "Acessando mucuas no repositório: %s"
+msgstr "tilgår mucuaer i repositoriet: %s"
 
 #: mucua/views.py:50 mucua/views.py:74 mucua/views.py:87 mucua/views.py:144
 #: mucua/views.py:157 mucua/views.py:170 mucua/views.py:183 mucua/views.py:196
 #: mucua/views.py:209
 msgid "Mucua not found"
-msgstr "Mucua não encontrada"
+msgstr "Mucua ikke fundet"
 
 #: mucua/views.py:160
 #, python-format
 msgid "Group %s deleted"
-msgstr "Grupo %s apagado"
+msgstr "Gruppen %s er slettet"
 
 #: mucua/views.py:199
 #, python-format
 msgid "Territory %s deleted"
-msgstr "Grupo %s apagado"
+msgstr "Territoriet %s er slettet"
 
 #: repository/models.py:507
 msgid "Repository name taken from available repositories"
-msgstr "Nome do repositório retirado da lista de repositórios disponíveis"
+msgstr "Repositoriets navn er fjernet fra listen af tilgængelige repositorier"
 
 #: repository/models.py:511
 msgid "notes"
-msgstr "anotações"
+msgstr "noter"
 
 #: repository/models.py:516
 msgid "synchronize"
-msgstr "sincronizar"
+msgstr "synkronisér"
 
 #: repository/models.py:517
 msgid "Tick here to enablesyncronization of this repository"
-msgstr "Marque aqui para habilitar a sincronização desse repositório"
+msgstr "Klik her for at aktivere synkronisering af dette repositorium"
+
 
 #: repository/models.py:522
 msgid "repository"
-msgstr "repositório"
+msgstr "repositorium"
 
 #: repository/models.py:523
 msgid "repositories"
-msgstr "repositórios"
+msgstr "repositorier"
 
 #: repository/models.py:577
 msgid "CLEANING"
-msgstr "LIMPANDO"
+msgstr "RYDDER OP"
 
 #: repository/models.py:584
 msgid "Deleting media"
-msgstr "Apagando mídia"
+msgstr "Sletter medie"
 
 #: repository/models.py:589
 msgid "Fingerprint"
-msgstr "Impressão digital"
+msgstr "Fingeraftryk"
 
 #: repository/models.py:592
 msgid "Media deleted."
-msgstr "Mídia apagada!"
+msgstr "Medie slettet!"
 
 #: repository/models.py:595
 msgid "Media doesn't exist"
-msgstr "Mídia não existe"
+msgstr "Medie findes ikke"
 
 #: repository/models.py:598
 msgid "Delete problem"
-msgstr "Problema ao remover mídia"
+msgstr "Kunne ikke slette medie"
 
 #: repository/management/commands/bbxsync.py:52
 msgid "Revision is"
-msgstr "Revisão é"
+msgstr "Versionsummer er"
 
 #~ msgid "next"
 #~ msgstr "avançar"
