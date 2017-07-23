@@ -75,7 +75,10 @@ def media_file_rename(instance, new_file_name):
 def get_media_size(instance):
     u"""Retorna tamanho da mídia"""
     cmd = 'git annex info ' + instance.get_file_name() + ' --json'
-    output = subprocess.check_output(cmd, shell=True, cwd=get_file_path(instance))
+    try:
+	output = subprocess.check_output(cmd, shell=True, cwd=get_file_path(instance))
+    except:
+        return 0
 
     media_size = ["0", "bytes"]
     try:
@@ -110,19 +113,24 @@ def get_file_path(instance):
     return os.path.join(REPOSITORY_DIR, get_media_path(instance))
 
 def get_media_path(instance):
-    # FIX: se mudar a data quebra o path
-    if instance.date == '':
-        t = get_now()
-        date = t.strftime("%y/%m/%d/")
-    else:        
-        if isinstance(instance.date, unicode):
-            date = datetime(year = int(instance.date[:4]),
-                            month = int(instance.date[5:7]),
-                            day = int(instance.date[8:10]))
-            date = date.strftime("%y/%m/%d/")
-            """        date = datetime(instance.date)"""
-        else:
-            date = instance.date.strftime("%y/%m/%d/")
+    # # FIX: se mudar a data quebra o path
+    # if instance.date == '':
+    #     t = get_now()
+    #     date = t.strftime("%y/%m/%d/")
+    #     logger.debug('Date estava vazio, agora %s', date)
+    # else:        
+    #     if isinstance(instance.date, unicode):
+    #         date = datetime(year = int(instance.date[:4]),
+    #                         month = int(instance.date[5:7]),
+    #                         day = int(instance.date[8:10]))
+    #         date = date.strftime("%y/%m/%d/")
+    #         """        date = datetime(instance.date)"""
+    #         logger.debug('Date unicode? %s', date)
+    #     else:
+    if instance.published_date: 
+       date = instance.published_date.strftime("%y/%m/%d/")
+    else:
+       date = instance.date.strftime("%y/%m/%d/")
 
     return os.path.join(instance.get_repository(), instance.get_mucua(), 
                         instance.get_type(), date)
@@ -213,7 +221,11 @@ class Media(models.Model):
     media_file = models.FileField(upload_to=media_file_name, blank=True)
     url = models.URLField(_('URL'), editable=False)
     date = models.DateTimeField(_('date'),
-                                help_text=_('Media creation date'))
+                                help_text=_('Media date'))
+    published_date = models.DateTimeField(_('date'),
+                                help_text=_('Media publication date'),
+                                null=True,
+                                blank=True)
     last_modified = models.DateTimeField(_('last modified'),
                                            default=get_now(),
                                            help_text=_('Last change'))

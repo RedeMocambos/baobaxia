@@ -32,7 +32,7 @@ class MediaFileSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Media
-        fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
+        fields = ('date', 'published_date', 'uuid', 'name', 'note', 'author', 'type',
                   'format', 'license', 'media_file', 'url', 'origin',
                   'repository', 'last_modified')
         depth = 1
@@ -55,7 +55,7 @@ class MediaSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Media
-        fields = ('date', 'uuid', 'name', 'note', 'author', 'type',
+        fields = ('date', 'published_date', 'uuid', 'name', 'note', 'author', 'type',
                   'format', 'license', 'media_file', 'url', 'origin',
                   'repository', 'is_local', 'is_requested', 'num_copies',
                   'tags', 'last_modified', 'size')
@@ -111,9 +111,11 @@ class MediaSerializer(serializers.ModelSerializer):
         Crea o atualiza um media, dado um dicionário de valores dos 
         campos deserializados.
         """
+
         if instance:
             # Update existing instance
             instance.date = attrs.get('date', instance.date)
+            instance.date = attrs.get('published_date', instance.published_date)
             instance.uuid = attrs.get('uuid', instance.uuid)
             instance.name = attrs.get('name', instance.name)
             instance.note = attrs.get('note', instance.note)

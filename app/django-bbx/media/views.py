@@ -427,15 +427,14 @@ def media_detail(request, repository, mucua, pk=None, format=None):
         media.note = request.DATA['note']
         media.type = request.DATA['type']
         media.license = request.DATA['license']
-        media.date = request.DATA['date']
-
-        # workaround for date problem
-        file_day = str(media.media_file).split('/')[-2]
-        date_day = str(media.date)[8:10]
-        if file_day != date_day:
-            media.date = media.date[0:8] + file_day + media.date[10:]
-        
+        media.date = request.DATA['date'] 
+        # # workaround for date problem
+        # file_day = str(media.media_file).split('/')[-2]
+        # date_day = str(media.date)[8:10]
+        # if file_day != date_day:
+        #     media.date = media.date[0:8] + file_day + media.date[10:]
         media.save()
+
         if media.id:
             tags = request.DATA['tags'].split(',')
             media.tags.clear()
@@ -480,6 +479,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
                       type=request.DATA['type'],
                       license=request.DATA['license'],
                       name=request.DATA.get('name', ''),
+                      published_date=get_now(),
                       date=(request.DATA['date'] if request.DATA['date'] !=
                             '' else get_now()),
                       uuid=generate_UUID()
