@@ -41,7 +41,7 @@ create_user() {
 
 if [[ "$NET" != "no" ]]; then
   # dependencies: se for deb pkg, tirar
-  COMMON_PKG="git git-annex-standalone nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff5-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext"
+  COMMON_PKG="git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff5-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext"
   DEBIAN_PKG="libjpeg62-turbo-dev"
   UBUNTU_PKG="libjpeg-turbo8-dev"
 
@@ -57,8 +57,8 @@ if [[ "$NET" != "no" ]]; then
     PACKAGES="$COMMON_PKG $DEBIAN_PKG"
   fi
 
-  wget -q -O- http://neuro.debian.net/lists/${DISTRO_VERSION}.gr.full > /etc/apt/sources.list.d/neurodebian.sources.list
-  apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 0xA5D32F012649A5A9
+#  wget -q -O- http://neuro.debian.net/lists/${DISTRO_VERSION}.gr.full > /etc/apt/sources.list.d/neurodebian.sources.list
+#  apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 0xA5D32F012649A5A9
 
   apt-get update
   apt-get install -y $PACKAGES || exit 1
