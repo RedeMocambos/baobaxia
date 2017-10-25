@@ -34,7 +34,7 @@ html, body, #container {height: 100%; }
 .mocambola #content,
 .mucua #content,
 .media #content,
-.rede #content { margin-bottom: 40px; margin-top: 170px; margin-left: 60px}
+.rede #content { margin-bottom: 40px; margin-top: 180px; margin-left: 60px}
 .media #content {margin-top: 215px;}
 
 .mucua #content {text-align: right}
@@ -60,15 +60,15 @@ a {text-decoration: none; color: #0E5E80}
 .logo {background-image: url('../images/logo.png')}
 
 .home #header #header-top,
-.login #header #header-top {background: url('../images/login-home-header.png') no-repeat scroll; width: 1137px; height: 295px; }
+.login #header #header-top {background: url('../images/login-home-header.png') no-repeat scroll; width: 1137px; height: 295px; position:relative;z-index:10 }
 
 .home #content,
-.login #content {background: url('../images/home-content-repeat.png'); width: 100%; height: 90%; margin-top: 290px;}
+.login #content {background: url('../images/home-content-repeat.png'); width: 100%; height: 90%; margin-top: 290px; position:relative;z-index:20}
 .home #content-top,
 .login #content-top { height: 100%; background: url("../images/home-login-content.png") no-repeat scroll 0 0; padding:0; margin-top: 0}
 .home #content .left {width:35%; float: left; height: 100%; }
 .home #content .middle {width:150px; float: left; height: 100%; margin-top: 20px;}
-.home #content .right {width:50%; float: left; height: 100%; font-size: 13px; margin-top: 20px}
+.home #content .right {width:50%;min-width:300px; float:left; height: 100%; font-size: 13px; margin-top: 20px}
 .home #footer {display: none}
 
 #menu {margin-left: 35%; margin-top: -25px; width: 100%; }
@@ -166,9 +166,12 @@ li.mucua div.mucua-name {font-size: 11px; display: block; margin-left: 30px; tex
 /*
  * visualizacoes de media
  */
-.media #content {background-color: #fff; border-radius: 5px;}
+.media #content {background-color: #fff; border-radius: 5px;min-height:100px }
 .destaques {clear: both}
-#content .media {text-align: right; clear: both; margin-top: 40px}
+
+#content .media {text-align: right; clear: both; margin-top: 40px;}
+
+
 .destaques h3.title {color: #88A7B5; font-size: 19px; margin: 4px}
 .media #buscador .media-display-type {display: none; }
 #destaques-mucua .content-div {float: none}
@@ -206,6 +209,8 @@ li.mucua div.mucua-name {font-size: 11px; display: block; margin-left: 30px; tex
 .media-list #menu-colunas ul:hover {display: block; }
 .media-list #menu-colunas h4 {font-weight: normal; font-size: 13px}
 .media-list #menu-colunas ul {background-color:#F8F2E0; margin-top: -35px}
+
+#content .message {height:2em;overflow:visible}
 
 #content .media-list table {width: 100%; font-size: 12px; text-align: center}
 #content .media-list thead td {font-weight: bold; font-size: 15px; text-align: center !important }
