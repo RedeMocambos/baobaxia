@@ -4,20 +4,14 @@ Para instalar o Baobaxia baixe o pacotão, a ultima versão disponivel
 esta em media.mocambos.net:
 http://media.mocambos.net/baobaxia_20150402.tbz
 
-O instalador somente foi testado no debian. Na versão estavel atual
-7.x, a versão do git-annex é muito antiga e precisa instalar a versão
-"backported". 
-
-Para isso adicione no /etc/apt/sources.list a linha:
- deb http://ftp.it.debian.org/debian wheezy-backports main
-
-depois:
- apt-get update && apt-get install -t wheezy-backports git-annex
+O instalador somente foi testado no debian. 
 
 Agora pode instalar, como usuario root, e a partir da pasta /root/, descompate o arquivo:
  tar xjvf baobaxia_20150402.tbz 
 
 Agora entre em /root/baobaxia/ e pode rodar o instalador com o ./install.sh  
+
+E' importante escolher e configurar o nome da maquina que vai ser usado como nome da mucua (e nao se pode mudar depois).
 
 O instalador não funciona muito bem mas normalmente respondendo sempre
 sim (envio) ele funciona ;)
