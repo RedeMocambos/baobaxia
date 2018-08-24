@@ -12,7 +12,6 @@ DEFAULT_REPOSITORY_NAME='mocambos'
 INSTALL_DIR='/srv/bbx'
 LOG_DIR='log/'
 PACK_DIR='/root/baobaxia'
-#PACK_FILE='pip_wheel_20140606.tbz'
 BBX_LOCAL_REPO='/root/baobaxia'
 BBX_REMOTE_REPO='https://github.com/RedeMocambos/baobaxia'
 
@@ -56,9 +55,6 @@ if [[ "$NET" != "no" ]]; then
   else
     PACKAGES="$COMMON_PKG $DEBIAN_PKG"
   fi
-
-#  wget -q -O- http://neuro.debian.net/lists/${DISTRO_VERSION}.gr.full > /etc/apt/sources.list.d/neurodebian.sources.list
-#  apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 0xA5D32F012649A5A9
 
   apt-get update
   apt-get install -y $PACKAGES || exit 1
