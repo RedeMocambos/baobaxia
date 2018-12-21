@@ -8,7 +8,7 @@ try:
 except ImportError:
     pass
 
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 from django.core.management.base import BaseCommand
 from django.utils.translation import ugettext_lazy as _
@@ -47,14 +47,14 @@ class Command(BaseCommand):
                     if arg in lang:
                         lang_codes.append(arg)            
             if not lang_codes:
-                print _('Language code not supported:')
-                print arg
+                print(_('Language code not supported:'))
+                print(arg)
                 return False
         
         tpl_src = os.path.join(PROJECT_ROOT, 'bbx', 'templates')
         api_url = 'http://' + DEFAULT_MUCUA + '/api/templates/'
         
-        print _('Updating templates...')
+        print(_('Updating templates...'))
         
         """ generate templates for each language """
         for lang_code in lang_codes:
@@ -62,11 +62,11 @@ class Command(BaseCommand):
 
             """ check and create folder for language """
             if not os.path.isdir(tpl_parse):
-                print _('...created folder ') + lang_code
+                print(_('...created folder ') + lang_code)
                 os.mkdir(tpl_parse)
 
-            print "........................"
-            print _("Parsing templates: ") + lang_code
+            print("........................")
+            print(_("Parsing templates: ") + lang_code)
             for root, subdirs, files in os.walk(tpl_src):
                 module_name = root.rsplit('/', 1)[1]
 
@@ -77,14 +77,14 @@ class Command(BaseCommand):
 
                 for template_name in files:
                     template_api_url = api_url + lang_code + '/' + module_name + '/' + template_name
-                    req = urllib2.Request(template_api_url)
-                    u = urllib2.urlopen(req)
+                    req = urllib.request.Request(template_api_url)
+                    u = urllib.request.urlopen(req)
                     template_content = u.read()
 
                     template_filename = os.path.join(module_folder, template_name)
-                    print template_filename
+                    print(template_filename)
                     if os.path.isfile(template_filename):
                         os.remove(template_filename)
                     f = open(template_filename, 'w')
-                    f.write(template_content)
+                    f.write(template_content.decode())
                     f.close()

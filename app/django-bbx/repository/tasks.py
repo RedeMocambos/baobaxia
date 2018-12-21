@@ -14,7 +14,7 @@ from bbx.utils import logger
 #@afazeres.task
 @task
 def git_annex_get(repository_path, media_path):
-    u""" 
+    """ 
     Baixa os conteudos binarios desde o repositório remoto.
     Retorna o output do git annex get.
     """

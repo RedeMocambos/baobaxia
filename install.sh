@@ -40,7 +40,7 @@ create_user() {
 
 if [[ "$NET" != "no" ]]; then
   # dependencies: se for deb pkg, tirar
-  COMMON_PKG="git git-annex nginx supervisor python-pip rabbitmq-server libjpeg-dev libtiff5-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk python-dev python-setuptools gettext"
+  COMMON_PKG="git git-annex nginx supervisor python3-pip rabbitmq-server libjpeg-dev libtiff5-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python3-tk python3-dev python3-setuptools gettext"
   DEBIAN_PKG="libjpeg62-turbo-dev"
   UBUNTU_PKG="libjpeg-turbo8-dev"
 
@@ -264,36 +264,33 @@ sed -i "s/dpadua/${MUCUA}/" $INSTALL_DIR/baobaxia/app/django-bbx/bbx/static/js/c
 if [[ "$NET" != "no" ]]; then
   echo ""
   echo "Criando ambiente virtual do python ..."
-  pip install --upgrade pip
+  pip3 install --upgrade pip
   # atualiza mapa das variaveis de ambiente
   hash -r
   # cria ambiente virtual
-  pip install virtualenv
+  pip3 install virtualenv
   #cp $PACK_DIR/$PACK_FILE $INSTALL_DIR/
   chown root:$USER_BBX $INSTALL_DIR/envs
   chmod 775 $INSTALL_DIR/envs
   #xhost +
   su - $USER_BBX -c "
-  virtualenv $INSTALL_DIR/envs/bbx ;
+  virtualenv -p python3 $INSTALL_DIR/envs/bbx ;
   . $INSTALL_DIR/envs/bbx/bin/activate ;
-  pip install --upgrade setuptools ;
   cd $INSTALL_DIR;
-  pip install argparse;
-  pip install django==1.6.7;
-  pip install django-extensions;
-  pip install djangorestframework==2.4.4;
-  pip install gunicorn;
-  pip install six;
-  pip install Pillow;
-  pip install sorl-thumbnail;
-  pip install south;
-  pip install wheel;
-  pip install wsgiref;
-  pip install python-magic;
-  pip install python-memcached;
-  pip install longerusername;
-  pip install djangorestframework-jwt;
-  pip install celery==3.1.14
+  pip3 install argparse;
+  pip3 install django==2.1.4;
+  pip3 install django-extensions;
+  pip3 install djangorestframework;
+  pip3 install gunicorn;
+  pip3 install six;
+  pip3 install Pillow;
+  pip3 install sorl-thumbnail;
+  pip3 install wheel;
+  pip3 install python-magic;
+  pip3 install python-memcached;
+  pip3 install djangorestframework-jwt;
+  pip3 install celery==3.1.14;
+  pip3 install django-multiselectfield
   "
 fi
 
@@ -307,14 +304,14 @@ su - $USER_BBX -c "
 . $INSTALL_DIR/envs/bbx/bin/activate;
 cd $INSTALL_DIR/baobaxia/app/django-bbx;
 find . -name '000*.py' -exec rm '{}' \; && echo 'OK!';
-python manage.py syncdb --noinput;
-python manage.py schemamigration --initial --traceback mocambola;
-python manage.py schemamigration --initial --traceback mucua;
-python manage.py schemamigration --initial --traceback tag;
-python manage.py schemamigration --initial --traceback media;
-python manage.py schemamigration --initial --traceback repository;
-python manage.py migrate --all;
-python manage.py collectstatic --noinput
+python3 manage.py makemigrations mocambola mucua tag media repository --noinput;
+#python3 manage.py schemamigration --initial --traceback mocambola;
+#python3 manage.py schemamigration --initial --traceback mucua;
+#python3 manage.py schemamigration --initial --traceback tag;
+#python3 manage.py schemamigration --initial --traceback media;
+#python3 manage.py schemamigration --initial --traceback repository;
+python3 manage.py migrate --fake-initial;
+python3 manage.py collectstatic --noinput
 "
 
 echo ""

@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.decorators import authentication_classes, permission_classes
 
 from rest_framework.response import Response
-from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
+from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
@@ -71,7 +71,7 @@ def search_tags(request, repository, mucua, args):
         response_data = []
         for t in tags:
             response_data.append(t.name) 
-        return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+        return HttpResponse(json.dumps(response_data), mimetype='application/json')
     else:
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
@@ -160,7 +160,7 @@ def check_functional_tags(request, tags):
     
 
     
-    return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+    return HttpResponse(json.dumps(response_data), mimetype='application/json')
 
 def _get_functional_tag(tag):
     code = {}

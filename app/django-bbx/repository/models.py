@@ -7,7 +7,7 @@ import subprocess
 
 from subprocess import PIPE
 import logging
-import exceptions
+#import exceptions
 
 from django.db import models
 from django.conf import settings
@@ -31,7 +31,7 @@ repository_dir = settings.REPOSITORY_DIR
 # Connecting to Media signal
 @receiver(post_save, sender=Media)
 def git_media_post_save(instance, **kwargs):
-    u"""Intercepta o sinal de *post_save* de objetos multimedia (*media*) e
+    """Intercepta o sinal de *post_save* de objetos multimedia (*media*) e
     adiciona o objeto ao repositório."""
     if not instance.is_syncing:
         from media.serializers import MediaFileSerializer
@@ -60,7 +60,7 @@ def git_media_post_save(instance, **kwargs):
 # Connecting to Media signal
 @receiver(pre_delete, sender=Media)
 def git_media_post_delete(instance, **kwargs):
-    u"""Intercepta o sinal de *pre_delete* de objetos multimedia (*media*) e
+    """Intercepta o sinal de *pre_delete* de objetos multimedia (*media*) e
     remove o objeto do banco e do repositório."""
     mediapath = get_file_path(instance)+'/'
     mediadata = os.path.splitext(instance.get_file_name())[0] + '.json'
@@ -86,7 +86,7 @@ def get_available_repositories():
 
 
 def get_latest_media(repository=DEFAULT_REPOSITORY):
-    u"""Retorna uma lista de caminhos dos novos medias no repositório,
+    """Retorna uma lista de caminhos dos novos medias no repositório,
     desde a ultima sincronização (last_sync)."""
     try:
         current_repository = Repository.objects.get(
@@ -99,7 +99,7 @@ def get_latest_media(repository=DEFAULT_REPOSITORY):
                          'lastSync.txt'), 'r+')
         last_sync = last_sync_mark.readline()
         last_sync = last_sync.replace("'", "")
-        print "Alterações a partir do commit: " + last_sync
+        print(("Alterações a partir do commit: " + last_sync))
     except IOError:
         cwd = os.path.join(repository_dir, current_repository.name)
         p1 = subprocess.Popen(['git', 'rev-list', 'HEAD'],
@@ -133,7 +133,7 @@ def get_latest_media(repository=DEFAULT_REPOSITORY):
 
 
 def get_deleted_media(repository=DEFAULT_REPOSITORY):
-    u"""Retorna uma lista de caminhos dos medias removidos do repositório,
+    """Retorna uma lista de caminhos dos medias removidos do repositório,
     desde a ultima sincronização (last_sync)."""
     try:
         current_repository = Repository.objects.get(
@@ -175,13 +175,13 @@ def get_deleted_media(repository=DEFAULT_REPOSITORY):
     return [line.strip('\n') for line in output.splitlines()]
 
 def _get_available_folders(path):
-    u"""Retorna a lista das pastas/repositórios"""
+    """Retorna a lista das pastas/repositórios"""
     folder_list = [(name, name) for name in os.listdir(path)
                   if os.path.isdir(os.path.join(path, name))]
     return folder_list
 
 def git_ls_remote(remote, repository_path):
-    u"""Verifica se um remote esta disponivel."""
+    """Verifica se um remote esta disponivel."""
     logger.info('git ls-remote ' + remote)
     cmd = 'git ls-remote ' + remote
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
@@ -215,35 +215,35 @@ def git_remote_get_list(repository=DEFAULT_REPOSITORY):
    
 
 def git_remote_add(mucua_uuid, mucua_uri_backend, repository_path):
-    u"""Adiciona um remote ao repositorio."""
+    """Adiciona um remote ao repositorio."""
     logger.info('git remote add ' + mucua_uuid + ' ' + mucua_uri_backend)
     cmd = 'git remote add ' + mucua_uuid + ' ' + mucua_uri_backend
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 def git_remote_remove(mucua_uuid, repository_path):
-    u"""Remove o remote do repositorio."""
+    """Remove o remote do repositorio."""
     logger.info('git remote rm ' + mucua_uuid)
     cmd = 'git remote rm ' + mucua_uuid
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 def git_add(file_name, repository_path):
-    u"""Adiciona um arquivo no repositório."""
+    """Adiciona um arquivo no repositório."""
     logger.info('git add ' + file_name)
     cmd = 'git add ' + file_name
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 def git_rm(file_name, repository_path):
-    u"""Adiciona um arquivo no repositório."""
+    """Adiciona um arquivo no repositório."""
     logger.info('git rm ' + file_name)
     cmd = 'git rm -f ' + file_name
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
     pipe.wait()
 
 def git_commit(file_title, author_name, author_email, repository_path, file_path):
-    u"""Executa o *commit* no repositório impostando os dados do author."""
+    """Executa o *commit* no repositório impostando os dados do author."""
     logger.info('git commit --author="' + author_name + ' <' + author_email +
                 '>" -m "' + file_title + '"')
     cmd = ('git commit --author="' + author_name + ' <' + author_email +
@@ -253,7 +253,7 @@ def git_commit(file_title, author_name, author_email, repository_path, file_path
 
 
 def git_push(repository_path):
-    u"""Executa o *push* do repositório; atualizar o repositório de origem."""
+    """Executa o *push* do repositório; atualizar o repositório de origem."""
     logger.info('git push ')
     cmd = 'git push '
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
@@ -261,7 +261,7 @@ def git_push(repository_path):
 
 
 def git_pull(repository_path):
-    u"""Executa o *pull* do repositório, atualizando o repositório local."""
+    """Executa o *pull* do repositório, atualizando o repositório local."""
     logger.info('git pull ')
     cmd = 'git pull '
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
@@ -269,7 +269,7 @@ def git_pull(repository_path):
 
 
 def git_get_SHA(repository_path):
-    u"""Resgata o codigo identificativo (SHA) da ultima revisao do repositório,
+    """Resgata o codigo identificativo (SHA) da ultima revisao do repositório,
     retorna o codigo."""
     logger.info('git rev-parse HEAD')
     cmd = 'git rev-parse HEAD'
@@ -280,7 +280,7 @@ def git_get_SHA(repository_path):
 
 
 def git_annex_add(file_name, repository_path):
-    u"""Adiciona um arquivo no repositório *git-annex*."""
+    """Adiciona um arquivo no repositório *git-annex*."""
     logger.info('git annex add ' + file_name)
     cmd = 'git annex add ' + file_name
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
@@ -288,7 +288,7 @@ def git_annex_add(file_name, repository_path):
 
 
 def git_annex_merge(repository_path):
-    u"""Executa o *merge* do repositório, reunindo eventuais
+    """Executa o *merge* do repositório, reunindo eventuais
     diferencias entre o repositório local e remoto."""
     logger.info('git annex merge ')
     cmd = 'git annex merge '
@@ -297,7 +297,7 @@ def git_annex_merge(repository_path):
 
 
 def git_annex_copy_to(repository_path):
-    u"""Envia os conteudos binarios para o repositório remoto."""
+    """Envia os conteudos binarios para o repositório remoto."""
     # TODO: Next release with dynamic "origin"
     logger.info('git annex copy --fast --to origin ')
     cmd = 'git annex copy --fast --to origin'
@@ -320,14 +320,14 @@ def git_annex_copy_to(repository_path):
 
 
 def git_annex_where_is(media):
-    u"""Mostra quais mucuas tem copia do media."""
+    """Mostra quais mucuas tem copia do media."""
     cmd = 'git annex whereis ' + media.get_file_name() + ' --json'
     pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media), stdout=subprocess.PIPE)
     output, error = pipe.communicate()
     return output
 
 def git_annex_drop(media):
-    u"""Mostra quais mucuas tem copia do media."""
+    """Mostra quais mucuas tem copia do media."""
     cmd = 'git annex drop --force ' + os.path.basename(media.media_file.name) 
     logger.debug('Dropping filepath: ' + get_file_path(media) + media.get_file_name())
     pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(media), stdout=subprocess.PIPE)
@@ -338,7 +338,7 @@ def git_annex_drop(media):
 
 
 def git_annex_metadata(file_name, repository_path):
-    u"""Visualiza os metadatas do arquivo."""
+    """Visualiza os metadatas do arquivo."""
     logger.info('git annex metadata ' + file_name + ' --json')
     cmd = 'git annex metadata ' + file_name + ' --json'
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path,
@@ -348,14 +348,14 @@ def git_annex_metadata(file_name, repository_path):
 
 
 def git_annex_metadata_add(file_name, repository_path, key, value):
-    u"""Adiciona um metadata ao arquivo."""
+    """Adiciona um metadata ao arquivo."""
     cmd = 'git annex metadata ' + file_name + ' -s ' + key + '+='+ "'"+ value +"'"
     logger.info('Adding metadata with: ' + cmd)
     pipe = subprocess.Popen(cmd.encode('UTF-8'), shell=True, cwd=repository_path)
     pipe.wait()
 
 def git_annex_metadata_del(file_name, repository_path, key, value):
-    u"""Remove um metadata do arquivo."""
+    """Remove um metadata do arquivo."""
     cmd = 'git annex metadata ' + file_name + ' -s ' + key + '-=' + "'"+ value +"'"
     logger.info('Removing metadata with: ' + cmd)
     pipe = subprocess.Popen(cmd.encode('UTF-8'), shell=True, cwd=repository_path)
@@ -363,14 +363,14 @@ def git_annex_metadata_del(file_name, repository_path, key, value):
 
                             
 def git_annex_list_tags(media):
-    u"""Enumerar as etiquetas do media."""
+    """Enumerar as etiquetas do media."""
     metadata = git_annex_metadata(media.get_file_name(), get_file_path(media))
     try:
         metadata = json.loads(metadata)
     except ValueError:
         # Sometimes, the JSON metadata output on non-present media files is 
         # malformed. Ignore these cases, but log.
-        logger.debug(u'Malformed JSON found on media: {0}'.format(media))
+        logger.debug('Malformed JSON found on media: {0}'.format(media))
         pass
     tags = []
     for item in metadata:
@@ -381,7 +381,7 @@ def git_annex_list_tags(media):
 
 
 def git_annex_add_tag(media, namespace, tag):
-    u"""Adicionar uma etiqueta ao media."""
+    """Adicionar uma etiqueta ao media."""
     if tag.isspace() or not tag:
         raise RuntimeError("Attempt to set empty tag!")
     git_annex_metadata_add(media.get_file_name(), get_file_path(media),
@@ -389,13 +389,13 @@ def git_annex_add_tag(media, namespace, tag):
 
 
 def git_annex_remove_tag(media, namespace, tag):
-    u"""Apagar uma etiqueta do media."""
+    """Apagar uma etiqueta do media."""
     git_annex_metadata_del(media.get_file_name(), get_file_path(media),
                            namespace, tag)
 
 
 def git_annex_group_add(repository_path, mucua_uuid, group):
-    u"""Adiciona a Mucua no grupo."""
+    """Adiciona a Mucua no grupo."""
     cmd = 'git annex group ' + mucua_uuid + ' ' + group
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path,
                             stdout=subprocess.PIPE)
@@ -406,7 +406,7 @@ def git_annex_group_add(repository_path, mucua_uuid, group):
 
 
 def git_annex_group_del(repository_path, mucua, group):
-    u"""Remove a Mucua do grupo."""
+    """Remove a Mucua do grupo."""
     cmd = 'git annex ungroup ' + mucua + ' ' + group
     logger.debug("Command: " + cmd)
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path,
@@ -418,7 +418,7 @@ def git_annex_group_del(repository_path, mucua, group):
 
 
 def git_annex_group_list(repository_path, mucua_uuid=None):
-    u"""Lista todos os grupos ou de uma dada mucua"""
+    """Lista todos os grupos ou de uma dada mucua"""
     if mucua_uuid == None:
         from mucua.models import Mucua
         mucuas = Mucua.objects.all()
@@ -452,7 +452,7 @@ def git_annex_group_list(repository_path, mucua_uuid=None):
 
 
 def git_annex_sync(repository_path):
-    u"""Sincroniza o repositório com os outros clones remotos."""
+    """Sincroniza o repositório com os outros clones remotos."""
     logger.info('git annex sync')
     cmd = 'git annex sync'
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path)
@@ -470,13 +470,13 @@ def git_annex_version():
     return version
 
 def git_annex_status(repository_path):
-    u"""View all mucuas in a given repository"""
+    """View all mucuas in a given repository"""
 
     # a partir da versao 5
-    if (float(git_annex_version()) <= 5):
-        cmd = 'git annex status --json'
-    else:
-        cmd = 'git annex info --json'
+#    if (float(git_annex_version()) <= 5):
+#        cmd = 'git annex status --json'
+#    else:
+    cmd = 'git annex info --json'
 
     pipe = subprocess.Popen(cmd, shell=True, cwd=repository_path,
                             stdout=subprocess.PIPE)
@@ -484,7 +484,7 @@ def git_annex_status(repository_path):
 
 
 def run_scheduled_jobs():
-    u"""Executa as operacoes programadas em todos os repositórios. """
+    """Executa as operacoes programadas em todos os repositórios. """
     repositories = Repository.objects.all()
     for rep in repositories:
         if rep.enable_sync:
@@ -494,7 +494,7 @@ def run_scheduled_jobs():
 
 
 class Repository(models.Model):
-    u"""
+    """
     Classe de implementacao do modelo de repositório *git-annex*.
 
     Atributos
@@ -528,27 +528,27 @@ class Repository(models.Model):
         return self.name
 
     def get_name(self):
-        u"""Retorna o nome do repositório."""
+        """Retorna o nome do repositório."""
         return str(self.name)
 
     def get_path(self):
-        u"""Retorna o caminho no disco (path) do repositório."""
+        """Retorna o caminho no disco (path) do repositório."""
         return os.path.join(repository_dir, self.get_name())
 
     def create_repository(self):
-        u"""Cria e inicializa o repositório."""
+        """Cria e inicializa o repositório."""
         #TODO: Implement this!
         #_createRepository(self.name, self.getPath())
         pass
 
     def clone_repository(self):
-        u"""Clona e inicializa o repositório."""
+        """Clona e inicializa o repositório."""
         #TODO: Implement this!
         #_cloneRepository(self.getPath, self.name)
         pass
 
     def sync_repository(self):
-        u"""Sincroniza o repositório com sua origem."""
+        """Sincroniza o repositório com sua origem."""
         git_annex_sync(self.get_path())
 
         filesync_done.send(sender=self, name=self.get_name(),
@@ -558,12 +558,12 @@ class Repository(models.Model):
         super(Repository, self).save(*args, **kwargs)
 
 
-class GitAnnexCommandError(exceptions.Exception):
+class GitAnnexCommandError(Exception):
     def __init__(self, args=None):
         self.args = args
 
 
-class RepositoryDoesNotExists(exceptions.Exception):
+class RepositoryDoesNotExists(Exception):
     def __init__(self, args=None):
         self.args = args
 
@@ -576,26 +576,26 @@ def remove_deleted_media(repository=DEFAULT_REPOSITORY):
     except Repository.DoesNotExist:
         return None
 
-    logger.info(u">>> %s" % _('CLEANING'))
-    logger.info(u"%s: %s" % (_('Repository'),  repository))
+    logger.info(">>> %s" % _('CLEANING'))
+    logger.info("%s: %s" % (_('Repository'),  repository))
 
     from media.models import Media
 
     try:
         for deleted_media in get_deleted_media(repository):
-            logger.info(u"%s: %s" % (_('Deleting media'), deleted_media))
+            logger.info("%s: %s" % (_('Deleting media'), deleted_media))
             
             try:
                 fingerprint = os.path.join(repository_dir, repository.get_name(),
                                            os.path.splitext(deleted_media)[0])
-                logger.info(u"%s: %s" % (_('Fingerprint'), fingerprint))
+                logger.info("%s: %s" % (_('Fingerprint'), fingerprint))
                 media = Media.objects.filter(media_file__startswith=fingerprint)
                 media[0].delete()
-                logger.info(u"%s" % _('Media deleted.'))
+                logger.info("%s" % _('Media deleted.'))
                 
             except (Media.DoesNotExist, IndexError):
-                logger.info(u"%s" % _('Media doesn\'t exist'))
+                logger.info("%s" % _('Media doesn\'t exist'))
 
     except Media.DoesNotExist:
-        logger.info(u"%s" % _('Delete problem'))
+        logger.info("%s" % _('Delete problem'))
 

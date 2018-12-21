@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import exceptions
+#import exceptions
 import json
 import subprocess
 import time
+import codecs
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -11,6 +12,7 @@ from django.db.utils import DatabaseError
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from django.core.exceptions import ObjectDoesNotExist
+#from django.http import JsonResponse
 
 from bbx.settings import DEFAULT_MUCUA, MEDIA_ROOT
 from bbx.utils import dumpclean, logger, discover
@@ -20,11 +22,11 @@ from repository.models import (get_default_repository, git_ls_remote, git_remote
 
 
 def get_default_mucua():
-    u"""Retorna a mucua padrão (objeto)"""
+    """Retorna a mucua padrão (objeto)"""
     return Mucua.objects.get(description=DEFAULT_MUCUA)
 
 def update_mucuas_list(repository):
-    u"""Atualiza a lista de mucuas disponivéis no repositório"""
+    """Atualiza a lista de mucuas disponivéis no repositório"""
     mucuas = get_available_mucuas(None, repository)
     for mucua in mucuas:
         mucua_description = str(mucua[1].split(' ')[0])
@@ -53,7 +55,8 @@ def get_mucua_from_UUID(uuid=None, repository=None):
             return []
 
     json_repository_status = json.loads(
-        git_annex_status(repository.get_path()))
+        git_annex_status(repository.get_path()).decode()
+    )
 
     try:
         description = ''
@@ -69,7 +72,7 @@ def get_mucua_from_UUID(uuid=None, repository=None):
         return "Invalid"
 
 def get_available_mucuas(uuid=None, repository=None):
-    u"""
+    """
     Retorna uma lista de mucuas
 
     A lista são tuplas com uuid e descrição, por ex.:
@@ -86,8 +89,8 @@ def get_available_mucuas(uuid=None, repository=None):
         except DatabaseError:
             return []
 
-    json_repository_status = json.loads(
-        git_annex_status(repository.get_path()))
+    #reader = codecs.getreader("utf-8")
+    json_repository_status = json.loads(git_annex_status(repository.get_path()).decode())
 
 #    logger.debug(_(u"JSON Repository status: %s") % json_repository_status)
 
@@ -145,7 +148,7 @@ class MucuaAdmin(admin.ModelAdmin):
 
 
 class Mucua(models.Model):
-    u"""
+    """
     Classe de definição dos objetos Mucua
 
     Atributos
@@ -172,7 +175,7 @@ class Mucua(models.Model):
         return self.description
 
     def get_groups(self, repository):
-        u"""Retorna a lista de grupos da mucua"""
+        """Retorna a lista de grupos da mucua"""
 
         if not repository:
             try:
@@ -186,7 +189,7 @@ class Mucua(models.Model):
                 if not group.startswith('t:')]
 
     def add_group(self, group, repository):
-        u"""Retorna a lista de grupos da mucua"""
+        """Retorna a lista de grupos da mucua"""
         if not repository:
             try:
                 repository = get_default_repository()
@@ -210,7 +213,7 @@ class Mucua(models.Model):
 
 
     def get_territory(self, repository):
-        u"""Retorna o territorio da mucua"""
+        """Retorna o territorio da mucua"""
         if not repository:
             try:
                 repository = get_default_repository()
@@ -229,7 +232,7 @@ class Mucua(models.Model):
         return territory[2:]
           
     def set_territory(self, territory, repository):
-        u"""Define o territorio da mucua"""
+        """Define o territorio da mucua"""
         if not repository:
             try:
                 repository = get_default_repository()
@@ -274,7 +277,7 @@ class Mucua(models.Model):
 
 
 class Rota(models.Model):
-    u"""
+    """
     Classe de definição dos objetos Rota
 
     Atributos
@@ -283,8 +286,8 @@ class Rota(models.Model):
     is_available: flag rota funcionando
     weight: prioridade/velocidade da rota
     """
-    mucua = models.ForeignKey(Mucua, related_name='rota_mucuas')
-    mucuia = models.ForeignKey(Mucua, related_name='rota_mucuias')
+    mucua = models.ForeignKey(Mucua, related_name='rota_mucuas', on_delete=models.CASCADE)
+    mucuia = models.ForeignKey(Mucua, related_name='rota_mucuias', on_delete=models.CASCADE)
     description = models.CharField(max_length=100)
     is_active = models.BooleanField(default=False)
     is_available = models.BooleanField(default=False)

@@ -184,7 +184,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'longerusername',
+    #'longerusername',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -203,9 +203,10 @@ INSTALLED_APPS = (
     'repository',
     'mocambola',
     'lang',
-    'south',
+#    'south',
     'celery',
     'sorl.thumbnail',
+    'multiselectfield',
 )
 
 # A sample logging configuration. The only tangible logging

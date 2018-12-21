@@ -11,13 +11,13 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
+from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from sorl.thumbnail import get_thumbnail
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied
 from django.template import Template, RequestContext
@@ -348,7 +348,7 @@ def media_list(request, repository, mucua, args=None, format=None):
             response_count = {
                 'count': len(list(medias))
             }
-            return HttpResponse(json.dumps(response_count), mimetype=u'application/json')
+            return HttpResponse(json.dumps(response_count), mimetype='application/json')
         
         else:
             serializer = MediaSerializer(medias, many=True)
@@ -487,7 +487,7 @@ def media_detail(request, repository, mucua, pk=None, format=None):
         
         logger.info('processing upload')
         # multiple upload            
-        for filename, file in request.FILES.iteritems():
+        for filename, file in list(request.FILES.items()):
             file_name = request.FILES[filename].name
             media.format=file_name.split('.')[-1].lower()
             if media.name == '':
@@ -559,7 +559,7 @@ def media_token(request, repository, mucua):
     c = RequestContext(request, {'autoescape': False})
     c.update(csrf(request))
     t = Template('{ "csrftoken": "{{ csrf_token  }}" }')
-    return HttpResponse(t.render(c), mimetype=u'application/json')
+    return HttpResponse(t.render(c), mimetype='application/json')
 
 
 # TODO: implementar busca filtrando por usuario E tags
@@ -580,7 +580,7 @@ def media_by_mocambola(request, repository, mucua, username, limit=20):
     try:
         author = User.objects.get(username=username)
     except User.DoesNotExist:
-        print 'user not exists'
+        print('user not exists')
 
     if mucua != 'all':
         medias = Media.objects.filter(
@@ -632,7 +632,7 @@ def media_url(request, repository, mucua, uuid):
 
 
 @api_view(['GET'])
-@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+@renderer_classes((JSONRenderer, BrowsableAPIRenderer))
 def media_where_is(request, repository, mucua, uuid):
     
     try:
@@ -651,7 +651,7 @@ def media_request_copy(request, repository, mucua, uuid):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response(_(u"Requested media of uuid %(uuid)s") % {'uuid': uuid})
+    return Response(_("Requested media of uuid %(uuid)s") % {'uuid': uuid})
 
 @api_view(['GET'])
 #@renderer_classes((BrowsableAPIRenderer))
@@ -664,7 +664,7 @@ def media_drop_copy(request, repository, mucua, uuid):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response(_(u"Dropped media of uuid %(uuid)s") % (uuid))
+    return Response(_("Dropped media of uuid %(uuid)s") % (uuid))
 
 
 @api_view(['GET'])
@@ -678,4 +678,4 @@ def media_remove(request, repository, mucua, uuid):
     except Media.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response(_(u"Removed media of uuid %(uuid)s") % {'uuid': uuid})
+    return Response(_("Removed media of uuid %(uuid)s") % {'uuid': uuid})

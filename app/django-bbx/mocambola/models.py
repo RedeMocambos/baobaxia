@@ -2,11 +2,12 @@
 
 import os
 import logging
-from urlparse import urlparse
+import json
+from urllib.parse import urlparse
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import get_model
+from django.apps import apps as bbxapps
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
@@ -49,22 +50,25 @@ def create_user_from_files(repository):
                 for jmocambola in os.listdir(mocambola_path):
                     mocambola_json_file = open(os.path.join(mocambola_path,
                                                             jmocambola))
-                    data = JSONParser().parse(mocambola_json_file)
+                    data = json.load(mocambola_json_file)
                     u = User()
                     serializer = UserSerializer(u, data=data)
                     logger.debug("Checking user " + u.username)
 
+                    if serializer.is_valid():
+                        serializer.save()
+                    
                     if serializer.errors:
-                        logger.debug(u"%s %s" % (_('Error deserializing'),
-                                                 serializer.errors))
-                    serializer.is_valid()
+                        logger.debug("%s %s" % (_('Error deserializing'),
+                                                serializer.errors))
 
-                    current_user = serializer.object
-                    try:
-                        User.objects.get(username=current_user.username)
-                    except ObjectDoesNotExist:
-                        current_user.save()
-                        logger.debug("User " + current_user.username + " saved!")
+                    # current_user = serializer.validated_data['username']
+
+                    # try:
+                    #     User.objects.get(username=current_user)
+                    # except ObjectDoesNotExist:
+#                    serializer.save()
+#                        logger.debug("User " + current_user.username + " saved!")
 
 
 class Mocambola(models.Model):
@@ -79,9 +83,9 @@ class Mocambola(models.Model):
     repository: relação com objeto repository
     """
 
-    mucua = models.ForeignKey('mucua.Mucua')
-    user = models.ForeignKey(User, unique=True, related_name='mocambola')
-    repository = models.ForeignKey(Repository)
+    mucua = models.ForeignKey('mucua.Mucua', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, unique=True, related_name='mocambola', on_delete=models.CASCADE)
+    repository = models.ForeignKey(Repository, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return self.user.username
@@ -119,7 +123,7 @@ def user_post_save(instance, **kwargs):
 
     # TODO HIGH: conseguir importar Mucua
 
-    mucua_model = get_model('mucua', 'Mucua')
+    mucua_model = bbxapps.get_model('mucua', 'Mucua')
 
     # TODO LOW: substituir por regexp
     current_mocambola, mucua_repository = instance.username.split("@")

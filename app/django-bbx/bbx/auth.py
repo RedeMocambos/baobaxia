@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import os
 import re
+import json
 
 from rest_framework.parsers import JSONParser
 
-from django.contrib.auth.models import User, check_password
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import check_password
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.hashers import PBKDF2PasswordHasher
 
@@ -38,14 +40,14 @@ class FileBackend(object):
             except Repository.DoesNotExist:
                 return None
         else:
-            print "invalid address"
+            print("invalid address")
             return None
         # Get file from MOCAMBOLA_DIR
         mocambola_path = os.path.join(str(REPOSITORY_DIR),
-                                      str(current_repository),
-                                      str(current_mucua),
+                                      current_repository.name,
+                                      current_mucua.description,
                                       MOCAMBOLA_DIR)
-        print "Mocambola Path: " + mocambola_path
+        print("Mocambola Path: " + mocambola_path)
 
         for jmocambola in os.listdir(mocambola_path):
 
@@ -53,11 +55,11 @@ class FileBackend(object):
                 # Deserialize the customized User object
                 mocambola_json_file = open(os.path.join(mocambola_path,
                                                         jmocambola))
-                data = JSONParser().parse(mocambola_json_file)
+                data = json.load(mocambola_json_file)
                 u = User()
                 serializer = UserSerializer(u, data=data)
                 if serializer.errors:
-                    logger.debug(u"%s %s" % (_('Error deserialing'),
+                    logger.debug("%s %s" % (_('Error deserialing'),
                                              serializer.errors))
                 serializer.is_valid()
 
@@ -65,13 +67,13 @@ class FileBackend(object):
                 login_valid = (username == current_user.username)
                 pwd_valid = check_password(password, current_user.password)
                 if login_valid and pwd_valid:
-                    logger.info(u"%s %s %s" % (_('User'),
+                    logger.info("%s %s %s" % (_('User'),
                                                current_mocambola,
                                                _('logged in')))
                     try:
                         user = User.objects.get(username=username)
                     except User.DoesNotExist:
-                        logger.debug(u"%s" % (
+                        logger.debug("%s" % (
                             _('Exception caught, UserDoesNotExist')
                         ))
                         # Create a new user. Note that we can set password
@@ -85,7 +87,7 @@ class FileBackend(object):
                     return user
                 else:
                     logger.info(
-                        u"%s %s %s" % (
+                        "%s %s %s" % (
                             _('User'), current_mocambola,
                             _('doesn\'t exist or password is wrong!')))
                     return None

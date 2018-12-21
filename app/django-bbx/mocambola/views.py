@@ -36,7 +36,7 @@ def mocambola_detail(request, repository, mucua, mocambola):
             'errorMessage': _('User don\t exists')
         }
             
-        return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+        return HttpResponse(json.dumps(response_data), mimetype='application/json')
 
     # TODO: verificar questao abaixo:
     #  atualmente, esta serializando o user
@@ -51,8 +51,8 @@ def mocambola_detail(request, repository, mucua, mocambola):
 def login(request):
     
     if request.method == 'POST':
-        username = request.DATA['username'] + '@' + request.DATA['mucua'] + '.' + request.DATA['repository'] + '.net'
-        password = request.DATA['password']
+        username = request.data['username'] + '@' + request.data['mucua'] + '.' + request.data['repository'] + '.net'
+        password = request.data['password']
         fileBackend = FileBackend()
         authenticate = fileBackend.authenticate(username, password)
         
@@ -62,7 +62,7 @@ def login(request):
             try:
                 user = User.objects.get(username=username)
             except User.DoesNotExist:
-                logger.debug(u"%s" % (
+                logger.debug("%s" % (
                     _('Exception caught, UserDoesNotExist')
                 ))
             
@@ -87,19 +87,19 @@ def login(request):
                 response_data = {
                     'errorMessage': _('User don\'t exists: ')
                 }
-                return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+                return HttpResponse(json.dumps(response_data), mimetype='application/json')
         else:
             response_data = {
                 'error': True,
                 'errorMessage': _('Invalid user or password')
             }
             
-            return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+            return HttpResponse(json.dumps(response_data), mimetype='application/json')
 
 
 @api_view(['POST'])
 def create_auth(request):
-    serialized = UserSerializer(data=request.DATA)
+    serialized = UserSerializer(data=request.data)
     if serialized.is_valid():
         User.objects.create_user(
             username=serialized.init_data['username'],

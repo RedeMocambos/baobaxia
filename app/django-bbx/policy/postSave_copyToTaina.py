@@ -4,5 +4,5 @@
 
 
 def postSave_copyToTaina(mediainstance):
-    print mediainstance
+    print(mediainstance)
     return mediainstance

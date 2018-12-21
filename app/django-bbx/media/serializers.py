@@ -26,9 +26,9 @@ class MediaFileSerializer(serializers.ModelSerializer):
     tags = serializers.SlugRelatedField(many=True,
                                         slug_field='name',
                                         read_only=True)
-    origin = serializers.SlugRelatedField(many=False, slug_field='description')
-    repository = serializers.SlugRelatedField(many=False, slug_field='name')
-    author = serializers.SlugRelatedField(many=False, slug_field='username')
+    origin = serializers.SlugRelatedField(many=False, slug_field='description', read_only=True)
+    repository = serializers.SlugRelatedField(many=False, slug_field='name', read_only=True)
+    author = serializers.SlugRelatedField(many=False, slug_field='username', read_only=True)
     
     class Meta:
         model = Media
@@ -45,9 +45,9 @@ class MediaSerializer(serializers.ModelSerializer):
     tags = serializers.SlugRelatedField(many=True,
                                         slug_field='name',
                                         read_only=True)
-    origin = serializers.SlugRelatedField(many=False, slug_field='description')
-    repository = serializers.SlugRelatedField(many=False, slug_field='name')
-    author = serializers.SlugRelatedField(many=False, slug_field='username')
+    origin = serializers.SlugRelatedField(many=False, slug_field='description', read_only=True)
+    repository = serializers.SlugRelatedField(many=False, slug_field='name', read_only=True)
+    author = serializers.SlugRelatedField(many=False, slug_field='username', read_only=True)
     size = serializers.SerializerMethodField('get_size')
 
     def get_size(self, media):
@@ -62,7 +62,7 @@ class MediaSerializer(serializers.ModelSerializer):
         depth = 1
     
     def restore_fields(self, data, files):
-        u"""Converte um dicionário de dados em um dicionário de campos
+        """Converte um dicionário de dados em um dicionário de campos
         deserializados.
         """
         reverted_data = {}
@@ -71,7 +71,7 @@ class MediaSerializer(serializers.ModelSerializer):
             self._errors['non_field_errors'] = ['Invalid data']
             return None
 
-        for field_name, field in self.fields.items():
+        for field_name, field in list(self.fields.items()):
             field.initialize(parent=self, field_name=field_name)
             if field_name == 'media_file':
                 # field_name = 'dataUri'
@@ -107,7 +107,7 @@ class MediaSerializer(serializers.ModelSerializer):
         return reverted_data
 
     def restore_object(self, attrs, instance=None):
-        u"""
+        """
         Crea o atualiza um media, dado um dicionário de valores dos 
         campos deserializados.
         """
@@ -150,37 +150,37 @@ def create_objects_from_files(repository=get_default_repository().name):
     except Repository.DoesNotExist:
         return None
 
-    logger.info(u">>> %s" % _('DESERIALIZING'))
-    logger.info(u"%s: %s" % (_('Repository'),  repository))
+    logger.info(">>> %s" % _('DESERIALIZING'))
+    logger.info("%s: %s" % (_('Repository'),  repository))
     #logger.debug(u"%s \n %s" % (_('List of media found in repository..'), get_latest_media(repository)))
     try:
         for serialized_media in get_latest_media(repository):
-            logger.info(u"%s: %s" % (_('Serialized Media'), serialized_media))
+            logger.info("%s: %s" % (_('Serialized Media'), serialized_media))
             media_json_file_path = os.path.join(REPOSITORY_DIR,
                                                 repository.name,
                                                 serialized_media)
             if os.path.isfile(media_json_file_path):
-                with  open(media_json_file_path) as media_json_file:
-		    try:
+                with open(media_json_file_path) as media_json_file:
+                    try:
                         data = JSONParser().parse(media_json_file)
                     except:
-                        print u"Problem parsing JSON: " + media_json_file.read()
+                        print(("Problem parsing JSON: " + media_json_file.read()))
                         continue
 
                 try:
                     media = Media.objects.get(uuid=data["uuid"])
                     serializer = MediaSerializer(media, data=data, partial=True)
-                    print serializer.is_valid()
-                    print serializer.errors
+                    print((serializer.is_valid()))
+                    print((serializer.errors))
                     serializer.object.save(is_syncing=True)
-                    logger.info(u"%s" % _('This media already exist. Updated.'))
+                    logger.info("%s" % _('This media already exist. Updated.'))
                 except Media.DoesNotExist:
                     serializer = MediaSerializer(data=data)
-                    print serializer.is_valid()
-                    print serializer.errors
+                    print((serializer.is_valid()))
+                    print((serializer.errors))
                     serializer.object.save(is_syncing=True)
                     media = serializer.object
-                    logger.info(u"%s" % _('New media created'))
+                    logger.info("%s" % _('New media created'))
 
                 # Synchronize/update tags.  
                 #
@@ -195,8 +195,8 @@ def create_objects_from_files(repository=get_default_repository().name):
                     # Add tag - search for existing, if none found create new tag.
                     namespace, name = t
                     try: 
-                        tag = Tag.objects.get(name=unicode(name),
-                                              namespace=unicode(namespace))
+                        tag = Tag.objects.get(name=str(name),
+                                              namespace=str(namespace))
                     except Tag.DoesNotExist:
                         tag = Tag(name=name, namespace=namespace)
                         tag.save()
@@ -220,8 +220,8 @@ def recriar_media_do_repositorio(repository=get_default_repository().name):
     except Repository.DoesNotExist:
         return None
 
-    logger.info(u">>> %s" % _('DESERIALIZING'))
-    logger.info(u"%s: %s" % (_('Repository'),  repository))
+    logger.info(">>> %s" % _('DESERIALIZING'))
+    logger.info("%s: %s" % (_('Repository'),  repository))
     #logger.debug(u"%s \n %s" % (_('List of media found in repository..'), get_latest_media(repository)))                                                                                                                                                                                                                                                                                                                                                                                   
 
     from glob import glob
@@ -229,12 +229,12 @@ def recriar_media_do_repositorio(repository=get_default_repository().name):
     result = [y for x in os.walk(caminho) for y in glob(os.path.join(x[0], '*.json'))]
 
     result = [ x for x in result if "mocambolas" not in x ]
-    logger.info(u"%s: %s" % (_('Numero'),  len(result)))
+    logger.info("%s: %s" % (_('Numero'),  len(result)))
 #    logger.info(u"%s: %s" % (_('JSONS'),  result))                                                                                                                                                                                                                                                                                                                                                                                                                                         
 
     try:
         for serialized_media in result:
-            logger.info(u"%s: %s" % (_('Serialized Media'), serialized_media))
+            logger.info("%s: %s" % (_('Serialized Media'), serialized_media))
             media_json_file_path = os.path.join(REPOSITORY_DIR,
                                                 repository.name,
                                                 serialized_media)
@@ -243,23 +243,23 @@ def recriar_media_do_repositorio(repository=get_default_repository().name):
                     try:
                         data = JSONParser().parse(media_json_file)
                     except:
-                        print u"Problem parsing JSON: " + media_json_file.read()
+                        print(("Problem parsing JSON: " + media_json_file.read()))
                         continue
 
                 try:
                     media = Media.objects.get(uuid=data["uuid"])
                     serializer = MediaSerializer(media, data=data, partial=True)
-                    print serializer.is_valid()
-                    print serializer.errors
+                    print((serializer.is_valid()))
+                    print((serializer.errors))
                     serializer.object.save(is_syncing=True)
-                    logger.info(u"%s" % _('This media already exist. Updated.'))
+                    logger.info("%s" % _('This media already exist. Updated.'))
                 except Media.DoesNotExist:
                     serializer = MediaSerializer(data=data)
-                    print serializer.is_valid()
-                    print serializer.errors
+                    print((serializer.is_valid()))
+                    print((serializer.errors))
                     serializer.object.save(is_syncing=True)
                     media = serializer.object
-                    logger.info(u"%s" % _('New media created'))
+                    logger.info("%s" % _('New media created'))
 
                 # Synchronize/update tags.                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                 #                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
@@ -274,8 +274,8 @@ def recriar_media_do_repositorio(repository=get_default_repository().name):
                     # Add tag - search for existing, if none found create new tag.                                                                                                                                                                                                                                                                                                                                                                                                          
                     namespace, name = t
                     try:
-                        tag = Tag.objects.get(name=unicode(name),
-                                              namespace=unicode(namespace))
+                        tag = Tag.objects.get(name=str(name),
+                                              namespace=str(namespace))
                     except Tag.DoesNotExist:
                         tag = Tag(name=name, namespace=namespace)
                         tag.save()

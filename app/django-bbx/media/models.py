@@ -2,13 +2,14 @@
 import os
 import uuid
 from datetime import datetime
-import exceptions
+#import exceptions
 from importlib import import_module
 import json
 import re
 from PIL import Image, ImageOps
 import magic
 import subprocess
+
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -65,7 +66,7 @@ def media_file_name(instance, file_name):
 
 
 def media_file_rename(instance, new_file_name):
-    u"""Renomeia o media no repositório."""
+    """Renomeia o media no repositório."""
     logger.info('Media renamed: ' + new_file_name)
     cmd = 'git mv ' + os.path.basename(instance.media_file.name) + new_file_name
     pipe = subprocess.Popen(cmd, shell=True, cwd=get_file_path(instance))
@@ -73,7 +74,7 @@ def media_file_rename(instance, new_file_name):
 
 
 def get_media_size(instance):
-    u"""Retorna tamanho da mídia"""
+    """Retorna tamanho da mídia"""
     cmd = 'git annex info ' + instance.get_file_name() + ' --json'
     output = subprocess.check_output(cmd, shell=True, cwd=get_file_path(instance))
 
@@ -115,7 +116,7 @@ def get_media_path(instance):
         t = get_now()
         date = t.strftime("%y/%m/%d/")
     else:        
-        if isinstance(instance.date, unicode):
+        if isinstance(instance.date, str):
             date = datetime(year = int(instance.date[:4]),
                             month = int(instance.date[5:7]),
                             day = int(instance.date[8:10]))
@@ -220,8 +221,8 @@ class Media(models.Model):
     note = models.TextField(_('note'),
                             help_text=_('Note.. use as you wish!'),
                             max_length=300, blank=True)
-    author = models.ForeignKey(User)
-    origin = models.ForeignKey('mucua.Mucua')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    origin = models.ForeignKey('mucua.Mucua', on_delete=models.CASCADE)
     type = models.CharField(
         _('type'),
         help_text=_('Type of the media, like image, document, video, ...'),
@@ -236,7 +237,7 @@ class Media(models.Model):
         _('license'),
         help_text=_('License of the media, like, cc, gpl, bsd, ...'),
         max_length=100, blank=True)
-    repository = models.ForeignKey('repository.Repository')
+    repository = models.ForeignKey('repository.Repository', on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, blank=True)
 
     is_local = models.BooleanField(
@@ -302,7 +303,7 @@ class Media(models.Model):
         data = git_annex_where_is(self)
         try:
             whereis = json.loads(data)
-            self.num_copies = len(whereis[u'whereis'])
+            self.num_copies = len(whereis['whereis'])
         except ValueError:
             self.num_copies = 1
 
@@ -330,7 +331,7 @@ class Media(models.Model):
     
 
     def drop_copy(self):
-        u"""
+        """
         Remove a copia local do media
 
         O media é preservado se tiver um pedido pendente em 
@@ -347,7 +348,7 @@ class Media(models.Model):
         
 
     def request_copy(self, save=True):
-        u"""
+        """
         Gera um pedido de copia local do media
 
         Os pedidos tem um codigo uuid e são gravados em 
@@ -381,7 +382,7 @@ class Media(models.Model):
                 git_add(os.path.basename(request_filename), os.path.dirname(request_filename))
                 
             except IOError:
-                logger.info(u'Alo! I can\'t write request file!')
+                logger.info('Alo! I can\'t write request file!')
             
                 logger.debug("get_file_path: " + get_file_path(self))
                 logger.debug("media_file.name: " + os.path.basename(self.media_file.name))
@@ -394,7 +395,7 @@ class Media(models.Model):
         self.set_is_local()
         if self.pk is not None and self.pk is not "":
             self._set_num_copies()
-            print self.num_copies
+            print((self.num_copies))
         self.url = self.get_url()
         last_modified = get_now()
 
@@ -412,11 +413,11 @@ class Media(models.Model):
         ordering = ('date',)
 
 
-class TagPolicyDoesNotExist(exceptions.Exception):
+class TagPolicyDoesNotExist(Exception):
     def __init__(self, args=None):
         self.args = args
 
-class MediaDoesNotExist(exceptions.Exception):
+class MediaDoesNotExist(Exception):
     def __init__(self, args=None):
         self.args = args
 
@@ -438,7 +439,7 @@ def start_post_save_policies(instance, **kwargs):
         for tag in tags.all():
             try:
                 for policy in tag.policies:
-                    print policy
+                    print(policy)
                     if "post_save" in policy:
                         policy_module = "policy." + policy
                         module = import_module(policy_module)

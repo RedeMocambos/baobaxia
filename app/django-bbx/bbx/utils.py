@@ -54,20 +54,20 @@ def dumpclean(obj):
         obj: print all field/dictionary of "obj"
     """
     if type(obj) == dict:
-        for k, v in obj.items():
+        for k, v in list(obj.items()):
             if hasattr(v, '__iter__'):
-                print repr(k)
+                print((repr(k)))
                 dumpclean(v)
             else:
-		print k.encode('ascii', 'ignore') + " : " + v.encode('ascii', 'ignore')
+                print((k.encode('ascii', 'ignore')+" : "+v.encode('ascii', 'ignore')))
     elif type(obj) == list:
         for v in obj:
             if hasattr(v, '__iter__'):
                 dumpclean(v)
             else:
-                print v.encode('ascii', 'ignore')
+                print((v.encode('ascii', 'ignore')))
     else:
-        print obj.encode('ascii', 'ignore')
+        print((obj.encode('ascii', 'ignore')))
 
 def discover():
     """Function to check if there are mucuas on local network.
@@ -124,59 +124,59 @@ class MultiSelectFormField(forms.MultipleChoiceField):
         return value
 
 
-class MultiSelectField(models.Field):
-    __metaclass__ = models.SubfieldBase
+# class MultiSelectField(models.Field):
+#     __metaclass__ = models.SubfieldBase
 
-    def get_internal_type(self):
-        return "CharField"
+#     def get_internal_type(self):
+#         return "CharField"
 
-    def get_choices_default(self):
-        return self.get_choices(include_blank=False)
+#     def get_choices_default(self):
+#         return self.get_choices(include_blank=False)
 
-    def _get_FIELD_display(self, field):
-        value = getattr(self, field.attname)
-        # choicedict = dict(field.choices)
-        # TODO: Return value or what?
-        raise RuntimeError("Please implement: " + str(value))
+#     def _get_FIELD_display(self, field):
+#         value = getattr(self, field.attname)
+#         # choicedict = dict(field.choices)
+#         # TODO: Return value or what?
+#         raise RuntimeError("Please implement: " + str(value))
 
-    def formfield(self, **kwargs):
-        # don't call super, as that overrides default widget if it has choices
-        defaults = {'required': not self.blank,
-                    'label': capfirst(self.verbose_name),
-                    'help_text': self.help_text,
-                    'choices': self.choices}
-        if self.has_default():
-            defaults['initial'] = self.get_default()
-        defaults.update(kwargs)
-        return MultiSelectFormField(**defaults)
+#     def formfield(self, **kwargs):
+#         # don't call super, as that overrides default widget if it has choices
+#         defaults = {'required': not self.blank,
+#                     'label': capfirst(self.verbose_name),
+#                     'help_text': self.help_text,
+#                     'choices': self.choices}
+#         if self.has_default():
+#             defaults['initial'] = self.get_default()
+#         defaults.update(kwargs)
+#         return MultiSelectFormField(**defaults)
 
-    def validate(self, value, model_instance):
-        # Needed couse it's a custom field .. see more:
-        # https://groups.google.com/forum/#!topic/django-users/J0NXIUo7TdY
-        # Should do something?
-        return
+#     def validate(self, value, model_instance):
+#         # Needed couse it's a custom field .. see more:
+#         # https://groups.google.com/forum/#!topic/django-users/J0NXIUo7TdY
+#         # Should do something?
+#         return
 
-    def get_db_prep_value(self, value, connection, prepared=False):
-        if isinstance(value, basestring):
-            return value
-        elif isinstance(value, list):
-            return ",".join(value)
+#     def get_db_prep_value(self, value, connection, prepared=False):
+#         if isinstance(value, basestring):
+#             return value
+#         elif isinstance(value, list):
+#             return ",".join(value)
 
-    def to_python(self, value):
-        if isinstance(value, list):
-            return value
-        return value.split(",")
+#     def to_python(self, value):
+#         if isinstance(value, list):
+#             return value
+#         return value.split(",")
 
-    def contribute_to_class(self, cls, name):
-        super(MultiSelectField, self).contribute_to_class(cls, name)
-        if self.choices:
-            func = lambda self, fieldname = name, choicedict = dict(
-                self.choices
-            ): ",".join(
-                [choicedict.get(value, value) for
-                 value in getattr(self, fieldname)]
-            )
-            setattr(cls, 'get_%s_display' % self.name, func)
+#     def contribute_to_class(self, cls, name):
+#         super(MultiSelectField, self).contribute_to_class(cls, name)
+#         if self.choices:
+#             func = lambda self, fieldname = name, choicedict = dict(
+#                 self.choices
+#             ): ",".join(
+#                 [choicedict.get(value, value) for
+#                  value in getattr(self, fieldname)]
+#             )
+#             setattr(cls, 'get_%s_display' % self.name, func)
 
 
 class ThumbnailStorage(FileSystemStorage):

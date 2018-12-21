@@ -16,21 +16,22 @@
 """
 
 import os
-import exceptions
+#import exceptions
 
 from django.db import models
 from bbx.settings import POLICIES_DIR
-from bbx.utils import MultiSelectField
+#from bbx.utils import MultiSelectField
+from multiselectfield import MultiSelectField
 
 # This is to specify to south how to work with MultiSelectField:
 # http://south.readthedocs.org/en/latest/customfields.html
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["bbx.utils.MultiSelectField"])
+#from south.modelsinspector import add_introspection_rules
+#add_introspection_rules([], ["bbx.utils.MultiSelectField"])
 
 
-class PoliciesPersistentDataUnavailable(exceptions.Exception):
-    def __init__(self, args=None):
-        self.args = args
+#class PoliciesPersistentDataUnavailable(exceptions.Exception):
+#    def __init__(self, args=None):
+#        self.args = args
 
 
 def get_available_policies():
@@ -54,7 +55,7 @@ class Tag(models.Model):
                 self.name)
 
     def get_id(self):
-        u"""
+        """
         Retorna o id da etiqueta 
 
         Por ex.:  bbx:publico 
@@ -63,11 +64,11 @@ class Tag(models.Model):
                 self.name)
 
     def _get_policies_filename(self):
-        u"""Retorna o nome do arquivo das politicas"""
+        """Retorna o nome do arquivo das politicas"""
         return POLICIES_DIR + '/' + self.get_id() + '.json'
 
     def set_namespace(self):
-        u"""Imposta o namespace da etiqueta"""
+        """Imposta o namespace da etiqueta"""
         if len(self.namespace) > 0:
             return
         if self.name.find(':') > 0:

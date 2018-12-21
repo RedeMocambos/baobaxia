@@ -25,7 +25,7 @@ def default_lang(request):
         'defaultLang': LANGUAGE_CODE
     }
     logger.info('default_lang')
-    return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+    return HttpResponse(json.dumps(response_data), mimetype='application/json')
 
 @api_view(['POST'])
 def change_interface_lang(request):
@@ -60,7 +60,7 @@ def change_interface_lang(request):
     call_command('update_templates', new_lang, interactive=False)
     call_command('collectstatic', interactive=False)    
     
-    return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+    return HttpResponse(json.dumps(response_data), mimetype='application/json')
     
 @api_view(['GET'])
 def available_langs(request):
@@ -69,7 +69,7 @@ def available_langs(request):
         'availableLangs': LANGUAGES
     }
     logger.info('availableLangs')
-    return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+    return HttpResponse(json.dumps(response_data), mimetype='application/json')
     
 @api_view(['GET'])
 def parse_templates(request, module_name, template_name, lang):
@@ -78,7 +78,7 @@ def parse_templates(request, module_name, template_name, lang):
             'error': True,
             'errorMessage': _('Language not installed: ') + lang
         }
-        return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+        return HttpResponse(json.dumps(response_data), mimetype='application/json')
 
     translation.activate(lang)
     request.session['django_language'] = lang    
@@ -93,7 +93,7 @@ def parse_templates(request, module_name, template_name, lang):
             'error': True,
             'errorMessage': _('Module does not exists: ') + module_path
         }
-        return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+        return HttpResponse(json.dumps(response_data), mimetype='application/json')
     
     # check if template exists
     template_exists = os.path.isfile(template_name)
@@ -102,6 +102,6 @@ def parse_templates(request, module_name, template_name, lang):
             'error': True,
             'errorMessage': _("Template does not exists: ") + template_name,
         }
-        return HttpResponse(json.dumps(response_data), mimetype=u'application/json')
+        return HttpResponse(json.dumps(response_data), mimetype='application/json')
     
     return render(request, template_name)

@@ -19,7 +19,7 @@ def repository_list(request):
             repository = Repository.objects.get(name=repo_name)
 
         except Repository.DoesNotExist:
-            print "not found: ", repo_name
+            print(("not found: ", repo_name))
             repository = False
 
         if repository:

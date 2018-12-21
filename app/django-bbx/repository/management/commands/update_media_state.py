@@ -43,8 +43,8 @@ class Command(BaseCommand):
                     # Add tag - search for existing, if none found create new tag.
                     namespace, name = t
                     try: 
-                        tag = Tag.objects.get(name=unicode(name),
-                                              namespace=unicode(namespace))
+                        tag = Tag.objects.get(name=str(name),
+                                              namespace=str(namespace))
                     except Tag.DoesNotExist:
                         tag = Tag(name=name, namespace=namespace)
                         tag.save()
@@ -58,6 +58,6 @@ class Command(BaseCommand):
 
                 media.save(is_syncing=True)
 
-            except OSError, e:
+            except OSError as e:
                 logger.debug('Requested media not found: ' + media.name)        
         

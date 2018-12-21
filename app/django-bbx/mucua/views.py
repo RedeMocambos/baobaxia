@@ -8,7 +8,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.renderers import UnicodeJSONRenderer, BrowsableAPIRenderer
+from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.cache import cache_page
@@ -26,7 +26,7 @@ def mucua_list(request, repository=None):
     List all mucuas
     """
     
-    logger.debug(_(u"Acessing mucuas in repository: %s") % repository)
+    logger.debug(_("Acessing mucuas in repository: %s") % repository)
    
     if repository:
         try:
@@ -125,7 +125,7 @@ def mucua_get_info(request, uuid, repository=None):
         ), size_list[network_size.group(2)]
     )
     if mucua_info['local used by other'] < 0:
-	mucua_info['local used by other'] = 0
+        mucua_info['local used by other'] = 0
 
     mucua_info['network size'] =  convertToGB(
         str(float(network_size.group(1))), size_list[network_size.group(2)])
@@ -136,7 +136,7 @@ def mucua_get_info(request, uuid, repository=None):
 
 @cache_page(60 * 5)
 @api_view(['GET'])
-@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+@renderer_classes((JSONRenderer, BrowsableAPIRenderer))
 def mucua_get_groups(request, uuid=None, repository=None):
     try:     
         mucua = Mucua.objects.get(uuid=uuid)
@@ -147,7 +147,7 @@ def mucua_get_groups(request, uuid=None, repository=None):
     return Response(io)
 
 @api_view(['GET'])
-@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+@renderer_classes((JSONRenderer, BrowsableAPIRenderer))
 @authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
 @permission_classes((IsAuthenticated, ))
 def mucua_del_group(request, uuid, group, repository=None):
@@ -160,7 +160,7 @@ def mucua_del_group(request, uuid, group, repository=None):
     return Response(_("Group %s deleted" % group))
 
 @api_view(['GET'])
-@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+@renderer_classes((JSONRenderer, BrowsableAPIRenderer))
 @authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
 @permission_classes((IsAuthenticated,))
 def mucua_add_group(request, uuid, group, repository=None):
@@ -175,12 +175,12 @@ def mucua_add_group(request, uuid, group, repository=None):
 
 @cache_page(60 * 5)
 @api_view(['GET'])
-@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+@renderer_classes((JSONRenderer, BrowsableAPIRenderer))
 def mucua_get_territory(request, uuid=None, repository=None):
     try:     
-        logger.debug(_(u"MUCUA UUID: %s") % uuid)
+        logger.debug(_("MUCUA UUID: %s") % uuid)
         mucua = Mucua.objects.get(uuid=uuid)
-        logger.debug(_(u"MUCUA name: %s") % mucua.description)
+        logger.debug(_("MUCUA name: %s") % mucua.description)
     except:
         return Response(_("Mucua not found"))
     
@@ -188,7 +188,7 @@ def mucua_get_territory(request, uuid=None, repository=None):
     return Response(io)
 
 @api_view(['GET'])
-@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+@renderer_classes((JSONRenderer, BrowsableAPIRenderer))
 @authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
 @permission_classes((IsAuthenticated,))
 def mucua_del_territory(request, uuid, territory, repository=None):
@@ -201,7 +201,7 @@ def mucua_del_territory(request, uuid, territory, repository=None):
     return Response(_("Territory %s deleted" % territory))
 
 @api_view(['GET'])
-@renderer_classes((UnicodeJSONRenderer, BrowsableAPIRenderer))
+@renderer_classes((JSONRenderer, BrowsableAPIRenderer))
 @authentication_classes((SessionAuthentication, JSONWebTokenAuthentication))
 @permission_classes((IsAuthenticated,))
 def mucua_set_territory(request, uuid, territory, repository=None):
