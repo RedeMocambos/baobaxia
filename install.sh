@@ -285,7 +285,7 @@ if [[ "$NET" != "no" ]]; then
   pip install gunicorn;
   pip install six;
   pip install Pillow;
-  pip install sorl-thumbnail;
+  pip install sorl-thumbnail==12.2;
   pip install south;
   pip install wheel;
   pip install wsgiref;
