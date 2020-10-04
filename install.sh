@@ -310,7 +310,13 @@ python3 manage.py makemigrations mocambola repository mucua tag media --noinput;
 #python3 manage.py schemamigration --initial --traceback tag;
 #python3 manage.py schemamigration --initial --traceback media;
 #python3 manage.py schemamigration --initial --traceback repository;
+echo ''
+echo 'Primeira migracao'
 python3 manage.py migrate --fake-initial;
+python3 manage.py loaddata /root/baobaxia/app/django-bbx/repository/fixtures/initial_data.json
+
+echo ''
+echo 'Copiando os arquivos estaticos'
 python3 manage.py collectstatic --noinput
 "
 

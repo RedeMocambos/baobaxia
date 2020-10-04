@@ -78,7 +78,8 @@ def git_media_post_delete(instance, **kwargs):
 
 
 def get_default_repository():
-    return Repository.objects.get(name=DEFAULT_REPOSITORY)
+    repo = Repository(name="mocambos", note="Repositorio da Rede Mocambos", enable_sync=True)
+    return repo
 
 
 def get_available_repositories():
