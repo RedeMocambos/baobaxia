@@ -142,7 +142,7 @@ class MediaSerializer(serializers.ModelSerializer):
         return JSONRenderer().render(self.data)
 
 
-def create_objects_from_files(repository=get_default_repository().name):
+def create_objects_from_files(repository="mocambos"):
     """Recria os midias no Django a partir dos medias serializados em JSON."""
     try:
         repository = Repository.objects.get(

@@ -304,7 +304,7 @@ su - $USER_BBX -c "
 . $INSTALL_DIR/envs/bbx/bin/activate;
 cd $INSTALL_DIR/baobaxia/app/django-bbx;
 find . -name '000*.py' -exec rm '{}' \; && echo 'OK!';
-python3 manage.py makemigrations mocambola mucua repository tag media --noinput;
+python3 manage.py makemigrations mocambola repository mucua tag media --noinput;
 #python3 manage.py schemamigration --initial --traceback mocambola;
 #python3 manage.py schemamigration --initial --traceback mucua;
 #python3 manage.py schemamigration --initial --traceback tag;
