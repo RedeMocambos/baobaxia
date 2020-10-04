@@ -33,10 +33,10 @@ DEFAULT_REPOSITORY = "mocambos"
 LOCALE_PATHS = (os.path.join(PROJECT_ROOT, 'locale'),)
 ugettext = lambda s: s
 LANGUAGES = [
-    ('en_US', ugettext('English')),
-    ('es_ES', ugettext('Spanish')),
-    ('pt_BR', ugettext('Brazilian Portuguese')),
-    ('it_IT', ugettext('Italian')),
+    ('en-us', ugettext('English')),
+    ('es-es', ugettext('Spanish')),
+    ('pt-br', ugettext('Brazilian Portuguese')),
+    ('it-it', ugettext('Italian')),
 ]
 USE_I18N = True
 
@@ -79,7 +79,7 @@ TIME_ZONE = 'America/Sao_Paulo'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'pt_BR'
+LANGUAGE_CODE = 'pt-br'
 
 SITE_ID = 1
 
