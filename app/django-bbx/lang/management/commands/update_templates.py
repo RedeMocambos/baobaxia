@@ -14,7 +14,7 @@ from django.core.management.base import BaseCommand
 from django.utils.translation import ugettext_lazy as _
 
 from lang.views import parse_templates
-from bbx.settings import LANGUAGES, LANGUAGE_CODE, TEMPLATE_DIRS, PROJECT_ROOT, DEFAULT_MUCUA
+from bbx.settings import LANGUAGES, LANGUAGE_CODE, PROJECT_ROOT, DEFAULT_MUCUA
 
 """
 Definicoes do comando para atualizar templates partir dos locales
