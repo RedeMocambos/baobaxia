@@ -2,7 +2,7 @@
 
 import subprocess
 from subprocess import PIPE
-from celery import task
+#from celery import task
 
 from bbx.utils import logger
 
@@ -12,7 +12,7 @@ from bbx.utils import logger
 #afazeres = Celery('tasks', broker='amqp://guest@localhost//', backend='amqp')
 
 #@afazeres.task
-@task
+#@task
 def git_annex_get(repository_path, media_path):
     """ 
     Baixa os conteudos binarios desde o repositório remoto.

@@ -40,7 +40,7 @@ create_user() {
 
 if [[ "$NET" != "no" ]]; then
   # dependencies: se for deb pkg, tirar
-  COMMON_PKG="git git-annex nginx supervisor python3-pip rabbitmq-server libjpeg-dev libtiff5-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python3-tk python3-dev python3-setuptools gettext"
+  COMMON_PKG="git git-annex nginx supervisor python3-pip rabbitmq-server libjpeg-dev libtiff5-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python3-tk python3-dev python3-setuptools gettext"
   DEBIAN_PKG="libjpeg62-turbo-dev"
   UBUNTU_PKG="libjpeg-turbo8-dev"
 
@@ -278,7 +278,7 @@ if [[ "$NET" != "no" ]]; then
   . $INSTALL_DIR/envs/bbx/bin/activate ;
   cd $INSTALL_DIR;
   pip3 install argparse;
-  pip3 install django==2.1.4;
+  pip3 install django;
   pip3 install django-extensions;
   pip3 install djangorestframework;
   pip3 install gunicorn;
@@ -289,7 +289,7 @@ if [[ "$NET" != "no" ]]; then
   pip3 install python-magic;
   pip3 install python-memcached;
   pip3 install djangorestframework-jwt;
-  pip3 install celery==3.1.14;
+  pip3 install celery;
   pip3 install django-multiselectfield
   "
 fi
@@ -304,7 +304,7 @@ su - $USER_BBX -c "
 . $INSTALL_DIR/envs/bbx/bin/activate;
 cd $INSTALL_DIR/baobaxia/app/django-bbx;
 find . -name '000*.py' -exec rm '{}' \; && echo 'OK!';
-python3 manage.py makemigrations mocambola mucua tag media repository --noinput;
+python3 manage.py makemigrations mocambola mucua repository tag media --noinput;
 #python3 manage.py schemamigration --initial --traceback mocambola;
 #python3 manage.py schemamigration --initial --traceback mucua;
 #python3 manage.py schemamigration --initial --traceback tag;
