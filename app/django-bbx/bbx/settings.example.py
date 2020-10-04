@@ -132,11 +132,11 @@ STATICFILES_FINDERS = (
 SECRET_KEY = '+zx%#f$tj&z_&1el&wm@sj0y4a56w14*^z40ea*hgd%n0i(ga)'
 
 # List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    #'django.template.loaders.eggs.Loader',
-)
+#TEMPLATE_LOADERS = (
+#    'django.template.loaders.filesystem.Loader',
+#    'django.template.loaders.app_directories.Loader',
+#    #'django.template.loaders.eggs.Loader',
+#)
 
 # TEMPLATE_CONTEXT_PROCESSORS = (
 #     "django.contrib.auth.context_processors.auth",
@@ -157,11 +157,10 @@ TEMPLATES = [
             'context_processors': [
                 "django.contrib.auth.context_processors.auth",
                 'django.template.context_processors.debug',
-                "django.core.context_processors.i18n",
-                "django.core.context_processors.media",
-                "django.core.context_processors.static",
-                "django.core.context_processors.tz",
-#                'django.template.context_processors.request',
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
                 'django.contrib.messages.context_processors.messages',
             ],
         },

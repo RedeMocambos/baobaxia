@@ -15,8 +15,11 @@ from django.shortcuts import render
 from django.conf.urls import i18n 
 
 
-from bbx.settings import LANGUAGES, LANGUAGE_CODE, TEMPLATE_DIRS
+from bbx.settings import LANGUAGES, LANGUAGE_CODE, TEMPLATES
 from bbx.utils import logger
+
+
+TEMPLATES_PATH = TEMPLATES[0]['DIRS'][0]
 
 @api_view(['GET'])
 def default_lang(request):
@@ -83,11 +86,11 @@ def parse_templates(request, module_name, template_name, lang):
     translation.activate(lang)
     request.session['django_language'] = lang    
     
-    module_path = os.path.join(TEMPLATE_DIRS[0], module_name)
-    template_name = os.path.join(TEMPLATE_DIRS[0], module_name, template_name)
+    module_path = os.path.join(TEMPLATES_PATH, module_name)
+    template_name = os.path.join(TEMPLATES_PATH, module_name, template_name)
     
     # check if module exists    
-    module_exists = os.path.isdir(os.path.join(TEMPLATE_DIRS[0], module_name))
+    module_exists = os.path.isdir(os.path.join(TEMPLATES_PATH, module_name))
     if not module_exists:
         response_data = {
             'error': True,
