@@ -212,7 +212,7 @@ def create_objects_from_files(repository="mocambos"):
     except CommandError:
         pass
 
-def recriar_media_do_repositorio(repository=get_default_repository().name):
+def recriar_media_do_repositorio(repository="mocambos"):
     """Recria os midias no Django a partir dos medias serializados em JSON."""
     try:
         repository = Repository.objects.get(
