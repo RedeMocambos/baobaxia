@@ -58,11 +58,12 @@ class FileBackend(object):
                 data = json.load(mocambola_json_file)
                 u = User()
                 serializer = UserSerializer(u, data=data)
-                if serializer.errors:
-                    logger.debug("%s %s" % (_('Error deserialing'),
-                                             serializer.errors))
-                serializer.is_valid()
 
+                if not serializer.is_valid():
+                    if serializer.errors:
+                        logger.debug("%s %s" % (_('Error deserialing'),
+                                                serializer.errors))
+                
                 current_user = serializer.object
                 login_valid = (username == current_user.username)
                 pwd_valid = check_password(password, current_user.password)
